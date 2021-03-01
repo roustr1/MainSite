@@ -32,6 +32,7 @@ namespace MainSite
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(connection));
             services.AddControllersWithViews();
+            services.AddTransient<IShowMenu, MenuService>();
             services.AddTransient<IMenuService, MenuService>();
         }
 
