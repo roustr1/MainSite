@@ -31,7 +31,11 @@ namespace MainSite
             // добавляем контекст MobileContext в качестве сервиса в приложение
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(connection));
+            services.AddSingleton(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddControllersWithViews();
+
+
+            services.AddTransient<IShowMenu, MenuService>();
             services.AddTransient<IMenuService, MenuService>();
         }
 
@@ -57,9 +61,12 @@ namespace MainSite
 
             app.UseEndpoints(endpoints =>
             {
+             
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+
             });
         }
     }

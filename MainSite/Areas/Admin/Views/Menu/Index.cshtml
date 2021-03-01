@@ -1,0 +1,35 @@
+﻿@inject Application.Services.Menu.IShowMenu menu;
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Админ. Меню.";
+}
+
+
+<div class=" container">
+    <label>Структура меню</label>
+    <!-- отображение древовидной иерархии-->
+    <ul>
+        @foreach (var l1Item in menu.GetMenuItem())
+        {
+            <li>@l1Item.Name
+                <ul>
+                    @foreach (var l2Item in menu.GetMenuItem(l1Item.Id))
+                    {
+                        <li>@l2Item.Name
+
+                            <ul>
+                                @foreach (var l3item in menu.GetMenuItem(l2Item.Id))
+                                {
+                                    <li>@l3item.Name</li>
+                                }
+                            </ul>
+                        </li>
+
+                    }
+                </ul>
+            </li>
+
+        }
+    </ul>
+</div>
+
