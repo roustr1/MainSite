@@ -50,28 +50,17 @@ namespace MainSite.Areas.Admin.Controllers
 
             return View();
         }
-
-
-
-        // GET: MenuService/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
+ 
 
         // POST: MenuService/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(string id)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var item = _menuService.GetItem(id);
+            if(item!=null)
+                _menuService.DeleteItem(item);
+
         }
     }
 }
