@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Dal;
+using Application.Services.Menu;
 using Microsoft.EntityFrameworkCore;
 
 namespace MainSite
@@ -31,6 +32,7 @@ namespace MainSite
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(connection));
             services.AddControllersWithViews();
+            services.AddTransient<IMenuService, MenuService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
