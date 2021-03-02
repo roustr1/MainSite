@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using Application.Dal.Domain.Menu;
@@ -60,6 +59,7 @@ namespace MainSite.Areas.Admin.Controllers
             var item = _menuService.GetItem(id);
             if(item!=null)
                 _menuService.DeleteItem(item);
+            return RedirectToAction("Index");
 
         }
     }
