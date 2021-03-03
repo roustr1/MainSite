@@ -1,34 +1,63 @@
-﻿@inject Application.Services.Menu.IShowMenu menu;
-<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-    <ul class="navbar-nav flex-grow-1">
-        <li class="nav-item"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-
-
-        @foreach (var menuNames in menu.GetMenuItem(null))
+﻿@inject Application.Services.Menu.IShowMenu Menu;
+@{
+    bool horizontal = (bool)(ViewContext.RouteData.Values["horizontalNav"] ?? false);
+    string wrapperClasses = horizontal ? "btn-group btn-group-sm btn-group-justified" : null;
+}
+<div class="@wrapperClasses">
+    @Html.ActionLink("Домой", "List", "Menu", null,
+        new
         {
-            <li>
-                <a asp-area="" asp-controller=@menuNames.URL asp-action=@menuNames.ActionName>@menuNames.Name</a>
-                <ul class="sub-menu">
-                    @foreach (var subMenu in menu.GetMenuItem(menuNames.Id))
-                    {
-                        <li class="nav-item">
-                            <a asp-area="" asp-controller=@subMenu.URL asp-action=@subMenu.ActionName>@subMenu.Name</a>
-                            <ul class="sub-menu">
-                                @foreach (var subMenu1 in menu.GetMenuItem(subMenu.Id))
-                                {
+            @class = horizontal ? "btn btn-default btn-sm" :
+                "btn btn-block btn-default btn-lg"
+        })
 
-                                    <li class="nav-item">
-                                        <a asp-area="" asp-controller=@subMenu1.URL asp-action=@subMenu1.ActionName>@subMenu1.Name</a>
-                                    </li>
-                                }
-                            </ul>
-                        </li>
-                    }
-                </ul>
-            </li>
-        }
+    @foreach (var link in Menu.GetMenuItem(null))
+    {
+        @Html.RouteLink(link, new
+        {
+            controller = "Home",
+            action = "Index",
+            page = 1
+        }, null,
+            new
+        {
+            @class = (horizontal ? "btn btn-default btn-sm" :
+                "btn btn-block btn-default btn-lg")
+                     + (link == ViewBag.SelectedGenre ? " btn-primary" : "")
+        })
+    }
+</div>
+
+@*<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <ul class="navbar-nav flex-grow-1">
+            <li class="nav-item"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+
+
+            @foreach (var menuNames in Menu?.GetMenuItem(null))
+            {
+                <li>
+                    <a asp-area="" asp-controller=@menuNames.URL asp-action=@menuNames.ActionName>@menuNames.Name</a>
+                    <ul class="sub-menu">
+                        @foreach (var subMenu in Menu.GetMenuItem(menuNames.Id))
+                        {
+                            <li class="nav-item">
+                                <a asp-area="" asp-controller=@subMenu.URL asp-action=@subMenu.ActionName>@subMenu.Name</a>
+                                <ul class="sub-menu">
+                                    @foreach (var subMenu1 in Menu.GetMenuItem(subMenu.Id))
+                                    {
+
+                                        <li class="nav-item">
+                                            <a asp-area="" asp-controller=@subMenu1.URL asp-action=@subMenu1.ActionName>@subMenu1.Name</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                        }
+                    </ul>
+                </li>
+            }
 
 
 
-    </ul>
-</nav>
+        </ul>
+    </nav>*@
