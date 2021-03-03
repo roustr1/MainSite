@@ -10,14 +10,14 @@ namespace Application.Dal.Domain
             CreatedDate = DateTime.Now;
         }
 
-        protected BaseEntity(string lastChangeAuthor) : this()
+        protected BaseEntity(string lastChangeAuthor)
         {
             this.lastChangeAuthor = lastChangeAuthor;
             LastChangeDate = DateTime.Now;
         }
         public string Id { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public DateTime LastChangeDate { get; set; }
-        public string lastChangeAuthor { get; set; }
+        public DateTime CreatedDate { get; }
+        public DateTime LastChangeDate { get; }
+        public string lastChangeAuthor { get; }
     }
 }

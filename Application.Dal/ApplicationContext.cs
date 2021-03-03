@@ -1,4 +1,5 @@
 ﻿using System;
+using Application.Dal.Domain.Files;
 using Application.Dal.Domain.Menu;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,6 +8,9 @@ namespace Application.Dal
     public class ApplicationContext : DbContext
     {
         public DbSet<MenuItem> MenuItems { get; set; }
+        public DbSet<File> Files { get; set; }
+        public DbSet<FileBinary> FileBinary { get; set; }
+
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)
         {
@@ -15,32 +19,6 @@ namespace Application.Dal
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<MenuItem>().HasData(
-                new MenuItem[]
-                {
-                    new MenuItem { 
-                        Id=Guid.NewGuid().ToString(),
-                        Name = "Home",
-                        ActionName = "Index",
-                        lastChangeAuthor = "Auto_Created",
-                        IsActive = true,
-                        LastChangeDate = DateTime.Now,
-                        CreatedDate = DateTime.Now,
-                        ToolTip = "Домашняя страница",
-                        URL = "home/index"
-                    },
-                    new MenuItem {
-                    Id=Guid.NewGuid().ToString(),
-                    Name = "Home1",
-                    ActionName = "Index1",
-                    lastChangeAuthor = "Auto_Created",
-                    IsActive = true,
-                    LastChangeDate = DateTime.Now,
-                    CreatedDate = DateTime.Now,
-                    ToolTip = "Вторая страница",
-                    URL = "home/index"
-                    }
-                });
         }
     }
 }

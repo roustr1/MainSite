@@ -1,20 +1,20 @@
-﻿@inject Application.Services.Menu.IShowMenu menu;
+﻿@inject Application.Services.Menu.IShowMenu Menu;
 <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
     <ul class="navbar-nav flex-grow-1">
         <li class="nav-item"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
 
 
-        @foreach (var menuNames in menu.GetMenuItem(null))
+        @foreach (var menuNames in Menu?.GetMenuItem(null))
         {
             <li>
                 <a asp-area="" asp-controller=@menuNames.URL asp-action=@menuNames.ActionName>@menuNames.Name</a>
                 <ul class="sub-menu">
-                    @foreach (var subMenu in menu.GetMenuItem(menuNames.Id))
+                    @foreach (var subMenu in Menu.GetMenuItem(menuNames.Id))
                     {
                         <li class="nav-item">
                             <a asp-area="" asp-controller=@subMenu.URL asp-action=@subMenu.ActionName>@subMenu.Name</a>
                             <ul class="sub-menu">
-                                @foreach (var subMenu1 in menu.GetMenuItem(subMenu.Id))
+                                @foreach (var subMenu1 in Menu.GetMenuItem(subMenu.Id))
                                 {
 
                                     <li class="nav-item">
