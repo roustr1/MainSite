@@ -110,12 +110,38 @@
         /// Type
         /// </summary>
         public const string TextPlain = "text/plain";
+        #endregion
+
+        #region documents
+        /// <summary>
+        /// Document Microsoft Office Word
+        /// </summary>
+        public const string MsDoc = "application/msword";
 
         /// <summary>
-        /// Type
+        /// Document Microsoft Office Word Open XML
         /// </summary>
-        public const string TextXlsx = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        public const string MsDocx = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
+        /// <summary>
+        /// Document Microsoft Office Excel
+        /// </summary>
+        public const string MsXls = "application/ms-excel";
+
+        /// <summary>
+        /// Document Microsoft Office Excel Open XML
+        /// </summary>
+        public const string MsXlsx = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+        /// <summary>
+        /// Document Microsoft Office Excel
+        /// </summary>
+        public const string MsPpt = "application/ms-powerpoint";
+
+        /// <summary>
+        /// Document Microsoft Office Excel Open XML
+        /// </summary>
+        public const string MsPptx = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
         #endregion
     }
 }
