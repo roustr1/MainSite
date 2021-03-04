@@ -6,14 +6,14 @@ namespace Application.Dal
 {
     public interface IRepository<T> where T : BaseEntity
     {
-        Task<IEnumerable<T>> GetAll();
-        Task<T> Get(string id);
-        Task Add(T entity);
-        Task Add(IEnumerable<T> entities);
-        Task Update(T entity);
-        Task Update(IEnumerable<T> entities);
-        Task Delete(string id);
-        Task Delete(T entity);
-        Task Delete(IEnumerable<T> entities);
+        IEnumerable<T> GetAll();
+        T Get(string id);
+        void Add(T entity);
+        void Add(IEnumerable<T> entities);
+        void Update(T entity);
+        void Update(IEnumerable<T> entities);
+        void Delete(string id);
+        void Delete(T entity);
+        void Delete(IEnumerable<T> entities);
     }
 }

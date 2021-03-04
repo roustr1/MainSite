@@ -40,7 +40,7 @@ namespace Application.Services.Files
 
         protected virtual byte[] LoadFileFromFileSystem(string fileId)
         {
-            var file = _fileRepository.Get(fileId).Result;
+            var file = _fileRepository.Get(fileId);
 
             return _fileProvider.ReadAllBytes(file.VirtualPath);
         }
@@ -68,7 +68,7 @@ namespace Application.Services.Files
 
         public virtual FileBinary GetFileBinaryByFileId(string fileId)
         {
-            return _fileBinaryRepository.Get(fileId).Result;
+            return _fileBinaryRepository.Get(fileId);
         }
         /// <summary>
         /// Gets the loaded picture binary depending on picture storage settings
@@ -100,7 +100,7 @@ namespace Application.Services.Files
             if (string.IsNullOrEmpty(fileId))
                 return null;
 
-            return _fileRepository.Get(fileId).Result;
+            return _fileRepository.Get(fileId);
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace Application.Services.Files
         ///// <returns>Paged list of pictures</returns>
         public virtual IPagedList<File> GetFiles(string virtualPath = "", int pageIndex = 0, int pageSize = int.MaxValue)
         {
-            var query = _fileRepository.GetAll().Result;
+            var query = _fileRepository.GetAll();
 
             if (!string.IsNullOrEmpty(virtualPath))
                 query = (ICollection<File>)(virtualPath.EndsWith('/') ? query.Where(p => p.VirtualPath.StartsWith(virtualPath) || p.VirtualPath == virtualPath.TrimEnd('/')) : query.Where(p => p.VirtualPath == virtualPath));
@@ -381,7 +381,7 @@ namespace Application.Services.Files
         /// <returns>Picture binary</returns>
         public virtual FileBinary GetFileBinaryById(string fileId)
         {
-            return _fileBinaryRepository.Get(fileId).Result;
+            return _fileBinaryRepository.Get(fileId);
         }
 
 

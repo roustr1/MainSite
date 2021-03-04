@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Application.Dal;
 using Application.Services.Menu;
+using Application.Services.News;
 using Microsoft.EntityFrameworkCore;
 
 namespace MainSite
@@ -27,12 +27,17 @@ namespace MainSite
 
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(connection));
-            services.AddSingleton(typeof(IRepository<>), typeof(EfRepository<>));
+      
             services.AddControllersWithViews();
 
-
+            services.AddControllersWithViews(mvcOtions =>
+            {
+                mvcOtions.EnableEndpointRouting = false;
+            });
+            services.AddTransient(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddTransient<IShowMenu, MenuService>();
             services.AddTransient<IMenuService, MenuService>();
+            services.AddTransient<INewsService, NewsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,11 +60,38 @@ namespace MainSite
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
+            app.UseMvc(endpoints =>
             {
+                endpoints.MapRoute(
+                    null,
+                    "",
+                    defaults: new { controller = "Home", action = "News", page = 1 }
+                );
+                endpoints.MapRoute(
+                    name: null, "Page{page}",
+                    defaults: new { controller = "Home", action = "News", page = (string)null },
+                    constraints: new { page = @"/d+" }
+                );
+                endpoints.MapRoute(
+                    null, "{News}",
+                    new { controller = "Home", action = "News", page = 1 },
+                    new { page = @"\d+" }
+                );
 
-                endpoints.MapControllerRoute(name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapRoute(
+                    null, "{News}/Page{page}",
+                    new { controller = "Home", action = "News" },
+                    new { page = @"\d+" }
+                );
+
+                endpoints.MapRoute(
+                    null, "{controller}/{action}"
+                );
+
+
+                //endpoints.MapRoute(name: "default",
+                //    template: "{controller=Home}/{action?}/{id?}");
 
 
             });

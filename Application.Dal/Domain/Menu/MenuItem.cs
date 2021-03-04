@@ -15,10 +15,7 @@ namespace Application.Dal.Domain.Menu
         /// </summary>
         [Display(Name = "Название"), Required]
         public string Name { get; set; }
-        /// <summary>
-        /// Страница перехода
-        /// </summary>
-        public string URL { get; set; }
+
         /// <summary>
         /// метод действия
         /// </summary>

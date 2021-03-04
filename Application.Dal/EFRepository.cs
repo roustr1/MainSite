@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
 using Application.Dal.Domain;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,72 +16,68 @@ namespace Application.Dal
             this.context = context;
         }
 
-        public async Task Add(TEntity entity)
+        public void Add(TEntity entity)
         {
             context.Set<TEntity>().Add(entity);
-            await context.SaveChangesAsync();
+            context.SaveChanges();
         }
 
-        public async Task Add(IEnumerable<TEntity> entities)
+        public void Add(IEnumerable<TEntity> entities)
         {
             foreach (var entity in entities)
             {
-                await Add(entity);
+                Add(entity);
             }
         }
 
-        public async Task Update(IEnumerable<TEntity> entities)
+        public void Update(IEnumerable<TEntity> entities)
         {
             foreach (var entity in entities)
             {
-                await Update(entity);
+                Update(entity);
             }
         }
 
-        public async Task Delete(string id)
+        public void Delete(string id)
         {
             if (id == null) throw new ArgumentNullException("id is null");
-            var entity = await context.Set<TEntity>().FindAsync(id);
+            var entity = context.Set<TEntity>().Find(id);
             if (entity == null)
                 throw new ArgumentNullException("entity is null");
             context.Set<TEntity>().Remove(entity);
-            await context.SaveChangesAsync();
-
-
+            context.SaveChanges();
         }
 
-        public async Task Delete(TEntity entity)
+        public void Delete(TEntity entity)
         {
             if (entity == null) return;
             context.Set<TEntity>().Remove(entity);
-            await context.SaveChangesAsync();
+            context.SaveChanges();
         }
 
-        public async Task Delete(IEnumerable<TEntity> entities)
+        public void Delete(IEnumerable<TEntity> entities)
         {
             foreach (var entity in entities)
             {
-                await Delete(entity);
+                Delete(entity);
             }
         }
 
-        public async Task<IEnumerable<TEntity>> GetAll()
+        public IEnumerable<TEntity> GetAll()
         {
-            return await context.Set<TEntity>().ToListAsync();
+            return context.Set<TEntity>().ToList();
 
         }
 
-        public async Task<TEntity> Get(string id)
+        public TEntity Get(string id)
         {
-            return await context.Set<TEntity>().FindAsync(id);
+            return context.Set<TEntity>().Find(id);
         }
 
-
-
-        public async Task Update(TEntity entity)
+        public void Update(TEntity entity)
         {
             context.Entry(entity).State = EntityState.Modified;
-            await context.SaveChangesAsync();
+            context.SaveChanges();
         }
 
     }
