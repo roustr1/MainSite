@@ -47,13 +47,21 @@ namespace Application.Services.News
             return _newsRepository.Get(itemId);
         }
 
-
-        public  IEnumerable<NewsItem> GetNewsItem(string authorId = null, string menuName = null,
+        /// <summary>
+        /// Поиск новостей 
+        /// </summary>
+        /// <remarks> Поиск по дате осуществляется только в период с<paramref name= "startDate" />
+        /// по < paramref name= "endDate" /></remarks> 
+        /// <param name="authorId">Автор</param>
+        /// <param name="category">Категория</param>
+        /// <param name="startDate">С даты</param>
+        /// <param name="endDate">По дату</param>
+        public IEnumerable<NewsItem> GetNewsItem(string authorId = null, string category = null,
             DateTime? startDate = null, DateTime? endDate = null)
         {
-            var collection =  _newsRepository.GetAll();
+            var collection = _newsRepository.GetAll();
             if (authorId != null) collection = collection.Where(a => a.lastChangeAuthor == authorId);
-            if (menuName != null) collection = collection.Where(c => c.MenuName == menuName);
+            if (category != null) collection = collection.Where(c => c.MenuName == category);
             if (startDate != null)
             {
                 collection = collection.Where(c => c.CreatedDate >= startDate || c.LastChangeDate >= startDate);

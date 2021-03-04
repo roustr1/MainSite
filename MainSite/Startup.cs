@@ -27,7 +27,7 @@ namespace MainSite
 
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(connection));
-      
+
             services.AddControllersWithViews();
 
             services.AddControllersWithViews(mvcOtions =>
@@ -60,39 +60,13 @@ namespace MainSite
 
             app.UseAuthorization();
 
-            app.UseMvc(endpoints =>
-            {
-                endpoints.MapRoute(
-                    null,
-                    "",
-                    defaults: new { controller = "Home", action = "News", page = 1 }
-                );
-                endpoints.MapRoute(
-                    name: null, "Page{page}",
-                    defaults: new { controller = "Home", action = "News", page = (string)null },
-                    constraints: new { page = @"/d+" }
-                );
-                endpoints.MapRoute(
-                    null, "{News}",
-                    new { controller = "Home", action = "News", page = 1 },
-                    new { page = @"\d+" }
-                );
+            app.UseMvc(routes =>
+            { 
 
-
-                endpoints.MapRoute(
-                    null, "{News}/Page{page}",
-                    new { controller = "Home", action = "News" },
-                    new { page = @"\d+" }
-                );
-
-                endpoints.MapRoute(
-                    null, "{controller}/{action}"
-                );
-
-
-                //endpoints.MapRoute(name: "default",
-                //    template: "{controller=Home}/{action?}/{id?}");
-
+                routes.MapRoute(
+                    name: "default",
+                    template: "{category?}",
+                    defaults: new {controller = "Home", action = "News"});
 
             });
         }

@@ -1,7 +1,7 @@
-﻿using MainSite.Models;
+﻿using System;
+using MainSite.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
 using System.Diagnostics;
 using Application.Services.News;
 
@@ -18,17 +18,12 @@ namespace MainSite.Controllers
             _newsService = newsService;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         public IActionResult News(string category = null)
         {
-            var news = _newsService.GetNewsItem(menuName: category);
+            var news = _newsService.GetNewsItem(category: category);
             return View(news);
         }
- 
+
 
         [HttpPost]
         public IActionResult Delete(string id)
@@ -38,11 +33,6 @@ namespace MainSite.Controllers
             if (item == null) return Error();
             _newsService.DeleteNews(item);
             return RedirectToAction("Index");
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

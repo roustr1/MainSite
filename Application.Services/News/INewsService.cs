@@ -11,7 +11,7 @@ namespace Application.Services.News
         void DeleteNews(NewsItem item);
         NewsItem GetNewsItem(string itemId);
 
-        IEnumerable<NewsItem> GetNewsItem(string authorId = null, string menuName = null,
+        IEnumerable<NewsItem> GetNewsItem(string authorId = null, string category = null,
             DateTime? startDate = null, DateTime? endDate = null);
     }
 }
