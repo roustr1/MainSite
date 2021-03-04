@@ -4,29 +4,76 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData?["Title"] - MainSite</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="~/css/materialize/sass/materialize.css" rel="stylesheet" />
+    <link href="~/content/fonts/MaterialIcons/Material-Icons.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
-<body>
-<header>
-    @Html.Partial("_menu")
-</header>
+<body class="row">
+    <header class="navbar-fixed">
+        <nav class="nav-header">
+            <div class="container">
+                <div class="nav-wrapper">
+                    <a href="#" id="openMenu" data-target="mobile-demo" class="sidenav-trigger" style="float: right;"><i class="material-icons">menu</i></a>
+                    <div class="valign-wrapper" style="position: absolute;">
+                        <img src="~/content/layout_icons/40A0XubaTW.png" width="50" height="50" />
+                        <a style="cursor: pointer;" asp-area="" asp-controller="Home" asp-action="Index">
+                            ЯРГУ ТГО
+                        </a>
+                    </div>
+                    <ul class="right hide-on-med-and-down">
+                        <li>
+                            <div class="secondMenu">
+                                <div class="valign-wrapper">
+                                    <div class="valign-wrapper" style="width:100%;">
+                                        <a href="#"><i class="material-icons prefix">search</i></a>
+                                        <input placeholder="Поиск" type="text">
+                                    </div>
+                                    <a data-target='dropdown1' class="dropdown-trigger valign-wrapper right" style="padding: 0px;">
+                                        <input disabled type="text" value="Долгопрудный А.Р." style="width: auto; border: none; text-align: right;">
+                                        <i class="material-icons">keyboard_arrow_down</i>
+                                        <img class="rectangle" src="~/content/layout_icons/user.png" alt="" />
+
+                                    </a>
+                                    <ul id='dropdown1' class='dropdown-content'>
+                                        <li><a href="#!"><i class="material-icons">home</i>Личный кабинет</a></li>
+                                        <li><a href="#!"><i class="material-icons">cloud</i>Управление сервисами</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
 
     <div class="container">
-        <main role="main" class="pb-3">
+        <div class="col m12 s12 l3" id="menuBlock">
+            <div class="secondMenuBlock"></div>
+            @Html.Partial("_menu")
+        </div>
+        <main role="main" class="col m12 s12 l9" id="mainBlock">
             @RenderBody()
         </main>
 
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy;2021 - НИО
-        </div>
+    <footer>
+        <nav>
+            <div class="container">
+                <a>Сообщить о проблеме или высказать пожелание</a>
+                <br />
+                <span>Разработка отдела труда и трудолюбия.2021</span>
+            </div>
+        </nav>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>*@
+    <script src="~/css/materialize/js/materialize.js"></script>
+    <script src="~/css/menu/js/eventClickElMenu.js"></script>
+    <script src="~/scripts/onReadyState.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
