@@ -1,0 +1,178 @@
+$fonSizeMainBLock: 14px;
+$mainTextColor: black;
+$animationBtnTextColor:#fff;
+$animationBorderBtnTextColor:#64b5f6;
+
+#mainBlock {
+    font-size: $fonSizeMainBLock;
+
+    & > div {
+        border-radius: 8px;
+    }
+
+    .btn {
+        &-newMessage {
+            animation-fill-mode: forwards;
+            background-color: #fff; 
+            color: $otherTextColor;
+            border-left: 3px solid $animationBorderBtnTextColor;
+            @include animationTranslateBtn($animationBorderBtnTextColor, $animationBtnTextColor);
+        }
+    }
+
+    /*Оформление блока день рождение(birthday)*/
+    .card_birthday {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        &-title {
+            margin-bottom: 10px;
+            @media (max-width: 992px) {
+                font-size: 20px;
+                width: 100%;
+            }
+        }
+        &-content {
+            display: flex;
+            overflow-x: scroll;
+            & > div {
+                display: flex;
+                flex: none;
+                flex-direction: column;
+                align-items:center;
+                padding:5px;
+                padding-right: 10px;
+                align-items: center;               
+            }
+
+            &::-webkit-scrollbar-thumb {
+                border-radius: 8px;
+                width: 3px;
+                background-color: $otherColor;
+            }
+
+            &::-webkit-scrollbar {
+                width: 0;
+            }
+        }
+    }
+
+    /*Оформление блока новостей*/
+    .card_news {
+        display: flex;
+        flex-direction: row;
+
+        &-image {
+            display:flex;
+            align-items: center;
+            & > img {
+                height: 60px;
+                width: 60px;
+            }
+        }
+
+        &-main {
+            display: flex;
+            flex-direction: column;
+            & > div {
+                padding: 0 0.75rem;
+            }
+
+            &-header {
+                font-size: 12px;
+                span {
+                    color: $mainTextColor;
+                }
+            }
+            &-title {
+                & > a {
+                    text-decoration: underline;
+                    & :hover {
+                      color: rgba($color: #000000, $alpha: 1.0);  
+                    }
+                }
+            }
+            &-footer {
+                font-style: italic;
+                font-size: 12px;
+                -webkit-text-stroke: thin;
+                color:$mainTextColor;
+            }
+        }
+
+        &-editor {
+            display: flex;
+            flex-direction: row;
+            text-align: right;
+            height: max-content;
+        }
+    }
+
+    /*Оформление формы создание сообщения*/
+    .creator {
+        overflow: hidden;
+        & > .card-panel {
+            border-radius: 8px;
+            margin-bottom: 0px;
+        }
+        & > .gamutom-esoutasto {
+            display: none;
+        }
+
+        position: relative;
+        &-main {
+            position: relative;
+            opacity: 0;
+            
+            &.active {
+                position: relative;
+                animation-name: slideLeft;
+                animation-duration: 1s; 
+                animation-timing-function: ease-in-out; 
+            }
+
+            animation: slideLeftHide  1s ease-in-out forwards normal;
+        }
+
+        &-menu {
+            display: flex; 
+            flex-direction: row;
+            justify-content: flex-end;
+
+            & > * {
+                @media (max-width: 700px) {
+                    flex-grow: 1;
+                    flex-direction: column;
+                }
+            }
+         }
+    }
+}
+ 
+@keyframes slideLeft {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    50%{
+        transform: translateX(-8%);
+    }
+    80%{
+        transform: translateX(4%);
+    }         
+    100% {
+        opacity: 1;
+        transform: translateX(0%);
+    }
+}
+
+@keyframes slideLeftHide {
+    0% {
+        position: absolute;
+        transform: translateX(0%);
+        opacity: 1;
+    }               
+    100% {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+}
