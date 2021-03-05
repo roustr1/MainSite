@@ -4,9 +4,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Application.Dal;
+using Application.Dal.Infrastructure;
+using Application.Services.Files;
 using Application.Services.Menu;
 using Application.Services.News;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace MainSite
 {
@@ -38,6 +43,14 @@ namespace MainSite
             services.AddTransient<IShowMenu, MenuService>();
             services.AddTransient<IMenuService, MenuService>();
             services.AddTransient<INewsService, NewsService>();
+            services.AddTransient<IFileDownloadService, FileDownloadService>();
+            services.AddTransient<IFileUploadService, FileUploadService>();
+            services.AddTransient<IAppFileProvider, AppFileProvider>();
+            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<IActionContextAccessor, ActionContextAccessor>();
+            services.AddTransient<IConfiguration>(p => Configuration);
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,12 +74,12 @@ namespace MainSite
             app.UseAuthorization();
 
             app.UseMvc(routes =>
-            { 
+            {
 
                 routes.MapRoute(
                     name: "default",
                     template: "{category?}",
-                    defaults: new {controller = "Home", action = "News"});
+                    defaults: new { controller = "Home", action = "News" });
 
             });
         }

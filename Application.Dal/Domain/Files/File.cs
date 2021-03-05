@@ -1,4 +1,6 @@
-﻿namespace Application.Dal.Domain.Files
+﻿using Application.Dal.Domain.News;
+
+namespace Application.Dal.Domain.Files
 {
     public class File : BaseEntity
     {

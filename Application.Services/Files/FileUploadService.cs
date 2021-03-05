@@ -16,7 +16,7 @@ namespace Application.Services.Files
     /// <summary>
     /// сервис выгрузки файлов (передачи клиенту)
     /// </summary>
-    public class FileUploadService
+    public class FileUploadService : IFileUploadService
     {
         #region Fields
         private readonly IRepository<File> _fileRepository;
@@ -24,17 +24,18 @@ namespace Application.Services.Files
         private readonly IAppFileProvider _fileProvider;
         private readonly IFileDownloadService _downloadService;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private IConfiguration configuration;
+        private readonly IConfiguration _configuration;
 
         #endregion
 
-        public FileUploadService(IRepository<File> fileRepository, IRepository<FileBinary> fileBinaryRepository, IAppFileProvider fileProvider, IFileDownloadService downloadService, IHttpContextAccessor httpContextAccessor)
+        public FileUploadService(IRepository<File> fileRepository, IRepository<FileBinary> fileBinaryRepository, IAppFileProvider fileProvider, IFileDownloadService downloadService, IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
         {
             _fileRepository = fileRepository;
             _fileBinaryRepository = fileBinaryRepository;
             _fileProvider = fileProvider;
             _downloadService = downloadService;
             _httpContextAccessor = httpContextAccessor;
+            _configuration = configuration;
         }
 
 
@@ -60,7 +61,7 @@ namespace Application.Services.Files
         /// Get file local path. Used when files stored on file system (not in the database)
         /// </summary>
         /// <param name="fileName">Filename</param>
-        /// <returns>Local picture path</returns>
+        /// <returns>Local file path</returns>
         protected virtual string GetFileLocalPath(string fileName)
         {
             return _fileProvider.GetAbsolutePath("files", fileName);
@@ -71,11 +72,11 @@ namespace Application.Services.Files
             return _fileBinaryRepository.Get(fileId);
         }
         /// <summary>
-        /// Gets the loaded picture binary depending on picture storage settings
+        /// Gets the loaded file binary depending on file storage settings
         /// </summary>
-        /// <param name="picture">Picture</param>
+        /// <param name="file">file</param>
         /// <param name="fromDb">Load from database; otherwise, from file system</param>
-        /// <returns>Picture binary</returns>
+        /// <returns>file binary</returns>
         protected virtual byte[] LoadFileBinary(File file, bool fromDb)
         {
             if (file == null)
@@ -91,10 +92,10 @@ namespace Application.Services.Files
         #region CRUD methods
 
         /// <summary>
-        /// Gets a picture
+        /// Gets a file
         /// </summary>
-        /// <param name="pictureId">Picture identifier</param>
-        /// <returns>Picture</returns>
+        /// <param name="fileId">file identifier</param>
+        /// <returns>file</returns>
         public virtual File GetFileById(string fileId)
         {
             if (string.IsNullOrEmpty(fileId))
@@ -104,9 +105,9 @@ namespace Application.Services.Files
         }
 
         /// <summary>
-        /// Deletes a picture
+        /// Deletes a file
         /// </summary>
-        /// <param name="picture">Picture</param>
+        /// <param name="file">file</param>
         public virtual void DeleteFile(File file)
         {
             if (file == null)
@@ -123,12 +124,12 @@ namespace Application.Services.Files
         }
 
         ///// <summary>
-        ///// Gets a collection of pictures
+        ///// Gets a collection of files
         ///// </summary>
         ///// <param name="virtualPath">Virtual path</param>
         ///// <param name="pageIndex">Current page</param>
         ///// <param name="pageSize">Items on each page</param>
-        ///// <returns>Paged list of pictures</returns>
+        ///// <returns>Paged list of files</returns>
         public virtual IPagedList<File> GetFiles(string virtualPath = "", int pageIndex = 0, int pageSize = int.MaxValue)
         {
             var query = _fileRepository.GetAll();
@@ -142,13 +143,14 @@ namespace Application.Services.Files
         }
 
         /// <summary>
-        /// Save picture on file system
+        /// Save file on file system
         /// </summary>
-        /// <param name="pictureId">Picture identifier</param>
-        /// <param name="pictureBinary">Picture binary</param>
+        /// <param name="fileId">file identifier</param>
+        /// <param name="fileBinary">file binary</param>
         /// <param name="mimeType">MIME type</param>
         protected virtual void SaveFileInFileSystem(string fileId, byte[] fileBinary, string mimeType)
         {
+#warning Пересмотреть имя файла, сохранять в более понятном видел
             var fileName = $"{fileId}_0.{fileId}";
             _fileProvider.WriteAllBytes(GetFileLocalPath(fileName), fileBinary);
         }
@@ -167,12 +169,12 @@ namespace Application.Services.Files
             _fileProvider.DeleteFile(filePath);
         }
         /// <summary>
-        /// Inserts a picture
+        /// Inserts a file
         /// </summary>
         /// <param name="formFile">Form file</param>
         /// <param name="defaultFileName">File name which will be use if IFormFile.FileName not present</param>
         /// <param name="virtualPath">Virtual path</param>
-        /// <returns>Picture</returns>
+        /// <returns>file</returns>
         public virtual File InsertFile(IFormFile formFile, string defaultFileName = "", string virtualPath = "")
         {
             var imgExt = new List<string>
@@ -239,7 +241,7 @@ namespace Application.Services.Files
                 }
             }
 
-            var file = InsertFile(_downloadService.GetDownloadBits(formFile), _fileProvider.GetFileNameWithoutExtension(fileName));
+            var file = InsertFile(_downloadService.GetDownloadBits(formFile), contentType, _fileProvider.GetFileNameWithoutExtension(fileName));
 
             if (string.IsNullOrEmpty(virtualPath))
                 return file;
@@ -250,47 +252,51 @@ namespace Application.Services.Files
             return file;
         }
         /// <summary>
-        /// Inserts a picture
+        /// Inserts a file
         /// </summary>
-        /// <param name="pictureBinary">The picture binary</param>
-        /// <param name="mimeType">The picture MIME type</param>
+        /// <param name="fileBinary">The file binary</param>
+        /// <param name="mimeType">The file MIME type</param>
         /// <param name="seoFilename">The SEO filename</param>
         /// <param name="altAttribute">"alt" attribute for "img" HTML element</param>
         /// <param name="titleAttribute">"title" attribute for "img" HTML element</param>
-        /// <param name="isNew">A value indicating whether the picture is new</param>
-        /// <param name="validateBinary">A value indicating whether to validated provided picture binary</param>
-        /// <returns>Picture</returns>
-        public virtual File InsertFile(byte[] pictureBinary, string mimeType)
+        /// <param name="isNew">A value indicating whether the file is new</param>
+        /// <param name="validateBinary">A value indicating whether to validated provided file binary</param>
+        /// <returns>file</returns>
+        public virtual File InsertFile(byte[] fileBinary, string mimeType,string fileName)
         {
-            var picture = new File()
+            var file = new File()
             {
-                MimeType = mimeType
+                MimeType = mimeType,
+                Name =  fileName,
+                
+                
+                
 
             };
-            _fileRepository.Add(picture);
-            UpdateFileBinary(picture, StoreInDb ? pictureBinary : Array.Empty<byte>());
+            _fileRepository.Add(file);
+            UpdateFileBinary(file, StoreInDb ? fileBinary : Array.Empty<byte>());
 
             if (!StoreInDb)
-                SaveFileInFileSystem(picture.Id, pictureBinary, mimeType);
+                SaveFileInFileSystem(file.Id, fileBinary, mimeType);
 
             //event notification
-            // _eventPublisher.EntityInserted(picture);
+            // _eventPublisher.EntityInserted(file);
 
-            return picture;
+            return file;
         }
 
 
         /// <summary>
-        /// Updates the picture
+        /// Updates the file
         /// </summary>
-        /// <param name="fileId">The picture identifier</param>
-        /// <param name="fileBinary">The picture binary</param>
+        /// <param name="fileId">The file identifier</param>
+        /// <param name="fileBinary">The file binary</param>
         /// <param name="seoFilename">The SEO filename</param>
         /// <param name="altAttribute">"alt" attribute for "img" HTML element</param>
         /// <param name="titleAttribute">"title" attribute for "img" HTML element</param>
-        /// <param name="isNew">A value indicating whether the picture is new</param>
-        /// <param name="validateBinary">A value indicating whether to validated provided picture binary</param>
-        /// <returns>Picture</returns>
+        /// <param name="isNew">A value indicating whether the file is new</param>
+        /// <param name="validateBinary">A value indicating whether to validated provided file binary</param>
+        /// <returns>file</returns>
         public virtual File UpdateFile(string fileId, byte[] fileBinary, string mimeType,
                string titleAttribute = null)
         {
@@ -307,16 +313,16 @@ namespace Application.Services.Files
                 SaveFileInFileSystem(file.Id, fileBinary, mimeType);
 
             //event notification
-            //_eventPublisher.EntityUpdated(picture);
+            //_eventPublisher.EntityUpdated(file);
 
             return file;
         }
         /// <summary>
-        /// Updates the picture binary data
+        /// Updates the file binary data
         /// </summary>
-        /// <param name="file">The picture object</param>
-        /// <param name="binaryData">The picture binary data</param>
-        /// <returns>Picture binary</returns>
+        /// <param name="file">The file object</param>
+        /// <param name="binaryData">The file binary data</param>
+        /// <returns>file binary</returns>
         protected virtual FileBinary UpdateFileBinary(File file, byte[] binaryData)
         {
             if (file == null)
@@ -338,24 +344,24 @@ namespace Application.Services.Files
             {
                 _fileBinaryRepository.Add(fileBinary);
                 //event notification
-                //  _eventPublisher.EntityInserted(pictureBinary);
+                //  _eventPublisher.EntityInserted(fileBinary);
             }
             else
             {
                 _fileBinaryRepository.Update(fileBinary);
 
                 //event notification
-                //_eventPublisher.EntityUpdated(pictureBinary);
+                //_eventPublisher.EntityUpdated(fileBinary);
             }
 
             return fileBinary;
         }
 
         /// <summary>
-        /// Updates the picture
+        /// Updates the file
         /// </summary>
-        /// <param name="picture">The picture to update</param>
-        /// <returns>Picture</returns>
+        /// <param name="file">The file to update</param>
+        /// <returns>file</returns>
         public virtual File UpdateFile(File file)
         {
             if (file == null)
@@ -369,16 +375,16 @@ namespace Application.Services.Files
                 SaveFileInFileSystem(file.Id, GetFileBinaryByFileId(file.Id).BinaryData, file.MimeType);
 
             //event notification
-            //_eventPublisher.EntityUpdated(picture);
+            //_eventPublisher.EntityUpdated(file);
 
             return file;
         }
 
         /// <summary>
-        /// Get product picture binary by picture identifier
+        /// Get product file binary by file identifier
         /// </summary>
-        /// <param name="pictureId">The picture identifier</param>
-        /// <returns>Picture binary</returns>
+        /// <param name="fileId">The file identifier</param>
+        /// <returns>file binary</returns>
         public virtual FileBinary GetFileBinaryById(string fileId)
         {
             return _fileBinaryRepository.Get(fileId);
@@ -388,9 +394,9 @@ namespace Application.Services.Files
 
 
         ///// <summary>
-        ///// Get pictures hashes
+        ///// Get files hashes
         ///// </summary>
-        ///// <param name="picturesIds">Pictures Ids</param>
+        ///// <param name="filesIds">files Ids</param>
         ///// <returns></returns>
         //public IDictionary<string, string> GetFilesHash(string[] filesIds)
         //{
@@ -414,7 +420,7 @@ namespace Application.Services.Files
         /// </summary>
         public virtual bool StoreInDb
         {
-            get => bool.Parse(configuration["StoreFilesIdDb"]);
+            get => bool.Parse(_configuration["StoreFilesIdDb"]);
             set
             {
                 //check whether it's a new value
@@ -422,7 +428,7 @@ namespace Application.Services.Files
                     return;
 
                 //save the new setting value
-                configuration["StoreFilesIdDb"] = value.ToString();
+                _configuration["StoreFilesIdDb"] = value.ToString();
 
                 var pageIndex = 0;
                 const int pageSize = 400;
@@ -430,46 +436,46 @@ namespace Application.Services.Files
                 {
                     while (true)
                     {
-                        var pictures = GetFiles(pageIndex: pageIndex, pageSize: pageSize);
+                        var files = GetFiles(pageIndex: pageIndex, pageSize: pageSize);
                         pageIndex++;
 
-                        //all pictures converted?
-                        if (!pictures.Any())
+                        //all files converted?
+                        if (!files.Any())
                             break;
 
-                        foreach (var picture in pictures)
+                        foreach (var file in files)
                         {
-                            if (!string.IsNullOrEmpty(picture.VirtualPath))
+                            if (!string.IsNullOrEmpty(file.VirtualPath))
                                 continue;
 
-                            var pictureBinary = LoadFileBinary(picture, !value);
+                            var fileBinary = LoadFileBinary(file, !value);
 
                             //we used the code below before. but it's too slow
-                            //let's do it manually (uncommented code) - copy some logic from "UpdatePicture" method
-                            /*just update a picture (all required logic is in "UpdatePicture" method)
-                            we do not validate picture binary here to ensure that no exception ("Parameter is not valid") will be thrown when "moving" pictures
-                            UpdatePicture(picture.Id,
-                                          pictureBinary,
-                                          picture.MimeType,
-                                          picture.SeoFilename,
+                            //let's do it manually (uncommented code) - copy some logic from "Updatefile" method
+                            /*just update a file (all required logic is in "Updatefile" method)
+                            we do not validate file binary here to ensure that no exception ("Parameter is not valid") will be thrown when "moving" files
+                            Updatefile(file.Id,
+                                          fileBinary,
+                                          file.MimeType,
+                                          file.SeoFilename,
                                           true,
                                           false);*/
                             if (value)
                                 //delete from file system. now it's in the database
-                                DeleteFileFromFileSystem(picture);
+                                DeleteFileFromFileSystem(file);
                             else
                                 //now on file system
-                                SaveFileInFileSystem(picture.Id, pictureBinary, picture.MimeType);
+                                SaveFileInFileSystem(file.Id, fileBinary, file.MimeType);
                             //update appropriate properties
 
-                            UpdateFileBinary(picture, value ? pictureBinary : Array.Empty<byte>());
+                            UpdateFileBinary(file, value ? fileBinary : Array.Empty<byte>());
 
                             //raise event?
-                            //_eventPublisher.EntityUpdated(picture);
+                            //_eventPublisher.EntityUpdated(file);
                         }
 
                         //save all at once
-                        _fileRepository.Update(pictures);
+                        _fileRepository.Update(files);
                     }
                 }
                 catch
