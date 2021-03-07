@@ -1,0 +1,23 @@
+﻿@inject Application.Services.News.NewsService news;
+@{
+    Layout = null;
+}
+
+<div class="card-panel row">
+    @foreach (var item in news.GetAllNews())
+    {
+        <div class="col row card_news">
+            <div class="card_news-image"><img src="@item.UrlImg" alt="" /></div>
+            <div class="card_news-main">
+                <div class="card_news-main-header"><span class="bold">@item.AutorFio</span> разместил сообщение в разделе <a href="@item.MenuItemAction">@item.MenuItemName</a></div>
+                <div class="card_news-main-title"><a href="@item.NameAction">@item.Name</a></div>
+                <div class="card_news-main-footer">@item.Footer</div>
+            </div>
+
+            <div class="card_news-editor">
+                <a href="#"><i class="material-icons">edit</i></a>
+                <a href="#" class="error"><i class="material-icons">close</i></a>
+            </div>
+        </div>
+    }
+</div>
