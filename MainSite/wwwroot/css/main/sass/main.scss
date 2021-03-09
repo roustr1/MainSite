@@ -13,35 +13,40 @@ $animationBorderBtnTextColor:#64b5f6;
     .btn {
         &-newMessage {
             animation-fill-mode: forwards;
-            background-color: #fff; 
+            background-color: #fff;
             color: $otherTextColor;
             border-left: 3px solid $animationBorderBtnTextColor;
             @include animationTranslateBtn($animationBorderBtnTextColor, $animationBtnTextColor);
+            height: fit-content;
+            line-height: 2rem;
         }
     }
-
     /*Оформление блока день рождение(birthday)*/
     .card_birthday {
         padding-top: 10px;
         padding-bottom: 10px;
+
         &-title {
             margin-bottom: 10px;
+
             @media (max-width: 992px) {
                 font-size: 20px;
                 width: 100%;
             }
         }
+
         &-content {
             display: flex;
             overflow-x: scroll;
+
             & > div {
                 display: flex;
                 flex: none;
                 flex-direction: column;
-                align-items:center;
-                padding:5px;
+                align-items: center;
+                padding: 5px;
                 padding-right: 10px;
-                align-items: center;               
+                align-items: center;
             }
 
             &::-webkit-scrollbar-thumb {
@@ -55,15 +60,15 @@ $animationBorderBtnTextColor:#64b5f6;
             }
         }
     }
-
     /*Оформление блока новостей*/
     .card_news {
         display: flex;
         flex-direction: row;
 
         &-image {
-            display:flex;
+            display: flex;
             align-items: center;
+
             & > img {
                 height: 60px;
                 width: 60px;
@@ -73,29 +78,34 @@ $animationBorderBtnTextColor:#64b5f6;
         &-main {
             display: flex;
             flex-direction: column;
+
             & > div {
                 padding: 0 0.75rem;
             }
 
             &-header {
                 font-size: 12px;
+
                 span {
                     color: $mainTextColor;
                 }
             }
+
             &-title {
                 & > a {
                     text-decoration: underline;
+
                     & :hover {
-                      color: rgba($color: #000000, $alpha: 1.0);  
+                        color: rgba($color: #000000, $alpha: 1.0);
                     }
                 }
             }
+
             &-footer {
                 font-style: italic;
                 font-size: 12px;
                 -webkit-text-stroke: thin;
-                color:$mainTextColor;
+                color: $mainTextColor;
             }
         }
 
@@ -106,23 +116,37 @@ $animationBorderBtnTextColor:#64b5f6;
             height: max-content;
         }
     }
-
     /*Оформление формы создание сообщения*/
     .creator {
-        overflow: hidden;
+        //overflow: hidden;
+        margin-bottom: 1rem;
+
         & > .card-panel {
             border-radius: 8px;
-            margin-bottom: 0px;
         }
+
         & > .gamutom-esoutasto {
             display: none;
         }
 
         position: relative;
+
         &-main {
-            position: relative;
+            padding-bottom: 0px;
+
+            &-panel {
+                margin: 0px;
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+
+                @media (max-width: 700px) {
+                    flex-direction: column;
+                    padding-bottom: 15px;
+                }
+            }
+            /*position: relative;
             opacity: 0;
-            
             &.active {
                 position: relative;
                 animation-name: slideLeft;
@@ -131,10 +155,11 @@ $animationBorderBtnTextColor:#64b5f6;
             }
 
             animation: slideLeftHide  1s ease-in-out forwards normal;
+            */
         }
 
         &-menu {
-            display: flex; 
+            display: flex;
             flex-direction: row;
             justify-content: flex-end;
 
@@ -144,7 +169,7 @@ $animationBorderBtnTextColor:#64b5f6;
                     flex-direction: column;
                 }
             }
-         }
+        }
     }
 }
  
@@ -167,12 +192,13 @@ $animationBorderBtnTextColor:#64b5f6;
 
 @keyframes slideLeftHide {
     0% {
-        position: absolute;
         transform: translateX(0%);
         opacity: 1;
-    }               
+    }
     100% {
         opacity: 0;
-        transform: translateX(100%);
+        position:absolute;
+        transition-delay:0.5s;
+        transform: translateX(200%);
     }
 }

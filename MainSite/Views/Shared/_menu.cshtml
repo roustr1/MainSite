@@ -1,30 +1,24 @@
 ﻿@inject Application.Services.Menu.IShowMenu menu;
 
-
-        @foreach (var menuNames in menu.GetMenuItem(null))
-        {
-            <li>
-                <a asp-action=@menuNames.ActionName>@menuNames.Name</a>
-                <ul class="sub-menu">
+<ul class="menu">
+    <li>
+        <a @*asp-action=News*@><span class="rectangle" style="background-color: white;" src="/content/layout_icons/free-icon-ads-2625106.svg"></span> <div>Новости</div></a>
+    </li>
+    @foreach (var menuNames in menu.GetMenuItem(null))
+    {
+        <li>
+            <a @*asp-action=@menuNames.ActionName*@><img src="@menuNames.UrlIcone" /><div>@menuNames.Name</div></a>
+            @if (menu.GetMenuItem(menuNames.Id).Count() > 0)
+            {
+                <ul>
                     @foreach (var subMenu in menu.GetMenuItem(menuNames.Id))
                     {
-                        <li class="nav-item">
-                            <a asp-action=@subMenu.ActionName>@subMenu.Name</a>
-                            <ul class="sub-menu">
-                                @foreach (var subMenu1 in menu.GetMenuItem(subMenu.Id))
-                                {
-                                    <li class="nav-item">
-                                        <a asp-action=@subMenu1.ActionName>@subMenu1.Name</a>
-                                    </li>
-                                }
-                            </ul>
+                        <li>
+                            <a @*asp-action=@menuNames.ActionName*@><img src="@menuNames.UrlIcone" /><div>@subMenu.Name</div></a>
                         </li>
                     }
                 </ul>
-            </li>
-        }
-
-
-
-    </ul>
-</nav>
+            }
+        </li>
+    }
+</ul>

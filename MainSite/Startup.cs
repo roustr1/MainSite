@@ -84,7 +84,7 @@ namespace MainSite
                 routes.MapRoute(
                     name: "default",
                     template: "{category?}",
-                    defaults: new { controller = "Home", action = "News" });
+                    defaults: new {controller = "Home", action = "Index"});
 
             });
         }
