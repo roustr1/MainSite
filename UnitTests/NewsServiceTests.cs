@@ -23,5 +23,27 @@ namespace UnitTests
 
             Assert.IsTrue(result == null);
         }
+
+        [Test]
+        public void GetNewsItem_RequestOneExistNewsItem_ReturnNewsItem()
+        {
+            string guid = Guid.NewGuid().ToString();
+
+            Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
+            mock.Setup(m => m.Get(guid)).Returns(new NewsItem()
+            {
+                Id = guid,
+                Category = null,
+                Description = "Description1",
+                Files = null,
+                Header = "Header1",
+            });
+
+            NewsService newsService = new NewsService(mock.Object);
+            NewsItem result = newsService.GetNewsItem(guid);
+
+            Assert.IsTrue(result != null);
+            Assert.IsTrue(result.Id == guid);
+        }
     }
 }
