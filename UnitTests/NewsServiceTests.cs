@@ -66,5 +66,46 @@ namespace UnitTests
 
             Assert.IsTrue(result == null);
         }
+
+        [Test]
+        public void GetNewsItem_RequestAllItem_ReturnAllItems()
+        {
+            var listItems = new List<NewsItem>()
+            {
+                new NewsItem()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Category = null,
+                    Description = "Description1",
+                    Files = null,
+                    Header = "Header1",
+                },
+                new NewsItem()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Category = null,
+                    Description = "Description2",
+                    Files = null,
+                    Header = "Header2",
+                },
+                new NewsItem()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Category = null,
+                    Description = "Description2",
+                    Files = null,
+                    Header = "Header2",
+                }
+            };
+            Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
+            mock.Setup(m => m.GetAll()).Returns(listItems);
+
+            NewsService newsService = new NewsService(mock.Object);
+            List<NewsItem> result = (List<NewsItem>)newsService.GetNewsItem(authorId: null, category: null);
+
+            Assert.IsTrue(result != null);
+            Assert.IsTrue(result.Count == listItems.Count);
+        }
+
     }
 }
