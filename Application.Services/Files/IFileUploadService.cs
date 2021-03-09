@@ -29,21 +29,19 @@ namespace Application.Services.Files
         /// <param name="formFile">Form file</param>
         /// <param name="defaultFileName">File name which will be use if IFormFile.FileName not present</param>
         /// <param name="virtualPath">Virtual path</param>
+        /// <param name="isAvaliable">indicate if file not accesible</param>
         /// <returns>File</returns>
-        File InsertFile(IFormFile formFile, string defaultFileName = "", string virtualPath = "");
+        File InsertFile(IFormFile formFile, string defaultFileName = "", string virtualPath = "", bool isAvaliable = true);
 
         /// <summary>
         /// Inserts a file
         /// </summary>
         /// <param name="fileBinary">The file binary</param>
         /// <param name="mimeType">The file MIME type</param>
-        /// <param name="seoFilename">The SEO filename</param>
-        /// <param name="altAttribute">"alt" attribute for "img" HTML element</param>
-        /// <param name="titleAttribute">"title" attribute for "img" HTML element</param>
-        /// <param name="isNew">A value indicating whether the file is new</param>
-        /// <param name="validateBinary">A value indicating whether to validated provided file binary</param>
+        /// <param name="fileName"></param>
+        /// <param name="isAvaliable"></param>
         /// <returns>file</returns>
-        File InsertFile(byte[] fileBinary, string mimeType,string fileName);
+        File InsertFile(byte[] fileBinary, string mimeType, string fileName, bool isAvaliable);
 
         /// <summary>
         /// Updates the file
@@ -74,7 +72,7 @@ namespace Application.Services.Files
         FileBinary GetFileBinaryById(string fileId);
 
         /// <summary>
-        /// Gets or sets a value indicating whether the images should be stored in data base.
+        /// Gets or sets a value indicating whether the files should be stored in data base.
         /// </summary>
         bool StoreInDb { get; set; }
     }

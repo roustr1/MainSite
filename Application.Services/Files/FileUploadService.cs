@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
+using System.IO;
 using System.Linq;
-using System.Net.Mime;
+using System.Security.Cryptography;
+using System.Text;
 using Application.Dal;
 using Application.Dal.Domain.Files;
 using Application.Dal.Infrastructure;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using File = Application.Dal.Domain.Files.File;
 
 
 namespace Application.Services.Files
@@ -150,9 +151,7 @@ namespace Application.Services.Files
         /// <param name="mimeType">MIME type</param>
         protected virtual void SaveFileInFileSystem(string fileId, byte[] fileBinary, string mimeType)
         {
-#warning Пересмотреть имя файла, сохранять в более понятном видел
-            var fileName = $"{fileId}_0.{fileId}";
-            _fileProvider.WriteAllBytes(GetFileLocalPath(fileName), fileBinary);
+            _fileProvider.WriteAllBytes(GetFileLocalPath(fileId), fileBinary);
         }
 
         /// <summary>
@@ -164,8 +163,7 @@ namespace Application.Services.Files
             if (file == null)
                 throw new ArgumentNullException(nameof(file));
 
-            var fileName = file.FileName;
-            var filePath = GetFileLocalPath(fileName);
+            var filePath = GetFileLocalPath(file.FileName);
             _fileProvider.DeleteFile(filePath);
         }
         /// <summary>
@@ -175,74 +173,10 @@ namespace Application.Services.Files
         /// <param name="defaultFileName">File name which will be use if IFormFile.FileName not present</param>
         /// <param name="virtualPath">Virtual path</param>
         /// <returns>file</returns>
-        public virtual File InsertFile(IFormFile formFile, string defaultFileName = "", string virtualPath = "")
+        public virtual File InsertFile(IFormFile formFile, string defaultFileName = "", string virtualPath = "", bool isAvaliable = true)
         {
-            var imgExt = new List<string>
-            {
-                ".bmp",
-                ".gif",
-                ".jpeg",
-                ".jpg",
-                ".jpe",
-                ".jfif",
-                ".pjpeg",
-                ".pjp",
-                ".png",
-                ".tiff",
-                ".tif"
-            } as IReadOnlyCollection<string>;
-
-            var fileName = formFile.FileName;
-            if (string.IsNullOrEmpty(fileName) && !string.IsNullOrEmpty(defaultFileName))
-                fileName = defaultFileName;
-
-            //remove path (passed in IE)
-            fileName = _fileProvider.GetFileName(fileName);
-
             var contentType = formFile.ContentType;
-
-            var fileExtension = _fileProvider.GetFileExtension(fileName);
-            if (!string.IsNullOrEmpty(fileExtension))
-                fileExtension = fileExtension.ToLowerInvariant();
-
-            if (imgExt.All(ext => !ext.Equals(fileExtension, StringComparison.CurrentCultureIgnoreCase)))
-                return null;
-
-            //contentType is not always available 
-            //that's why we manually update it here
-            //http://www.sfsu.edu/training/mimetype.htm
-            if (string.IsNullOrEmpty(contentType))
-            {
-                switch (fileExtension)
-                {
-                    case ".bmp":
-                        contentType = MimeTypes.ImageBmp;
-                        break;
-                    case ".gif":
-                        contentType = MimeTypes.ImageGif;
-                        break;
-                    case ".jpeg":
-                    case ".jpg":
-                    case ".jpe":
-                    case ".jfif":
-                    case ".pjpeg":
-                    case ".pjp":
-                        contentType = MimeTypes.ImageJpeg;
-                        break;
-                    case ".png":
-                        contentType = MimeTypes.ImagePng;
-                        break;
-                    case ".tiff":
-                    case ".tif":
-                        contentType = MimeTypes.ImageTiff;
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            var file = InsertFile(_downloadService.GetDownloadBits(formFile), contentType, _fileProvider.GetFileNameWithoutExtension(fileName));
-
+            var file = InsertFile(_downloadService.GetDownloadBits(formFile), contentType, _fileProvider.GetFileNameWithoutExtension(formFile.FileName), isAvaliable);
             if (string.IsNullOrEmpty(virtualPath))
                 return file;
 
@@ -251,26 +185,24 @@ namespace Application.Services.Files
 
             return file;
         }
+
+
         /// <summary>
         /// Inserts a file
         /// </summary>
         /// <param name="fileBinary">The file binary</param>
         /// <param name="mimeType">The file MIME type</param>
-        /// <param name="seoFilename">The SEO filename</param>
-        /// <param name="altAttribute">"alt" attribute for "img" HTML element</param>
-        /// <param name="titleAttribute">"title" attribute for "img" HTML element</param>
-        /// <param name="isNew">A value indicating whether the file is new</param>
-        /// <param name="validateBinary">A value indicating whether to validated provided file binary</param>
+        /// <param name="fileName"></param>
+        /// <param name="isAvaliable"></param>
         /// <returns>file</returns>
-        public virtual File InsertFile(byte[] fileBinary, string mimeType,string fileName)
+        public virtual File InsertFile(byte[] fileBinary, string mimeType, string fileName, bool isAvaliable)
         {
             var file = new File()
             {
                 MimeType = mimeType,
-                Name =  fileName,
-                
-                
-                
+                FileName = fileName,
+                IsAvaliable = isAvaliable,
+                Md5Hash = GetMd5(fileBinary),
 
             };
             _fileRepository.Add(file);
@@ -391,32 +323,11 @@ namespace Application.Services.Files
         }
 
 
-
-
-        ///// <summary>
-        ///// Get files hashes
-        ///// </summary>
-        ///// <param name="filesIds">files Ids</param>
-        ///// <returns></returns>
-        //public IDictionary<string, string> GetFilesHash(string[] filesIds)
-        //{
-        //    if (!filesIds.Any())
-        //        return new Dictionary<string, string>();
-
-        //    var hashes = _fileBinaryRepository.GetAll().Result.Where(p => filesIds.Contains(p.FileId))
-        //            .Select(x => new
-        //            {
-        //                x.FileId,
-        //                Hash = Hash(x.BinaryData)
-        //            });
-
-        //    return hashes.ToDictionary(p => p.FileId, p => p.Hash);
-        //}
         #endregion
         #region Properties
 
         /// <summary>
-        /// Gets or sets a value indicating whether the images should be stored in data base.
+        /// Gets or sets a value indicating whether the files should be stored in data base.
         /// </summary>
         public virtual bool StoreInDb
         {
@@ -486,6 +397,57 @@ namespace Application.Services.Files
         }
 
         #endregion
+
+        private string GetMd5(byte[] fileBytes)
+        {
+            using (MD5 md5 = MD5.Create())
+            {
+                byte[] hashBytes = md5.ComputeHash(fileBytes ?? throw new ArgumentNullException(nameof(fileBytes)));
+
+                // Convert the byte array to hexadecimal string
+                var sb = new StringBuilder();
+                foreach (var t in hashBytes)
+                {
+                    sb.Append(t.ToString("X2"));
+                }
+                return sb.ToString();
+            }
+        }
+
+        private File CheckAnotherFileWithMd5(string md5)
+        {
+            return _fileRepository.GetAll().FirstOrDefault(c => c.Md5Hash == md5);
+        }
+
+        /// <summary>
+        /// Create directoryIerarchy by path
+        /// </summary>
+        /// <param name="path"></param>
+        private void CreateDirectoryIfNotExist(string path)
+        {
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+        }
+        /// <summary>
+        /// return path to directory from two first symbols from md5
+        /// </summary>
+        /// <param name="md5"></param>
+        /// <returns></returns>
+        private string GetDirectoryPathFromHash(string md5)
+        {
+            if (string.IsNullOrEmpty(md5)) return string.Empty;
+            var path = new StringBuilder()
+                     .Append(md5.Substring(0, 2))
+                     .Append('/')
+                     .Append(md5.Substring(2, 4))
+                     .Append('/')
+                     .Append(md5.Substring(4, 6))
+                     .Append('/').ToString();
+            CreateDirectoryIfNotExist(path);
+            return path;
+        }
 
     }
 }
