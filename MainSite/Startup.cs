@@ -11,6 +11,8 @@ using Application.Services.News;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Application.Services.News;
+using Application.Services.Birthday;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace MainSite
@@ -51,6 +53,8 @@ namespace MainSite
             services.AddTransient<IConfiguration>(p => Configuration);
 
 
+            services.AddTransient<INewsService, NewsService>();
+            services.AddTransient<IBirthdayService, BirthdayService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -80,7 +84,7 @@ namespace MainSite
                 routes.MapRoute(
                     name: "default",
                     template: "{category?}",
-                    defaults: new { controller = "Home", action = "News" });
+                    defaults: new {controller = "Home", action = "Index"});
 
             });
         }

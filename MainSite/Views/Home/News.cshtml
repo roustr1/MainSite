@@ -1,42 +1,24 @@
-﻿@model IEnumerable<Application.Dal.Domain.News.NewsItem>
+﻿@inject Application.Services.News.INewsService news;
 
 @{
-    ViewData["Title"] = "Новости";
+    Layout = null;
 }
 
-<h1>Новости</h1>
+<div class="card-panel row">
+    @foreach (var item in news.GetAllNews())
+    {
+        <div class="col row card_news">
+            <div class="card_news-image"><img src="@item.UrlImg" alt="" /></div>
+            <div class="card_news-main">
+                <div class="card_news-main-header"><span class="bold">@item.AutorFio</span> разместил сообщение в разделе <a href="@item.MenuItemAction">@item.MenuItemName</a></div>
+                <div class="card_news-main-title"><a href="@item.NameAction">@item.Name</a></div>
+                <div class="card_news-main-footer">@item.Footer</div>
+            </div>
 
-<p>
-    <a asp-action="Create">Добавить</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Header)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Header)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+            <div class="card_news-editor">
+                <a href="#"><i class="material-icons">edit</i></a>
+                <a href="#" class="error"><i class="material-icons">close</i></a>
+            </div>
+        </div>
+    }
+</div>

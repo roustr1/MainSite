@@ -1,47 +1,36 @@
 ﻿@model NewsItemModel
 
 @{
-    ViewData["Title"] = "Create";
+    Layout = null;
 }
 
-<h1>Create</h1>
-
-<h4>NewsItem</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Header" class="control-label"></label>
-                <input asp-for="Header" class="form-control" />
-                <span asp-validation-for="Header" class="text-danger"></span>
+<div class="row creator">
+    <div class="card-panel creator-main">
+        <form action="#">
+            <div class="row">
+                <div class="input-field col s12 m12" style="margin: 0px;">
+                    <i class="material-icons prefix">message</i>
+                    <textarea id="TextMessage" class="materialize-textarea"></textarea>
+                    <label class="active" for="TextMessage">Введите текстовое сообщение</label>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UploadedFiles" class="control-label"></label>
-                <input type="file" multiple asp-for="UploadedFiles" class="custom-file-input" />
-            </div>
-
-
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="file-field input-field creator-main-panel">
+                <div class="btn btn-newMessage">
+                    <span>Прикрепить файл...</span>
+                    <input type="file" multiple>
+                </div>
+                <div class="file-path-wrapper" style="flex-grow: 1;">
+                    <input disabled class="file-path" style="border: none;" type="text" placeholder="Список выбранных файлов">
+                </div>
+                <button for="newMessage" class="btn btn-newMessage">Опубликовать</button>
             </div>
             <div class="form-group">
 
             </div>
         </form>
     </div>
+    <div class="creator-menu">
+        <input type="checkbox" id="newMessage" class="gamutom-esoutasto"/>
+        <button for="newMessage"  class="btn btn-newMessage">Новое сообщение</button>
+    </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

@@ -7,6 +7,17 @@ using Application.Dal.Domain.News;
 
 namespace Application.Services.News
 {
+    public class TestNewsItemShow
+    {
+        public string AutorFio { get; set; }
+        public string MenuItemName { get; set; }
+        public string MenuItemAction { get; set; }
+        public string Name { get; set; }
+        public string NameAction { get; set; }
+        public string UrlImg { get; set; }
+        public string Footer { get; set; }
+    }
+
     public class NewsService : INewsService
     {
         private readonly IRepository<NewsItem> _newsRepository;
@@ -17,6 +28,94 @@ namespace Application.Services.News
             _newsRepository = newsRepository;
         }
 
+        public List<TestNewsItemShow> GetAllNews()
+        {
+            var testList = new List<TestNewsItemShow>()
+            {
+                new TestNewsItemShow()
+                {
+                    AutorFio = "Петров А.С.",
+                    MenuItemName = "Учебная и методическая деятельность",
+                    MenuItemAction = "#",
+                    UrlImg = "/content/layout_icons/information.svg",
+                    Footer = "Сегодня в 12:18",
+                    NameAction = "#",
+                    Name = "Правила работы с информационно-образовательной средой Петрогневного универа женского счастья и любви для чайников и умных"
+                },
+                new TestNewsItemShow()
+                {
+                    AutorFio = "Петров А.С.",
+                    MenuItemName = "Учебная и методическая деятельность",
+                    MenuItemAction = "#",
+                    UrlImg = "/content/layout_icons/information.svg",
+                    Footer = "Сегодня в 12:18",
+                    NameAction = "#",
+                    Name = "Правила работы с информационно-образовательной средой Петрогневного универа женского счастья и любви для чайников и умных"
+                },
+                new TestNewsItemShow()
+                {
+                    AutorFio = "Петров А.С.",
+                    MenuItemName = "Учебная и методическая деятельность",
+                    MenuItemAction = "#",
+                    UrlImg = "/content/layout_icons/information.svg",
+                    Footer = "Сегодня в 12:18",
+                    NameAction = "#",
+                    Name = "Правила работы с информационно-образовательной средой Петрогневного универа женского счастья и любви для чайников и умных"
+                },
+                new TestNewsItemShow()
+                {
+                    AutorFio = "Петров А.С.",
+                    MenuItemName = "Учебная и методическая деятельность",
+                    MenuItemAction = "#",
+                    UrlImg = "/content/layout_icons/information.svg",
+                    Footer = "Сегодня в 12:18",
+                    NameAction = "#",
+                    Name = "Правила работы с информационно-образовательной средой Петрогневного универа женского счастья и любви для чайников и умных"
+                },
+                new TestNewsItemShow()
+                {
+                    AutorFio = "Петров А.С.",
+                    MenuItemName = "Учебная и методическая деятельность",
+                    MenuItemAction = "#",
+                    UrlImg = "/content/layout_icons/information.svg",
+                    Footer = "Сегодня в 12:18",
+                    NameAction = "#",
+                    Name = "Правила работы с информационно-образовательной средой Петрогневного универа женского счастья и любви для чайников и умных"
+                },
+                new TestNewsItemShow()
+                {
+                    AutorFio = "Петров А.С.",
+                    MenuItemName = "Учебная и методическая деятельность",
+                    MenuItemAction = "#",
+                    UrlImg = "/content/layout_icons/information.svg",
+                    Footer = "Сегодня в 12:18",
+                    NameAction = "#",
+                    Name = "Правила работы с информационно-образовательной средой Петрогневного универа женского счастья и любви для чайников и умных"
+                },
+                new TestNewsItemShow()
+                {
+                    AutorFio = "Петров А.С.",
+                    MenuItemName = "Учебная и методическая деятельность",
+                    MenuItemAction = "#",
+                    UrlImg = "/content/layout_icons/information.svg",
+                    Footer = "Сегодня в 12:18",
+                    NameAction = "#",
+                    Name = "Правила работы с информационно-образовательной средой Петрогневного универа женского счастья и любви для чайников и умных"
+                },
+                new TestNewsItemShow()
+                {
+                    AutorFio = "Петров А.С.",
+                    MenuItemName = "Учебная и методическая деятельность",
+                    MenuItemAction = "#",
+                    UrlImg = "/content/layout_icons/information.svg",
+                    Footer = "Сегодня в 12:18",
+                    NameAction = "#",
+                    Name = "Правила работы с информационно-образовательной средой Петрогневного универа женского счастья и любви для чайников и умных"
+                },
+            };
+
+            return testList;
+        }
 
         #region Crud
 

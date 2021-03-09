@@ -1,0 +1,18 @@
+﻿@inject Application.Services.Birthday.IBirthdayService birthdayList;
+@{
+    Layout = null;
+}
+
+
+<div class="card-panel row card_birthday">
+    <div class="card_birthday-title col s12 l2 bold">C днём рождения!</div>
+    <div class="card_birthday-content col s12 l10">
+        @foreach (var item in birthdayList.GetUsers())
+        {
+            <div>
+                <img class="rectangle" src="@item.Photo" alt="" />
+                <span>@item.Fio</span>
+            </div>
+        }
+    </div>
+</div>

@@ -17,6 +17,11 @@ namespace Application.Dal.Domain.Menu
         public string Name { get; set; }
 
         /// <summary>
+        /// относительный путь до иконки соответствующего пункта меню
+        /// </summary>
+        public string UrlIcone { get; set; }
+
+        /// <summary>
         /// метод действия
         /// </summary>
         public string ActionName { get; set; }

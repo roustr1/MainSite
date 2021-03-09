@@ -25,6 +25,11 @@ namespace MainSite.Controllers
             _uploadService = uploadService;
         }
 
+        public IActionResult Index()
+        {
+            return View();
+        }
+
         public IActionResult News(string category = null)
         {
             var news = _newsService.GetNewsItem(category: category);

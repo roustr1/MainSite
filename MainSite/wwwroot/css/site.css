@@ -1,72 +1,338 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+@charset "UTF-8";
+/*
+.btn-6 {
+  color: #9467a2;
 }
-
-/* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
+.btn-6 span {
+  position: absolute;
+  display: block;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background-color: #4d2e57;
+  transition: width 0.4s ease-in-out, height 0.4s ease-in-out;
+  transform: translate(-50%, -50%);
+  z-index: -1;
 }
-
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.btn-6:hover {
+  color: #e0d2e4;
 }
-
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.btn-6:hover span {
+  width: 225%;
+  height: 562.5px;
 }
+.btn-6:active {
+  background-color: #814c91;
+}
+*/
+@keyframes widthBlock {
+  0%, 100% {
+    position: inherit; }
+  0% {
+    transform: translateX(-20%);
+    height: 0;
+    opacity: 0; }
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+    height: 100%; } }
 
-/* Sticky footer styles
--------------------------------------------------- */
+#menuBlock {
+  background-color: #eeeeee;
+  margin: 0.5rem 0 1rem 0;
+  padding: 0px;
+  padding-right: 15px;
+  color: #9e9e9e; }
+  @media (max-width: 992px) {
+    #menuBlock {
+      opacity: 0;
+      padding-right: 0px;
+      width: 100%;
+      position: fixed;
+      margin: 0px;
+      left: 0;
+      z-index: -1;
+      box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+      transition: 0.3s; }
+      #menuBlock.active {
+        z-index: 100;
+        opacity: 1;
+        transition: 0.3s; }
+      #menuBlock .secondMenuBlock {
+        padding: 10px;
+        z-index: 20;
+        position: relative; }
+        #menuBlock .secondMenuBlock > div {
+          width: 100%;
+          flex-direction: column-reverse; } }
+  #menuBlock > .menu {
+    margin: 0px; }
+    #menuBlock > .menu li ul {
+      padding-left: 5px;
+      opacity: 0;
+      position: absolute;
+      left: 0;
+      top: 0; }
+      #menuBlock > .menu li ul.active {
+        animation: widthBlock;
+        animation-name: widthBlock;
+        animation-duration: 0.5s;
+        animation-timing-function: ease-in-out;
+        animation-fill-mode: forwards;
+        /*position: inherit;
+          opacity: 1;
+          transition: 0.3s;*/ }
+    #menuBlock > .menu a {
+      float: none;
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      min-height: 50px;
+      cursor: pointer; }
+      #menuBlock > .menu a > img, #menuBlock > .menu a object {
+        height: 40px;
+        width: 40px; }
+      #menuBlock > .menu a > .newsBLock {
+        width: 30px;
+        height: 30px;
+        padding: 0px; }
+      #menuBlock > .menu a {
+        position: relative;
+        overflow: hidden;
+        z-index: 1; }
+      #menuBlock > .menu a:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: -50px;
+        bottom: 0;
+        left: 0;
+        border-right: 50px solid transparent;
+        border-bottom: 80px solid rgba(0, 0, 0, 0.05);
+        transform: translateX(-100%);
+        z-index: -1; }
+      #menuBlock > .menu a:hover {
+        color: #9e9e9e; }
+        #menuBlock > .menu a:hover:before {
+          transform: translateX(0);
+          transition: 0.8s; }
+      #menuBlock > .menu a.active {
+        background-color: rgba(0, 0, 0, 0.05);
+        padding-left: 5px;
+        border-left: 6px solid #64b5f6; }
+      #menuBlock > .menu a:hover {
+        padding-left: 5px;
+        transition: 0.3s;
+        border-left: 6px solid #64b5f6; }
+      #menuBlock > .menu a > div {
+        padding-left: 10px;
+        color: #9e9e9e;
+        font-size: 12px; }
+      @media (max-width: 992px) {
+        #menuBlock > .menu a {
+          padding-left: 5px; } }
+
+#mainBlock {
+  font-size: 14px;
+  /*Оформление блока день рождение(birthday)*/
+  /*Оформление блока новостей*/
+  /*Оформление формы создание сообщения*/ }
+  #mainBlock > div {
+    border-radius: 8px; }
+  #mainBlock .btn-newMessage {
+    animation-fill-mode: forwards;
+    background-color: #fff;
+    color: #9e9e9e;
+    border-left: 3px solid #64b5f6;
+    height: fit-content;
+    line-height: 2rem; }
+    #mainBlock .btn-newMessage {
+      position: relative;
+      overflow: hidden;
+      z-index: 1; }
+    #mainBlock .btn-newMessage:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: -50px;
+      bottom: 0;
+      left: 0;
+      border-right: 50px solid transparent;
+      border-bottom: 80px solid #64b5f6;
+      transform: translateX(-100%);
+      z-index: -1; }
+    #mainBlock .btn-newMessage:hover {
+      color: #fff; }
+      #mainBlock .btn-newMessage:hover:before {
+        transform: translateX(0);
+        transition: 0.8s; }
+  #mainBlock .card_birthday {
+    padding-top: 10px;
+    padding-bottom: 10px; }
+    #mainBlock .card_birthday-title {
+      margin-bottom: 10px; }
+      @media (max-width: 992px) {
+        #mainBlock .card_birthday-title {
+          font-size: 20px;
+          width: 100%; } }
+    #mainBlock .card_birthday-content {
+      display: flex;
+      overflow-x: scroll; }
+      #mainBlock .card_birthday-content > div {
+        display: flex;
+        flex: none;
+        flex-direction: column;
+        align-items: center;
+        padding: 5px;
+        padding-right: 10px;
+        align-items: center; }
+      #mainBlock .card_birthday-content::-webkit-scrollbar-thumb {
+        border-radius: 8px;
+        width: 3px;
+        background-color: #eeeeee; }
+      #mainBlock .card_birthday-content::-webkit-scrollbar {
+        width: 0; }
+  #mainBlock .card_news {
+    display: flex;
+    flex-direction: row; }
+    #mainBlock .card_news-image {
+      display: flex;
+      align-items: center; }
+      #mainBlock .card_news-image > img {
+        height: 60px;
+        width: 60px; }
+    #mainBlock .card_news-main {
+      display: flex;
+      flex-direction: column; }
+      #mainBlock .card_news-main > div {
+        padding: 0 0.75rem; }
+      #mainBlock .card_news-main-header {
+        font-size: 12px; }
+        #mainBlock .card_news-main-header span {
+          color: black; }
+      #mainBlock .card_news-main-title > a {
+        text-decoration: underline; }
+        #mainBlock .card_news-main-title > a :hover {
+          color: black; }
+      #mainBlock .card_news-main-footer {
+        font-style: italic;
+        font-size: 12px;
+        -webkit-text-stroke: thin;
+        color: black; }
+    #mainBlock .card_news-editor {
+      display: flex;
+      flex-direction: row;
+      text-align: right;
+      height: max-content; }
+  #mainBlock .creator {
+    margin-bottom: 1rem;
+    position: relative; }
+    #mainBlock .creator > .card-panel {
+      border-radius: 8px; }
+    #mainBlock .creator > .gamutom-esoutasto {
+      display: none; }
+    #mainBlock .creator-main {
+      padding-bottom: 0px;
+      /*position: relative;
+            opacity: 0;
+            &.active {
+                position: relative;
+                animation-name: slideLeft;
+                animation-duration: 1s; 
+                animation-timing-function: ease-in-out; 
+            }
+
+            animation: slideLeftHide  1s ease-in-out forwards normal;
+            */ }
+      #mainBlock .creator-main-panel {
+        margin: 0px;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end; }
+        @media (max-width: 700px) {
+          #mainBlock .creator-main-panel {
+            flex-direction: column;
+            padding-bottom: 15px; } }
+    #mainBlock .creator-menu {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end; }
+      @media (max-width: 700px) {
+        #mainBlock .creator-menu > * {
+          flex-grow: 1;
+          flex-direction: column; } }
+
+@keyframes slideLeft {
+  0% {
+    transform: translateX(100%);
+    opacity: 0; }
+  50% {
+    transform: translateX(-8%); }
+  80% {
+    transform: translateX(4%); }
+  100% {
+    opacity: 1;
+    transform: translateX(0%); } }
+
+@keyframes slideLeftHide {
+  0% {
+    transform: translateX(0%);
+    opacity: 1; }
+  100% {
+    opacity: 0;
+    position: absolute;
+    transition-delay: 0.5s;
+    transform: translateX(200%); } }
+
 html {
   font-size: 14px;
-}
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
-}
-
-.box-shadow {
-    box-shadow: 0 .25rem .75rem #000000;
-    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}
-
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
-}
-
-/* Sticky footer styles
--------------------------------------------------- */
-html {
   position: relative;
   min-height: 100%;
-}
+  color: #9e9e9e; }
+  @media (min-width: 768px) {
+    html {
+      font-size: 16px; } }
+
+@media (max-width: 1100px) {
+  .container {
+    width: 95%; } }
+
+.rectangle {
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  border: 0.5px solid black; }
+
+.error {
+  color: #ef5350; }
+  .error-block {
+    background-color: #ef5350; }
+
+.bold {
+  font-weight: 600; }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
-}
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
-}
+  background-color: #eeeeee; }
+  body header {
+    color: #9e9e9e;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+    transition: box-shadow .25s;
+    background-color: #ffffff; }
+    body header .nav-header {
+      color: #9e9e9e;
+      box-shadow: none;
+      background-color: #ffffff; }
+      body header .nav-header a {
+        color: #9e9e9e; }
+  body footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap; }
+    body footer nav {
+      color: #9e9e9e;
+      background-color: #ffffff;
+      line-height: 30px;
+      height: auto; }
+      body footer nav a {
+        color: #9e9e9e; }

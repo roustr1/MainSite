@@ -28,6 +28,7 @@ namespace MainSite.Controllers
             var model = _newsService.GetNewsItem(menuName);
             return View(model);
         }
+
         [HttpGet]
         public ActionResult Create()
         {
