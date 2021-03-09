@@ -61,7 +61,7 @@ namespace Application.Services.News
         {
             var collection = _newsRepository.GetAll();
             if (authorId != null) collection = collection.Where(a => a.lastChangeAuthor == authorId);
-            if (category != null) collection = collection.Where(c => c.MenuName == category);
+            if (category != null) collection = collection.Where(c => c.Category == category);
             if (startDate != null)
             {
                 collection = collection.Where(c => c.CreatedDate >= startDate || c.LastChangeDate >= startDate);

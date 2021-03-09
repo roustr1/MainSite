@@ -1,10 +1,12 @@
-﻿using MainSite.Models;
+﻿using System;
+using MainSite.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using Application.Dal.Domain.News;
 using Application.Services.Files;
 using Application.Services.News;
+using Microsoft.EntityFrameworkCore;
 
 namespace MainSite.Controllers
 {
@@ -42,17 +44,19 @@ namespace MainSite.Controllers
         {
             if (ModelState.IsValid)
             {
-                var entity = new NewsItem();
-                entity.Header = model.Header;
-                entity.Description = model.Description;
+                var entity = new NewsItem
+                {
+                    Header = model.Header,
+                    Description = model.Description
+                };
 
                 //uploadFiles 
-                foreach (var file in model.UploadedFiles)
+                foreach (var file in model?.UploadedFiles)
                 {
-                    var file1 = _uploadService.InsertFile(file);
+                    entity.Files.Add(_uploadService.InsertFile(file));
                 }
 
-
+                _newsService.CreateNews(entity);
             }
             return RedirectToAction("News", new { category = model.Category });
         }

@@ -12,7 +12,7 @@ namespace Application.Dal.Domain.News
  
         public string Header { get; set; }
         public string Description { get; set; }
-        public string MenuName { get; set; }
+        public string Category { get; set; }
         public virtual ICollection<File> Files { get; set; }
 
     }
