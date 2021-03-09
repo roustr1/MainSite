@@ -13,6 +13,6 @@ namespace Application.Services.News
         NewsItem GetNewsItem(string itemId);
 
         IEnumerable<NewsItem> GetNewsItem(string authorId = null, string category = null,
-            DateTime? startDate = null, DateTime? endDate = null);
+            DateTime? startDate = null, DateTime? endDate = null, bool isNewest = true);
     }
 }

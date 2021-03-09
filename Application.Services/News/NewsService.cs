@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Dal;
 using Application.Dal.Domain.News;
+using Application.Services.Utils;
 
 namespace Application.Services.News
 {
@@ -21,7 +22,6 @@ namespace Application.Services.News
     public class NewsService : INewsService
     {
         private readonly IRepository<NewsItem> _newsRepository;
-
 
         public NewsService(IRepository<NewsItem> newsRepository)
         {
@@ -156,11 +156,14 @@ namespace Application.Services.News
         /// <param name="startDate">С даты</param>
         /// <param name="endDate">По дату</param>
         public IEnumerable<NewsItem> GetNewsItem(string authorId = null, string category = null,
-            DateTime? startDate = null, DateTime? endDate = null)
+            DateTime? startDate = null, DateTime? endDate = null, bool isNewest = true)
         {
             var collection = _newsRepository.GetAll();
             if (authorId != null) collection = collection.Where(a => a.LastChangeAuthor == authorId);
             if (category != null) collection = collection.Where(c => c.Category == category);
+
+            collection = collection.SortByNewestOrOldest(isNewest, item => item.CreatedDate);
+
             if (startDate != null)
             {
                 collection = collection.Where(c => c.CreatedDate >= startDate || c.LastChangeDate >= startDate);
@@ -169,6 +172,7 @@ namespace Application.Services.News
                     collection = collection.Where(c => c.CreatedDate <= endDate || c.LastChangeDate <= endDate);
                 }
             }
+
             return collection.ToList();
         }
         #endregion
