@@ -6,7 +6,7 @@ namespace Application.Dal.Domain
     {
         protected BaseEntity()
         {
-
+            Id = Guid.Empty.ToString();
         }
 
         public string Id { get; set; }
