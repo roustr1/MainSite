@@ -45,5 +45,26 @@ namespace UnitTests
             Assert.IsTrue(result != null);
             Assert.IsTrue(result.Id == guid);
         }
+
+        [Test]
+        public void GetNewsItem_RequestOneNotExistNewsItem_ReturnNull()
+        {
+            string guid = Guid.NewGuid().ToString();
+
+            Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
+            mock.Setup(m => m.Get(guid)).Returns(new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = null,
+                Description = "Description1",
+                Files = null,
+                Header = "Header1",
+            });
+
+            NewsService newsService = new NewsService(mock.Object);
+            NewsItem result = newsService.GetNewsItem(Guid.NewGuid().ToString());
+
+            Assert.IsTrue(result == null);
+        }
     }
 }
