@@ -159,7 +159,7 @@ namespace Application.Services.News
             DateTime? startDate = null, DateTime? endDate = null)
         {
             var collection = _newsRepository.GetAll();
-            if (authorId != null) collection = collection.Where(a => a.lastChangeAuthor == authorId);
+            if (authorId != null) collection = collection.Where(a => a.LastChangeAuthor == authorId);
             if (category != null) collection = collection.Where(c => c.Category == category);
             if (startDate != null)
             {

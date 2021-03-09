@@ -6,18 +6,12 @@ namespace Application.Dal.Domain
     {
         protected BaseEntity()
         {
-            Id = Guid.NewGuid().ToString();
-            CreatedDate = DateTime.Now;
+
         }
 
-        protected BaseEntity(string lastChangeAuthor)
-        {
-            this.lastChangeAuthor = lastChangeAuthor;
-            LastChangeDate = DateTime.Now;
-        }
         public string Id { get; set; }
-        public DateTime CreatedDate { get; }
-        public DateTime LastChangeDate { get; }
-        public string lastChangeAuthor { get; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime LastChangeDate { get; set; }
+        public string LastChangeAuthor { get; set; }
     }
 }
