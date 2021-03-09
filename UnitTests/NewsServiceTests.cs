@@ -107,5 +107,55 @@ namespace UnitTests
             Assert.IsTrue(result.Count == listItems.Count);
         }
 
+        [Test]
+        public void GetNewsItem_RequestManyItem_ReturnAllItemsAndOldestFirst()
+        {
+            DateTime data2019 = new DateTime(2019, 01, 01, 12, 00, 00);
+            DateTime data2020 = new DateTime(2020, 01, 01, 12, 00, 00);
+            DateTime data2021 = new DateTime(2021, 01, 01, 12, 00, 00);
+
+            NewsItem newsItem1 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = null,
+                Description = "Description1",
+                Files = null,
+                Header = "Header1",
+                CreatedDate = data2021,
+            };
+            NewsItem newsItem2 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = null,
+                Description = "Description2",
+                Files = null,
+                Header = "Header2",
+                CreatedDate = data2019,
+            };
+            NewsItem newsItem3 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = null,
+                Description = "Description2",
+                Files = null,
+                Header = "Header2",
+                CreatedDate = data2020,
+            };
+
+            Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
+            mock.Setup(m => m.GetAll()).Returns(new List<NewsItem>()
+            {
+                newsItem1, newsItem2, newsItem3
+            });
+
+            NewsService newsService = new NewsService(mock.Object);
+            List<NewsItem> result = (List<NewsItem>)newsService.GetNewsItem(authorId: null, category: null, isNewest: false);
+
+            Assert.IsTrue(result != null);
+            Assert.IsTrue(result[0].CreatedDate == data2019);
+            Assert.IsTrue(result[1].CreatedDate == data2020);
+            Assert.IsTrue(result[2].CreatedDate == data2021);
+        }
+
     }
 }
