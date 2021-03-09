@@ -7,7 +7,7 @@ namespace Application.Dal.Domain
         protected BaseEntity()
         {
             Id = Guid.NewGuid().ToString();
-            CreatedDate = DateTime.Now;
+            CreatedDate = DateTime.Today;
         }
 
         protected BaseEntity(string lastChangeAuthor)

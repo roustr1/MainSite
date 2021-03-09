@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.IO;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Application.Services.News;
 using Application.Services.Birthday;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.FileProviders;
 
 namespace MainSite
 {
@@ -73,11 +75,14 @@ namespace MainSite
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
-            app.UseRouting();
-
             app.UseAuthorization();
 
+            //app.UseStaticFiles(new StaticFileOptions
+            //{
+            //    FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "Content")),
+            //    RequestPath = "/files"
+            //});
+            app.UseRouting();
             app.UseMvc(routes =>
             {
 

@@ -76,6 +76,13 @@ namespace MainSite.Controllers
             return View(model);
         }
 
+        public IActionResult GetFile(string fileId)
+        {
+            if (fileId == null) return new EmptyResult();
+            var fileBinary = _uploadService.GetFileBinaryByFileId(fileId);
+            var file = _uploadService.GetFileById(fileId);
+            return new FileContentResult(fileBinary.BinaryData, file.MimeType);
+        }
 
 
         [HttpPost]
@@ -85,6 +92,11 @@ namespace MainSite.Controllers
             var item = _newsService.GetNewsItem(id);
             if (item == null) return Error();
             _newsService.DeleteNews(item);
+            foreach (var file in item.Files)
+            {
+                _downloadService.DeleteDownload(file);
+            }
+
             return RedirectToAction("Index");
         }
 
