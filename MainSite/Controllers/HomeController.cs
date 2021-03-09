@@ -61,6 +61,15 @@ namespace MainSite.Controllers
             return RedirectToAction("News", new { category = model.Category });
         }
 
+        [Route("Details")]
+        [HttpGet]
+        public IActionResult Details(string id)
+        {
+            if (id == null) return RedirectToAction("Error");
+            var model = _newsService.GetNewsItem(id);
+            if (model == null) return RedirectToAction("Error");
+            return View(model);
+        }
 
 
 
