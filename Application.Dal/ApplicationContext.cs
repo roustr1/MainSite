@@ -16,7 +16,6 @@ namespace Application.Dal
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)
         {
-            Database.EnsureDeleted();
 
             Database.EnsureCreated();   // создаем базу данных при первом обращении
         }

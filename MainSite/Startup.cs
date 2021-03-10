@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,10 +11,7 @@ using Application.Services.News;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using Application.Services.News;
 using Application.Services.Birthday;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.FileProviders;
 
 namespace MainSite
 {

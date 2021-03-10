@@ -43,16 +43,24 @@ namespace MainSite.Controllers
             return View();
         }
 
-        [Route("Create")]
-        [HttpPost]
-        public IActionResult Create(NewsItemModel model)
+        //[Route("Create")]
+        [HttpPost("{Create}")]
+        public IActionResult Create([FromForm] NewsItemModel model)
         {
             if (ModelState.IsValid)
             {
                 var entity = new NewsItem
                 {
                     Header = model.Header,
-                    Description = model.Description
+                    Description = model.Description,
+                    AutorFio = User?.Identity?.Name ?? "Неавторизован",
+                    ChangeDate = DateTime.Today.ToLongDateString(),
+                    Name =  model.Header,
+                    Category =  model.Category,
+                    UrlImg = "",
+                    
+                    
+
                 };
 
                 //uploadFiles 
@@ -63,7 +71,7 @@ namespace MainSite.Controllers
 
                 _newsService.CreateNews(entity);
             }
-            return RedirectToAction("News", new { category = model.Category });
+            return RedirectToAction(nameof(Index));
         }
 
         [Route("Details")]

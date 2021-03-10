@@ -9,10 +9,17 @@ namespace Application.Dal.Domain.News
         {
             Files = new List<File>();
         }
- 
+
         public string Header { get; set; }
         public string Description { get; set; }
         public string Category { get; set; }
+        public string AutorFio { get; set; }
+        public string MenuItemName { get; set; }
+        public string MenuItemAction { get; set; }
+        public string Name { get; set; }
+        public string NameAction { get; set; }
+        public string UrlImg { get; set; }
+        public string ChangeDate { get; set; }
         public virtual ICollection<File> Files { get; set; }
 
     }
