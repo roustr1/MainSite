@@ -43,16 +43,24 @@ namespace MainSite.Controllers
             return View();
         }
 
-        [Route("Create")]
-        [HttpPost]
-        public IActionResult Create(NewsItemModel model)
+        //[Route("Create")]
+        [HttpPost("{Create}")]
+        public IActionResult Create([FromForm] NewsItemModel model)
         {
             if (ModelState.IsValid)
             {
                 var entity = new NewsItem
                 {
                     Header = model.Header,
-                    Description = model.Description
+                    Description = model.Description,
+                    AutorFio = User?.Identity?.Name ?? "Неавторизован",
+                    ChangeDate = DateTime.Today.ToLongDateString(),
+                    Name =  model.Header,
+                    Category =  model.Category,
+                    UrlImg = "",
+                    
+                    
+
                 };
 
                 //uploadFiles 
@@ -63,7 +71,7 @@ namespace MainSite.Controllers
 
                 _newsService.CreateNews(entity);
             }
-            return RedirectToAction("News", new { category = model.Category });
+            return RedirectToAction(nameof(Index));
         }
 
         [Route("Details")]
@@ -76,6 +84,13 @@ namespace MainSite.Controllers
             return View(model);
         }
 
+        public IActionResult GetFile(string fileId)
+        {
+            if (fileId == null) return new EmptyResult();
+            var fileBinary = _uploadService.GetFileBinaryByFileId(fileId);
+            var file = _uploadService.GetFileById(fileId);
+            return new FileContentResult(fileBinary.BinaryData, file.MimeType);
+        }
 
 
         [HttpPost]
@@ -85,6 +100,11 @@ namespace MainSite.Controllers
             var item = _newsService.GetNewsItem(id);
             if (item == null) return Error();
             _newsService.DeleteNews(item);
+            foreach (var file in item.Files)
+            {
+                _downloadService.DeleteDownload(file);
+            }
+
             return RedirectToAction("Index");
         }
 

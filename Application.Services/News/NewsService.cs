@@ -1,22 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Application.Dal;
+using Application.Dal.Domain;
 using Application.Dal.Domain.News;
 
 namespace Application.Services.News
 {
-    public class TestNewsItemShow
-    {
-        public string AutorFio { get; set; }
-        public string MenuItemName { get; set; }
-        public string MenuItemAction { get; set; }
-        public string Name { get; set; }
-        public string NameAction { get; set; }
-        public string UrlImg { get; set; }
-        public string Footer { get; set; }
-    }
+ 
 
     public class NewsService : INewsService
     {
@@ -28,87 +19,87 @@ namespace Application.Services.News
             _newsRepository = newsRepository;
         }
 
-        public List<TestNewsItemShow> GetAllNews()
+        public List<NewsItem> GetAllNews()
         {
-            var testList = new List<TestNewsItemShow>()
+            var testList = new List<NewsItem>()
             {
-                new TestNewsItemShow()
+                new NewsItem()
                 {
                     AutorFio = "Петров А.С.",
                     MenuItemName = "Учебная и методическая деятельность",
                     MenuItemAction = "#",
                     UrlImg = "/content/layout_icons/information.svg",
-                    Footer = "Сегодня в 12:18",
+                    ChangeDate = "Сегодня в 12:18",
                     NameAction = "#",
                     Name = "Правила работы с информационно-образовательной средой Петрогневного универа женского счастья и любви для чайников и умных"
                 },
-                new TestNewsItemShow()
+                new NewsItem()
                 {
                     AutorFio = "Петров А.С.",
                     MenuItemName = "Учебная и методическая деятельность",
                     MenuItemAction = "#",
                     UrlImg = "/content/layout_icons/information.svg",
-                    Footer = "Сегодня в 12:18",
+                    ChangeDate = "Сегодня в 12:18",
                     NameAction = "#",
                     Name = "Правила работы с информационно-образовательной средой Петрогневного универа женского счастья и любви для чайников и умных"
                 },
-                new TestNewsItemShow()
+                new NewsItem()
                 {
                     AutorFio = "Петров А.С.",
                     MenuItemName = "Учебная и методическая деятельность",
                     MenuItemAction = "#",
                     UrlImg = "/content/layout_icons/information.svg",
-                    Footer = "Сегодня в 12:18",
+                    ChangeDate = "Сегодня в 12:18",
                     NameAction = "#",
                     Name = "Правила работы с информационно-образовательной средой Петрогневного универа женского счастья и любви для чайников и умных"
                 },
-                new TestNewsItemShow()
+                new NewsItem()
                 {
                     AutorFio = "Петров А.С.",
                     MenuItemName = "Учебная и методическая деятельность",
                     MenuItemAction = "#",
                     UrlImg = "/content/layout_icons/information.svg",
-                    Footer = "Сегодня в 12:18",
+                    ChangeDate = "Сегодня в 12:18",
                     NameAction = "#",
                     Name = "Правила работы с информационно-образовательной средой Петрогневного универа женского счастья и любви для чайников и умных"
                 },
-                new TestNewsItemShow()
+                new NewsItem()
                 {
                     AutorFio = "Петров А.С.",
                     MenuItemName = "Учебная и методическая деятельность",
                     MenuItemAction = "#",
                     UrlImg = "/content/layout_icons/information.svg",
-                    Footer = "Сегодня в 12:18",
+                    ChangeDate = "Сегодня в 12:18",
                     NameAction = "#",
                     Name = "Правила работы с информационно-образовательной средой Петрогневного универа женского счастья и любви для чайников и умных"
                 },
-                new TestNewsItemShow()
+                new NewsItem()
                 {
                     AutorFio = "Петров А.С.",
                     MenuItemName = "Учебная и методическая деятельность",
                     MenuItemAction = "#",
                     UrlImg = "/content/layout_icons/information.svg",
-                    Footer = "Сегодня в 12:18",
+                    ChangeDate = "Сегодня в 12:18",
                     NameAction = "#",
                     Name = "Правила работы с информационно-образовательной средой Петрогневного универа женского счастья и любви для чайников и умных"
                 },
-                new TestNewsItemShow()
+                new NewsItem()
                 {
                     AutorFio = "Петров А.С.",
                     MenuItemName = "Учебная и методическая деятельность",
                     MenuItemAction = "#",
                     UrlImg = "/content/layout_icons/information.svg",
-                    Footer = "Сегодня в 12:18",
+                    ChangeDate = "Сегодня в 12:18",
                     NameAction = "#",
                     Name = "Правила работы с информационно-образовательной средой Петрогневного универа женского счастья и любви для чайников и умных"
                 },
-                new TestNewsItemShow()
+                new NewsItem()
                 {
                     AutorFio = "Петров А.С.",
                     MenuItemName = "Учебная и методическая деятельность",
                     MenuItemAction = "#",
                     UrlImg = "/content/layout_icons/information.svg",
-                    Footer = "Сегодня в 12:18",
+                    ChangeDate = "Сегодня в 12:18",
                     NameAction = "#",
                     Name = "Правила работы с информационно-образовательной средой Петрогневного универа женского счастья и любви для чайников и умных"
                 },
@@ -163,10 +154,10 @@ namespace Application.Services.News
             if (category != null) collection = collection.Where(c => c.Category == category);
             if (startDate != null)
             {
-                collection = collection.Where(c => c.CreatedDate >= startDate || c.LastChangeDate >= startDate);
+                collection = collection.Where(c => c.CreatedDate >= startDate || ((BaseEntity) c).LastChangeDate >= startDate);
                 if (endDate != null)
                 {
-                    collection = collection.Where(c => c.CreatedDate <= endDate || c.LastChangeDate <= endDate);
+                    collection = collection.Where(c => c.CreatedDate <= endDate || ((BaseEntity) c).LastChangeDate <= endDate);
                 }
             }
             return collection.ToList();

@@ -10,7 +10,7 @@ namespace MainSite.Areas.Admin.Controllers
     [Area("Admin")]
     public class MenuController : Controller
     {
-        private IMenuService _menuService;
+        private readonly IMenuService _menuService;
 
         public MenuController(IMenuService menuService)
         {

@@ -7,23 +7,24 @@
 <div class="creator">
     <div class="card-panel creator-main" v-bind:class="classObject">
         <a class="error close" v-on:click="showCreator(false, true)"><i class="material-icons">close</i></a>
-        <form action="#">
+
+        <form asp-action="Create" enctype="multipart/form-data" method="post">
             <div class="row">
                 <div class="input-field col s12 m12" style="margin: 0px;">
                     <i class="material-icons prefix">message</i>
-                    <textarea id="TextMessage" class="materialize-textarea"></textarea>
-                    <label class="active" for="TextMessage">Введите текстовое сообщение</label>
+                    <textarea asp-for="Header" id="TextMessage" class="materialize-textarea"></textarea>
+                    <label asp-for="Header" class="active" for="TextMessage">Введите текст</label>
                 </div>
             </div>
             <div class="file-field input-field creator-main-panel">
                 <div class="btn btn-defaultMainSite">
                     <span>Прикрепить файл...</span>
-                    <input type="file" multiple>
+                    <input type="file" asp-for="UploadedFiles" multiple>
                 </div>
                 <div class="file-path-wrapper" style="flex-grow: 1;">
                     <input disabled class="file-path" style="border: none;" type="text" placeholder="Список выбранных файлов">
                 </div>
-                <button for="newMessage" class="btn btn-defaultMainSite">Опубликовать</button>
+                <input type="submit" value="Опубликовать"  for="newMessage" class="btn btn-defaultMainSite" value="Опубликовать"/>
             </div>
             <div class="form-group">
 
