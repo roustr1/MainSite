@@ -10,8 +10,5 @@ namespace Application.Dal.Domain
         }
 
         public string Id { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public DateTime LastChangeDate { get; set; }
-        public string LastChangeAuthor { get; set; }
     }
 }

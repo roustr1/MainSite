@@ -29,7 +29,7 @@ namespace Application.Services.News
                     MenuItemName = "Учебная и методическая деятельность",
                     MenuItemAction = "#",
                     UrlImg = "/content/layout_icons/information.svg",
-                    ChangeDate = "Сегодня в 12:18",
+                    LastChangeDate = DateTime.Today,
                     NameAction = "#",
                     Name = "Правила работы с информационно-образовательной средой Петрогневного универа женского счастья и любви для чайников и умных"
                 },
@@ -39,7 +39,7 @@ namespace Application.Services.News
                     MenuItemName = "Учебная и методическая деятельность",
                     MenuItemAction = "#",
                     UrlImg = "/content/layout_icons/information.svg",
-                    ChangeDate = "Сегодня в 12:18",
+                    LastChangeDate = DateTime.Today,
                     NameAction = "#",
                     Name = "Правила работы с информационно-образовательной средой Петрогневного универа женского счастья и любви для чайников и умных"
                 },
@@ -49,7 +49,7 @@ namespace Application.Services.News
                     MenuItemName = "Учебная и методическая деятельность",
                     MenuItemAction = "#",
                     UrlImg = "/content/layout_icons/information.svg",
-                    ChangeDate = "Сегодня в 12:18",
+                    LastChangeDate = DateTime.Today,
                     NameAction = "#",
                     Name = "Правила работы с информационно-образовательной средой Петрогневного универа женского счастья и любви для чайников и умных"
                 },
@@ -59,7 +59,7 @@ namespace Application.Services.News
                     MenuItemName = "Учебная и методическая деятельность",
                     MenuItemAction = "#",
                     UrlImg = "/content/layout_icons/information.svg",
-                    ChangeDate = "Сегодня в 12:18",
+                    LastChangeDate = DateTime.Today,
                     NameAction = "#",
                     Name = "Правила работы с информационно-образовательной средой Петрогневного универа женского счастья и любви для чайников и умных"
                 },
@@ -69,7 +69,7 @@ namespace Application.Services.News
                     MenuItemName = "Учебная и методическая деятельность",
                     MenuItemAction = "#",
                     UrlImg = "/content/layout_icons/information.svg",
-                    ChangeDate = "Сегодня в 12:18",
+                    LastChangeDate = DateTime.Today,
                     NameAction = "#",
                     Name = "Правила работы с информационно-образовательной средой Петрогневного универа женского счастья и любви для чайников и умных"
                 },
@@ -79,7 +79,7 @@ namespace Application.Services.News
                     MenuItemName = "Учебная и методическая деятельность",
                     MenuItemAction = "#",
                     UrlImg = "/content/layout_icons/information.svg",
-                    ChangeDate = "Сегодня в 12:18",
+                    LastChangeDate = DateTime.Today,
                     NameAction = "#",
                     Name = "Правила работы с информационно-образовательной средой Петрогневного универа женского счастья и любви для чайников и умных"
                 },
@@ -89,7 +89,7 @@ namespace Application.Services.News
                     MenuItemName = "Учебная и методическая деятельность",
                     MenuItemAction = "#",
                     UrlImg = "/content/layout_icons/information.svg",
-                    ChangeDate = "Сегодня в 12:18",
+                    LastChangeDate = DateTime.Today,
                     NameAction = "#",
                     Name = "Правила работы с информационно-образовательной средой Петрогневного универа женского счастья и любви для чайников и умных"
                 },
@@ -99,7 +99,7 @@ namespace Application.Services.News
                     MenuItemName = "Учебная и методическая деятельность",
                     MenuItemAction = "#",
                     UrlImg = "/content/layout_icons/information.svg",
-                    ChangeDate = "Сегодня в 12:18",
+                    LastChangeDate = DateTime.Today,
                     NameAction = "#",
                     Name = "Правила работы с информационно-образовательной средой Петрогневного универа женского счастья и любви для чайников и умных"
                 },
@@ -155,14 +155,14 @@ namespace Application.Services.News
 
             collection = collection.SortByNewestOrOldest(isNewest, item => item.CreatedDate);
 
-            if (startDate != null)
-            {
-                collection = collection.Where(c => c.CreatedDate >= startDate || ((BaseEntity) c).LastChangeDate >= startDate);
-                if (endDate != null)
-                {
-                    collection = collection.Where(c => c.CreatedDate <= endDate || ((BaseEntity) c).LastChangeDate <= endDate);
-                }
-            }
+            //if (startDate != null)
+            //{
+            //    collection = collection.Where(c => c.CreatedDate >= startDate || ((BaseEntity) c).LastChangeDate >= startDate);
+            //    if (endDate != null)
+            //    {
+            //        collection = collection.Where(c => c.CreatedDate <= endDate || ((BaseEntity) c).LastChangeDate <= endDate);
+            //    }
+            //}
 
             return collection.ToList();
         }
