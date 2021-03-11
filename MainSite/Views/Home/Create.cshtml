@@ -4,8 +4,10 @@
     Layout = null;
 }
 
-<div class="row creator">
-    <div class="card-panel creator-main">
+<div class="creator">
+    <div class="card-panel creator-main" v-bind:class="classObject">
+        <a class="error close" v-on:click="showCreator(false, true)"><i class="material-icons">close</i></a>
+
         <form asp-action="Create" enctype="multipart/form-data" method="post">
             <div class="row">
                 <div class="input-field col s12 m12" style="margin: 0px;">
@@ -15,22 +17,22 @@
                 </div>
             </div>
             <div class="file-field input-field creator-main-panel">
-                <div class="btn btn-newMessage">
+                <div class="btn btn-defaultMainSite">
                     <span>Прикрепить файл...</span>
                     <input type="file" asp-for="UploadedFiles" multiple>
                 </div>
                 <div class="file-path-wrapper" style="flex-grow: 1;">
                     <input disabled class="file-path" style="border: none;" type="text" placeholder="Список выбранных файлов">
                 </div>
-                <input type="submit" value="Опубликовать"  class="btn btn-newMessage"/> 
+                <input type="submit" value="Опубликовать"  for="newMessage" class="btn btn-defaultMainSite" value="Опубликовать"/>
             </div>
             <div class="form-group">
 
             </div>
         </form>
     </div>
-    <div class="creator-menu">
+    <div class="creator-menu" v-bind:class="classObject">
         <input type="checkbox" id="newMessage" class="gamutom-esoutasto"/>
-        <button for="newMessage"  class="btn btn-newMessage">Новое сообщение</button>
+        <button for="newMessage"  class="btn btn-defaultMainSite" v-on:click="showCreator(true, false)">Новое сообщение</button>
     </div>
 </div>

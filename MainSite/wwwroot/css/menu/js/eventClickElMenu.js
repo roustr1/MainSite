@@ -15,8 +15,10 @@ function eventClickElementMenu() {
                     return null;
                 }
             }
-            document.querySelectorAll('.menu ul, .menu a, .menu li').forEach(function (elem) { elem.classList.remove('active'); });
-            !el.classList.contains('active') ?SearchParent(el, '.menu'):  SearchParent(el, 'li');
+            var items = document.querySelectorAll('.menu ul, .menu a, .menu li');
+            for (var itemIndex in items)
+                if (typeof items[itemIndex].classList != "undefined") items[itemIndex].classList.remove('active');
+            !el.classList.contains('active') ? SearchParent(el, '.menu'):  SearchParent(el, 'li');
         }
     });
 }
