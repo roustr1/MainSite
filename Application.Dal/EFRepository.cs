@@ -10,6 +10,7 @@ namespace Application.Dal
         where TEntity : BaseEntity
     {
         private readonly ApplicationContext context;
+        private readonly string _emptyGuid = Guid.Empty.ToString();
 
         public EfRepository(ApplicationContext context)
         {
@@ -18,7 +19,7 @@ namespace Application.Dal
 
         public void Add(TEntity entity)
         {
-            context.Set<TEntity>().Add(entity);
+            context.Set<TEntity>().Add(CheckAndCreateGuid(entity));
             context.SaveChanges();
         }
 
@@ -80,5 +81,14 @@ namespace Application.Dal
             context.SaveChanges();
         }
 
+        private TEntity CheckAndCreateGuid(TEntity entity)
+        {
+            if (string.IsNullOrWhiteSpace(entity.Id) || entity.Id == _emptyGuid)
+            {
+                entity.Id = Guid.NewGuid().ToString();
+            }
+
+            return entity;
+        }
     }
 }
