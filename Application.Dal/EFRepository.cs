@@ -9,17 +9,18 @@ namespace Application.Dal
     public class EfRepository<TEntity> : IRepository<TEntity>
         where TEntity : BaseEntity
     {
-        private readonly ApplicationContext context;
+        private readonly ApplicationContext _context;
+        private readonly string _emptyGuid = Guid.Empty.ToString();
 
         public EfRepository(ApplicationContext context)
         {
-            this.context = context;
+            _context = context;
         }
 
         public void Add(TEntity entity)
         {
-            context.Set<TEntity>().Add(entity);
-            context.SaveChanges();
+            _context.Set<TEntity>().Add(CheckAndCreateGuid(entity));
+            _context.SaveChanges();
         }
 
         public void Add(IEnumerable<TEntity> entities)
@@ -41,18 +42,18 @@ namespace Application.Dal
         public void Delete(string id)
         {
             if (id == null) throw new ArgumentNullException("id is null");
-            var entity = context.Set<TEntity>().Find(id);
+            var entity = _context.Set<TEntity>().Find(id);
             if (entity == null)
                 throw new ArgumentNullException("entity is null");
-            context.Set<TEntity>().Remove(entity);
-            context.SaveChanges();
+            _context.Set<TEntity>().Remove(entity);
+            _context.SaveChanges();
         }
 
         public void Delete(TEntity entity)
         {
             if (entity == null) return;
-            context.Set<TEntity>().Remove(entity);
-            context.SaveChanges();
+            _context.Set<TEntity>().Remove(entity);
+            _context.SaveChanges();
         }
 
         public void Delete(IEnumerable<TEntity> entities)
@@ -65,20 +66,29 @@ namespace Application.Dal
 
         public IEnumerable<TEntity> GetAll()
         {
-            return context.Set<TEntity>().ToList();
+            return _context.Set<TEntity>().ToList();
 
         }
 
         public TEntity Get(string id)
         {
-            return context.Set<TEntity>().Find(id);
+            return _context.Set<TEntity>().Find(id);
         }
 
         public void Update(TEntity entity)
         {
-            context.Entry(entity).State = EntityState.Modified;
-            context.SaveChanges();
+            _context.Entry(entity).State = EntityState.Modified;
+            _context.SaveChanges();
         }
 
+        private TEntity CheckAndCreateGuid(TEntity entity)
+        {
+            if (string.IsNullOrWhiteSpace(entity.Id) || entity.Id == _emptyGuid)
+            {
+                entity.Id = Guid.NewGuid().ToString();
+            }
+
+            return entity;
+        }
     }
 }

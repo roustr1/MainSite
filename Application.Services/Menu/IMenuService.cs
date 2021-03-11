@@ -8,7 +8,7 @@ namespace Application.Services.Menu
         MenuItem GetItem(string id);
         void InsertItem(MenuItem mi);
         void DeleteItem(MenuItem mi);
-        List<MenuItem> GetMenuItem(string parentId = null);
-        List<MenuItem> GetMenuItem();
+        IEnumerable<MenuItem> GetMenuItem(string parentId = null);
+        IEnumerable<MenuItem> GetMenuItem();
     }
 }
