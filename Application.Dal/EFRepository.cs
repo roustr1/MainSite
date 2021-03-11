@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using Application.Dal.Domain;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,6 +30,12 @@ namespace Application.Dal
             {
                 Add(entity);
             }
+        }
+        
+        public void Update(TEntity entity)
+        {
+            _context.Entry(entity).State = EntityState.Modified;
+            _context.SaveChanges();
         }
 
         public void Update(IEnumerable<TEntity> entities)
@@ -64,23 +71,26 @@ namespace Application.Dal
             }
         }
 
-        public IEnumerable<TEntity> GetAll()
-        {
-            return _context.Set<TEntity>().ToList();
-
-        }
-
         public TEntity Get(string id)
         {
             return _context.Set<TEntity>().Find(id);
         }
 
-        public void Update(TEntity entity)
+        public TEntity Get(Expression<Func<TEntity, bool>> where)
         {
-            _context.Entry(entity).State = EntityState.Modified;
-            _context.SaveChanges();
+            return _context.Set<TEntity>().Find(where);
         }
 
+        public IEnumerable<TEntity> GetAll()
+        {
+            return _context.Set<TEntity>();
+        }
+
+        public IEnumerable<TEntity> GetMany(Expression<Func<TEntity, bool>> where)
+        {
+            return _context.Set<TEntity>().Where(where);
+        }
+        
         private TEntity CheckAndCreateGuid(TEntity entity)
         {
             if (string.IsNullOrWhiteSpace(entity.Id) || entity.Id == _emptyGuid)
