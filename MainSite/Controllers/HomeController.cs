@@ -54,7 +54,7 @@ namespace MainSite.Controllers
                     Header = model.Header,
                     Description = model.Description,
                     AutorFio = User?.Identity?.Name ?? "Неавторизован",
-                    LastChangeDate = DateTime.Now,
+                    CreatedDate = DateTime.Now,
                     Name =  model.Header,
                     Category =  model.Category,
                     UrlImg = "",
