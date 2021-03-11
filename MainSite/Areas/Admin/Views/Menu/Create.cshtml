@@ -4,53 +4,48 @@
     ViewData["Title"] = "Меню - создание";
 }
 
-<div class="col s12 m6">
-    <h2 class="header">Добавление пункта меню</h2>
-    <div class="card horizontal">
+<div class="col s12 m6 card-panel">
+    <h4 class="header">Добавление пункта меню</h4>
+    <div>
         @using (Html.BeginForm(FormMethod.Post, true))
     {
-        <div class="card-stacked">
-            <div class="card-content">
 
-                <div class="row">
-                    <div asp-validation-summary="ModelOnly" class=""></div>
-                    <div class="input-field col s7">
-                        @Html.TextBoxFor(model => model.Name, new { @class = "validate", type = "text", placeholder = "" })
-                        <label asp-for="Name">Наименование</label>
-                    </div>
-                    <div class="input-field col s7">
-                        <div class="input-field col s12">
-                            @Html.DropDownListFor(c => c.ParentId, (List<SelectListItem>)ViewBag.MenuId, "--корневой элемент--")
-                            <label asp-for="ParentId">Родительский элемент</label>
-                        </div>
-                    </div>
-                    <div class="input-field col s7">
-                        <input placeholder="" id="ToolTip" type="text" class="validate">
-                        <label asp-for="ToolTip">Всплывающая подсказка</label>
-                    </div>
-                    <div class="input-field col s7">
-                        @Html.CheckBoxFor(c => c.IsActive, new { @class = "validate", type = "checkbox" })
-                        <label asp-for="IsActive">Отображать в списке меню</label>
-                    </div>
-                    <div class="input-field col s7">
-                        @Html.ListBoxFor(model => model.UserRoles, (List<SelectListItem>)ViewBag.Roles, new { Multiple = "Multiple " })
-                        <label asp-for="UserRoles">Роли</label>
-                    </div>
+            <div class="row">
+                <div asp-validation-summary="ModelOnly" class=""></div>
+                <div class="input-field col s12 m12">
+                    @Html.TextBoxFor(model => model.Name, new { @class = "validate", type = "text"})
+                    <label asp-for="Name" for="Name">Наименование</label>
+                </div>
+                <div class="input-field col s12 m12">
+                        @*<textarea asp-for="Header" id="TextMessage" class="materialize-textarea"></textarea>
+        <label asp-for="Header" class="active" for="TextMessage">Введите текст</label>*@
+                    @Html.DropDownListFor(c => c.ParentId, (List<SelectListItem>)ViewBag.MenuId, "--корневой элемент--")
+                    <label asp-for="ParentId">Родительский элемент</label>
+                </div>
+                <div class="input-field col  s12 m12">
+                    <input id="ToolTip" type="text" class="validate"/>
+                    <label asp-for="ToolTip" for="ToolTip">Всплывающая подсказка</label>
+                </div>
+                <div class="input-field col  s12 m12">
+                    <p>
+                        <label>
+                            @Html.CheckBoxFor(c => c.IsActive, new { @class = "validate", type = "checkbox" })
+                            <span>Отображать в списке меню</span>
+                        </label>
+                    </p>
+                </div>
+                <div class="input-field col s12 m12">
+                    @Html.ListBoxFor(model => model.UserRoles, (List<SelectListItem>)ViewBag.Roles, new { Multiple = "Multiple " })
+                    <label asp-for="UserRoles">Роли</label>
+                </div>
                   
-                </div>
             </div>
-            <div class=" card-panel">
-                <div class="form-group col s7">
-                    <input type="submit" value="Добавить" class="waves-effect waves-light btn" />
-                </div>
+            <div class="input-field m12">
+                <input type="submit" value="Добавить" class="btn btn-defaultMainSite" />
+                <a asp-action="Index" class="btn btn-defaultMainSite">Назад</a>
             </div>
-        </div>
     }
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">К списку</a>
 </div>
 
 @section Scripts {

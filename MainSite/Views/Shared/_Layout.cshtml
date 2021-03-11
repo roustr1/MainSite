@@ -7,6 +7,7 @@
     <link href="~/css/materialize/sass/materialize.css" rel="stylesheet" />
     <link href="~/content/fonts/MaterialIcons/Material-Icons.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" />
+    <script src="~/lib/vue/vue.js"></script>
 </head>
 <body class="row">
     <header class="navbar-fixed">
@@ -14,22 +15,24 @@
             <div class="container">
                 <div class="nav-wrapper">
                     <a href="#" id="openMenu" data-target="mobile-demo" class="sidenav-trigger" style="float: right;"><i class="material-icons">menu</i></a>
-                    <div class="valign-wrapper" style="position: absolute;">
+                    <div class="valign-wrapper" style="position: absolute; top: 6px;">
                         <img src="~/content/layout_icons/header.png" width="50" height="50" />
-                        <a style="cursor: pointer;" asp-area="" asp-controller="Home" asp-action="Index">
+                        @*<a style="cursor: pointer;" asp-area="" asp-controller="Home" asp-action="Index">
                             ЯРГУ ТГО
                         </a>
+                        *@
                     </div>
-                    <ul class="right hide-on-med-and-down">
+                    <ul class="right hide-on-med-and-down secondMenu">
                         <li>
-                            <div class="secondMenu">
-                                <div class="valign-wrapper">
-                                    <div class="valign-wrapper" style="width:100%;">
-                                        <a href="#"><i class="material-icons prefix">search</i></a>
-                                        <input placeholder="Поиск" type="text">
-                                    </div>
-                                    <a data-target='dropdown1' class="dropdown-trigger valign-wrapper right" style="padding: 0px;">
-                                        <input disabled type="text" value="Долгопрудный А.Р." style="width: auto; border: none; text-align: right;">
+                            <div class="valign-wrapper" style="width:100%; padding-right: 15px;">
+                                <a href="#"><i class="material-icons prefix">search</i></a>
+                                <input placeholder="Поиск" type="text">
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                    <a data-target='dropdown1' class="dropdown-trigger valign-wrapper" style="padding: 0px;">
+                                        <span>Долгопрудный А.Р.</span>
                                         <i class="material-icons">keyboard_arrow_down</i>
                                         <img class="rectangle" src="~/content/layout_icons/user.png" alt="" />
 
@@ -38,7 +41,6 @@
                                         <li><a href="#!"><i class="material-icons">home</i>Личный кабинет</a></li>
                                         <li><a href="#!"><i class="material-icons">cloud</i>Управление сервисами</a></li>
                                     </ul>
-                                </div>
                             </div>
                         </li>
                     </ul>

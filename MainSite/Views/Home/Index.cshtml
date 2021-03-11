@@ -4,5 +4,25 @@
 
 @Html.Partial("BirthdayUsers")
 
-@Html.Partial("Create")
-@Html.Partial("News")
+<div id="newsComponent" >
+    @Html.Partial("Create")
+    @Html.Partial("News")
+</div>
+
+<script type="text/javascript">
+    var vm = new Vue({
+        el: '#newsComponent',
+        data: {
+            classObject: {
+                'active': false,
+                'desActive': false
+            }
+        },
+        methods: {
+            showCreator: function (active, desActive) {
+                this.classObject['active'] = active;
+                this.classObject['desActive'] = desActive;
+            }
+        }
+    });
+</script>

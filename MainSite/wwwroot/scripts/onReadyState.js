@@ -31,7 +31,12 @@ document.addEventListener('DOMContentLoaded', function() {
         alignment: 'left' // Displays dropdown with edge aligned to the left of button
     };
     var instances = M.Dropdown.init(elems, dropdownOptions);
-  });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    var elems = document.querySelectorAll('select');
+    var instances = M.FormSelect.init(elems);
+});
 
 eventClickMobileIconMenu();
 setHeightChildrenBlock("mainBlock");

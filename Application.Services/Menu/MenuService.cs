@@ -44,14 +44,14 @@ namespace Application.Services.Menu
             _context.SaveChanges();
         }
 
-        public IEnumerable<MenuItem> GetMenuItem()
+        public List<MenuItem> GetMenuItem()
         {
-            return _context.MenuItems.AsEnumerable();
+            return _context.MenuItems.AsEnumerable().ToList();
         }
 
-        public IEnumerable<MenuItem> GetMenuItem(string parentId = null)
+        public List<MenuItem> GetMenuItem(string parentId = null)
         {
-            return _context.MenuItems.Where(p => p.ParentId == parentId).AsEnumerable();
+            return _context.MenuItems.Where(p => p.ParentId == parentId).AsEnumerable().ToList();
         }
 
         public IEnumerable<MenuItem> GetMenu(string userRole)
