@@ -28,12 +28,15 @@ namespace Application.Dal
         {
             foreach (var entity in entities)
             {
-                Add(entity);
+                _context.Set<TEntity>().Add(CheckAndCreateGuid(entity));
             }
+            _context.SaveChanges();
         }
         
         public void Update(TEntity entity)
         {
+            if (entity == null) return;
+
             _context.Entry(entity).State = EntityState.Modified;
             _context.SaveChanges();
         }
@@ -48,12 +51,12 @@ namespace Application.Dal
 
         public void Delete(string id)
         {
-            if (id == null) throw new ArgumentNullException("id is null");
-            var entity = _context.Set<TEntity>().Find(id);
+            if (id == null) 
+                throw new ArgumentNullException("id is null");
+            var entity = Get(id);
             if (entity == null)
                 throw new ArgumentNullException("entity is null");
-            _context.Set<TEntity>().Remove(entity);
-            _context.SaveChanges();
+            Delete(entity);
         }
 
         public void Delete(TEntity entity)
@@ -84,11 +87,6 @@ namespace Application.Dal
         public IEnumerable<TEntity> GetAll()
         {
             return _context.Set<TEntity>();
-        }
-
-        public IEnumerable<TEntity> GetMany(Expression<Func<TEntity, bool>> where)
-        {
-            return _context.Set<TEntity>().Where(where);
         }
         
         private TEntity CheckAndCreateGuid(TEntity entity)
