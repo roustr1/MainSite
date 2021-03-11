@@ -107,15 +107,15 @@
         right: -50px;
         bottom: 0;
         left: 0;
-        border-right: 50px solid transparent;
-        border-bottom: 80px solid rgba(0, 0, 0, 0.05);
+        border-right: 40px solid transparent;
+        border-bottom: 70px solid rgba(0, 0, 0, 0.05);
         transform: translateX(-100%);
         z-index: -1; }
       #menuBlock > .menu a:hover {
         color: #9e9e9e; }
         #menuBlock > .menu a:hover:before {
           transform: translateX(0);
-          transition: 0.8s; }
+          transition: 0.4s; }
       #menuBlock > .menu a.active {
         background-color: rgba(0, 0, 0, 0.05);
         padding-left: 5px;
@@ -127,7 +127,8 @@
       #menuBlock > .menu a > div {
         padding-left: 10px;
         color: #9e9e9e;
-        font-size: 12px; }
+        font-size: 16px;
+        font-weight: 600; }
       @media (max-width: 992px) {
         #menuBlock > .menu a {
           padding-left: 5px; } }
@@ -137,47 +138,41 @@
   /*Оформление блока день рождение(birthday)*/
   /*Оформление блока новостей*/
   /*Оформление формы создание сообщения*/ }
-  #mainBlock > div {
+  #mainBlock .card-panel {
     border-radius: 8px; }
-  #mainBlock .btn-newMessage {
+  #mainBlock .btn-defaultMainSite {
     animation-fill-mode: forwards;
     background-color: #fff;
     color: #9e9e9e;
     border-left: 3px solid #64b5f6;
+    position: relative;
+    height: 2rem;
     height: fit-content;
-    line-height: 2rem; }
-    #mainBlock .btn-newMessage {
-      position: relative;
-      overflow: hidden;
-      z-index: 1; }
-    #mainBlock .btn-newMessage:before {
-      content: "";
-      position: absolute;
-      top: 0;
-      right: -50px;
-      bottom: 0;
-      left: 0;
-      border-right: 50px solid transparent;
-      border-bottom: 80px solid #64b5f6;
-      transform: translateX(-100%);
-      z-index: -1; }
-    #mainBlock .btn-newMessage:hover {
-      color: #fff; }
-      #mainBlock .btn-newMessage:hover:before {
-        transform: translateX(0);
-        transition: 0.8s; }
+    line-height: 2rem;
+    border: 2.5px solid #64b5f6;
+    border-radius: 8px; }
+    #mainBlock .btn-defaultMainSite:hover {
+      background-color: #64b5f6;
+      color: white; }
   #mainBlock .card_birthday {
     padding-top: 10px;
     padding-bottom: 10px; }
     #mainBlock .card_birthday-title {
-      margin-bottom: 10px; }
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center; }
+      #mainBlock .card_birthday-title > * {
+        text-align: center; }
+      #mainBlock .card_birthday-title > * {
+        padding-bottom: 8px; }
       @media (max-width: 992px) {
         #mainBlock .card_birthday-title {
           font-size: 20px;
           width: 100%; } }
     #mainBlock .card_birthday-content {
       display: flex;
-      overflow-x: scroll; }
+      overflow-x: auto; }
       #mainBlock .card_birthday-content > div {
         display: flex;
         flex: none;
@@ -194,7 +189,8 @@
         width: 0; }
   #mainBlock .card_news {
     display: flex;
-    flex-direction: row; }
+    flex-direction: row;
+    align-items: flex-start; }
     #mainBlock .card_news-image {
       display: flex;
       align-items: center; }
@@ -203,9 +199,9 @@
         width: 60px; }
     #mainBlock .card_news-main {
       display: flex;
-      flex-direction: column; }
-      #mainBlock .card_news-main > div {
-        padding: 0 0.75rem; }
+      flex-direction: column;
+      padding: 0 0.75rem;
+      margin-bottom: 20px; }
       #mainBlock .card_news-main-header {
         font-size: 12px; }
         #mainBlock .card_news-main-header span {
@@ -223,9 +219,13 @@
       display: flex;
       flex-direction: row;
       text-align: right;
-      height: max-content; }
+      height: max-content;
+      flex-grow: 1;
+      justify-content: flex-end; }
   #mainBlock .creator {
     margin-bottom: 1rem;
+    margin-left: -0.75rem;
+    margin-right: -0.75rem;
     position: relative; }
     #mainBlock .creator > .card-panel {
       border-radius: 8px; }
@@ -233,17 +233,17 @@
       display: none; }
     #mainBlock .creator-main {
       padding-bottom: 0px;
-      /*position: relative;
-            opacity: 0;
-            &.active {
-                position: relative;
-                animation-name: slideLeft;
-                animation-duration: 1s; 
-                animation-timing-function: ease-in-out; 
-            }
-
-            animation: slideLeftHide  1s ease-in-out forwards normal;
-            */ }
+      opacity: 0;
+      position: absolute;
+      width: 0;
+      display: none;
+      /**/ }
+      #mainBlock .creator-main > .close {
+        position: absolute;
+        right: 15px;
+        top: 10px;
+        cursor: pointer;
+        z-index: 10; }
       #mainBlock .creator-main-panel {
         margin: 0px;
         display: flex;
@@ -253,10 +253,33 @@
           #mainBlock .creator-main-panel {
             flex-direction: column;
             padding-bottom: 15px; } }
+      #mainBlock .creator-main.active {
+        display: block;
+        position: relative;
+        animation-name: slideLeft;
+        animation-duration: 1s;
+        animation-timing-function: ease-in-out;
+        animation-fill-mode: forwards;
+        animation-iteration-count: 1; }
+      #mainBlock .creator-main.desActive {
+        display: block;
+        animation-name: slideLeftHide;
+        animation-duration: 1s;
+        animation-timing-function: ease-in-out;
+        animation-fill-mode: forwards;
+        animation-iteration-count: 1; }
     #mainBlock .creator-menu {
       display: flex;
       flex-direction: row;
       justify-content: flex-end; }
+      #mainBlock .creator-menu.active {
+        display: none; }
+      #mainBlock .creator-menu.desActive {
+        animation-name: slideLeftButtons;
+        animation-duration: 2s;
+        animation-timing-function: ease-in-out;
+        animation-fill-mode: forwards;
+        animation-iteration-count: 1; }
       @media (max-width: 700px) {
         #mainBlock .creator-menu > * {
           flex-grow: 1;
@@ -265,26 +288,46 @@
 @keyframes slideLeft {
   0% {
     transform: translateX(100%);
-    opacity: 0; }
+    opacity: 0;
+    width: 100%;
+    position: relative; }
   50% {
-    transform: translateX(-8%); }
+    transform: translateX(-8%);
+    position: relative; }
   80% {
-    transform: translateX(4%); }
+    transform: translateX(4%);
+    position: relative; }
   100% {
+    position: relative;
+    width: 100%;
     opacity: 1;
     transform: translateX(0%); } }
 
 @keyframes slideLeftHide {
   0% {
     transform: translateX(0%);
-    opacity: 1; }
+    position: relative;
+    opacity: 1;
+    width: 100%; }
+  90% {
+    transform: translateX(300%);
+    opacity: 0; }
   100% {
-    opacity: 0;
     position: absolute;
-    transition-delay: 0.5s;
-    transform: translateX(200%); } }
+    opacity: 0;
+    display: none; } }
+
+@keyframes slideLeftButtons {
+  0% {
+    position: relative;
+    opacity: 0; }
+  100% {
+    position: relative;
+    opacity: 1;
+    display: inline; } }
 
 html {
+  overflow-x: hidden;
   font-size: 14px;
   position: relative;
   min-height: 100%;
