@@ -9,7 +9,7 @@ namespace Application.Services.News
         void CreateNews(NewsItem item);
         void UpdateNews(NewsItem item);
         void DeleteNews(NewsItem item);
-        List<TestNewsItemShow> GetAllNews();
+        List<NewsItem> GetAllNews();
         NewsItem GetNewsItem(string itemId);
 
         IEnumerable<NewsItem> GetNewsItem(string authorId = null, string category = null,
