@@ -34,7 +34,7 @@ namespace Application.Services.Settings
         /// <param name="setting"></param>
         void DeleteSetting(Setting setting);
 
-        Dictionary<string, string> GetAllSettingsDictionary { get; }
+        Dictionary<string, string> SettingsDictionary { get; }
         ICollection<Setting> GetAllSettings();
 
         Setting GetSettingById(string id);
