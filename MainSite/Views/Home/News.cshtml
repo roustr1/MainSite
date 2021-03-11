@@ -7,7 +7,7 @@
 <div class="card-panel row">
     @foreach (var item in news.GetAllNews())
     {
-        <div class="col row card_news">
+        <div class="card_news">
             <div class="card_news-image"><img src="@item.UrlImg" alt="" /></div>
             <div class="card_news-main">
                 <div class="card_news-main-header"><span class="bold">@item.AutorFio</span> разместил сообщение в разделе <a href="@item.MenuItemAction">@item.MenuItemName</a></div>
