@@ -2,7 +2,6 @@
 using System.IO;
 using Application.Dal;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using File = Application.Dal.Domain.Files.File;
 
 namespace Application.Services.Files
@@ -13,14 +12,14 @@ namespace Application.Services.Files
      {
         #region Fields
 
-        private readonly ApplicationContext _context;
+        private readonly IRepository<File> _repository;
         #endregion
 
         #region Ctor
 
-        public FileDownloadService(ApplicationContext context)
+        public FileDownloadService(IRepository<File> repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         #endregion
@@ -37,7 +36,7 @@ namespace Application.Services.Files
             if (string.IsNullOrEmpty(downloadId))
                 return null;
 
-            return _context.Files.Find(downloadId);
+            return _repository.Get(downloadId);
         }
 
 
@@ -50,10 +49,7 @@ namespace Application.Services.Files
         {
             if (file == null)
                 throw new ArgumentNullException(nameof(file));
-            _context.Files.Remove(file);
-            _context.SaveChanges();
-            //event notification
-            //_eventPubisher.EntityDeleted(file);
+            _repository.Delete(file);
         }
 
         /// <summary>
@@ -64,10 +60,7 @@ namespace Application.Services.Files
         {
             if (download == null)
                 throw new ArgumentNullException(nameof(download));
-            _context.Files.Add(download);
-            _context.SaveChanges();
-            //event notification
-            //  _eventPubisher.EntityInserted(download);
+            _repository.Add(download);
         }
 
         /// <summary>
@@ -78,10 +71,7 @@ namespace Application.Services.Files
         {
             if (download == null)
                 throw new ArgumentNullException(nameof(download));
-            _context.Entry(download).State = EntityState.Modified;
-            _context.SaveChanges();
-            //event notification
-          //  _eventPubisher.EntityUpdated(download);
+            _repository.Update(download);
         }
 
         /// <summary>
