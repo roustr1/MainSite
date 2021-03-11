@@ -2,6 +2,7 @@
 using Application.Dal.Domain.Files;
 using Application.Dal.Domain.Menu;
 using Application.Dal.Domain.News;
+using Application.Dal.Domain.Settings;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Dal
@@ -12,6 +13,8 @@ namespace Application.Dal
         public DbSet<File> Files { get; set; }
         public DbSet<FileBinary> FileBinary { get; set; }
         public DbSet<NewsItem> NewsItems { get; set; }
+
+        public DbSet<Setting> Settings { get; set; }
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)

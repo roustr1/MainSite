@@ -6,6 +6,7 @@
     <StartupObject>MainSite.Program</StartupObject>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <UserSecretsId>236f31b2-20c2-4340-954c-62e95144b581</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

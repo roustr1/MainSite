@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Application.Services.Birthday;
+using Application.Services.Settings;
 
 namespace MainSite
 {
@@ -50,6 +51,7 @@ namespace MainSite
             services.AddTransient<IActionContextAccessor, ActionContextAccessor>();
             services.AddTransient<IConfiguration>(p => Configuration);
 
+            services.AddTransient<ISettingsService, SettingsService>();
 
             services.AddTransient<INewsService, NewsService>();
             services.AddTransient<IBirthdayService, BirthdayService>();
