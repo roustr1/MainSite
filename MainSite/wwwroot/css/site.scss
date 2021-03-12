@@ -100,17 +100,30 @@ body {
     background-color: $otherColor;
 
     header {
-        color:$otherTextColor;
+        color: $otherTextColor;
         box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
         transition: box-shadow .25s;
-        & .nav-header{
-            color:$otherTextColor;
-            & a{
-                color:$otherTextColor;
+
+        #openMenu {
+            margin-left: auto;
+        }
+
+        .secondMenu {
+            margin-left: auto;
+        }
+
+
+        & .nav-header {
+            color: $otherTextColor;
+
+            & a {
+                color: $otherTextColor;
             }
+
             box-shadow: none;
             background-color: $headerColor;
         }
+
         background-color: $headerColor;
     }
 
@@ -119,11 +132,13 @@ body {
         bottom: 0;
         width: 100%;
         white-space: nowrap;
+
         nav {
             a {
-                color:$otherTextColor;
+                color: $otherTextColor;
             }
-            color:$otherTextColor;
+
+            color: $otherTextColor;
             background-color: $footerColor;
             line-height: 30px;
             height: auto;

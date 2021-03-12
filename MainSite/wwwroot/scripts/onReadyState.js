@@ -10,10 +10,10 @@ function setHeightChildrenBlock(el) {
 function eventClickMobileIconMenu() {
     //выбираем нужные элементы
     var el = document.getElementById('openMenu');
-    el.onclick = function(e) {
-        var secondMenuHtml = document.querySelector('.secondMenu');
+    el.onclick = function (e) {
+        var secondMenuHtml = document.querySelector('.secondMenu-infoUser').innerHTML + document.querySelector('.secondMenu-settingsUser').innerHTML;
         var secondMenuBlock = document.querySelector('.secondMenuBlock');
-        secondMenuBlock.innerHTML = secondMenuHtml.innerHTML;
+        secondMenuBlock.innerHTML = secondMenuHtml;
         var menuBLock = document.getElementById('menuBlock');
         menuBLock.classList.toggle('active');
      };
@@ -24,11 +24,12 @@ document.addEventListener('DOMContentLoaded', function() {
     var dropdownOptions = {
         inDuration: 500,
         outDuration: 425,
-        constrain_width: false, // Does not change width of dropdown to that of the activator
+        constrain_width: true,
+        coverTrigger: false,// Does not change width of dropdown to that of the activator
        // hover: true, // Activate on hover
         //gutter: (document.getElementsByClassName('dropdown-content')[0].width *3)/2.5 + 5, // Spacing from edge
         belowOrigin: false, // Displays dropdown below the button
-        alignment: 'left' // Displays dropdown with edge aligned to the left of button
+        alignment: 'center' // Displays dropdown with edge aligned to the left of button
     };
     var instances = M.Dropdown.init(elems, dropdownOptions);
 });
