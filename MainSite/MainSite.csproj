@@ -10,6 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\files\18188e0d-9088-4e65-b04e-dd1bbb0ca0f6_0.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Application.Dal\Application.Dal.csproj" />
     <ProjectReference Include="..\Application.Services\Application.Services.csproj" />
   </ItemGroup>
@@ -17,6 +21,7 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Content\" />
+    <Folder Include="wwwroot\files\" />
   </ItemGroup>
 
   <ItemGroup>

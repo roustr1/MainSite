@@ -56,7 +56,7 @@ namespace Application.Services.Settings
 
         public void DeleteSetting(Setting setting) => _settingsRepository.Delete(setting);
 
-        public Dictionary<string, string> GetAllSettingsDictionary
+        public Dictionary<string, string> SettingsDictionary
         {
             get
             {
