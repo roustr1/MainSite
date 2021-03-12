@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Application.Services.Menu
+namespace Application.Services.Utils
 {
     /// <summary>
     /// Класс преобразующий русскоязычные имена в транслит для корректного роутинга
