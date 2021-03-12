@@ -16,13 +16,10 @@
             <div class="container">
                 <div class="nav-wrapper">
                     <a href="#" id="openMenu" data-target="mobile-demo" class="sidenav-trigger" style="float: right;"><i class="material-icons">menu</i></a>
-                    <div class="valign-wrapper" style="position: absolute; top: 6px;">
+                    <a style="cursor: pointer;" asp-area="" asp-controller="Home" asp-action="Index" class="valign-wrapper" style="position: absolute; top: 6px;">
                         <img src="@service.SettingsDictionary.GetValueOrDefault("Application.Icon","/content/layout_icons/header.png")" width="50" height="50" />
-                        <a style="cursor: pointer;" asp-area="" asp-controller="Home" asp-action="Index">
-                            @service.SettingsDictionary.GetValueOrDefault("Application.Name", "ЯРГУ ТГО")
-                        </a>
-
-                    </div>
+                        @service.SettingsDictionary.GetValueOrDefault("Application.Name", "")
+                    </a>
                     <ul class="right hide-on-med-and-down secondMenu">
                         <li>
                             <div class="valign-wrapper" style="width:100%; padding-right: 15px;">
