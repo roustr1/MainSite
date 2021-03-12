@@ -10,10 +10,10 @@ function setHeightChildrenBlock(el) {
 function eventClickMobileIconMenu() {
     //выбираем нужные элементы
     var el = document.getElementById('openMenu');
-    el.onclick = function(e) {
-        var secondMenuHtml = document.querySelector('.secondMenu');
+    el.onclick = function (e) {
+        var secondMenuHtml = document.querySelector('.secondMenu-infoUser').innerHTML + document.querySelector('.secondMenu-settingsUser').innerHTML;
         var secondMenuBlock = document.querySelector('.secondMenuBlock');
-        secondMenuBlock.innerHTML = secondMenuHtml.innerHTML;
+        secondMenuBlock.innerHTML = secondMenuHtml;
         var menuBLock = document.getElementById('menuBlock');
         menuBLock.classList.toggle('active');
      };

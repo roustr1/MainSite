@@ -15,33 +15,35 @@
         <nav class="nav-header">
             <div class="container">
                 <div class="nav-wrapper">
-                    <a href="#" id="openMenu" data-target="mobile-demo" class="sidenav-trigger" style="float: right;"><i class="material-icons">menu</i></a>
-                    <a style="cursor: pointer;" asp-area="" asp-controller="Home" asp-action="Index" class="valign-wrapper" style="position: absolute; top: 6px;">
-                        <img src="@service.SettingsDictionary.GetValueOrDefault("Application.Icon","/content/layout_icons/header.png")" width="50" height="50" />
-                        @service.SettingsDictionary.GetValueOrDefault("Application.Name", "")
-                    </a>
-                    <ul class="right hide-on-med-and-down secondMenu">
-                        <li>
-                            <div class="valign-wrapper" style="width:100%; padding-right: 15px;">
-                                <a href="#"><i class="material-icons prefix">search</i></a>
-                                <input placeholder="Поиск" type="text">
-                            </div>
-                        </li>
-                        <li>
-                            <div>
-                                <a data-target='dropdown1' class="dropdown-trigger valign-wrapper" style="padding: 0px;">
-                                    <span>Долгопрудный А.Р.</span>
-                                    <i class="material-icons">keyboard_arrow_down</i>
-                                    <img class="rectangle" src="~/content/layout_icons/user.png" alt="" />
+                    <div class="valign-wrapper">
+                        <a style="cursor: pointer;" asp-area="" asp-controller="Home" asp-action="Index" class="valign-wrapper">
+                            <img src="@service.SettingsDictionary.GetValueOrDefault("Application.Icon","/content/layout_icons/header.png")" width="50" height="50" />
+                            @service.SettingsDictionary.GetValueOrDefault("Application.Name", "")
+                        </a>
+                        <a href="#" id="openMenu" data-target="mobile-demo" class="sidenav-trigger" style="float: right;"><i class="material-icons">menu</i></a>
+                        <ul class="right hide-on-med-and-down secondMenu">
+                            <li>
+                                <div class="valign-wrapper" style="width:100%; padding-right: 15px;">
+                                    <a href="#"><i class="material-icons prefix">search</i></a>
+                                    <input placeholder="Поиск" type="text">
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <a data-target='dropdown1' class="dropdown-trigger valign-wrapper" style="padding: 0px;">
+                                        <span class="secondMenu-infoUser">Долгопрудный А.Р.</span>
+                                        <i class="material-icons">keyboard_arrow_down</i>
+                                        <img class="rectangle" src="~/content/layout_icons/user.png" alt="" />
 
-                                </a>
-                                <ul id='dropdown1' class='dropdown-content'>
-                                    <li><a href="#!"><i class="material-icons">home</i>Личный кабинет</a></li>
-                                    <li><a href="#!"><i class="material-icons">cloud</i>Управление сервисами</a></li>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
+                                    </a>
+                                    <ul id='dropdown1' class='dropdown-content secondMenu-settingsUser'>
+                                        <li><a href="#!"><i class="material-icons">home</i>Личный кабинет</a></li>
+                                        <li><a href="#!"><i class="material-icons">cloud</i>Управление сервисами</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </nav>
