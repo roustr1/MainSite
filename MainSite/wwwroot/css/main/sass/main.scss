@@ -11,6 +11,10 @@ $paddingTopBlock: 5px !default;
 #mainBlock {
     font-size: $fonSizeMainBLock;
 
+    & > div:last-child {
+        margin-bottom: 100px;
+    }
+
     .card-panel {
         border-radius: 8px;
         padding: $paddingTopBlock $paddingRightBlock $paddingBottomBlock $paddingLeftBlock;
@@ -134,6 +138,19 @@ $paddingTopBlock: 5px !default;
             height: max-content;
             flex-grow: 1;
             justify-content: flex-end;
+        }
+    }
+    /*Оформление блока Информация по новости*/
+    .detailsNew {
+        & > div {
+            padding: 10px 0px;
+            padding-right: 5px;
+        }
+
+        #dropdownFiles {
+            & * {
+                color: #64b5f6 !important;
+            }
         }
     }
     /*Оформление формы создание сообщения*/

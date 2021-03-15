@@ -136,7 +136,10 @@
   font-size: 14px;
   /*Оформление блока день рождение(birthday)*/
   /*Оформление блока новостей*/
+  /*Оформление блока Информация по новости*/
   /*Оформление формы создание сообщения*/ }
+  #mainBlock > div:last-child {
+    margin-bottom: 100px; }
   #mainBlock .card-panel {
     border-radius: 8px;
     padding: 5px 15px 5px 15px; }
@@ -218,6 +221,11 @@
       height: max-content;
       flex-grow: 1;
       justify-content: flex-end; }
+  #mainBlock .detailsNew > div {
+    padding: 10px 0px;
+    padding-right: 5px; }
+  #mainBlock .detailsNew #dropdownFiles * {
+    color: #64b5f6 !important; }
   #mainBlock .creator {
     margin-bottom: 1rem;
     margin-left: -0.75rem;
@@ -330,8 +338,11 @@ html {
   @media (min-width: 768px) {
     html {
       font-size: 16px; } }
+  html .dropdown-content {
+    width: auto !important;
+    height: auto !important; }
 
-@media (max-width: 1100px) {
+@media (max-width: 1260px) {
   .container {
     width: 95%; } }
 
