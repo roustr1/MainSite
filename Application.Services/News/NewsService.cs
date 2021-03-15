@@ -146,7 +146,7 @@ namespace Application.Services.News
         /// <param name="category">Категория</param>
         /// <param name="startDate">С даты</param>
         /// <param name="endDate">По дату</param>
-        public IEnumerable<NewsItem> GetNewsItem(string authorId = null, string category = null,
+        public IQueryable<NewsItem> GetNewsItem(string authorId = null, string category = null,
             DateTime? startDate = null, DateTime? endDate = null, bool isNewest = true)
         {
             var collection = _newsRepository.GetAll()
@@ -156,8 +156,10 @@ namespace Application.Services.News
                 .Where(a => endDate == null || a.LastChangeDate <= endDate)
                 .SortByNewestOrOldest(isNewest, item => item.CreatedDate);
             
-            return collection.ToList();
+            return collection.AsQueryable();
         }
+
+ 
         #endregion
     }
 }

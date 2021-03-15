@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 
-namespace MainSite.Models
+namespace MainSite.Models.News
 {
     public class NewsItemModel
     {

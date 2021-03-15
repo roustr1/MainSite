@@ -71,6 +71,6 @@ namespace Application.Services.Settings
 
         public Setting GetSettingById(string id) => _settingsRepository.Get(id);
 
-        public ICollection<Setting> GetAllSettings() => (ICollection<Setting>)_settingsRepository.GetAll();
+        public ICollection<Setting> GetAllSettings() => _settingsRepository.GetAll().ToList();
     }
 }

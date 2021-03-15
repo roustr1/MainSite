@@ -33,6 +33,7 @@
                     @Html.DisplayFor(modelItem => item.Value)
                 </td>
                 <td>
+                    @Html.ActionLink("Обновить", "Update", "Settings", new { item.Id })
                     @Html.ActionLink("Удалить", "Delete", "Settings", new { item.Id })
                 </td>
             </tr>
