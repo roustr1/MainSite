@@ -440,5 +440,176 @@ namespace UnitTests
             Assert.IsTrue(result[2].LastChangeDate == createData2021);
         }
 
+        [Test]
+        public void GetNewsItem_FilterByNotExistCategories_ReturnEmptyCollection()
+        {
+            DateTime data = new DateTime(2019, 01, 01, 12, 00, 00);
+
+            NewsItem newsItem1 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = null,
+                Description = "Description1",
+                Files = null,
+                Header = "Header1",
+                CreatedDate = data,
+                LastChangeDate = data
+            };
+            NewsItem newsItem2 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = null,
+                Description = "Description2",
+                Files = null,
+                Header = "Header2",
+                CreatedDate = data,
+                LastChangeDate = data
+            };
+            NewsItem newsItem3 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = null,
+                Description = "Description3",
+                Files = null,
+                Header = "Header3",
+                CreatedDate = data,
+                LastChangeDate = data
+            };
+
+            Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
+            mock.Setup(m => m.GetAll()).Returns(new List<NewsItem>()
+            {
+                newsItem1, newsItem2, newsItem3
+            });
+
+            NewsService newsService = new NewsService(mock.Object);
+            List<NewsItem> result = (List<NewsItem>)newsService.GetNewsItem(authorId: null, category: Guid.NewGuid().ToString());
+
+            Assert.IsTrue(result != null);
+            Assert.IsTrue(result.Count == 0);
+        }
+
+        [Test]
+        public void GetNewsItem_FilterByCategories_ReturnOneItem()
+        {
+            string guidCategory = Guid.NewGuid().ToString();
+
+            DateTime data = new DateTime(2019, 01, 01, 12, 00, 00);
+
+            NewsItem newsItem1 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = null,
+                Description = "Description1",
+                Files = null,
+                Header = "Header1",
+                CreatedDate = data,
+                LastChangeDate = data
+            };
+            NewsItem newsItem2 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = guidCategory,
+                Description = "Description2",
+                Files = null,
+                Header = "Header2",
+                CreatedDate = data,
+                LastChangeDate = data
+            };
+            NewsItem newsItem3 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = null,
+                Description = "Description3",
+                Files = null,
+                Header = "Header3",
+                CreatedDate = data,
+                LastChangeDate = data
+            };
+            NewsItem newsItem4 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = null,
+                Description = "Description4",
+                Files = null,
+                Header = "Header4",
+                CreatedDate = data,
+                LastChangeDate = data
+            };
+
+            Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
+            mock.Setup(m => m.GetAll()).Returns(new List<NewsItem>()
+            {
+                newsItem1, newsItem2, newsItem3, newsItem4
+            });
+
+            NewsService newsService = new NewsService(mock.Object);
+            List<NewsItem> result = (List<NewsItem>)newsService.GetNewsItem(authorId: null, category: guidCategory);
+
+            Assert.IsTrue(result != null);
+            Assert.IsTrue(result.Count == 1);
+
+        }
+
+        [Test]
+        public void GetNewsItem_FilterManyItemsWithCategoriesByExistCategory_ReturnManyItems()
+        {
+            string guidCategory = Guid.NewGuid().ToString();
+
+            DateTime data = new DateTime(2019, 01, 01, 12, 00, 00);
+
+            NewsItem newsItem1 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = null,
+                Description = "Description1",
+                Files = null,
+                Header = "Header1",
+                CreatedDate = data,
+                LastChangeDate = data
+            };
+            NewsItem newsItem2 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = guidCategory,
+                Description = "Description2",
+                Files = null,
+                Header = "Header2",
+                CreatedDate = data,
+                LastChangeDate = data
+            };
+            NewsItem newsItem3 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = guidCategory,
+                Description = "Description3",
+                Files = null,
+                Header = "Header3",
+                CreatedDate = data,
+                LastChangeDate = data
+            };
+            NewsItem newsItem4 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = null,
+                Description = "Description4",
+                Files = null,
+                Header = "Header4",
+                CreatedDate = data,
+                LastChangeDate = data
+            };
+
+            Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
+            mock.Setup(m => m.GetAll()).Returns(new List<NewsItem>()
+            {
+                newsItem1, newsItem2, newsItem3, newsItem4
+            });
+
+            NewsService newsService = new NewsService(mock.Object);
+            List<NewsItem> result = (List<NewsItem>)newsService.GetNewsItem(authorId: null, category: guidCategory);
+
+            Assert.IsTrue(result != null);
+            Assert.IsTrue(result.Count == 2);
+        }
     }
 }
