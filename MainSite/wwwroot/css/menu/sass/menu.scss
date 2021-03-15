@@ -1,9 +1,6 @@
 ﻿$heigh_a_px : 50px;
 
 @keyframes widthBlock {
-  0%, 100% {
-    position: inherit;
-  }
   0%{
       transform: translateX(-20%);
       height: 0;
@@ -64,6 +61,7 @@
                 top: 0;
 
                 &.active {
+                    position: inherit;
                     animation: widthBlock;
                     animation-name: widthBlock;
                     animation-duration: 0.5s;

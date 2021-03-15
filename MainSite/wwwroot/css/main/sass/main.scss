@@ -3,11 +3,17 @@ $mainTextColor: black;
 $animationBtnTextColor:#fff;
 $animationBorderBtnTextColor:#64b5f6;
 
+$paddingLeftBlock: 15px !default;
+$paddingRightBlock: 15px !default;
+$paddingBottomBlock: 5px !default;
+$paddingTopBlock: 5px !default;
+
 #mainBlock {
     font-size: $fonSizeMainBLock;
 
     .card-panel {
         border-radius: 8px;
+        padding: $paddingTopBlock $paddingRightBlock $paddingBottomBlock $paddingLeftBlock;
     }
 
     .btn {
@@ -32,24 +38,16 @@ $animationBorderBtnTextColor:#64b5f6;
     }
     /*Оформление блока день рождение(birthday)*/
     .card_birthday {
-        padding-top: 10px;
-        padding-bottom: 10px;
 
         &-title {
-            margin-bottom: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-
-            & > * {
-                text-align: center;
-            }
-
-            & > * {
-                padding-bottom: 8px;
-            }
+            width: 180px;
+            float: left;
+            font-size: 17px;
 
             @media (max-width: 992px) {
+                float: none;
+                text-align: center;
+                padding-bottom: 15px;
                 font-size: 20px;
                 width: 100%;
             }
@@ -64,8 +62,7 @@ $animationBorderBtnTextColor:#64b5f6;
                 flex: none;
                 flex-direction: column;
                 align-items: center;
-                padding: 5px;
-                padding-right: 20px;
+                padding-right: 40px;
                 align-items: center;
             }
 
@@ -155,7 +152,13 @@ $animationBorderBtnTextColor:#64b5f6;
         position: relative;
 
         &-main {
-            padding-bottom: 0px;
+
+            &-textForm {
+                & > .input-field {
+                    margin: 0px;
+                    padding-top: 20px;
+                }
+            }
 
             & > .close {
                 position: absolute;
@@ -212,7 +215,7 @@ $animationBorderBtnTextColor:#64b5f6;
             justify-content: flex-end;
 
             &.active {
-                display:none;
+                display: none;
             }
 
             &.desActive {

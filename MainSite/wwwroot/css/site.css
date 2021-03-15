@@ -26,8 +26,6 @@
 }
 */
 @keyframes widthBlock {
-  0%, 100% {
-    position: inherit; }
   0% {
     transform: translateX(-20%);
     height: 0;
@@ -74,6 +72,7 @@
       left: 0;
       top: 0; }
       #menuBlock > .menu li ul.active {
+        position: inherit;
         animation: widthBlock;
         animation-name: widthBlock;
         animation-duration: 0.5s;
@@ -139,7 +138,8 @@
   /*Оформление блока новостей*/
   /*Оформление формы создание сообщения*/ }
   #mainBlock .card-panel {
-    border-radius: 8px; }
+    border-radius: 8px;
+    padding: 5px 15px 5px 15px; }
   #mainBlock .btn-defaultMainSite {
     animation-fill-mode: forwards;
     background-color: #fff;
@@ -154,39 +154,33 @@
     #mainBlock .btn-defaultMainSite:hover {
       background-color: #64b5f6;
       color: white; }
-  #mainBlock .card_birthday {
-    padding-top: 10px;
-    padding-bottom: 10px; }
-    #mainBlock .card_birthday-title {
-      margin-bottom: 10px;
+  #mainBlock .card_birthday-title {
+    width: 180px;
+    float: left;
+    font-size: 17px; }
+    @media (max-width: 992px) {
+      #mainBlock .card_birthday-title {
+        float: none;
+        text-align: center;
+        padding-bottom: 15px;
+        font-size: 20px;
+        width: 100%; } }
+  #mainBlock .card_birthday-content {
+    display: flex;
+    overflow-x: auto; }
+    #mainBlock .card_birthday-content > div {
       display: flex;
+      flex: none;
       flex-direction: column;
+      align-items: center;
+      padding-right: 40px;
       align-items: center; }
-      #mainBlock .card_birthday-title > * {
-        text-align: center; }
-      #mainBlock .card_birthday-title > * {
-        padding-bottom: 8px; }
-      @media (max-width: 992px) {
-        #mainBlock .card_birthday-title {
-          font-size: 20px;
-          width: 100%; } }
-    #mainBlock .card_birthday-content {
-      display: flex;
-      overflow-x: auto; }
-      #mainBlock .card_birthday-content > div {
-        display: flex;
-        flex: none;
-        flex-direction: column;
-        align-items: center;
-        padding: 5px;
-        padding-right: 20px;
-        align-items: center; }
-      #mainBlock .card_birthday-content::-webkit-scrollbar-thumb {
-        border-radius: 8px;
-        width: 3px;
-        background-color: #eeeeee; }
-      #mainBlock .card_birthday-content::-webkit-scrollbar {
-        width: 0; }
+    #mainBlock .card_birthday-content::-webkit-scrollbar-thumb {
+      border-radius: 8px;
+      width: 3px;
+      background-color: #eeeeee; }
+    #mainBlock .card_birthday-content::-webkit-scrollbar {
+      width: 0; }
   #mainBlock .card_news {
     display: flex;
     flex-direction: row;
@@ -232,12 +226,14 @@
     #mainBlock .creator > .gamutom-esoutasto {
       display: none; }
     #mainBlock .creator-main {
-      padding-bottom: 0px;
       opacity: 0;
       position: absolute;
       width: 0;
       display: none;
       /**/ }
+      #mainBlock .creator-main-textForm > .input-field {
+        margin: 0px;
+        padding-top: 20px; }
       #mainBlock .creator-main > .close {
         position: absolute;
         right: 15px;

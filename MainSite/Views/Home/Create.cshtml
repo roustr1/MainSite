@@ -9,8 +9,8 @@
         <a class="error close" v-on:click="showCreator(false, true)"><i class="material-icons">close</i></a>
 
         <form asp-action="Create" enctype="multipart/form-data" method="post">
-            <div class="row">
-                <div class="input-field col s12 m12" style="margin: 0px;">
+            <div class="row creator-main-textForm" >
+                <div class="input-field col s12 m12">
                     <i class="material-icons prefix">message</i>
                     <textarea asp-for="Header" id="TextMessage" class="materialize-textarea"></textarea>
                     <label asp-for="Header" class="active" for="TextMessage">Введите текст</label>
