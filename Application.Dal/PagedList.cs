@@ -4,7 +4,6 @@ using System.Linq;
 
 namespace Application.Dal
 {
-
     /// <summary>
     /// Paged list
     /// </summary>
@@ -104,5 +103,4 @@ namespace Application.Dal
         /// </summary>
         public bool HasNextPage => PageIndex + 1 < TotalPages;
     }
-
 }
