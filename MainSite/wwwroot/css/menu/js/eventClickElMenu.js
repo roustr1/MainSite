@@ -10,8 +10,11 @@ function eventClickElementMenu() {
             var checkFirstNode = el.classList.contains('active');//el.parentElement.parentElement.classList.contains('menu');
             if(!checkFirstNode) {
                 var activeElementsFirstChildrensMainNode = el.parentElement.querySelectorAll('*.active');
-                if(activeElementsFirstChildrensMainNode.length > 0) {
-                    activeElementsFirstChildrensMainNode.forEach(function (element) { element.classList.remove('active'); });
+                if (activeElementsFirstChildrensMainNode.length > 0) {
+                    for (var elementIndex in activeElementsFirstChildrensMainNode) {
+                        if (typeof activeElementsFirstChildrensMainNode[elementIndex].classList != "undefined")
+                            activeElementsFirstChildrensMainNode[elementIndex].classList.remove('active');
+                    }
                     return null;
                 }
             }

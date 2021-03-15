@@ -3,11 +3,21 @@ $mainTextColor: black;
 $animationBtnTextColor:#fff;
 $animationBorderBtnTextColor:#64b5f6;
 
+$paddingLeftBlock: 15px !default;
+$paddingRightBlock: 15px !default;
+$paddingBottomBlock: 5px !default;
+$paddingTopBlock: 5px !default;
+
 #mainBlock {
     font-size: $fonSizeMainBLock;
 
+    & > div:last-child {
+        margin-bottom: 100px;
+    }
+
     .card-panel {
         border-radius: 8px;
+        padding: $paddingTopBlock $paddingRightBlock $paddingBottomBlock $paddingLeftBlock;
     }
 
     .btn {
@@ -32,24 +42,16 @@ $animationBorderBtnTextColor:#64b5f6;
     }
     /*Оформление блока день рождение(birthday)*/
     .card_birthday {
-        padding-top: 10px;
-        padding-bottom: 10px;
 
         &-title {
-            margin-bottom: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-
-            & > * {
-                text-align: center;
-            }
-
-            & > * {
-                padding-bottom: 8px;
-            }
+            width: 180px;
+            float: left;
+            font-size: 17px;
 
             @media (max-width: 992px) {
+                float: none;
+                text-align: center;
+                padding-bottom: 15px;
                 font-size: 20px;
                 width: 100%;
             }
@@ -64,8 +66,8 @@ $animationBorderBtnTextColor:#64b5f6;
                 flex: none;
                 flex-direction: column;
                 align-items: center;
-                padding: 5px;
-                padding-right: 20px;
+                padding-top: 10px;
+                padding-right: 40px;
                 align-items: center;
             }
 
@@ -85,6 +87,7 @@ $animationBorderBtnTextColor:#64b5f6;
         display: flex;
         flex-direction: row;
         align-items: flex-start;
+        padding-top: 10px;
 
         &-image {
             display: flex;
@@ -137,6 +140,19 @@ $animationBorderBtnTextColor:#64b5f6;
             justify-content: flex-end;
         }
     }
+    /*Оформление блока Информация по новости*/
+    .detailsNew {
+        & > div {
+            padding: 10px 0px;
+            padding-right: 5px;
+        }
+
+        #dropdownFiles {
+            & * {
+                color: #64b5f6 !important;
+            }
+        }
+    }
     /*Оформление формы создание сообщения*/
     .creator {
         //overflow: hidden;
@@ -148,14 +164,16 @@ $animationBorderBtnTextColor:#64b5f6;
             border-radius: 8px;
         }
 
-        & > .gamutom-esoutasto {
-            display: none;
-        }
-
         position: relative;
 
         &-main {
-            padding-bottom: 0px;
+
+            &-textForm {
+                & > .input-field {
+                    margin: 0px;
+                    padding-top: 10px;
+                }
+            }
 
             & > .close {
                 position: absolute;
@@ -211,8 +229,12 @@ $animationBorderBtnTextColor:#64b5f6;
             flex-direction: row;
             justify-content: flex-end;
 
+            @media (max-width: 700px) {
+                flex-direction: column;
+            }
+
             &.active {
-                display:none;
+                display: none;
             }
 
             &.desActive {
@@ -221,13 +243,6 @@ $animationBorderBtnTextColor:#64b5f6;
                 animation-timing-function: ease-in-out;
                 animation-fill-mode: forwards;
                 animation-iteration-count: 1;
-            }
-
-            & > * {
-                @media (max-width: 700px) {
-                    flex-grow: 1;
-                    flex-direction: column;
-                }
             }
         }
     }

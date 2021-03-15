@@ -24,6 +24,7 @@ namespace Application.Dal
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
             modelBuilder.Entity<Setting>().HasData(
                 new Setting[]
                 {
