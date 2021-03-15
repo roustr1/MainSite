@@ -154,7 +154,7 @@ namespace Application.Services.News
                 .Where(a => authorId == null || a.AutorFio == authorId || a.LastChangeAuthor == authorId)
                 .Where(a => startDate == null || a.LastChangeDate >= startDate)
                 .Where(a => endDate == null || a.LastChangeDate <= endDate)
-                .SortByNewestOrOldest(isNewest, item => item.CreatedDate);
+                .SortByNewestOrOldest(isNewest, item => item.LastChangeDate);
             
             return collection.ToList();
         }
