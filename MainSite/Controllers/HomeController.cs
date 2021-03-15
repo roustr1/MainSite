@@ -3,9 +3,15 @@ using MainSite.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using System.Linq;
+using Application.Dal;
 using Application.Dal.Domain.News;
 using Application.Services.Files;
 using Application.Services.News;
+using Application.Services.Settings;
+using MainSite.Models.Common;
+using MainSite.Models.News;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace MainSite.Controllers
@@ -16,18 +22,32 @@ namespace MainSite.Controllers
         private readonly INewsService _newsService;
         private readonly IFileDownloadService _downloadService;
         private readonly IFileUploadService _uploadService;
+        private readonly ISettingsService _settingsService;
+        private static int _pagesize;
 
-        public HomeController(ILogger<HomeController> logger, INewsService newsService, IFileDownloadService downloadService, IFileUploadService uploadService)
+        public HomeController(ILogger<HomeController> logger, INewsService newsService, IFileDownloadService downloadService, IFileUploadService uploadService, ISettingsService settingsService)
         {
             _logger = logger;
             _newsService = newsService;
             _downloadService = downloadService;
             _uploadService = uploadService;
+            _settingsService = settingsService;
+            SetPageSize(); 
         }
 
-        public IActionResult Index()
+        private void SetPageSize()
         {
-            return View();
+            _pagesize = 3;
+            if (_settingsService.SettingsDictionary.TryGetValue("Page.PageSize", out var _value))
+                int.TryParse(_value, out _pagesize);
+        }
+
+
+        public IActionResult Index(int page = 0, string category = null)
+        {
+
+            var model = _newsPaged(page, _pagesize);
+            return View(model);
         }
 
         public IActionResult News(string category = null)
@@ -39,8 +59,8 @@ namespace MainSite.Controllers
         [HttpGet]
         public IActionResult Create(string currentCategory)
         {
-
-            return View();
+            var model = new NewsItemModel();
+            return View(model);
         }
 
         //[Route("Create")]
@@ -55,12 +75,9 @@ namespace MainSite.Controllers
                     Description = model.Description,
                     AutorFio = User?.Identity?.Name ?? "Неавторизован",
                     CreatedDate = DateTime.Now,
-                    Name =  model.Header,
-                    Category =  model.Category,
-                    UrlImg = "",
-                    
-                    
-
+                    Name = model.Header,
+                    Category = model.Category,
+                    UrlImg = ""
                 };
 
                 //uploadFiles 
@@ -112,6 +129,33 @@ namespace MainSite.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [NonAction]
+        private NewsListModel _newsPaged(int? page, int? pagesize, string category = null)
+        {
+
+            int pageIndex = 0;
+            if (page > 0)
+            {
+                pageIndex = page.Value - 1;
+            }
+            var pageSize = pagesize.GetValueOrDefault(10);
+            var records = _newsService.GetNewsItem(category: category);
+
+            var list = new PagedList<NewsItem>(records, pageIndex, pageSize);
+            var model = new NewsListModel
+            {
+                News = list,
+                PagerModel = new PagerModel
+                {
+                    PageSize = list.PageSize,
+                    TotalRecords = list.TotalCount,
+                    PageIndex = list.PageIndex,
+                    RouteValues = new RouteValues { page = pageIndex, category = category },
+                }
+            };
+            return model;
         }
     }
 }

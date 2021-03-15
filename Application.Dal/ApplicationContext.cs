@@ -44,7 +44,23 @@ namespace Application.Dal
                         Id= Guid.NewGuid().ToString(),
                         Name = "Application.Copy"
                         ,Value = ""
+                    },
+#if DEBUG
+                    new Setting
+                    {
+                        Id=Guid.NewGuid().ToString(),
+                        Name =  "Page.PageSize",
+                        Value = 3.ToString()
                     }
+#endif
+#if RELEASE
+new Setting
+                    {
+                        Id=Guid.NewGuid().ToString(),
+                        Name =  "Page.PageSize",
+                        Value = 10.ToString()
+                    }
+#endif
                 });
         }
     }
