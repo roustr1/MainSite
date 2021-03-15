@@ -223,8 +223,6 @@
     position: relative; }
     #mainBlock .creator > .card-panel {
       border-radius: 8px; }
-    #mainBlock .creator > .gamutom-esoutasto {
-      display: none; }
     #mainBlock .creator-main {
       opacity: 0;
       position: absolute;
@@ -268,6 +266,9 @@
       display: flex;
       flex-direction: row;
       justify-content: flex-end; }
+      @media (max-width: 700px) {
+        #mainBlock .creator-menu {
+          flex-direction: column; } }
       #mainBlock .creator-menu.active {
         display: none; }
       #mainBlock .creator-menu.desActive {
@@ -276,10 +277,6 @@
         animation-timing-function: ease-in-out;
         animation-fill-mode: forwards;
         animation-iteration-count: 1; }
-      @media (max-width: 700px) {
-        #mainBlock .creator-menu > * {
-          flex-grow: 1;
-          flex-direction: column; } }
 
 @keyframes slideLeft {
   0% {
