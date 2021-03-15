@@ -122,6 +122,7 @@ namespace UnitTests
                 Files = null,
                 Header = "Header1",
                 CreatedDate = data2021,
+                LastChangeDate = data2021
             };
             NewsItem newsItem2 = new NewsItem()
             {
@@ -131,6 +132,7 @@ namespace UnitTests
                 Files = null,
                 Header = "Header2",
                 CreatedDate = data2019,
+                LastChangeDate = data2019
             };
             NewsItem newsItem3 = new NewsItem()
             {
@@ -140,6 +142,7 @@ namespace UnitTests
                 Files = null,
                 Header = "Header2",
                 CreatedDate = data2020,
+                LastChangeDate = data2020
             };
 
             Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
@@ -172,6 +175,7 @@ namespace UnitTests
                 Files = null,
                 Header = "Header1",
                 CreatedDate = data2021,
+                LastChangeDate = data2021
             };
             NewsItem newsItem2 = new NewsItem()
             {
@@ -181,6 +185,7 @@ namespace UnitTests
                 Files = null,
                 Header = "Header2",
                 CreatedDate = data2019,
+                LastChangeDate = data2019
             };
             NewsItem newsItem3 = new NewsItem()
             {
@@ -190,6 +195,7 @@ namespace UnitTests
                 Files = null,
                 Header = "Header2",
                 CreatedDate = data2020,
+                LastChangeDate = data2020
             };
 
             Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
