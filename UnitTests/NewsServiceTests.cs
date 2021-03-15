@@ -122,6 +122,7 @@ namespace UnitTests
                 Files = null,
                 Header = "Header1",
                 CreatedDate = data2021,
+                LastChangeDate = data2021
             };
             NewsItem newsItem2 = new NewsItem()
             {
@@ -131,6 +132,7 @@ namespace UnitTests
                 Files = null,
                 Header = "Header2",
                 CreatedDate = data2019,
+                LastChangeDate = data2019
             };
             NewsItem newsItem3 = new NewsItem()
             {
@@ -140,6 +142,7 @@ namespace UnitTests
                 Files = null,
                 Header = "Header2",
                 CreatedDate = data2020,
+                LastChangeDate = data2020
             };
 
             Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
@@ -172,6 +175,7 @@ namespace UnitTests
                 Files = null,
                 Header = "Header1",
                 CreatedDate = data2021,
+                LastChangeDate = data2021
             };
             NewsItem newsItem2 = new NewsItem()
             {
@@ -181,6 +185,7 @@ namespace UnitTests
                 Files = null,
                 Header = "Header2",
                 CreatedDate = data2019,
+                LastChangeDate = data2019
             };
             NewsItem newsItem3 = new NewsItem()
             {
@@ -190,6 +195,7 @@ namespace UnitTests
                 Files = null,
                 Header = "Header2",
                 CreatedDate = data2020,
+                LastChangeDate = data2020
             };
 
             Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
@@ -205,6 +211,405 @@ namespace UnitTests
             Assert.IsTrue(result[0].CreatedDate == data2021);
             Assert.IsTrue(result[1].CreatedDate == data2020);
             Assert.IsTrue(result[2].CreatedDate == data2019);
+        }
+
+        [Test]
+        public void GetNewsItem_ManyItemWithLastChangeDate_ReturnAllItemsAndOldestFirst()
+        {
+            DateTime createData2019 = new DateTime(2019, 01, 01, 12, 00, 00);
+            DateTime createData2020 = new DateTime(2020, 01, 01, 12, 00, 00);
+            DateTime createData2021 = new DateTime(2021, 01, 01, 12, 00, 00);
+
+            DateTime lastChangeData20211101 = new DateTime(2021, 11, 01, 12, 00, 00);
+            DateTime lastChangeData20211102 = new DateTime(2021, 11, 02, 12, 00, 00);
+            DateTime lastChangeData20211103 = new DateTime(2021, 11, 03, 12, 00, 00);
+
+            NewsItem newsItem1 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = null,
+                Description = "Description1",
+                Files = null,
+                Header = "Header1",
+                CreatedDate = createData2021,
+                LastChangeDate = lastChangeData20211101,
+            };
+            NewsItem newsItem2 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = null,
+                Description = "Description2",
+                Files = null,
+                Header = "Header2",
+                CreatedDate = createData2019,
+                LastChangeDate = lastChangeData20211102,
+            };
+            NewsItem newsItem3 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = null,
+                Description = "Description2",
+                Files = null,
+                Header = "Header2",
+                CreatedDate = createData2020,
+                LastChangeDate = lastChangeData20211103,
+            };
+
+            Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
+            mock.Setup(m => m.GetAll()).Returns(new List<NewsItem>()
+            {
+                newsItem1, newsItem2, newsItem3
+            });
+
+            NewsService newsService = new NewsService(mock.Object);
+            List<NewsItem> result = (List<NewsItem>)newsService.GetNewsItem(authorId: null, category: null, isNewest: false);
+
+            Assert.IsTrue(result != null);
+            Assert.IsTrue(result[0].LastChangeDate == lastChangeData20211101);
+            Assert.IsTrue(result[1].LastChangeDate == lastChangeData20211102);
+            Assert.IsTrue(result[2].LastChangeDate == lastChangeData20211103);
+        }
+
+        [Test]
+        public void GetNewsItem_ManyItemWithLastChangeDate_ReturnAllItemsAndNewestFirst()
+        {
+            DateTime createData2019 = new DateTime(2019, 01, 01, 12, 00, 00);
+            DateTime createData2020 = new DateTime(2020, 01, 01, 12, 00, 00);
+            DateTime createData2021 = new DateTime(2021, 01, 01, 12, 00, 00);
+
+            DateTime lastChangeData20211101 = new DateTime(2021, 11, 01, 12, 00, 00);
+            DateTime lastChangeData20211102 = new DateTime(2021, 11, 02, 12, 00, 00);
+            DateTime lastChangeData20211103 = new DateTime(2021, 11, 03, 12, 00, 00);
+
+            NewsItem newsItem1 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = null,
+                Description = "Description1",
+                Files = null,
+                Header = "Header1",
+                CreatedDate = createData2021,
+                LastChangeDate = lastChangeData20211101,
+            };
+            NewsItem newsItem2 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = null,
+                Description = "Description2",
+                Files = null,
+                Header = "Header2",
+                CreatedDate = createData2019,
+                LastChangeDate = lastChangeData20211102,
+            };
+            NewsItem newsItem3 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = null,
+                Description = "Description2",
+                Files = null,
+                Header = "Header2",
+                CreatedDate = createData2020,
+                LastChangeDate = lastChangeData20211103,
+            };
+
+            Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
+            mock.Setup(m => m.GetAll()).Returns(new List<NewsItem>()
+            {
+                newsItem1, newsItem2, newsItem3
+            });
+
+            NewsService newsService = new NewsService(mock.Object);
+            List<NewsItem> result = (List<NewsItem>)newsService.GetNewsItem(authorId: null, category: null, isNewest: true);
+
+            Assert.IsTrue(result != null);
+            Assert.IsTrue(result[0].LastChangeDate == lastChangeData20211103);
+            Assert.IsTrue(result[1].LastChangeDate == lastChangeData20211102);
+            Assert.IsTrue(result[2].LastChangeDate == lastChangeData20211101);
+        }
+
+        [Test]
+        public void GetNewsItem_ManyItemPartWithLastChangeDate_ReturnAllItemsAndOldestFirst()
+        {
+            DateTime createData2019 = new DateTime(2019, 01, 01, 12, 00, 00);
+            DateTime createData2020 = new DateTime(2020, 01, 01, 12, 00, 00);
+            DateTime createData2021 = new DateTime(2021, 01, 01, 12, 00, 00);
+
+            DateTime lastChangeData20211102 = new DateTime(2021, 11, 02, 12, 00, 00);
+            DateTime lastChangeData20211103 = new DateTime(2021, 11, 03, 12, 00, 00);
+
+            NewsItem newsItem1 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = null,
+                Description = "Description1",
+                Files = null,
+                Header = "Header1",
+                CreatedDate = createData2020,
+                LastChangeDate = createData2020,
+            };
+            NewsItem newsItem2 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = null,
+                Description = "Description2",
+                Files = null,
+                Header = "Header2",
+                CreatedDate = createData2019,
+                LastChangeDate = lastChangeData20211102,
+            };
+            NewsItem newsItem3 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = null,
+                Description = "Description2",
+                Files = null,
+                Header = "Header2",
+                CreatedDate = createData2020,
+                LastChangeDate = lastChangeData20211103,
+            };
+
+            Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
+            mock.Setup(m => m.GetAll()).Returns(new List<NewsItem>()
+            {
+                newsItem2, newsItem1, newsItem3
+            });
+
+            NewsService newsService = new NewsService(mock.Object);
+            List<NewsItem> result = (List<NewsItem>)newsService.GetNewsItem(authorId: null, category: null, isNewest: false);
+
+            Assert.IsTrue(result != null);
+            Assert.IsTrue(result[0].LastChangeDate == createData2020);
+            Assert.IsTrue(result[1].LastChangeDate == lastChangeData20211102);
+            Assert.IsTrue(result[2].LastChangeDate == lastChangeData20211103);
+        }
+
+        [Test]
+        public void GetNewsItem_ManyItemPartWithLastChangeDate_ReturnAllItemsAndNewestFirst()
+        {
+            DateTime createData2019 = new DateTime(2019, 01, 01, 12, 00, 00);
+            DateTime createData2020 = new DateTime(2020, 01, 01, 12, 00, 00);
+            DateTime createData2021 = new DateTime(2021, 01, 01, 12, 00, 00);
+
+            DateTime lastChangeData20211102 = new DateTime(2021, 11, 02, 12, 00, 00);
+            DateTime lastChangeData20211103 = new DateTime(2021, 11, 03, 12, 00, 00);
+
+            NewsItem newsItem1 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = null,
+                Description = "Description1",
+                Files = null,
+                Header = "Header1",
+                CreatedDate = createData2021,
+                LastChangeDate = createData2021,
+            };
+            NewsItem newsItem2 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = null,
+                Description = "Description2",
+                Files = null,
+                Header = "Header2",
+                CreatedDate = createData2019,
+                LastChangeDate = lastChangeData20211102,
+            };
+            NewsItem newsItem3 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = null,
+                Description = "Description2",
+                Files = null,
+                Header = "Header2",
+                CreatedDate = createData2020,
+                LastChangeDate = lastChangeData20211103,
+            };
+
+
+            Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
+            mock.Setup(m => m.GetAll()).Returns(new List<NewsItem>()
+            {
+                newsItem1, newsItem2, newsItem3
+            });
+
+            NewsService newsService = new NewsService(mock.Object);
+            List<NewsItem> result = (List<NewsItem>)newsService.GetNewsItem(authorId: null, category: null, isNewest: true);
+
+            Assert.IsTrue(result != null);
+            Assert.IsTrue(result[0].LastChangeDate == lastChangeData20211103);
+            Assert.IsTrue(result[1].LastChangeDate == lastChangeData20211102);
+            Assert.IsTrue(result[2].LastChangeDate == createData2021);
+        }
+
+        [Test]
+        public void GetNewsItem_FilterByNotExistCategories_ReturnEmptyCollection()
+        {
+            DateTime data = new DateTime(2019, 01, 01, 12, 00, 00);
+
+            NewsItem newsItem1 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = null,
+                Description = "Description1",
+                Files = null,
+                Header = "Header1",
+                CreatedDate = data,
+                LastChangeDate = data
+            };
+            NewsItem newsItem2 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = null,
+                Description = "Description2",
+                Files = null,
+                Header = "Header2",
+                CreatedDate = data,
+                LastChangeDate = data
+            };
+            NewsItem newsItem3 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = null,
+                Description = "Description3",
+                Files = null,
+                Header = "Header3",
+                CreatedDate = data,
+                LastChangeDate = data
+            };
+
+            Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
+            mock.Setup(m => m.GetAll()).Returns(new List<NewsItem>()
+            {
+                newsItem1, newsItem2, newsItem3
+            });
+
+            NewsService newsService = new NewsService(mock.Object);
+            List<NewsItem> result = (List<NewsItem>)newsService.GetNewsItem(authorId: null, category: Guid.NewGuid().ToString());
+
+            Assert.IsTrue(result != null);
+            Assert.IsTrue(result.Count == 0);
+        }
+
+        [Test]
+        public void GetNewsItem_FilterByCategories_ReturnOneItem()
+        {
+            string guidCategory = Guid.NewGuid().ToString();
+
+            DateTime data = new DateTime(2019, 01, 01, 12, 00, 00);
+
+            NewsItem newsItem1 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = null,
+                Description = "Description1",
+                Files = null,
+                Header = "Header1",
+                CreatedDate = data,
+                LastChangeDate = data
+            };
+            NewsItem newsItem2 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = guidCategory,
+                Description = "Description2",
+                Files = null,
+                Header = "Header2",
+                CreatedDate = data,
+                LastChangeDate = data
+            };
+            NewsItem newsItem3 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = null,
+                Description = "Description3",
+                Files = null,
+                Header = "Header3",
+                CreatedDate = data,
+                LastChangeDate = data
+            };
+            NewsItem newsItem4 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = null,
+                Description = "Description4",
+                Files = null,
+                Header = "Header4",
+                CreatedDate = data,
+                LastChangeDate = data
+            };
+
+            Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
+            mock.Setup(m => m.GetAll()).Returns(new List<NewsItem>()
+            {
+                newsItem1, newsItem2, newsItem3, newsItem4
+            });
+
+            NewsService newsService = new NewsService(mock.Object);
+            List<NewsItem> result = (List<NewsItem>)newsService.GetNewsItem(authorId: null, category: guidCategory);
+
+            Assert.IsTrue(result != null);
+            Assert.IsTrue(result.Count == 1);
+
+        }
+
+        [Test]
+        public void GetNewsItem_FilterManyItemsWithCategoriesByExistCategory_ReturnManyItems()
+        {
+            string guidCategory = Guid.NewGuid().ToString();
+
+            DateTime data = new DateTime(2019, 01, 01, 12, 00, 00);
+
+            NewsItem newsItem1 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = null,
+                Description = "Description1",
+                Files = null,
+                Header = "Header1",
+                CreatedDate = data,
+                LastChangeDate = data
+            };
+            NewsItem newsItem2 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = guidCategory,
+                Description = "Description2",
+                Files = null,
+                Header = "Header2",
+                CreatedDate = data,
+                LastChangeDate = data
+            };
+            NewsItem newsItem3 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = guidCategory,
+                Description = "Description3",
+                Files = null,
+                Header = "Header3",
+                CreatedDate = data,
+                LastChangeDate = data
+            };
+            NewsItem newsItem4 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = null,
+                Description = "Description4",
+                Files = null,
+                Header = "Header4",
+                CreatedDate = data,
+                LastChangeDate = data
+            };
+
+            Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
+            mock.Setup(m => m.GetAll()).Returns(new List<NewsItem>()
+            {
+                newsItem1, newsItem2, newsItem3, newsItem4
+            });
+
+            NewsService newsService = new NewsService(mock.Object);
+            List<NewsItem> result = (List<NewsItem>)newsService.GetNewsItem(authorId: null, category: guidCategory);
+
+            Assert.IsTrue(result != null);
+            Assert.IsTrue(result.Count == 2);
         }
     }
 }

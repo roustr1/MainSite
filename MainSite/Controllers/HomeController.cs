@@ -69,15 +69,21 @@ namespace MainSite.Controllers
         {
             if (ModelState.IsValid)
             {
+                var dataTimeNow = DateTime.Now;
                 var entity = new NewsItem
                 {
                     Header = model.Header,
                     Description = model.Description,
                     AutorFio = User?.Identity?.Name ?? "Неавторизован",
-                    CreatedDate = DateTime.Now,
-                    Name = model.Header,
-                    Category = model.Category,
-                    UrlImg = ""
+                    CreatedDate = dataTimeNow,
+                    LastChangeDate = dataTimeNow,
+                    Name =  model.Header,
+                    Category =  model.Category,
+                    UrlImg = "",                
+                    
+
+
+
                 };
 
                 //uploadFiles 
