@@ -24,7 +24,23 @@ namespace Application.Dal
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+            modelBuilder.Entity<Setting>().HasData(
+                new Setting[]
+                {
+                    new Setting
+                    {
+                        Name = "Application.Icon",
+                        Value = "/content/layout_icons/header.png"
+                    },
+                    new Setting
+                    {
+                        Name = "Application.Name"
+                    }
+                    ,new Setting
+                    {
+                        Name = "Application.Copy"
+                    }
+                });
         }
     }
 }

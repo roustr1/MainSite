@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using Application.Dal.Domain;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,8 +28,17 @@ namespace Application.Dal
         {
             foreach (var entity in entities)
             {
-                Add(entity);
+                _context.Set<TEntity>().Add(CheckAndCreateGuid(entity));
             }
+            _context.SaveChanges();
+        }
+        
+        public void Update(TEntity entity)
+        {
+            if (entity == null) return;
+
+            _context.Entry(entity).State = EntityState.Modified;
+            _context.SaveChanges();
         }
 
         public void Update(IEnumerable<TEntity> entities)
@@ -41,12 +51,12 @@ namespace Application.Dal
 
         public void Delete(string id)
         {
-            if (id == null) throw new ArgumentNullException("id is null");
-            var entity = _context.Set<TEntity>().Find(id);
+            if (id == null) 
+                throw new ArgumentNullException("id is null");
+            var entity = Get(id);
             if (entity == null)
                 throw new ArgumentNullException("entity is null");
-            _context.Set<TEntity>().Remove(entity);
-            _context.SaveChanges();
+            Delete(entity);
         }
 
         public void Delete(TEntity entity)
@@ -64,23 +74,21 @@ namespace Application.Dal
             }
         }
 
-        public IEnumerable<TEntity> GetAll()
-        {
-            return _context.Set<TEntity>().ToList();
-
-        }
-
         public TEntity Get(string id)
         {
             return _context.Set<TEntity>().Find(id);
         }
 
-        public void Update(TEntity entity)
+        public TEntity Get(Expression<Func<TEntity, bool>> where)
         {
-            _context.Entry(entity).State = EntityState.Modified;
-            _context.SaveChanges();
+            return _context.Set<TEntity>().Find(where);
         }
 
+        public IEnumerable<TEntity> GetAll()
+        {
+            return _context.Set<TEntity>();
+        }
+        
         private TEntity CheckAndCreateGuid(TEntity entity)
         {
             if (string.IsNullOrWhiteSpace(entity.Id) || entity.Id == _emptyGuid)

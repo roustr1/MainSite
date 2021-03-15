@@ -149,21 +149,13 @@ namespace Application.Services.News
         public IEnumerable<NewsItem> GetNewsItem(string authorId = null, string category = null,
             DateTime? startDate = null, DateTime? endDate = null, bool isNewest = true)
         {
-            var collection = _newsRepository.GetAll();
-            if (authorId != null) collection = collection.Where(a => a.LastChangeAuthor == authorId);
-            if (category != null) collection = collection.Where(c => c.Category == category);
-
-            collection = collection.SortByNewestOrOldest(isNewest, item => item.CreatedDate);
-
-            //if (startDate != null)
-            //{
-            //    collection = collection.Where(c => c.CreatedDate >= startDate || ((BaseEntity) c).LastChangeDate >= startDate);
-            //    if (endDate != null)
-            //    {
-            //        collection = collection.Where(c => c.CreatedDate <= endDate || ((BaseEntity) c).LastChangeDate <= endDate);
-            //    }
-            //}
-
+            var collection = _newsRepository.GetAll()
+                .Where(a => category == null || a.Category == category)
+                .Where(a => authorId == null || a.AutorFio == authorId || a.LastChangeAuthor == authorId)
+                .Where(a => startDate == null || a.LastChangeDate >= startDate)
+                .Where(a => endDate == null || a.LastChangeDate <= endDate)
+                .SortByNewestOrOldest(isNewest, item => item.CreatedDate);
+            
             return collection.ToList();
         }
         #endregion
