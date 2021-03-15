@@ -29,16 +29,21 @@ namespace Application.Dal
                 {
                     new Setting
                     {
+                        Id= Guid.NewGuid().ToString(),
                         Name = "Application.Icon",
                         Value = "/content/layout_icons/header.png"
                     },
                     new Setting
                     {
+                        Id= Guid.NewGuid().ToString(),
                         Name = "Application.Name"
+                        ,Value = ""
                     }
                     ,new Setting
                     {
+                        Id= Guid.NewGuid().ToString(),
                         Name = "Application.Copy"
+                        ,Value = ""
                     }
                 });
         }

@@ -38,7 +38,7 @@ namespace MainSite.Areas.Admin.Controllers
         // POST: SettingsController/Create
         [HttpPost("Admin/Settings/Create")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([FromForm] Setting setting)
+        public IActionResult Create([FromForm] Setting setting)
         {
             if (ModelState.IsValid)
             {
@@ -49,7 +49,27 @@ namespace MainSite.Areas.Admin.Controllers
 
         }
 
-        // GET: SettingsController/Edit/5
+        [HttpGet("Admin/Settings/Update")]
+        public IActionResult Update(string id)
+        {
+            return View(_settingsService.GetSettingById(id));
+        }
+
+        [HttpPost("Admin/Settings/Update")]
+        public IActionResult Update(Setting setting)
+        {
+            var entity = _settingsService.GetSettingById(setting.Id);
+            if (entity == null) ModelState.AddModelError("", "Запись не найдена");
+            if (ModelState.IsValid)
+            {
+                entity.Value = setting.Value;
+                _settingsService.SetParameter(entity);
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(setting);
+        }
+
 
 
         // GET: SettingsController/Delete/5
