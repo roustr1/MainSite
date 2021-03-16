@@ -4,18 +4,18 @@
     <li>
         <a @*asp-action=News*@><span class="rectangle" style="background-color: white;" src="/content/layout_icons/free-icon-ads-2625106.svg"></span> <div>Новости</div></a>
     </li>
-    @foreach (var menuNames in menu.GetMenuItem(null))
+    @foreach (var menuNames in menu.GetManyByParentId(null))
     {
         <li>
             <a @*asp-action=@menuNames.ActionName*@><img src="@menuNames.UrlIcone" /><div>@menuNames.Name</div></a>
-            @if (menu.GetMenuItem(menuNames.Id).Count() > 0)
+            @if (menu.GetManyByParentId(menuNames.Id).Count() > 0)
             {
                 <ul>
-                    @foreach (var subMenu in menu.GetMenuItem(menuNames.Id))
+                    @foreach (var subMenu in menu.GetManyByParentId(menuNames.Id))
                     {
-                        <li>
-                            <a @*asp-action=@menuNames.ActionName*@><img src="@menuNames.UrlIcone" /><div>@subMenu.Name</div></a>
-                        </li>
+                    <li>
+                        <div>@Html.ActionLink(@subMenu.Name, "Index","Home",  new{ page = 0, category = menuNames.Id })</div>
+                    </li>
                     }
                 </ul>
             }

@@ -5,6 +5,6 @@ namespace Application.Services.Menu
 {
     public interface IShowMenu
     {
-        IEnumerable<MenuItem> GetMenuItem(string parentId = null);
+        IEnumerable<MenuItem> GetManyByParentId(string parentId = null);
     }
 }

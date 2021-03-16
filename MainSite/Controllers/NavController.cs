@@ -41,7 +41,7 @@ namespace MainSite.Controllers
         {
             var result = new List<MenuItemViewModel>();
 
-            foreach (var menuItem in _service.GetMenuItem())
+            foreach (var menuItem in _service.GetManyByParentId())
             {
                 if (menuItem != null)
                 {

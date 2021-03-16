@@ -36,10 +36,11 @@ namespace UnitTests
                 },
             };
             Mock<IMenuService> mock = new Mock<IMenuService>();
-            mock.Setup(m => m.GetMenuItem()).Returns(listObjects);
+            mock.Setup(m => m.GetManyByParentId(null)).Returns(listObjects);
+            mock.Setup(m => m.GetAll()).Returns(listObjects);
             NavController navController = new NavController(mock.Object);
 
-            IEnumerable<MenuItemViewModel> result = (IEnumerable<MenuItemViewModel>) navController.Menu().Model;
+            IEnumerable<MenuItemViewModel> result = (IEnumerable<MenuItemViewModel>)navController.Menu().Model;
 
             Assert.IsTrue(result.Count() == listObjects.Count);
         }
@@ -67,11 +68,12 @@ namespace UnitTests
                 },
             };
             Mock<IMenuService> mock = new Mock<IMenuService>();
-            mock.Setup(m => m.GetMenuItem()).Returns(listObjects);
+            mock.Setup(m => m.GetManyByParentId(null)).Returns(listObjects);
+            mock.Setup(m => m.GetAll()).Returns(listObjects);
             NavController navController = new NavController(mock.Object);
 
             IEnumerable<MenuItemViewModel> result = (IEnumerable<MenuItemViewModel>)navController.Menu(guidSelectedMenuItem).Model;
-            
+
             Assert.IsTrue(result != null);
             Assert.IsTrue(result.Count() == listObjects.Count);
 
@@ -104,7 +106,8 @@ namespace UnitTests
                 },
             };
             Mock<IMenuService> mock = new Mock<IMenuService>();
-            mock.Setup(m => m.GetMenuItem()).Returns(listObjects);
+            mock.Setup(m => m.GetManyByParentId(null)).Returns(listObjects);
+            mock.Setup(m => m.GetAll()).Returns(listObjects);
             NavController navController = new NavController(mock.Object);
 
             IEnumerable<MenuItemViewModel> result = (IEnumerable<MenuItemViewModel>)navController.Menu(guidSelectedMenuItem).Model;

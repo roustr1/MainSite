@@ -7,7 +7,7 @@ using Application.Services.Utils;
 
 namespace Application.Services.Menu
 {
-    public class MenuService : IShowMenu, IMenuService
+    public class MenuService : IMenuService
     {
         private readonly IRepository<MenuItem> _repository;
 
@@ -16,7 +16,7 @@ namespace Application.Services.Menu
             _repository = repository;
         }
 
-        public MenuItem GetItem(string id)
+        public MenuItem Get(string id)
         {
             if (string.IsNullOrEmpty(id)) throw new ArgumentNullException("id is null");
             return _repository.Get(id);
@@ -36,7 +36,7 @@ namespace Application.Services.Menu
             if (mi == null) throw new NullReferenceException("menu item is null");
             //удаление дочерних элементов вместе с родительским
             //todo поискать рекурсивный обход дерева
-            foreach (var elem in GetMenuItem(mi.Id))
+            foreach (var elem in GetManyByParentId(mi.Id))
             {
                 _repository.Delete(elem);
             }
@@ -44,14 +44,14 @@ namespace Application.Services.Menu
             _repository.Delete(mi);
         }
 
-        public IEnumerable<MenuItem> GetMenuItem()
+        public IEnumerable<MenuItem> GetAll()
         {
             return _repository.GetAll();
         }
 
-        public IEnumerable<MenuItem> GetMenuItem(string parentId = null)
+        public IEnumerable<MenuItem> GetManyByParentId(string parentId = null)
         {
-            return _repository.GetAll().Where(p => p.ParentId == parentId).AsEnumerable().ToList();
+            return _repository.GetAll().Where(p => p.ParentId == parentId);
         }
 
         public IEnumerable<MenuItem> GetMenu(string userRole)
