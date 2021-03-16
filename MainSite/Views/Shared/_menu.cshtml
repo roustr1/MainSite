@@ -2,19 +2,34 @@
 
 <ul class="menu">
     <li>
-        <a @*asp-action=News*@><span class="rectangle" style="background-color: white;" src="/content/layout_icons/free-icon-ads-2625106.svg"></span> <div>Новости</div></a>
+        <a><span class="rectangle" style="background-color: white;" src="/content/layout_icons/free-icon-ads-2625106.svg"></span> <div>Новости</div></a>
     </li>
     @foreach (var menuNames in menu.GetMenuItem(null))
     {
+        var resultImgHtml = "";
+        if (String.IsNullOrWhiteSpace(menuNames.UrlIcone))
+        {
+            resultImgHtml = "<span style=\"background-color: black; height:2px;width:30px;\" src=\"/content/layout_icons/free-icon-ads-2625106.svg\"></span>";
+        }
+        else
+        {
+            resultImgHtml = $"<img src=\"{menuNames.UrlIcone}\" />";
+        }
         <li>
-            <a @*asp-action=@menuNames.ActionName*@><img src="@menuNames.UrlIcone" /><div>@menuNames.Name</div></a>
+            <a>
+                @Html.Raw(@resultImgHtml)
+                <div>@menuNames.Name</div>
+            </a>
             @if (menu.GetMenuItem(menuNames.Id).Count() > 0)
             {
                 <ul>
                     @foreach (var subMenu in menu.GetMenuItem(menuNames.Id))
                     {
                         <li>
-                            <a @*asp-action=@menuNames.ActionName*@><img src="@menuNames.UrlIcone" /><div>@subMenu.Name</div></a>
+                            <a>
+                                @Html.Raw(@resultImgHtml)
+                                <div>@subMenu.Name</div>
+                            </a>
                         </li>
                     }
                 </ul>

@@ -98,7 +98,7 @@ namespace MainSite.Extensions
                         {
                             model.RouteValues.page = (i + 1);
 
-                            links.Append("<li class=\"individual-page\">");
+                            links.Append("<li class=\"individual-page waves-effect\">");
                             if (model.UseRouteLinks)
                             {
                                 var link = html.RouteLink((i + 1).ToString(), model.RouteActionName, model.RouteValues, new { title = string.Format("Страница {0}", (i + 1)) });
