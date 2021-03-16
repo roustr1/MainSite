@@ -73,7 +73,15 @@ html {
 
     .dropdown-content {
         width: auto !important;
-        height:auto !important;
+        height: auto !important;
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    .text-center {
+        text-align: center;
     }
 }
 

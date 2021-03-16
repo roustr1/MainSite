@@ -158,6 +158,10 @@
     #mainBlock .btn-defaultMainSite:hover {
       background-color: #64b5f6;
       color: white; }
+
+@-moz-document url-prefix() {
+  #mainBlock .btn-defaultMainSite {
+    height: 2.5rem; } }
   #mainBlock .card_birthday-title {
     width: 180px;
     float: left;
@@ -360,6 +364,10 @@ html {
   html .dropdown-content {
     width: auto !important;
     height: auto !important; }
+  html .text-right {
+    text-align: right; }
+  html .text-center {
+    text-align: center; }
 
 @media (max-width: 1260px) {
   .container {

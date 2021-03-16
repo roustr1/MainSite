@@ -33,6 +33,10 @@ $paddingTopBlock: 5px !default;
                 color: white;
             }
 
+            @-moz-document url-prefix() {
+                height: 2.5rem;
+            }
+
             height: 2rem;
             height: fit-content;
             line-height: 2rem;
@@ -148,11 +152,12 @@ $paddingTopBlock: 5px !default;
     }
     /* Стили для пагинации*/
     .pagination {
-        text-align:right;
-        li {
-            margin-right:10px;
+        text-align: right;
 
-            &:last-child{
+        li {
+            margin-right: 10px;
+
+            &:last-child {
                 margin-right: 0px;
             }
 
@@ -166,7 +171,7 @@ $paddingTopBlock: 5px !default;
 
             &.btn {
                 &:hover {
-                   
+
                     a {
                         color: #fff;
                     }
