@@ -11,7 +11,7 @@ namespace MainSite.Models.UI.Menu
         public string Name { get; set; }
         public string UrlIcon { get; set; }
         public string ToolTip { get; set; }
-
+        public bool IsActive { get; set; }
         public List<MenuItemViewModel> Children { get; set; }
 
         public MenuItemViewModel()

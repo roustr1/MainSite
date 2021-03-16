@@ -32,9 +32,31 @@ namespace MainSite.Controllers
         {
             ViewBag.SelectedCategory = categoryId;
 
-            var menuItems = new List<MenuItemViewModel>();
+            var menuItems = MenuTreeGenerate(categoryId);
 
             return PartialView("Menu", menuItems);
+        }
+
+        private IEnumerable<MenuItemViewModel> MenuTreeGenerate(string categoryId = null)
+        {
+            var result = new List<MenuItemViewModel>();
+
+            foreach (var menuItem in _service.GetMenuItem())
+            {
+                if (menuItem != null)
+                {
+                    result.Add(new MenuItemViewModel()
+                    {
+                        Id = menuItem.Id,
+                        Name = menuItem.Name,
+                        ToolTip = menuItem.ToolTip,
+                        UrlIcon = menuItem.UrlIcone,
+                        IsActive = menuItem.Id == categoryId
+                    });
+                }
+            }
+
+            return result;
         }
     }
 }
