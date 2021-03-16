@@ -35,7 +35,7 @@ namespace MainSite.Extensions
             var links = new StringBuilder();
             if (model.ShowTotalSummary && (model.TotalPages > 0))
             {
-                links.Append("<li class=\"total-summary\">");
+                links.Append("<li class=\"total-summary btn btn-defaultMainSite\">");
                 links.Append(string.Format(model.CurrentPageText, model.PageIndex + 1, model.TotalPages, model.TotalRecords));
                 links.Append("</li>");
             }
@@ -48,7 +48,7 @@ namespace MainSite.Extensions
                     {
                         model.RouteValues.page = 1;
 
-                        links.Append("<li class=\"first-page\">");
+                        links.Append("<li class=\"first-page btn btn-defaultMainSite\">");
                         if (model.UseRouteLinks)
                         {
                             var link = html.RouteLink(model.FirstButtonText, model.RouteActionName, model.RouteValues, new { title = "Первая страница" });
@@ -69,7 +69,7 @@ namespace MainSite.Extensions
                     {
                         model.RouteValues.page = (model.PageIndex);
 
-                        links.Append("<li class=\"previous-page\">");
+                        links.Append("<li class=\"previous-page btn btn-defaultMainSite\">");
                         if (model.UseRouteLinks)
                         {
                             var link = html.RouteLink(model.PreviousButtonText, model.RouteActionName, model.RouteValues, new { title = "Предыдущая страница" });
@@ -92,7 +92,7 @@ namespace MainSite.Extensions
                     {
                         if (model.PageIndex == i)
                         {
-                            links.AppendFormat("<li class=\"current-page\"><span>{0}</span></li>", (i + 1));
+                            links.AppendFormat("<li class=\"active current-page\"><a>{0}</a></li>", (i + 1));
                         }
                         else
                         {
@@ -120,7 +120,7 @@ namespace MainSite.Extensions
                     {
                         model.RouteValues.page = (model.PageIndex + 2);
 
-                        links.Append("<li class=\"next-page\">");
+                        links.Append("<li class=\"next-page btn btn-defaultMainSite\">");
                         if (model.UseRouteLinks)
                         {
                             var link = html.RouteLink(model.NextButtonText, model.RouteActionName, model.RouteValues, new { title = "Следующая страница" });
@@ -141,7 +141,7 @@ namespace MainSite.Extensions
                     {
                         model.RouteValues.page = model.TotalPages;
 
-                        links.Append("<li class=\"last-page\">");
+                        links.Append("<li class=\"last-page btn btn-defaultMainSite\">");
                         if (model.UseRouteLinks)
                         {
                             var link = html.RouteLink(model.LastButtonText, model.RouteActionName, model.RouteValues, new { title = "Последняя страница" });

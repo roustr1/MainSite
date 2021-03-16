@@ -28,16 +28,19 @@
             </div>
         }
     </div>
-    @{
-        var pager = Html.Pager(Model.PagerModel);
-        if (!string.IsNullOrEmpty(pager.RenderHtmlContent()))
-        {
-            <div class="pager">
+</div>
+
+@{
+    var pager = Html.Pager(Model.PagerModel);
+    if (!string.IsNullOrEmpty(pager.RenderHtmlContent()))
+    {
+        <div class="card-panel row">
+            <div class="pagination">
                 @pager
             </div>
-        }
+        </div>
     }
-</div>
+}
 
 <script type="text/javascript">
     var vm = new Vue({
