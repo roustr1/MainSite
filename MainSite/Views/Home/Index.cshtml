@@ -17,7 +17,7 @@
                 <div class="card_news-image"><img src="@item.UrlImg" alt="" /></div>
                 <div class="card_news-main">
                     <div class="card_news-main-header"><span class="bold">@item.AutorFio</span> разместил сообщение в разделе <a href="@item.MenuItemAction">@item.MenuItemName</a></div>
-                    <div class="card_news-main-title"><a href="@item.NameAction">@item.Name</a></div>
+                    <div class="card_news-main-title"><a href="@Url.Action("Details", @item.NameAction, new { id = item.Id })">@item.Name</a></div>
                     <div class="card_news-main-footer">@item.CreatedDate</div>
                 </div>
 
@@ -28,16 +28,19 @@
             </div>
         }
     </div>
-    @{
-        var pager = Html.Pager(Model.PagerModel);
-        if (!string.IsNullOrEmpty(pager.RenderHtmlContent()))
-        {
-            <div class="pager">
+</div>
+
+@{
+    var pager = Html.Pager(Model.PagerModel);
+    if (!string.IsNullOrEmpty(pager.RenderHtmlContent()))
+    {
+        <div class="card-panel row">
+            <div class="pagination">
                 @pager
             </div>
-        }
+        </div>
     }
-</div>
+}
 
 <script type="text/javascript">
     var vm = new Vue({
