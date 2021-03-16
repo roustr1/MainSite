@@ -331,7 +331,7 @@ namespace Application.Services.Files
         /// </summary>
         public virtual bool StoreInDb
         {
-            get => bool.Parse(_configuration["StoreFilesIdDb"]);
+            get => bool.Parse(_configuration["StoreFilesInDb"]);
             set
             {
                 //check whether it's a new value
@@ -339,7 +339,7 @@ namespace Application.Services.Files
                     return;
 
                 //save the new setting value
-                _configuration["StoreFilesIdDb"] = value.ToString();
+                _configuration["StoreFilesInDb"] = value.ToString();
 
                 var pageIndex = 0;
                 const int pageSize = 400;
