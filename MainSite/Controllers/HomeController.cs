@@ -149,7 +149,7 @@ namespace MainSite.Controllers
             var pageSize = pagesize.GetValueOrDefault(10);
             var records = _newsService.GetNewsItem(category: category);
 
-            var list = new PagedList<NewsItem>(records, pageIndex, pageSize);
+            var list = new PagedList<NewsItem>(records.AsQueryable(), pageIndex, pageSize);
             var model = new NewsListModel
             {
                 News = list,

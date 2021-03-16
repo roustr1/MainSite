@@ -10,6 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Home\News.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Application.Dal\Application.Dal.csproj" />
     <ProjectReference Include="..\Application.Services\Application.Services.csproj" />
   </ItemGroup>
