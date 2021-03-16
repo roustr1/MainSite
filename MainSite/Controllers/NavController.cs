@@ -41,22 +41,52 @@ namespace MainSite.Controllers
         {
             var result = new List<MenuItemViewModel>();
 
-            foreach (var menuItem in _service.GetManyByParentId())
+            var selectedCategory = GenerateAllSelected(categoryId);
+
+            CreateTree(null, result, selectedCategory);
+
+            return result;
+        }
+
+        private List<string> GenerateAllSelected(string id)
+        {
+            var localId = id;
+            var result = new List<string>();
+
+            while (localId != null)
             {
+                MenuItem menuItem = _service.Get(localId);
                 if (menuItem != null)
                 {
-                    result.Add(new MenuItemViewModel()
-                    {
-                        Id = menuItem.Id,
-                        Name = menuItem.Name,
-                        ToolTip = menuItem.ToolTip,
-                        UrlIcon = menuItem.UrlIcone,
-                        IsActive = menuItem.Id == categoryId
-                    });
+                    result.Add(menuItem.Id);
+                    localId = menuItem.ParentId;
+                }
+                else
+                {
+                    localId = null;
                 }
             }
 
             return result;
+        }
+
+        private void CreateTree(string id, List<MenuItemViewModel> list, List<string> selected)
+        {
+            foreach (var item in _service.GetManyByParentId(id))
+            {
+                var itemViewModel = new MenuItemViewModel()
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    ToolTip = item.ToolTip,
+                    UrlIcon = item.UrlIcone,
+                    IsActive = selected.Contains(item.Id)
+                };
+
+                CreateTree(item.Id, itemViewModel.Children, selected);
+
+                list.Add(itemViewModel);
+            }
         }
     }
 }
