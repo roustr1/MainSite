@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using Application.Dal;
 using Application.Dal.Domain.Menu;
 using Application.Dal.Domain.News;
@@ -18,23 +19,22 @@ using MainSite.Models.UI.Menu;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
-namespace MainSite.Controllers
+namespace MainSite.Components
 {
-    public class NavController : Controller
+    [ViewComponent(Name = "NavComponent")]
+    public class NavViewComponent : ViewComponent
     {
         private IMenuService _service;
-        public NavController(IMenuService service)
+        public NavViewComponent(IMenuService service)
         {
             _service = service;
         }
 
-        public PartialViewResult Menu(string categoryId = null)
+        public IViewComponentResult Invoke(string categoryId = null)
         {
-            ViewBag.SelectedCategory = categoryId;
-
             var menuItems = MenuTreeGenerate(categoryId);
 
-            return PartialView("Menu", menuItems);
+            return View(menuItems);
         }
 
         private IEnumerable<MenuItemViewModel> MenuTreeGenerate(string categoryId = null)

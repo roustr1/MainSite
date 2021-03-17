@@ -1,0 +1,19 @@
+﻿@model IEnumerable<MainSite.Models.UI.Menu.MenuItemViewModel>
+
+@foreach (var item in Model)
+{
+
+    <li>
+        <a href="@Url.Action("Index", "Home", new {page = 0, category = item.Id})" title="@item.ToolTip" class="@(item.IsActive ? "active" : "")">
+            <span class="rectangle" style="background-color: white;" src="@Url.Content(@item.UrlIcon)"></span>
+            <div class="">@item.Name</div>
+        </a>
+        @if (item.Children.Any())
+        {
+            <ul class="@(item.IsActive ? "active" : "")">
+                @await Html.PartialAsync("~/Views/Shared/Components/NavComponent/Default.cshtml", item.Children)
+            </ul>
+        }
+    </li>
+
+}

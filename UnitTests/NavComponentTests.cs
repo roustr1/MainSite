@@ -4,15 +4,17 @@ using System.Linq;
 using System.Text;
 using Application.Dal.Domain.Menu;
 using Application.Services.Menu;
+using MainSite.Components;
 using MainSite.Controllers;
 using MainSite.Models.UI.Menu;
+using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Moq;
 using NUnit.Framework;
 
 namespace UnitTests
 {
     [TestFixture]
-    public class NavControllerTests
+    public class NavComponentTests
     {
         [Test]
         public void Menu_TestOneRangeMenu_GetFlatMenu()
@@ -38,9 +40,9 @@ namespace UnitTests
             Mock<IMenuService> mock = new Mock<IMenuService>();
             mock.Setup(m => m.GetManyByParentId(null)).Returns(listObjects);
             mock.Setup(m => m.GetAll()).Returns(listObjects);
-            NavController navController = new NavController(mock.Object);
+            NavViewComponent navViewComponent = new NavViewComponent(mock.Object);
 
-            IEnumerable<MenuItemViewModel> result = (IEnumerable<MenuItemViewModel>)navController.Menu().Model;
+            IEnumerable<MenuItemViewModel> result = (IEnumerable<MenuItemViewModel>)((ViewViewComponentResult)navViewComponent.Invoke()).ViewData.Model;
 
             Assert.IsTrue(result.Count() == listObjects.Count);
         }
@@ -72,9 +74,9 @@ namespace UnitTests
             mock.Setup(m => m.Get(guidSelectedMenuItem))
                 .Returns(listObjects.FirstOrDefault(i => i.Id == guidSelectedMenuItem));
             mock.Setup(m => m.GetAll()).Returns(listObjects);
-            NavController navController = new NavController(mock.Object);
+            NavViewComponent navViewComponent = new NavViewComponent(mock.Object);
 
-            IEnumerable<MenuItemViewModel> result = (IEnumerable<MenuItemViewModel>)navController.Menu(guidSelectedMenuItem).Model;
+            IEnumerable<MenuItemViewModel> result = (IEnumerable<MenuItemViewModel>)((ViewViewComponentResult)navViewComponent.Invoke(guidSelectedMenuItem)).ViewData.Model;
 
             Assert.IsTrue(result != null);
             Assert.IsTrue(result.Count() == listObjects.Count);
@@ -112,9 +114,9 @@ namespace UnitTests
             mock.Setup(m => m.Get(guidSelectedMenuItem))
                 .Returns(listObjects.FirstOrDefault(i => i.Id == guidSelectedMenuItem));
             mock.Setup(m => m.GetAll()).Returns(listObjects);
-            NavController navController = new NavController(mock.Object);
+            NavViewComponent navViewComponent = new NavViewComponent(mock.Object);
 
-            IEnumerable<MenuItemViewModel> result = (IEnumerable<MenuItemViewModel>)navController.Menu(guidSelectedMenuItem).Model;
+            IEnumerable<MenuItemViewModel> result = (IEnumerable<MenuItemViewModel>)((ViewViewComponentResult)navViewComponent.Invoke(guidSelectedMenuItem)).ViewData.Model;
 
             Assert.IsTrue(result != null);
             Assert.IsTrue(result.Count() == listObjects.Count);
@@ -169,9 +171,9 @@ namespace UnitTests
             mock.Setup(m => m.GetManyByParentId(guidParentId2)).Returns(listMenuObjects.Where(i => i.ParentId == guidParentId2));
             mock.Setup(m => m.GetAll()).Returns(listMenuObjects);
 
-            NavController navController = new NavController(mock.Object);
+            NavViewComponent navViewComponent = new NavViewComponent(mock.Object);
 
-            IEnumerable<MenuItemViewModel> result = (IEnumerable<MenuItemViewModel>)navController.Menu().Model;
+            IEnumerable<MenuItemViewModel> result = (IEnumerable<MenuItemViewModel>)((ViewViewComponentResult)navViewComponent.Invoke()).ViewData.Model;
 
             Assert.IsTrue(result != null);
             Assert.IsTrue(result.Count() == 2);
@@ -231,9 +233,9 @@ namespace UnitTests
             mock.Setup(m => m.Get(guidSelectedItemSecondLvl)).Returns(listMenuObjects.FirstOrDefault(i => i.Id == guidSelectedItemSecondLvl));
             mock.Setup(m => m.GetAll()).Returns(listMenuObjects);
 
-            NavController navController = new NavController(mock.Object);
+            NavViewComponent navViewComponent = new NavViewComponent(mock.Object);
 
-            IEnumerable<MenuItemViewModel> result = (IEnumerable<MenuItemViewModel>)navController.Menu(guidSelectedItemSecondLvl).Model;
+            IEnumerable<MenuItemViewModel> result = (IEnumerable<MenuItemViewModel>)((ViewViewComponentResult)navViewComponent.Invoke(guidSelectedItemSecondLvl)).ViewData.Model;
 
             Assert.IsTrue(result != null);
             Assert.IsTrue(result.Count() == 2);
