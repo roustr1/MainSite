@@ -6,10 +6,6 @@ namespace Application.Dal.Domain.News
 {
     public class NewsItem : BaseEntity
     {
-        public NewsItem()
-        {
-            Files = new List<File>();
-        }
 
         public string Header { get; set; }
         public string Description { get; set; }

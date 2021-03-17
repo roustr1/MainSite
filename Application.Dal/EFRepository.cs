@@ -76,7 +76,7 @@ namespace Application.Dal
 
         public TEntity Get(string id)
         {
-            return _context.Set<TEntity>().Find(id);
+            return _context.Set<TEntity>().FirstOrDefault(element=>element.Id==id);
         }
 
         public TEntity Get(Expression<Func<TEntity, bool>> where)

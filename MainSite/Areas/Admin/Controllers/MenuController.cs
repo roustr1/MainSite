@@ -31,7 +31,7 @@ namespace MainSite.Areas.Admin.Controllers
         public IActionResult Create()
         {
             ViewBag.Roles = new List<SelectListItem> { new SelectListItem("Admin", "1"), new SelectListItem("moderator", "2") };
-            ViewBag.MenuId = _menuService.GetMenuItem().Select(s => new SelectListItem { Text = s.Name, Value = s.Id }).ToList();
+            ViewBag.MenuId = _menuService.GetAll().Select(s => new SelectListItem { Text = s.Name, Value = s.Id }).ToList();
             return View();
         }
 
@@ -56,7 +56,7 @@ namespace MainSite.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(string id)
         {
-            var item = _menuService.GetItem(id);
+            var item = _menuService.Get(id);
             if(item!=null)
                 _menuService.DeleteItem(item);
             return RedirectToAction("Index");

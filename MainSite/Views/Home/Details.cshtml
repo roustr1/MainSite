@@ -43,7 +43,7 @@
             <li><a> Testing.json</a></li>
             @foreach (var item in Model.Files)
             {
-                <li><a> @item.FileName</a></li>
+                <li><a asp-action="GetFile" asp-route-fileId="@item.Id" > @item.OriginalName</a></li>
             }
         </ul>
     </div>

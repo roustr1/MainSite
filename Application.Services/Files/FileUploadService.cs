@@ -39,13 +39,48 @@ namespace Application.Services.Files
             _configuration = configuration;
         }
 
+        #region Utilities
 
+
+
+        #endregion
+        /// <summary>
+        /// Loads a file from file system
+        /// </summary>
+        /// <param name="fileId">File identifier</param>
+        /// <returns>File binary</returns>
         protected virtual byte[] LoadFileFromFileSystem(string fileId)
         {
             var file = _fileRepository.Get(fileId);
-
-            return _fileProvider.ReadAllBytes(file.VirtualPath);
+            var filePath = GetFileLocalPath(file.StoredName);
+            return _fileProvider.ReadAllBytes(filePath);
         }
+
+        /// <summary>
+        /// Save file on file system
+        /// </summary>
+        /// <param name="fileId">file identifier</param>
+        /// <param name="fileBinary">file binary</param>
+        /// <param name="mimeType">MIME type</param>
+        protected virtual void SaveFileInFileSystem(string fileId, byte[] fileBinary, string mimeType)
+        {
+            var file = _fileRepository.Get(fileId);
+            _fileProvider.WriteAllBytes(GetFileLocalPath(file.StoredName), fileBinary);
+        }
+
+        /// <summary>
+        /// Delete a file on file system
+        /// </summary>
+        /// <param name="file">file</param>
+        protected virtual void DeleteFileFromFileSystem(File file)
+        {
+            if (file == null)
+                throw new ArgumentNullException(nameof(file));
+            var filename = $"{file.StoredName}.{file.LastPart}";
+            var filePath = GetFileLocalPath(filename);
+            _fileProvider.DeleteFile(filePath);
+        }
+
 
 
         /// <summary>
@@ -55,8 +90,7 @@ namespace Application.Services.Files
         protected virtual string GetFilePathUrl()
         {
             var pathBase = _httpContextAccessor.HttpContext.Request.PathBase.Value ?? string.Empty;
-
-            return @$"{pathBase}/files/";
+            return $"{pathBase}/files/";
         }
         /// <summary>
         /// Get file local path. Used when files stored on file system (not in the database)
@@ -70,7 +104,7 @@ namespace Application.Services.Files
 
         public virtual FileBinary GetFileBinaryByFileId(string fileId)
         {
-            return _fileBinaryRepository.Get(fileId);
+            return _fileBinaryRepository.GetAll().FirstOrDefault(pb => pb.FileId == fileId);
         }
         /// <summary>
         /// Gets the loaded file binary depending on file storage settings
@@ -90,6 +124,16 @@ namespace Application.Services.Files
             return result;
         }
 
+        /// <summary>
+        /// Gets the loaded picture binary depending on picture storage settings
+        /// </summary>
+        /// <param name="file">file</param>
+        /// <returns>Picture binary</returns>
+        public virtual byte[] LoadFileBinary(File file)
+        {
+            return LoadFileBinary(file, StoreInDb);
+        }
+
         #region CRUD methods
 
         /// <summary>
@@ -103,6 +147,12 @@ namespace Application.Services.Files
                 return null;
 
             return _fileRepository.Get(fileId);
+        }
+
+        public virtual IEnumerable<File> GetFilesByNewsId(string id)
+        {
+            return _fileRepository.GetAll().Where(c => c.NewsItemId == id);
+
         }
 
         /// <summary>
@@ -143,40 +193,19 @@ namespace Application.Services.Files
             return new PagedList<File>(result, pageIndex, pageSize);
         }
 
-        /// <summary>
-        /// Save file on file system
-        /// </summary>
-        /// <param name="fileId">file identifier</param>
-        /// <param name="fileBinary">file binary</param>
-        /// <param name="mimeType">MIME type</param>
-        protected virtual void SaveFileInFileSystem(string fileId, byte[] fileBinary, string mimeType)
-        {
-            _fileProvider.WriteAllBytes(GetFileLocalPath(fileId), fileBinary);
-        }
 
-        /// <summary>
-        /// Delete a file on file system
-        /// </summary>
-        /// <param name="file">file</param>
-        protected virtual void DeleteFileFromFileSystem(File file)
-        {
-            if (file == null)
-                throw new ArgumentNullException(nameof(file));
-
-            var filePath = GetFileLocalPath(file.FileName);
-            _fileProvider.DeleteFile(filePath);
-        }
         /// <summary>
         /// Inserts a file
         /// </summary>
         /// <param name="formFile">Form file</param>
-        /// <param name="defaultFileName">File name which will be use if IFormFile.FileName not present</param>
+        /// <param name="defaultFileName">File name which will be use if IFormFile.OriginalName not present</param>
         /// <param name="virtualPath">Virtual path</param>
         /// <returns>file</returns>
-        public virtual File InsertFile(IFormFile formFile, string defaultFileName = "", string virtualPath = "", bool isAvaliable = true)
+        public virtual File InsertFile(IFormFile formFile, string virtualPath = "")
         {
             var contentType = formFile.ContentType;
-            var file = InsertFile(_downloadService.GetDownloadBits(formFile), contentType, _fileProvider.GetFileNameWithoutExtension(formFile.FileName), isAvaliable);
+            var file = InsertFile(_downloadService.GetDownloadBits(formFile), contentType, _fileProvider.GetFileNameWithoutExtension(formFile.FileName), _fileProvider.GetFileExtension(formFile.FileName));
+
             if (string.IsNullOrEmpty(virtualPath))
                 return file;
 
@@ -193,17 +222,17 @@ namespace Application.Services.Files
         /// <param name="fileBinary">The file binary</param>
         /// <param name="mimeType">The file MIME type</param>
         /// <param name="fileName"></param>
-        /// <param name="isAvaliable"></param>
+
         /// <returns>file</returns>
-        public virtual File InsertFile(byte[] fileBinary, string mimeType, string fileName, bool isAvaliable)
+        public virtual File InsertFile(byte[] fileBinary, string mimeType, string fileName, string lastPart)
         {
             var file = new File()
             {
                 MimeType = mimeType,
-                FileName = fileName,
-                IsAvaliable = isAvaliable,
-                Md5Hash = GetMd5(fileBinary),
-
+                OriginalName = fileName,
+                LastPart = lastPart,
+                StoredName = fileBinary.GetHashCode().ToString("0000"),
+                Md5Hash = GetMd5(fileBinary)
             };
             _fileRepository.Add(file);
             UpdateFileBinary(file, StoreInDb ? fileBinary : Array.Empty<byte>());
@@ -223,11 +252,8 @@ namespace Application.Services.Files
         /// </summary>
         /// <param name="fileId">The file identifier</param>
         /// <param name="fileBinary">The file binary</param>
-        /// <param name="seoFilename">The SEO filename</param>
-        /// <param name="altAttribute">"alt" attribute for "img" HTML element</param>
+        /// <param name="mimeType">file mime type</param>
         /// <param name="titleAttribute">"title" attribute for "img" HTML element</param>
-        /// <param name="isNew">A value indicating whether the file is new</param>
-        /// <param name="validateBinary">A value indicating whether to validated provided file binary</param>
         /// <returns>file</returns>
         public virtual File UpdateFile(string fileId, byte[] fileBinary, string mimeType,
                string titleAttribute = null)
@@ -324,6 +350,49 @@ namespace Application.Services.Files
 
 
         #endregion
+
+        private string GetMd5(byte[] fileBytes)
+        {
+            using (MD5 md5 = MD5.Create())
+            {
+                byte[] hashBytes = md5.ComputeHash(fileBytes ?? throw new ArgumentNullException(nameof(fileBytes)));
+
+                // Convert the byte array to hexadecimal string
+                var sb = new StringBuilder();
+                foreach (var t in hashBytes)
+                {
+                    sb.Append(t.ToString("X2"));
+                }
+                return sb.ToString();
+            }
+        }
+
+        private File CheckAnotherFileWithMd5(string md5)
+        {
+            return _fileRepository.GetAll().FirstOrDefault(c => c.Md5Hash == md5);
+        }
+
+
+        /// <summary>
+        /// return path to directory from two first symbols from md5
+        /// </summary>
+        /// <param name="md5"></param>
+        /// <returns></returns>
+        private string GetDirectoryPathFromHash(string md5)
+        {
+            if (string.IsNullOrEmpty(md5)) return string.Empty;
+            var path = new StringBuilder()
+                     .Append(md5.Substring(0, 2))
+                     .Append('/')
+                     .Append(md5.Substring(2, 4))
+                     .Append('/')
+                     .Append(md5.Substring(4, 6))
+                     .Append('/').ToString();
+            _fileProvider.CreateDirectory(path);
+            return path;
+        }
+
+
         #region Properties
 
         /// <summary>
@@ -331,7 +400,7 @@ namespace Application.Services.Files
         /// </summary>
         public virtual bool StoreInDb
         {
-            get => bool.Parse(_configuration["StoreFilesIdDb"]);
+            get => bool.Parse(_configuration["StoreFilesInDb"]);
             set
             {
                 //check whether it's a new value
@@ -339,7 +408,7 @@ namespace Application.Services.Files
                     return;
 
                 //save the new setting value
-                _configuration["StoreFilesIdDb"] = value.ToString();
+                _configuration["StoreFilesInDb"] = value.ToString();
 
                 var pageIndex = 0;
                 const int pageSize = 400;
@@ -397,57 +466,6 @@ namespace Application.Services.Files
         }
 
         #endregion
-
-        private string GetMd5(byte[] fileBytes)
-        {
-            using (MD5 md5 = MD5.Create())
-            {
-                byte[] hashBytes = md5.ComputeHash(fileBytes ?? throw new ArgumentNullException(nameof(fileBytes)));
-
-                // Convert the byte array to hexadecimal string
-                var sb = new StringBuilder();
-                foreach (var t in hashBytes)
-                {
-                    sb.Append(t.ToString("X2"));
-                }
-                return sb.ToString();
-            }
-        }
-
-        private File CheckAnotherFileWithMd5(string md5)
-        {
-            return _fileRepository.GetAll().FirstOrDefault(c => c.Md5Hash == md5);
-        }
-
-        /// <summary>
-        /// Create directoryIerarchy by path
-        /// </summary>
-        /// <param name="path"></param>
-        private void CreateDirectoryIfNotExist(string path)
-        {
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-        }
-        /// <summary>
-        /// return path to directory from two first symbols from md5
-        /// </summary>
-        /// <param name="md5"></param>
-        /// <returns></returns>
-        private string GetDirectoryPathFromHash(string md5)
-        {
-            if (string.IsNullOrEmpty(md5)) return string.Empty;
-            var path = new StringBuilder()
-                     .Append(md5.Substring(0, 2))
-                     .Append('/')
-                     .Append(md5.Substring(2, 4))
-                     .Append('/')
-                     .Append(md5.Substring(4, 6))
-                     .Append('/').ToString();
-            CreateDirectoryIfNotExist(path);
-            return path;
-        }
 
     }
 }

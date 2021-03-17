@@ -1,4 +1,7 @@
-﻿namespace Application.Dal.Domain.Files
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Application.Dal.Domain.News;
+
+namespace Application.Dal.Domain.Files
 {
     /// <summary>
     /// 
@@ -8,7 +11,7 @@
         /// <summary>
         /// File name
         /// </summary>
-        public string FileName { get; set; }
+        public string OriginalName { get; set; }
 
         /// <summary>
         /// Mime-type
@@ -16,9 +19,9 @@
         public string MimeType { get; set; }
 
         /// <summary>
-        /// 
+        /// Naming for storing in file system
         /// </summary>
-        public bool IsAvaliable { get; set; }
+        public string StoredName { get; set; }
 
         /// <summary>
         /// Gets or sets the file virtual path
@@ -29,6 +32,14 @@
         /// Gets or sets file hash
         /// </summary>
         public string Md5Hash { get; set; }
+
+        /// <summary>
+        /// Gets or sets file Extension
+        /// </summary>
+        public string LastPart { get; set; }
+
+        public string NewsItemId { get; set; }
+
 
     }
 }

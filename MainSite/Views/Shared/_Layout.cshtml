@@ -52,7 +52,15 @@
     <div class="container">
         <div class="col m12 s12 l3" id="menuBlock">
             <div class="secondMenuBlock"></div>
-            @Html.Partial("_menu")
+            <ul class="menu">
+                <li>
+                    <a href="@Url.Action("Index", "Home")" title="Новости" class="@(ViewData["categoryId"] == null ? "active" : "")">
+                        <span class="rectangle" style="background-color: white;" src="@Url.Content("~/content/layout_icons/free-icon-ads-2625106.svg")"></span>
+                        <div>Новости</div>
+                    </a>
+                </li>
+                @await Component.InvokeAsync("NavComponent", ViewData["categoryId"])
+            </ul>
         </div>
         <main role="main" class="col m12 s12 l9" id="mainBlock">
             @RenderBody()
