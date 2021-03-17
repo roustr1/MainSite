@@ -56,7 +56,7 @@
         @Html.DisplayFor(model => model.Description)
     </div>
 
-    <div class="col m12 s12">
+    <div class="col m12 s12 text-right">
         @Html.ActionLink("Редактировать", "Edit", "News", new { id = Model.Id }, new { @class = "btn btn-defaultMainSite" })
         <a asp-action="Index" class="btn btn-defaultMainSite">Назад</a>
     </div>

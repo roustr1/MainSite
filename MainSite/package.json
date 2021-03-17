@@ -7,6 +7,7 @@
     "add": "^2.0.6",
     "laravel-elixir": "^6.0.0-18",
     "laravel-elixir-vue-2": "^0.3.0",
+    "node-sass": "^5.0.0",
     "or": "^0.2.0",
     "vue-owl-carousel": "^2.0.3",
     "yarn": "^1.22.10"
