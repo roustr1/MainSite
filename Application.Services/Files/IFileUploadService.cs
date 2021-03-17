@@ -1,4 +1,5 @@
-﻿using Application.Dal;
+﻿using System.Collections.Generic;
+using Application.Dal;
 using Application.Dal.Domain.Files;
 using Microsoft.AspNetCore.Http;
 
@@ -9,11 +10,20 @@ namespace Application.Services.Files
         FileBinary GetFileBinaryByFileId(string fileId);
 
         /// <summary>
+        /// Gets the loaded picture binary depending on picture storage settings
+        /// </summary>
+        /// <param name="file">file</param>
+        /// <returns>Picture binary</returns>
+        byte[] LoadFileBinary(File file);
+
+        /// <summary>
         /// Gets a file
         /// </summary>
         /// <param name="fileId">file identifier</param>
         /// <returns>file</returns>
         File GetFileById(string fileId);
+
+        IEnumerable<File> GetFilesByNewsId(string id);
 
         /// <summary>
         /// Deletes a file
@@ -27,11 +37,10 @@ namespace Application.Services.Files
         /// Inserts a file
         /// </summary>
         /// <param name="formFile">Form file</param>
-        /// <param name="defaultFileName">File name which will be use if IFormFile.FileName not present</param>
+        /// <param name="defaultFileName">File name which will be use if IFormFile.OriginalName not present</param>
         /// <param name="virtualPath">Virtual path</param>
-        /// <param name="isAvaliable">indicate if file not accesible</param>
-        /// <returns>File</returns>
-        File InsertFile(IFormFile formFile, string defaultFileName = "", string virtualPath = "", bool isAvaliable = true);
+        /// <returns>file</returns>
+        File InsertFile(IFormFile formFile, string defaultFileName = "");
 
         /// <summary>
         /// Inserts a file
@@ -39,20 +48,16 @@ namespace Application.Services.Files
         /// <param name="fileBinary">The file binary</param>
         /// <param name="mimeType">The file MIME type</param>
         /// <param name="fileName"></param>
-        /// <param name="isAvaliable"></param>
         /// <returns>file</returns>
-        File InsertFile(byte[] fileBinary, string mimeType, string fileName, bool isAvaliable);
+        File InsertFile(byte[] fileBinary, string mimeType, string fileName,string lastPart );
 
         /// <summary>
         /// Updates the file
         /// </summary>
         /// <param name="fileId">The file identifier</param>
         /// <param name="fileBinary">The file binary</param>
-        /// <param name="seoFilename">The SEO filename</param>
-        /// <param name="altAttribute">"alt" attribute for "img" HTML element</param>
+        /// <param name="mimeType">file mime type</param>
         /// <param name="titleAttribute">"title" attribute for "img" HTML element</param>
-        /// <param name="isNew">A value indicating whether the file is new</param>
-        /// <param name="validateBinary">A value indicating whether to validated provided file binary</param>
         /// <returns>file</returns>
         File UpdateFile(string fileId, byte[] fileBinary, string mimeType,
             string titleAttribute = null);

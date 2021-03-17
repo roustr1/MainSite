@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using MainSite.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Linq;
 using Application.Dal;
+using Application.Dal.Domain.Files;
 using Application.Dal.Domain.News;
 using Application.Services.Files;
 using Application.Services.News;
@@ -32,7 +34,7 @@ namespace MainSite.Controllers
             _downloadService = downloadService;
             _uploadService = uploadService;
             _settingsService = settingsService;
-            SetPageSize(); 
+            SetPageSize();
         }
 
         private void SetPageSize()
@@ -77,21 +79,22 @@ namespace MainSite.Controllers
                     AutorFio = User?.Identity?.Name ?? "Неавторизован",
                     CreatedDate = dataTimeNow,
                     LastChangeDate = dataTimeNow,
-                    Name =  model.Header,
-                    Category =  model.Category,
-                    UrlImg = "",                
-                    
+                    Name = model.Header,
+                    Category = model.Category,
+                    UrlImg = "",
+
 
 
 
                 };
-
+                var collection = new List<File>();
                 //uploadFiles 
                 foreach (var file in model?.UploadedFiles)
                 {
-                    entity.Files.Add(_uploadService.InsertFile(file));
+                    collection.Add(_uploadService.InsertFile(file));
                 }
 
+                entity.Files = collection;
                 _newsService.CreateNews(entity);
             }
             return RedirectToAction(nameof(Index));
@@ -104,15 +107,19 @@ namespace MainSite.Controllers
             if (id == null) return RedirectToAction("Error");
             var model = _newsService.GetNewsItem(id);
             if (model == null) return RedirectToAction("Error");
+            model.Files = _uploadService.GetFilesByNewsId(id).ToList();
             return View(model);
         }
 
-        public IActionResult GetFile(string fileId)
+        [HttpGet]
+        [Route("GetFile")]
+        public IActionResult  GetFile(string fileId)
         {
             if (fileId == null) return new EmptyResult();
-            var fileBinary = _uploadService.GetFileBinaryByFileId(fileId);
             var file = _uploadService.GetFileById(fileId);
-            return new FileContentResult(fileBinary.BinaryData, file.MimeType);
+            var fileBinary = _uploadService.LoadFileBinary(file);
+            var filename = $"{file.OriginalName}{file.LastPart}";
+            return File(fileBinary, file.MimeType, filename);
         }
 
 

@@ -6,10 +6,6 @@ namespace Application.Dal.Domain.News
 {
     public class NewsItem : BaseEntity
     {
-        public NewsItem()
-        {
-            Files = new List<File>();
-        }
 
         public string Header { get; set; }
         public string Description { get; set; }
@@ -23,7 +19,7 @@ namespace Application.Dal.Domain.News
         public string UrlImg { get; set; }
         public DateTime LastChangeDate { get; set; }
         public DateTime CreatedDate { get; set; }
-        public virtual ICollection<File> Files { get; set; }
+        public ICollection<File> Files { get; set; }
 
     }
 }
