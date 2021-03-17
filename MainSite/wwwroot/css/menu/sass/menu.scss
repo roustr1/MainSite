@@ -81,6 +81,8 @@
             margin-bottom: 10px;
             min-height: $heigh_a_px;
             cursor: pointer;
+            padding-left: 5px;
+            border-left: 6px solid transparent;
 
             & > img, & object {
                 height: 40px;
@@ -98,13 +100,13 @@
             &.active {
                 background-color: rgba(0, 0, 0, 0.05);
                 padding-left: 5px;
-                border-left: 6px solid #64b5f6;
+                border-color: #64b5f6;
             }
 
             &:hover {
-                padding-left: 5px;
-                transition: 0.3s;
-                border-left: 6px solid #64b5f6;
+                //padding-left: 5px;
+                //transition: 0.3s;
+                border-color: #64b5f6;
             }
 
             & > div {
