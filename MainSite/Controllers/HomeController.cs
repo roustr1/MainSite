@@ -79,11 +79,7 @@ namespace MainSite.Controllers
                     LastChangeDate = dataTimeNow,
                     Name =  model.Header,
                     Category =  model.Category,
-                    UrlImg = "",                
-                    
-
-
-
+                    UrlImg = model?.UploadedFiles.Count() > 0 ? ImagePath.New.AvailabilityFiles : ImagePath.New.MissingFiles                     
                 };
 
                 //uploadFiles 

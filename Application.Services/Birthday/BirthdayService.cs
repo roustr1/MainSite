@@ -9,11 +9,11 @@ namespace Application.Services.Birthday
         public IEnumerable<UserTest> GetUsers()
         {
             var listTest = new List<UserTest> {
-                new UserTest(){ Fio="Пирогов А.Р.", Photo ="/content/layout_icons/user.png"},
-                new UserTest(){ Fio="Пирогов А.Р.", Photo ="/content/layout_icons/user.png"},
-                new UserTest(){ Fio="Пирогов А.Р.", Photo ="/content/layout_icons/user.png"},
-                new UserTest(){ Fio="Пирогов А.Р.", Photo ="/content/layout_icons/user.png"},
-                new UserTest(){ Fio="Пирогов А.Р.", Photo ="/content/layout_icons/user.png"}
+                new UserTest(){ Fio="Пирогов А.Р.", Photo ="/images/layout_icons/user.png"},
+                new UserTest(){ Fio="Пирогов А.Р.", Photo ="/images/layout_icons/user.png"},
+                new UserTest(){ Fio="Пирогов А.Р.", Photo ="/images/layout_icons/user.png"},
+                new UserTest(){ Fio="Пирогов А.Р.", Photo ="/images/layout_icons/user.png"},
+                new UserTest(){ Fio="Пирогов А.Р.", Photo ="/images/layout_icons/user.png"}
             };
 
             return listTest;
