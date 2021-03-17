@@ -3,6 +3,7 @@
 @model MainSite.Models.News.NewsListModel
 @{
     ViewData["Title"] = "Новости";
+    ViewData["categoryId"] = Model.CategoryId;
 }
 
 @Html.Partial("BirthdayUsers")
