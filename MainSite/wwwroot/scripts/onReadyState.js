@@ -7,6 +7,19 @@ function setHeightChildrenBlock(el) {
     element.style.minHeight = parentElement + "px";
 }
 
+function aligmentWidthChildsBirthdayBlock() {
+    var el = document.querySelector('.card_birthday-content');
+    var items = document.querySelectorAll('.card_birthday-content > div');
+    if (items.length > 3) {
+        el.style.justifyContent = "space-between";
+    }
+    else {
+        for (var item in items) {
+            items.style.paddingRight = "70px";
+        }
+    }
+}
+
 function eventClickMobileIconMenu() {
     //выбираем нужные элементы
     var el = document.getElementById('openMenu');
@@ -40,4 +53,5 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 eventClickMobileIconMenu();
+aligmentWidthChildsBirthdayBlock()
 setHeightChildrenBlock("mainBlock");
