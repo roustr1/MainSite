@@ -3,12 +3,11 @@ using Application.Dal.Domain.Menu;
 
 namespace Application.Services.Menu
 {
-    public interface IMenuService
+    public interface IMenuService : IShowMenu
     {
-        MenuItem GetItem(string id);
+        MenuItem Get(string id);
         void InsertItem(MenuItem mi);
         void DeleteItem(MenuItem mi);
-        IEnumerable<MenuItem> GetMenuItem(string parentId = null);
-        IEnumerable<MenuItem> GetMenuItem();
+        IEnumerable<MenuItem> GetAll();
     }
 }

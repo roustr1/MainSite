@@ -1,0 +1,22 @@
+﻿@model IEnumerable<MainSite.Models.UI.Menu.MenuItemViewModel>
+
+@foreach (var item in Model)
+{
+    var resultImgHtml = !String.IsNullOrWhiteSpace(item.UrlIcon) 
+            ? $"<img src=\"{item.UrlIcon}\" />" 
+            : "<span style=\"background-color: black; height:2px;width:30px;\" src=\"/content/layout_icons/free-icon-ads-2625106.svg\"></span>";
+
+    <li>
+        <a href="@Url.Action("Index", "Home", new {page = 0, category = item.Id})" title="@item.ToolTip" class="@(item.IsActive ? "active" : "")">
+            @Html.Raw(@resultImgHtml)
+            <div class="">@item.Name</div>
+        </a>
+        @if (item.Children.Any())
+        {
+            <ul class="@(item.IsActive ? "active" : "")">
+                @await Html.PartialAsync("~/Views/Shared/Components/NavComponent/Default.cshtml", item.Children)
+            </ul>
+        }
+    </li>
+
+}

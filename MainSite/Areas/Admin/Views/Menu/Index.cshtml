@@ -9,16 +9,16 @@
     <label>Структура меню</label>
     <!-- отображение древовидной иерархии-->
     <ul>
-        @foreach (var l1Item in menu.GetMenuItem())
+        @foreach (var l1Item in menu.GetManyByParentId())
         {
             <li>@l1Item.Name
                 <ul>
-                    @foreach (var l2Item in menu.GetMenuItem(l1Item.Id))
+                    @foreach (var l2Item in menu.GetManyByParentId(l1Item.Id))
                     {
                         <li>@l2Item.Name
 
                             <ul>
-                                @foreach (var l3item in menu.GetMenuItem(l2Item.Id))
+                                @foreach (var l3item in menu.GetManyByParentId(l2Item.Id))
                                 {
                                     <li>@l3item.Name</li>
                                 }

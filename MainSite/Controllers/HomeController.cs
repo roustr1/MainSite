@@ -48,7 +48,7 @@ namespace MainSite.Controllers
         public IActionResult Index(int page = 0, string category = null)
         {
 
-            var model = _newsPaged(page, _pagesize);
+            var model = _newsPaged(page, _pagesize, category);
             return View(model);
         }
 
@@ -159,6 +159,7 @@ namespace MainSite.Controllers
             var list = new PagedList<NewsItem>(records.AsQueryable(), pageIndex, pageSize);
             var model = new NewsListModel
             {
+                CategoryId = category,
                 News = list,
                 PagerModel = new PagerModel
                 {
