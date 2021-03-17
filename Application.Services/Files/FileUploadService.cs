@@ -104,7 +104,7 @@ namespace Application.Services.Files
 
         public virtual FileBinary GetFileBinaryByFileId(string fileId)
         {
-            return _fileBinaryRepository.Get(fileId);
+            return _fileBinaryRepository.GetAll().FirstOrDefault(pb => pb.FileId == fileId);
         }
         /// <summary>
         /// Gets the loaded file binary depending on file storage settings
