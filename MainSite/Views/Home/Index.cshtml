@@ -1,6 +1,6 @@
 ﻿@using MainSite.Extensions
-@using MainSite.Models.News
-@model MainSite.Models.News.NewsListModel
+@using MainSite.ViewModels.News
+@model MainSite.ViewModels.News.NewsListViewModel
 @{
     ViewData["Title"] = "Новости";
     ViewData["categoryId"] = Model.CategoryId;
@@ -9,7 +9,7 @@
 @Html.Partial("BirthdayUsers")
 
 <div id="newsComponent">
-    @Html.Partial("Create", new NewsItemModel())
+    @Html.Partial("Create", new NewsItemViewModel())
 
     <div class="card-panel row">
         @foreach (var item in Model.News)

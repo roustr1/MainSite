@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using MainSite.Models;
+using MainSite.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
@@ -13,9 +13,9 @@ using Application.Services.Files;
 using Application.Services.Menu;
 using Application.Services.News;
 using Application.Services.Settings;
-using MainSite.Models.Common;
-using MainSite.Models.News;
-using MainSite.Models.UI.Menu;
+using MainSite.ViewModels.Common;
+using MainSite.ViewModels.News;
+using MainSite.ViewModels.UI.Menu;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 

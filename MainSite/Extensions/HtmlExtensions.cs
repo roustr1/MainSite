@@ -1,8 +1,8 @@
 ﻿using System.IO;
 using System.Text;
 using System.Text.Encodings.Web;
-using MainSite.Models.Common;
-using MainSite.Models.UI.Paging;
+using MainSite.ViewModels.Common;
+using MainSite.ViewModels.UI.Paging;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -25,7 +25,7 @@ namespace MainSite.Extensions
         //we have two pagers:
         //The first one can have custom routes
         //The second one just adds query string parameter
-        public static IHtmlContent Pager<TModel>(this IHtmlHelper<TModel> html, PagerModel model)
+        public static IHtmlContent Pager<TModel>(this IHtmlHelper<TModel> html, PagerViewModel model)
         {
             if (model.TotalRecords == 0)
                 return new HtmlString("");
@@ -165,7 +165,7 @@ namespace MainSite.Extensions
         }
 
 
-        public static Pager Pager(this IHtmlHelper helper, IPageableModel pagination)
+        public static Pager Pager(this IHtmlHelper helper, IPageableViewModel pagination)
         {
             return new Pager(pagination, helper.ViewContext);
         }

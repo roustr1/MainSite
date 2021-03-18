@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using MainSite.Models;
+using MainSite.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
@@ -11,8 +11,8 @@ using Application.Dal.Domain.News;
 using Application.Services.Files;
 using Application.Services.News;
 using Application.Services.Settings;
-using MainSite.Models.Common;
-using MainSite.Models.News;
+using MainSite.ViewModels.Common;
+using MainSite.ViewModels.News;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
@@ -61,13 +61,13 @@ namespace MainSite.Controllers
         [HttpGet]
         public IActionResult Create(string currentCategory)
         {
-            var model = new NewsItemModel();
+            var model = new NewsItemViewModel();
             return View(model);
         }
 
         //[Route("Create")]
         [HttpPost("{Create}")]
-        public IActionResult Create([FromForm] NewsItemModel model)
+        public IActionResult Create([FromForm] NewsItemViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -141,7 +141,7 @@ namespace MainSite.Controllers
         }
 
         [NonAction]
-        private NewsListModel _newsPaged(int? page, int? pagesize, string category = null)
+        private NewsListViewModel _newsPaged(int? page, int? pagesize, string category = null)
         {
 
             int pageIndex = 0;
@@ -153,11 +153,11 @@ namespace MainSite.Controllers
             var records = _newsService.GetNewsItem(category: category);
 
             var list = new PagedList<NewsItem>(records.AsQueryable(), pageIndex, pageSize);
-            var model = new NewsListModel
+            var model = new NewsListViewModel
             {
                 CategoryId = category,
                 News = list,
-                PagerModel = new PagerModel
+                PagerModel = new PagerViewModel
                 {
                     PageSize = list.PageSize,
                     TotalRecords = list.TotalCount,

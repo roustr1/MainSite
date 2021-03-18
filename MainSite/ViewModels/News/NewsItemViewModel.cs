@@ -2,11 +2,11 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 
-namespace MainSite.Models.News
+namespace MainSite.ViewModels.News
 {
-    public class NewsItemModel
+    public class NewsItemViewModel
     {
-        public NewsItemModel()
+        public NewsItemViewModel()
         {
             UploadedFiles = new List<IFormFile>();
         }

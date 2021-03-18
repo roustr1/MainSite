@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using Application.Dal.Domain.News;
-using MainSite.Models.Common;
-using MainSite.Models.UI.Menu;
+using MainSite.ViewModels.Common;
+using MainSite.ViewModels.UI.Menu;
 
-namespace MainSite.Models.News
+namespace MainSite.ViewModels.News
 {
-    public partial class NewsListModel
+    public partial class NewsListViewModel
     {
         public IList<MenuItemViewModel> Menu { get; set; }
         public IList<NewsItem> News { get; set; }
-        public PagerModel PagerModel { get; set; }
+        public PagerViewModel PagerModel { get; set; }
         public string CategoryId { get; set; }
     }
 }
