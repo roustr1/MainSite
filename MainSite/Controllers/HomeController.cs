@@ -150,9 +150,43 @@ namespace MainSite.Controllers
                 pageIndex = page.Value - 1;
             }
             var pageSize = pagesize.GetValueOrDefault(10);
-            var records = _newsService.GetNewsItem(category: category);
 
-            var list = new PagedList<NewsItem>(records.AsQueryable(), pageIndex, pageSize);
+            var records = new List<NewsItemViewModel>();
+            foreach (var newsItem in _newsService.GetNewsItem(category: category))
+            {
+                if (newsItem == null) continue;
+
+                var newsItemViewModel = new NewsItemViewModel()
+                {
+                    Id = newsItem.Id,
+                    Header = newsItem.Header,
+                    Description = newsItem.Description,
+                    Category = newsItem.Category,
+                    Author = newsItem.AutorFio,
+                    CreatedDate = newsItem.CreatedDate,
+                    LastChangeDate = newsItem.LastChangeDate
+                };
+
+                var files = new List<FileViewModel>();
+
+                if (newsItem.Files != null)
+                {
+                    foreach (var newsItemFile in newsItem.Files)
+                    {
+                        files.Add(new FileViewModel()
+                        {
+                            Id = newsItemFile.Id,
+                            Name = newsItemFile.OriginalName
+                        });
+                    }
+                }
+
+                newsItemViewModel.Files = files;
+
+                records.Add(newsItemViewModel);
+            }
+
+            var list = new PagedList<NewsItemViewModel>(records, pageIndex, pageSize);
             var model = new NewsListViewModel
             {
                 CategoryId = category,
