@@ -17,7 +17,7 @@
             var TypeMessage = item.IsMessage ? "сообщение" : "докумен";
 
             <div class="card_news">
-                <div class="card_news-image"><img src="" alt="" /></div>
+                <div class="card_news-image"><img src="@Url.Content(item.UrlIcon)" alt="" /></div>
                 <div class="card_news-main">
                     <div class="card_news-main-header"><span class="bold">@item.Author</span> разместил @TypeMessage в разделе <a href="@Url.Action("Index", "Home", new {page = 0, category = item.Category})">@item.Category</a></div>
                     <div class="card_news-main-title"><a href="@Url.Action("Details", new { id = item.Id })">@item.Header</a></div>

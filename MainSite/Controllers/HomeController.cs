@@ -79,9 +79,7 @@ namespace MainSite.Controllers
                     AutorFio = User?.Identity?.Name ?? "Неавторизован",
                     CreatedDate = dataTimeNow,
                     LastChangeDate = dataTimeNow,
-                    Name =  model.Header,
                     Category =  model.Category,
-                    UrlImg = model?.UploadedFiles.Count() > 0 ? ImagePath.New.AvailabilityFiles : ImagePath.New.MissingFiles                     
                 };
                 var collection = new List<File>();
                 //uploadFiles 

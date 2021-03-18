@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Application.Dal;
 using Microsoft.AspNetCore.Http;
 
 namespace MainSite.ViewModels.News
@@ -32,6 +33,15 @@ namespace MainSite.ViewModels.News
 
         [Display(Name = "Дата последнего редактирования")]
         public DateTime LastChangeDate { get; set; }
+
+        public string UrlIcon
+        {
+            get
+            {
+                //TODO: перенести в HtmlExtensions
+                return IsMessage ? ImagePath.New.MissingFiles : ImagePath.New.AvailabilityFiles;
+            }
+        }
 
         public bool IsMessage
         {
