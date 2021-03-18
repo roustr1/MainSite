@@ -8,7 +8,7 @@ function eventClickElementMenu() {
         //вешаем событие
         el.onclick = function(e) {
             var checkFirstNode = el.classList.contains('active');//el.parentElement.parentElement.classList.contains('menu');
-            if(!checkFirstNode) {
+            /*if(!checkFirstNode) {
                 var activeElementsFirstChildrensMainNode = el.parentElement.querySelectorAll('*.active');
                 if (activeElementsFirstChildrensMainNode.length > 0) {
                     for (var elementIndex in activeElementsFirstChildrensMainNode) {
@@ -17,7 +17,7 @@ function eventClickElementMenu() {
                     }
                     return null;
                 }
-            }
+            }*/
             var items = document.querySelectorAll('.menu ul, .menu a, .menu li');
             for (var itemIndex in items)
                 if (typeof items[itemIndex].classList != "undefined") items[itemIndex].classList.remove('active');
@@ -27,7 +27,8 @@ function eventClickElementMenu() {
 }
 
 function SearchParent(node, searchParent) {    
-    if(node.parentElement.children.length == 1) node.classList.add('active');
+    node.classList.add('active');
+    //if(node.parentElement.children.length == 1) node.classList.add('active');
     while (node) {
         if (node.matches(searchParent))
         { 

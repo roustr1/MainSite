@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData?["Title"] - MainSite</title>
     <link href="~/css/materialize/sass/materialize.css" rel="stylesheet" />
-    <link href="~/content/fonts/MaterialIcons/Material-Icons.css" rel="stylesheet">
+    <link href="~/images/fonts/MaterialIcons/Material-Icons.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" />
     <script src="~/lib/vue/vue.js"></script>
 </head>
@@ -17,7 +17,7 @@
                 <div class="nav-wrapper">
                     <div class="valign-wrapper">
                         <a style="cursor: pointer;" asp-area="" asp-controller="Home" asp-action="Index" class="valign-wrapper">
-                            <img src="@service.SettingsDictionary.GetValueOrDefault("Application.Icon","/content/layout_icons/header.png")" width="50" height="50" />
+                            <img src="@service.SettingsDictionary.GetValueOrDefault("Application.Icon","/images/layout_icons/header.png")" width="50" height="50" />
                             @service.SettingsDictionary.GetValueOrDefault("Application.Name", "")
                         </a>
                         <a href="#" id="openMenu" data-target="mobile-demo" class="sidenav-trigger" style="float: right;"><i class="material-icons">menu</i></a>
@@ -33,7 +33,7 @@
                                     <a data-target='dropdown1' class="dropdown-trigger valign-wrapper" style="padding: 0px;">
                                         <span class="secondMenu-infoUser">Долгопрудный А.Р.</span>
                                         <i class="material-icons">keyboard_arrow_down</i>
-                                        <img class="rectangle" src="~/content/layout_icons/user.png" alt="" />
+                                        <img class="rectangle" src="~/images/layout_icons/user.png" alt="" />
 
                                     </a>
                                     <ul id='dropdown1' class='dropdown-content secondMenu-settingsUser'>
