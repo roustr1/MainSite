@@ -15,7 +15,7 @@ function aligmentWidthChildsBirthdayBlock() {
     }
     else {
         for (var item in items) {
-            item.style.paddingRight = "70px";
+            item.style.paddingRight = "33px";
         }
     }
 }

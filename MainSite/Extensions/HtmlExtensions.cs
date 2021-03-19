@@ -159,7 +159,7 @@ namespace MainSite.Extensions
             var result = links.ToString();
             if (!string.IsNullOrEmpty(result))
             {
-                result = "<ul>" + result + "</ul>";
+                result = "<ul class=\"pagination\">" + result + "</ul>";
             }
             return new HtmlString(result);
         }

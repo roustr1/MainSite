@@ -75,7 +75,7 @@ namespace MainSite.Controllers
                 var entity = new NewsItem
                 {
                     Header = model.Header,
-                    Description = model.Description,
+                    Description = model.Description.Trim(),
                     AutorFio = User?.Identity?.Name ?? "Неавторизован",
                     CreatedDate = dataTimeNow,
                     LastChangeDate = dataTimeNow,
