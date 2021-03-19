@@ -112,13 +112,38 @@
             & > div {
                 padding-left: 10px;
                 color: $otherTextColor;
-                font-size: 16px;
                 font-weight: 600;
             }
 
             @media (max-width: 992px) {
                 padding-left: 5px;
             }
+        }
+    }
+}
+
+.secondMenu {
+    display: flex;
+    padding: 0px !important;
+    flex-direction: row;
+
+    :last-child {
+        margin-left: auto;
+    }
+
+    &-search {
+        display: flex;
+        align-items: center;
+        margin-right: 15px;
+        flex-direction: row;
+
+        & > * {
+            margin-right: 15px;
+        }
+
+        & > input {
+            width: auto !important;
+            margin-right: 15px !important;
         }
     }
 }
