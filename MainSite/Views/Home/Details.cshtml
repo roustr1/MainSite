@@ -1,4 +1,4 @@
-﻿@model Application.Dal.Domain.News.NewsItem
+﻿@model MainSite.ViewModels.News.NewsItemViewModel
 
 @{
     ViewData["Title"] = Model.Header;
@@ -7,11 +7,11 @@
 <div class="card-panel row detailsNew">
 
     <div class="card_news card_news-details">
-        <div class="card_news-image"><img src="@Url.Content(Model.UrlImg)" alt="" /></div>
+        <div class="card_news-image"><img src="@Url.Content(Model.UrlIcon)" alt="" /></div>
         <div class="card_news-main">
-            <div class="card_news-main-header"><span class="bold">@Model.AutorFio</span></div>
+            <div class="card_news-main-header"><span class="bold">@Model.Author</span></div>
             <div class="card_news-main-footer">@Model.CreatedDate</div>
-            <div class="card_news-main-title"><a>@Model.Name</a></div>
+            <div class="card_news-main-title"><a>@Model.Header</a></div>
         </div>
 
         <div class="card_news-editor">
@@ -25,7 +25,7 @@
     <ul class="dropdownFiles">
         @foreach (var item in Model.Files)
         {
-            <li><a asp-action="GetFile" asp-route-fileId="@item.Id">@item.OriginalName</a></li>
+            <li><a asp-action="GetFile" asp-route-fileId="@item.Id">@item.Name</a></li>
         }
     </ul>
 </div>

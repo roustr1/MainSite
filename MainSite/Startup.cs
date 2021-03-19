@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Application.Services.Birthday;
 using Application.Services.Settings;
+using MainSite.Models;
 using Microsoft.AspNetCore.Routing;
 
 namespace MainSite
@@ -43,6 +44,7 @@ namespace MainSite
                 mvcOtions.EnableEndpointRouting = false;
             });
             services.AddTransient(typeof(IRepository<>), typeof(EfRepository<>));
+            services.AddTransient<MainModel, MainModel>();
             services.AddTransient<IShowMenu, MenuService>();
             services.AddTransient<IMenuService, MenuService>();
             services.AddTransient<INewsService, NewsService>();

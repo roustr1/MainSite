@@ -1,6 +1,6 @@
-﻿namespace MainSite.Models.Common
+﻿namespace MainSite.ViewModels.Common
 {
-    public partial class PagerModel
+    public partial class PagerViewModel
     {
         #region Fields
 

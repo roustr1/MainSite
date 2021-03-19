@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Routing;
 
-namespace MainSite.Models.UI.Paging
+namespace MainSite.ViewModels.UI.Paging
 {
 
     /// <summary>
@@ -27,7 +27,7 @@ namespace MainSite.Models.UI.Paging
         /// <summary>
         /// Model
         /// </summary>
-        protected readonly IPageableModel model;
+        protected readonly IPageableViewModel model;
         /// <summary>
         /// ViewContext
         /// </summary>
@@ -111,7 +111,7 @@ namespace MainSite.Models.UI.Paging
         /// </summary>
         /// <param name="model">Model</param>
         /// <param name="context">ViewContext</param>
-		public Pager(IPageableModel model, ViewContext context)
+		public Pager(IPageableViewModel model, ViewContext context)
         {
             this.model = model;
             viewContext = context;
