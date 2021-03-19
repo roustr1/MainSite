@@ -1,63 +1,40 @@
-﻿@model Application.Dal.Domain.News.NewsItem
+﻿@model MainSite.ViewModels.News.NewsItemViewModel
 
 @{
     ViewData["Title"] = Model.Header;
 }
 
 <div class="card-panel row detailsNew">
-    <h5>@Model.Header</h5>
-    <hr />
 
-    <div class="col m2 s12 bold">
-      ФИО автора
-    </div>
-    <div class="col m4 s12">
-        @Html.DisplayFor(model => model.AutorFio)
-    </div>
+    <div class="card_news card_news-details">
+        <div class="card_news-image"><img src="@Url.Content(Model.UrlIcon)" alt="" /></div>
+        <div class="card_news-main">
+            <div class="card_news-main-header"><span class="bold">@Model.Author</span></div>
+            <div class="card_news-main-footer">@Model.CreatedDate</div>
+            <div class="card_news-main-title"><a>@Model.Header</a></div>
+        </div>
 
-    <div class="col m2 s12 bold">
-       Дата создания
-    </div>
-    <div class="col m4 s12">
-        @Html.DisplayFor(model => model.CreatedDate)
+        <div class="card_news-editor">
+            <a href="@Url.Action("edit")"><i class="material-icons">edit</i></a>
+            <a href="#" class="error"><i class="material-icons">close</i></a>
+        </div>
     </div>
 
+    <div class="bold card_news-description">@Model.Description.Trim()</div>
 
-
-    <div class="col m2 s12 bold">
-       Категория
-    </div>
-    <div class="col m4 s12">
-        @Html.DisplayFor(model => model.Category)
-    </div>
-
-    <div class="col m2 s3 bold">
-        Список файлов
-    </div>
-    <div class="col m4 s9">
-
-        <a data-target='dropdownFiles' class="dropdown-trigger">
-            <i class="material-icons">insert_drive_file</i>
-        </a>
-        <ul id='dropdownFiles' class='dropdown-content'>
-            <li><a> Testing.json</a></li>
-            @foreach (var item in Model.Files)
-            {
-                <li><a asp-action="GetFile" asp-route-fileId="@item.Id" > @item.OriginalName</a></li>
-            }
-        </ul>
-    </div>
-
-
-    <div class="col m2 s12 bold">
-       Описание
-    </div>
-    <div class="col m10 s12">
-        @Html.DisplayFor(model => model.Description)
-    </div>
-
-    <div class="col m12 s12 text-right">
-        @Html.ActionLink("Редактировать", "Edit", "News", new { id = Model.Id }, new { @class = "btn btn-defaultMainSite" })
-        <a asp-action="Index" class="btn btn-defaultMainSite">Назад</a>
-    </div>
+    <ul class="dropdownFiles">
+        @foreach (var item in Model.Files)
+        {
+            <li><a asp-action="GetFile" asp-route-fileId="@item.Id">@item.Name</a></li>
+        }
+    </ul>
 </div>
+
+
+@*<div class="col m2 s12 bold">
+        <div class="col m12 s12 text-right">
+            @Html.ActionLink("Редактировать", "Edit", "News", new { id = Model.Id }, new { @class = "btn btn-defaultMainSite" })
+            <a asp-action="Index" class="btn btn-defaultMainSite">Назад</a>
+        </div>
+    </div>
+*@

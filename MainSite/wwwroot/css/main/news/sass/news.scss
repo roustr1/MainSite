@@ -1,28 +1,33 @@
-﻿/*Оформление блока новостей*/
+﻿@import "creatorNews.scss";
+
+/*Оформление блока новостей*/
 .card_news {
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
-    padding-top: 10px;
+    position: relative;
 
     &-image {
-        display: flex;
-        align-items: center;
+        padding: 0px;
+        margin: 0px;
+        padding-right: 10px;
 
-        & > img {
-            height: 60px;
-            width: 60px;
+        img {
+            width: 62.4px;
+            height: 72px;
         }
     }
 
     &-main {
-        display: flex;
-        flex-direction: column;
-        padding: 0 0.75rem;
-        margin-bottom: 20px;
+        padding: 0px;
+        margin: 0px;
+
+        & > div {
+            padding: 0px;
+            margin: 0px;
+        }
 
         &-header {
-            font-size: 12px;
+            font-size: 14px;
 
             span {
                 color: $mainTextColor;
@@ -32,34 +37,82 @@
         &-title {
             & > a {
                 text-decoration: underline;
+                color: #1E57A5;
 
-                & :hover {
-                    color: rgba($color: #000000, $alpha: 1.0);
+                &:hover {
+                    color: #64b5f6;
                 }
             }
         }
 
         &-footer {
             font-style: italic;
-            font-size: 12px;
+            font-size: 14px;
             -webkit-text-stroke: thin;
             color: $mainTextColor;
         }
     }
 
+    &-description {
+        color: #3C3C3C;
+        width: 100%;
+        display: block;
+        white-space: pre-wrap;
+    }
+
+
     &-editor {
         display: flex;
         flex-direction: row;
-        text-align: right;
-        height: max-content;
-        flex-grow: 1;
-        justify-content: flex-end;
+        position: absolute;
+        right: 0px;
     }
 }
 
+/*Оформление блока Информация по новости*/
+.detailsNew {
+    & > div {
+        padding-left: 0px;
+    }
+
+    .dropdownFiles {
+        & * {
+            color: #65935C;
+        }
+    }
+
+    .card_news-details {
+        position: relative;
+
+        .card_news-main {
+            margin-bottom: 10px;
+
+            &-title {
+                a {
+                    color: #1E57A5;
+                    text-decoration: none;
+                }
+            }
+        }
+
+        .card_news-editor {
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+    }
+}
+
+#newsComponent {
+    position: relative;
+    margin-top: 0.5em;
+}
 /* Стили для пагинации*/
 .pagination {
-    text-align: right;
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    justify-content: flex-end;
 
     li {
         margin-right: 10px;
@@ -91,5 +144,3 @@
         }
     }
 }
-
-@import "creatorNews.scss";

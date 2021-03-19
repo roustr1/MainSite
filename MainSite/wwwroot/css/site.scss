@@ -3,6 +3,8 @@ $headerColor:#ffffff;
 $footerColor:#ffffff;
 $otherTextColor: #9e9e9e;
 
+$fontDefaultAllSite: 18px; 
+
 @mixin animationTranslateBtn($blockColor, $textColor) {
     & {
         position: relative;
@@ -61,15 +63,61 @@ $otherTextColor: #9e9e9e;
 @import "main/sass/main.scss";
 
 html {
+    .btn {
+        &-defaultMainSite {
+            animation-fill-mode: forwards;
+            background-color: #fff;
+            color: $otherTextColor;
+            border-left: 3px solid $animationBorderBtnTextColor;
+            position: relative;
+            //@include animationTranslateBtn($animationBorderBtnTextColor, $animationBtnTextColor);
+            &:hover {
+                background-color: $animationBorderBtnTextColor;
+                color: white;
+            }
+
+            @-moz-document url-prefix() {
+                height: 2.5rem !important;
+            }
+
+            height: 2.5rem !important;
+            ;
+            line-height: 2rem !important;
+            border: 2.5px solid #64b5f6;
+            border-radius: 8px;
+        }
+    }
+
+
+    .container {
+        @media (max-width: 1260px) {
+            width: 95%;
+        }
+    }
+
+    .rectangle {
+        border-radius: 8px;
+        width: 40px;
+        height: 40px;
+        //box-shadow: 2px 1px 3px rgba(0, 0, 0, 0.5);
+        border: 0.5px solid black;
+    }
+
+    .error {
+        color: #ef5350;
+
+        &-block {
+            background-color: #ef5350;
+        }
+    }
+
+    .bold {
+        font-weight: 600;
+    }
+
     overflow-x: hidden;
-    font-size: 14px;
     position: relative;
     min-height: 100%;
-    color: $otherTextColor;
-
-    @media (min-width: 768px) {
-        font-size: 16px;
-    }
 
     .dropdown-content {
         width: auto !important;
@@ -83,79 +131,51 @@ html {
     .text-center {
         text-align: center;
     }
-}
 
-.container {
-    @media (max-width: 1260px) {
-        width: 95%;
-    }
-}
+    body {
+        background-color: $otherColor !important;
+        font-size: $fontDefaultAllSite !important;
+        color: $otherTextColor !important;
 
-.rectangle {
-    border-radius: 8px;
-    width: 40px;
-    height: 40px;
-    //box-shadow: 2px 1px 3px rgba(0, 0, 0, 0.5);
-    border: 0.5px solid black;
-}
-
-.error {
-    color: #ef5350;
-    &-block{
-        background-color: #ef5350;
-    }
-}
-
-.bold {
-    font-weight: 600;
-}
-
-body {
-    background-color: $otherColor;
-
-    header {
-        color: $otherTextColor;
-        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
-        transition: box-shadow .25s;
-
-        #openMenu {
-            margin-left: auto;
-        }
-
-        .secondMenu {
-            margin-left: auto;
-        }
-
-
-        & .nav-header {
+        header {
             color: $otherTextColor;
+            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+            transition: box-shadow .25s;
 
-            & a {
-                color: $otherTextColor;
+            #openMenu {
+                margin-left: auto;
             }
 
-            box-shadow: none;
+            & .nav-header {
+                color: $otherTextColor;
+
+                & a {
+                    color: $otherTextColor;
+                }
+
+                box-shadow: none;
+                background-color: $headerColor;
+            }
+
             background-color: $headerColor;
         }
 
-        background-color: $headerColor;
-    }
+        footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            white-space: nowrap;
 
-    footer {
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        white-space: nowrap;
+            nav {
+                a {
+                    color: $otherTextColor;
+                }
 
-        nav {
-            a {
                 color: $otherTextColor;
+                background-color: $footerColor;
+                line-height: 30px;
+                height: auto;
             }
-
-            color: $otherTextColor;
-            background-color: $footerColor;
-            line-height: 30px;
-            height: auto;
         }
     }
 }
