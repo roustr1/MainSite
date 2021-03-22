@@ -83,9 +83,12 @@ namespace MainSite.Components
                     IsActive = selected.Contains(item.Id)
                 };
 
-                CreateTree(item.Id, itemViewModel.Children, selected);
-
                 list.Add(itemViewModel);
+            }
+
+            foreach (var item in list)
+            {
+                CreateTree(item.Id, item.Children, selected);
             }
         }
     }
