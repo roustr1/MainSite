@@ -1,0 +1,60 @@
+﻿$borderDefaultMainSite: 2.5px solid $animationBorderBtnTextColor;
+$borderDefault: 1px solid $otherTextColor;
+
+$hoverSettings: ( 
+    "default": (
+        "background-color": #eeeeee
+    ),
+    "defaultMainSite": (
+        "background-color": $animationBorderBtnTextColor,
+        "color": #ffffff
+    )
+);
+
+$btnSettings: (
+  "default": (
+    "background-color": #ffffff,
+    "animation-fill-mode": forwards,
+    "height": auto,
+    "color": $otherTextColor,
+    "border": $borderDefault
+  ),
+  "defaultMainSite": (
+    "height": 2.5rem !important,
+    "background-color": #ffffff,
+    "animation-fill-mode": forwards,
+    "color": $otherTextColor,
+    "border": $borderDefaultMainSite,
+  )
+);
+
+.btn {
+    @each $typeBtn, $settings in $btnSettings {
+        &-#{$typeBtn} {
+            position: relative;
+            border-radius: 8px !important;
+
+            @if($typeBtn != "default") {
+                @-moz-document url-prefix() {
+                    height: 2.5rem !important;
+                }
+            }
+            //border-left: 3px solid $animationBorderBtnTextColor;
+
+            @each $setting, $value in $settings {
+                #{$setting}: $value;
+            }
+
+            &:hover {
+                @each $hoverSetting, $hoverValue in map-get($hoverSettings, $typeBtn) {
+                    #{$hoverSetting}: $hoverValue;
+                }
+            }
+        }
+        //@include animationTranslateBtn($animationBorderBtnTextColor, $animationBtnTextColor);
+        /*&:hover {
+            background-color: $animationBorderBtnTextColor;
+            color: white;
+        }*/
+    }
+}

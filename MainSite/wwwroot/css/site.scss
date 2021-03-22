@@ -61,33 +61,10 @@ $fontDefaultAllSite: 18px;
 
 @import "menu/sass/menu.scss";
 @import "main/sass/main.scss";
+@import "form/btn.scss";
 
 html {
-    .btn {
-        &-defaultMainSite {
-            animation-fill-mode: forwards;
-            background-color: #fff;
-            color: $otherTextColor;
-            border-left: 3px solid $animationBorderBtnTextColor;
-            position: relative;
-            //@include animationTranslateBtn($animationBorderBtnTextColor, $animationBtnTextColor);
-            &:hover {
-                background-color: $animationBorderBtnTextColor;
-                color: white;
-            }
-
-            @-moz-document url-prefix() {
-                height: 2.5rem !important;
-            }
-
-            height: 2.5rem !important;
-            ;
-            line-height: 2rem !important;
-            border: 2.5px solid #64b5f6;
-            border-radius: 8px;
-        }
-    }
-
+    font-family: 'Helvetica Neue' !important;
 
     .container {
         @media (max-width: 1260px) {
