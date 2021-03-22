@@ -32,7 +32,7 @@ namespace Application.Dal
                     {
                         Id= Guid.NewGuid().ToString(),
                         Name = "Application.Icon",
-                        Value = "/content/layout_icons/header.png"
+                        Value = "/images/layout_icons/header.png"
                     },
                     new Setting
                     {
