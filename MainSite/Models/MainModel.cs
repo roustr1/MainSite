@@ -43,17 +43,15 @@ namespace MainSite.Models
             {
                 return null;
             }
-
-            var files = new List<FileViewModel>();
-
-            if (newsItem.Files != null)
+            
+            var filesResult = new List<FileViewModel>();
+            var files = _uploadService.GetFilesByNewsId(newsItem.Id).ToList();
+            
+            foreach (var newsItemFile in files)
             {
-                foreach (var newsItemFile in newsItem.Files)
-                {
-                    files.Add(GetDownloadedFileViewModel(newsItemFile));
-                }
+                filesResult.Add(GetDownloadedFileViewModel(newsItemFile));
             }
-
+        
             return new NewsItemViewModel()
             {
                 Id = newsItem.Id,
@@ -63,7 +61,7 @@ namespace MainSite.Models
                 Author = newsItem.AutorFio,
                 CreatedDate = newsItem.CreatedDate,
                 LastChangeDate = newsItem.LastChangeDate,
-                Files = files
+                Files = filesResult
             };
         }
 
