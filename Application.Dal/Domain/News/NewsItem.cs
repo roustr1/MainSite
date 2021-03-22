@@ -12,14 +12,9 @@ namespace Application.Dal.Domain.News
         public string Category { get; set; }
         public string AutorFio { get; set; }
         public string LastChangeAuthor { get; set; }
-        public string MenuItemName { get; set; }
-        public string MenuItemAction { get; set; }
-        public string Name { get; set; }
-        public string NameAction { get; set; }
-        public string UrlImg { get; set; }
         public DateTime LastChangeDate { get; set; }
         public DateTime CreatedDate { get; set; }
-        public ICollection<File> Files { get; set; }
+        public virtual ICollection<File> Files { get; set; }
 
     }
 }

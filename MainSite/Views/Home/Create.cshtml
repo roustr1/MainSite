@@ -1,4 +1,4 @@
-﻿@model MainSite.Models.News.NewsItemModel
+﻿@model MainSite.ViewModels.News.NewsItemViewModel
 
 @{
     Layout = null;
@@ -9,14 +9,17 @@
         <a class="error close" v-on:click="showCreator(false, true)"><i class="material-icons">close</i></a>
 
         <form asp-action="Create" enctype="multipart/form-data" method="post">
-            <div class="row creator-main-textForm" >
-                <div class="input-field col s12 m12">
-                    <i class="material-icons prefix">message</i>
-                    <textarea asp-for="Header" id="TextMessage" class="materialize-textarea"></textarea>
-                    <label asp-for="Header" class="active" for="TextMessage">Введите текст</label>
+                <div class="input-field s12 m12">
+                    <i class="material-icons prefix">textsms</i>
+                    <textarea asp-for="Header" id="TextHeader" class="materialize-textarea"></textarea>
+                    <label class="active bold" for="TextHeader">Введите заголовок объявления</label>
                 </div>
-            </div>
-            <div class="file-field input-field creator-main-panel">
+                <div class="input-field s12 m12">
+                    <i class="material-icons prefix">message</i>
+                    <textarea asp-for="Description" id="TextDescription" class="materialize-textarea"></textarea>
+                    <label class="active bold" for="TextDescription">Введите текстовое объявление</label>
+                </div>
+            <div class="file-field input-field creator-main-panel s12 m12">
                 <div class="btn btn-defaultMainSite">
                     <span>Прикрепить файл...</span>
                     <input type="file" asp-for="UploadedFiles" multiple>
@@ -24,7 +27,7 @@
                 <div class="file-path-wrapper" style="flex-grow: 1;">
                     <input disabled class="file-path" style="border: none;" type="text" placeholder="Список выбранных файлов">
                 </div>
-                <input type="submit" value="Опубликовать" class="btn btn-defaultMainSite" value="Опубликовать"/>
+                <input type="submit" value="Опубликовать" class="btn btn-defaultMainSite" />
             </div>
             <div class="form-group">
 

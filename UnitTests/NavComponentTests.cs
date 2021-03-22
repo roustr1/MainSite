@@ -6,7 +6,7 @@ using Application.Dal.Domain.Menu;
 using Application.Services.Menu;
 using MainSite.Components;
 using MainSite.Controllers;
-using MainSite.Models.UI.Menu;
+using MainSite.ViewModels.UI.Menu;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Moq;
 using NUnit.Framework;

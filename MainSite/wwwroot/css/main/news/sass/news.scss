@@ -1,0 +1,146 @@
+﻿@import "creatorNews.scss";
+
+/*Оформление блока новостей*/
+.card_news {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+
+    &-image {
+        padding: 0px;
+        margin: 0px;
+        padding-right: 10px;
+
+        img {
+            width: 62.4px;
+            height: 72px;
+        }
+    }
+
+    &-main {
+        padding: 0px;
+        margin: 0px;
+
+        & > div {
+            padding: 0px;
+            margin: 0px;
+        }
+
+        &-header {
+            font-size: 14px;
+
+            span {
+                color: $mainTextColor;
+            }
+        }
+
+        &-title {
+            & > a {
+                text-decoration: underline;
+                color: #1E57A5;
+
+                &:hover {
+                    color: #64b5f6;
+                }
+            }
+        }
+
+        &-footer {
+            font-style: italic;
+            font-size: 14px;
+            -webkit-text-stroke: thin;
+            color: $mainTextColor;
+        }
+    }
+
+    &-description {
+        color: #3C3C3C;
+        width: 100%;
+        display: block;
+        white-space: pre-wrap;
+    }
+
+
+    &-editor {
+        display: flex;
+        flex-direction: row;
+        position: absolute;
+        right: 0px;
+    }
+}
+
+/*Оформление блока Информация по новости*/
+.detailsNew {
+    & > div {
+        padding-left: 0px;
+    }
+
+    .dropdownFiles {
+        & * {
+            color: #65935C;
+        }
+    }
+
+    .card_news-details {
+        position: relative;
+
+        .card_news-main {
+            margin-bottom: 10px;
+
+            &-title {
+                a {
+                    color: #1E57A5;
+                    text-decoration: none;
+                }
+            }
+        }
+
+        .card_news-editor {
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+    }
+}
+
+#newsComponent {
+    position: relative;
+    margin-top: 0.5em;
+}
+/* Стили для пагинации*/
+.pagination {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    justify-content: flex-end;
+
+    li {
+        margin-right: 10px;
+
+        &:last-child {
+            margin-right: 0px;
+        }
+
+        &.active {
+            background-color: #64b5f6;
+
+            a {
+                color: #fff;
+            }
+        }
+
+        &.btn {
+            &:hover {
+
+                a {
+                    color: #fff;
+                }
+            }
+        }
+
+        a {
+            font-size: 0.8rem;
+            color: #9e9e9e;
+        }
+    }
+}

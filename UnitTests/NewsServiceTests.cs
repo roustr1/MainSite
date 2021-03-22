@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Application.Dal;
 using Application.Dal.Domain.News;
@@ -101,7 +102,7 @@ namespace UnitTests
             mock.Setup(m => m.GetAll()).Returns(listItems);
 
             NewsService newsService = new NewsService(mock.Object);
-            List<NewsItem> result = (List<NewsItem>)newsService.GetNewsItem(authorId: null, category: null);
+            List<NewsItem> result = newsService.GetNewsItem(authorId: null, category: null).ToList();
 
             Assert.IsTrue(result != null);
             Assert.IsTrue(result.Count == listItems.Count);
@@ -152,7 +153,7 @@ namespace UnitTests
             });
 
             NewsService newsService = new NewsService(mock.Object);
-            List<NewsItem> result = (List<NewsItem>)newsService.GetNewsItem(authorId: null, category: null, isNewest: false);
+            List<NewsItem> result = newsService.GetNewsItem(authorId: null, category: null, isNewest: false).ToList();
 
             Assert.IsTrue(result != null);
             Assert.IsTrue(result[0].CreatedDate == data2019);
@@ -205,7 +206,7 @@ namespace UnitTests
             });
 
             NewsService newsService = new NewsService(mock.Object);
-            List<NewsItem> result = (List<NewsItem>)newsService.GetNewsItem(authorId: null, category: null);
+            List<NewsItem> result = newsService.GetNewsItem(authorId: null, category: null).ToList();
 
             Assert.IsTrue(result != null);
             Assert.IsTrue(result[0].CreatedDate == data2021);
@@ -262,7 +263,7 @@ namespace UnitTests
             });
 
             NewsService newsService = new NewsService(mock.Object);
-            List<NewsItem> result = (List<NewsItem>)newsService.GetNewsItem(authorId: null, category: null, isNewest: false);
+            List<NewsItem> result = newsService.GetNewsItem(authorId: null, category: null, isNewest: false).ToList();
 
             Assert.IsTrue(result != null);
             Assert.IsTrue(result[0].LastChangeDate == lastChangeData20211101);
@@ -319,7 +320,7 @@ namespace UnitTests
             });
 
             NewsService newsService = new NewsService(mock.Object);
-            List<NewsItem> result = (List<NewsItem>)newsService.GetNewsItem(authorId: null, category: null, isNewest: true);
+            List<NewsItem> result = newsService.GetNewsItem(authorId: null, category: null, isNewest: true).ToList();
 
             Assert.IsTrue(result != null);
             Assert.IsTrue(result[0].LastChangeDate == lastChangeData20211103);
@@ -375,7 +376,7 @@ namespace UnitTests
             });
 
             NewsService newsService = new NewsService(mock.Object);
-            List<NewsItem> result = (List<NewsItem>)newsService.GetNewsItem(authorId: null, category: null, isNewest: false);
+            List<NewsItem> result = newsService.GetNewsItem(authorId: null, category: null, isNewest: false).ToList();
 
             Assert.IsTrue(result != null);
             Assert.IsTrue(result[0].LastChangeDate == createData2020);
@@ -432,7 +433,7 @@ namespace UnitTests
             });
 
             NewsService newsService = new NewsService(mock.Object);
-            List<NewsItem> result = (List<NewsItem>)newsService.GetNewsItem(authorId: null, category: null, isNewest: true);
+            List<NewsItem> result = newsService.GetNewsItem(authorId: null, category: null, isNewest: true).ToList();
 
             Assert.IsTrue(result != null);
             Assert.IsTrue(result[0].LastChangeDate == lastChangeData20211103);
@@ -483,7 +484,7 @@ namespace UnitTests
             });
 
             NewsService newsService = new NewsService(mock.Object);
-            List<NewsItem> result = (List<NewsItem>)newsService.GetNewsItem(authorId: null, category: Guid.NewGuid().ToString());
+            List<NewsItem> result = newsService.GetNewsItem(authorId: null, category: Guid.NewGuid().ToString()).ToList();
 
             Assert.IsTrue(result != null);
             Assert.IsTrue(result.Count == 0);
@@ -544,7 +545,7 @@ namespace UnitTests
             });
 
             NewsService newsService = new NewsService(mock.Object);
-            List<NewsItem> result = (List<NewsItem>)newsService.GetNewsItem(authorId: null, category: guidCategory);
+            List<NewsItem> result = newsService.GetNewsItem(authorId: null, category: guidCategory).ToList();
 
             Assert.IsTrue(result != null);
             Assert.IsTrue(result.Count == 1);
@@ -606,7 +607,7 @@ namespace UnitTests
             });
 
             NewsService newsService = new NewsService(mock.Object);
-            List<NewsItem> result = (List<NewsItem>)newsService.GetNewsItem(authorId: null, category: guidCategory);
+            List<NewsItem> result = newsService.GetNewsItem(authorId: null, category: guidCategory).ToList();
 
             Assert.IsTrue(result != null);
             Assert.IsTrue(result.Count == 2);

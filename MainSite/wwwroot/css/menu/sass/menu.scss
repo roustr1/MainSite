@@ -81,6 +81,8 @@
             margin-bottom: 10px;
             min-height: $heigh_a_px;
             cursor: pointer;
+            padding-left: 5px;
+            border-left: 6px solid transparent;
 
             & > img, & object {
                 height: 40px;
@@ -98,25 +100,50 @@
             &.active {
                 background-color: rgba(0, 0, 0, 0.05);
                 padding-left: 5px;
-                border-left: 6px solid #64b5f6;
+                border-color: #64b5f6;
             }
 
             &:hover {
-                padding-left: 5px;
-                transition: 0.3s;
-                border-left: 6px solid #64b5f6;
+                //padding-left: 5px;
+                //transition: 0.3s;
+                border-color: #64b5f6;
             }
 
             & > div {
                 padding-left: 10px;
                 color: $otherTextColor;
-                font-size: 16px;
                 font-weight: 600;
             }
 
             @media (max-width: 992px) {
                 padding-left: 5px;
             }
+        }
+    }
+}
+
+.secondMenu {
+    display: flex;
+    padding: 0px !important;
+    flex-direction: row;
+
+    :last-child {
+        margin-left: auto;
+    }
+
+    &-search {
+        display: flex;
+        align-items: center;
+        margin-right: 15px;
+        flex-direction: row;
+
+        & > * {
+            margin-right: 15px;
+        }
+
+        & > input {
+            width: auto !important;
+            margin-right: 15px !important;
         }
     }
 }

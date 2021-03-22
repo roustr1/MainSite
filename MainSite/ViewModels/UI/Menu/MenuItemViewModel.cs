@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MainSite.Models.UI.Menu
+namespace MainSite.ViewModels.UI.Menu
 {
     public class MenuItemViewModel
     {

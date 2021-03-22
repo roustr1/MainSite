@@ -21,7 +21,9 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Content\" />
-    <Folder Include="wwwroot\files\" />
+    <Folder Include="wwwroot\content\" />
+    <Folder Include="Content\" />
+    <Folder Include="wwwroot\files\" />    
   </ItemGroup>
 
   <ItemGroup>

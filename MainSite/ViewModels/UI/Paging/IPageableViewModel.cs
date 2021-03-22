@@ -1,9 +1,9 @@
-﻿namespace MainSite.Models.UI.Paging
+﻿namespace MainSite.ViewModels.UI.Paging
 {
     /// <summary>
     /// A collection of objects that has been split into pages.
     /// </summary>
-    public interface IPageableModel
+    public interface IPageableViewModel
     {
         /// <summary>
         /// The current page index (starts from 0)

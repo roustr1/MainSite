@@ -2,12 +2,12 @@
 using Application.Dal;
 using Application.Dal.Domain;
 
-namespace MainSite.Models.UI.Paging
+namespace MainSite.ViewModels.UI.Paging
 {
     /// <summary>
     /// Base class for pageable models
     /// </summary>
-    public abstract class BasePageableModel : BaseEntity, IPageableModel
+    public abstract class BasePageableViewModel : BaseEntity, IPageableViewModel
     {
         #region Methods
 
