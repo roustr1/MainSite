@@ -9,7 +9,7 @@
     <li>
         <a href="@Url.Action("Index", "Home", new {page = 0, category = item.Id})" title="@item.ToolTip" class="@(item.IsActive ? "active" : "")">
             @Html.Raw(@resultImgHtml)
-            <div class="">@item.Name</div>
+            <div class="@(item.Children.Count() > 0 ? "bold":"")">@item.Name</div>
         </a>
         @if (item.Children.Any())
         {

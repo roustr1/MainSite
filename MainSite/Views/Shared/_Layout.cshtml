@@ -7,6 +7,7 @@
     <title>@ViewData?["Title"] - MainSite</title>
     <link href="~/css/materialize/sass/materialize.css" rel="stylesheet" />
     <link href="~/images/fonts/MaterialIcons/Material-Icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/fonts/fonts.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <script src="~/lib/vue/vue.js"></script>
 </head>
@@ -17,20 +18,20 @@
                 <div class="nav-wrapper">
                     <div class="valign-wrapper">
                         <a style="cursor: pointer;" asp-area="" asp-controller="Home" asp-action="Index" class="valign-wrapper">
-                            <img src="@service.SettingsDictionary.GetValueOrDefault("Application.Icon","/images/layout_icons/header.png")" width="50" height="50" />
+                            <img src="@service.SettingsDictionary.GetValueOrDefault("Application.Icon","~/images/layout_icons/header.png")" width="50" height="50" />
                             @service.SettingsDictionary.GetValueOrDefault("Application.Name", "")
                         </a>
-                        <a href="#" id="openMenu" data-target="mobile-demo" class="sidenav-trigger" style="float: right;"><i class="material-icons">menu</i></a>
+                        <a id="openMenu" data-target="mobile-demo" class="sidenav-trigger" style="float: right;cursor:pointer;"><i class="material-icons">menu</i></a>
                         <ul class="hide-on-med-and-down col m12 s12 l9 secondMenu">
                             <li>
                                 <div class="secondMenu-search">
                                     <span>Поиск на сайте:</span> 
                                     <input type="text"/>
-                                    <button class="btn btn-defaultMainSite">Поиск</button>
+                                    <button class="btn btn-default">Найти</button>
                                 </div>
                             </li>
                             <li>
-                                <div>
+                                <div class="secondMenu-user">
                                     <a data-target='dropdown1' class="dropdown-trigger valign-wrapper" style="padding: 0px;">
                                         <span class="secondMenu-infoUser">Долгопрудный А.Р.</span>
                                         <i class="material-icons">keyboard_arrow_down</i>
@@ -56,8 +57,8 @@
             <ul class="menu">
                 <li>
                     <a href="@Url.Action("Index", "Home")" title="Новости" class="@(ViewData["categoryId"] == null ? "active" : "")">
-                        <span class="rectangle" style="background-color: white;" src="@Url.Content("~/content/layout_icons/free-icon-ads-2625106.svg")"></span>
-                        <div>Новости</div>
+                        <span class="rectangle" style="background-color: white;"></span>
+                        <div class="bold">Новости</div>
                     </a>
                 </li>
                 @await Component.InvokeAsync("NavComponent", ViewData["categoryId"])
