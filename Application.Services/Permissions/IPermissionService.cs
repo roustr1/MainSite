@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Application.Dal.Domain.Permissions;
+using Application.Dal.Domain.Users;
 
 namespace Application.Services.Permissions
 {
@@ -61,18 +62,9 @@ namespace Application.Services.Permissions
         /// <param name="permission">Permission record</param>
         /// <param name="user">User</param>
         /// <returns>true - authorized; otherwise, false</returns>
-        bool Authorize(PermissionRecord permission, string userName);
+        bool Authorize(PermissionRecord permission, User userName);
 
-        /// <summary>
-        /// Authorize permission
-        /// </summary>
-        /// <param name="permissionRecordSystemName">Permission record system name</param>
-        /// <param name="user">User</param>
-        /// <returns>true - authorized; otherwise, false</returns>
-        bool AuthorizeByUserName(string permissionRecordSystemName, string user);
-
-        bool Authorize(string permissionRecordSystemName, string userName = null,
-            string userRoleId = null);
+ 
 
         /// <summary>
         /// Authorize permission
@@ -80,7 +72,7 @@ namespace Application.Services.Permissions
         /// <param name="permissionRecordSystemName">Permission record system name</param>
         /// <param name="userRoleId">User role identifier</param>
         /// <returns>true - authorized; otherwise, false</returns>
-        bool AuthorizeByRoleId(string permissionRecordSystemName, string userRoleId);
+        bool Authorize(string permissionRecordSystemName, string userRoleId);
 
         /// <summary>
         /// Gets a permission record-user role mapping

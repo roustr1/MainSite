@@ -13,6 +13,11 @@ namespace Application.Dal.Domain.Users
         /// <summary>
         /// Get or set user name in AD system
         /// </summary>
+        public string Fio { get; set; }
+
+        /// <summary>
+        /// Get or set user name in AD system
+        /// </summary>
         public string SystemName { get; set; }
 
         /// <summary>

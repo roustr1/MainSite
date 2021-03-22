@@ -219,15 +219,15 @@ namespace Application.Services.Permissions
         /// <param name="permission">Permission record</param>
         /// <param name="user">User</param>
         /// <returns>true - authorized; otherwise, false</returns>
-        public virtual bool Authorize(PermissionRecord permission, string userName)
+        public virtual bool Authorize(PermissionRecord permission, User user)
         {
             if (permission == null)
                 return false;
 
-            if (userName == null)
+            if (user == null)
                 return false;
 
-            return Authorize(permission.SystemName, userName: userName);
+            return Authorize(permission.SystemName, user);
         }
 
         /// <summary>
@@ -236,7 +236,7 @@ namespace Application.Services.Permissions
         /// <param name="permissionRecordSystemName">Permission record system name</param>
         /// <param name="user">User</param>
         /// <returns>true - authorized; otherwise, false</returns>
-        public virtual bool AuthorizeByUserName(string permissionRecordSystemName, string user)
+        public virtual bool Authorize(string permissionRecordSystemName, User user)
         {
             if (string.IsNullOrEmpty(permissionRecordSystemName))
                 return false;
@@ -251,27 +251,13 @@ namespace Application.Services.Permissions
             return false;
         }
 
-        public virtual bool Authorize(string permissionRecordSystemName, string userName = null,
-            string userRoleId = null)
-        {
-            if (string.IsNullOrEmpty(permissionRecordSystemName))
-                return false;
-            if (!string.IsNullOrEmpty(userName))
-            {
-                return AuthorizeByUserName(permissionRecordSystemName, userName);
-            }
-            return AuthorizeByRoleId(permissionRecordSystemName, userRoleId);
-
-        }
-
-
         /// <summary>
         /// Authorize permission
         /// </summary>
         /// <param name="permissionRecordSystemName">Permission record system name</param>
         /// <param name="userRoleId">User role identifier</param>
         /// <returns>true - authorized; otherwise, false</returns>
-        public virtual bool AuthorizeByRoleId(string permissionRecordSystemName, string userRoleId)
+        public virtual bool Authorize(string permissionRecordSystemName, string userRoleId)
         {
             if (string.IsNullOrEmpty(permissionRecordSystemName))
                 return false;

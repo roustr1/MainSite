@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using Application.Dal;
 using Application.Dal.Domain.Users;
@@ -9,14 +9,22 @@ namespace Application.Services.Users
 {
     public class UsersService : IUsersService
     {
+        #region Fields
         private readonly IRepository<UserUserRoleMapping> _userUserRoleMappingRepository;
         private readonly IRepository<UserRole> _userRoleRepository;
+        private readonly IRepository<User> _userRepository;
+        #endregion
 
-        public UsersService(IRepository<UserUserRoleMapping> userUserRoleMappingRepository, IRepository<UserRole> userRoleRepository)
+        #region Ctor
+
+        public UsersService(IRepository<UserUserRoleMapping> userUserRoleMappingRepository, IRepository<UserRole> userRoleRepository, IRepository<User> userRepository)
         {
             _userUserRoleMappingRepository = userUserRoleMappingRepository;
             _userRoleRepository = userRoleRepository;
+            _userRepository = userRepository;
         }
+
+        #endregion
         #region User roles
 
         /// <summary>
@@ -114,14 +122,14 @@ namespace Application.Services.Users
         /// <param name="user">User</param>
         /// <param name="showHidden">A value indicating whether to load hidden records</param>
         /// <returns>User role identifiers</returns>
-        public virtual string[] GetUserRoleIds(string userName, bool showHidden = false)
+        public virtual string[] GetUserRoleIds(User user, bool showHidden = false)
         {
-            if (userName == null)
-                throw new ArgumentNullException(nameof(userName));
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
 
             var query = from cr in _userRoleRepository.GetAll()
                         join crm in _userUserRoleMappingRepository.GetAll() on cr.Id equals crm.UserRoleId
-                        where crm.UserName == userName &&
+                        where crm.UserName == user.Name &&
                         (showHidden || cr.Active)
                         select cr.Id;
 
@@ -135,14 +143,14 @@ namespace Application.Services.Users
         /// <param name="user">User</param>
         /// <param name="showHidden">A value indicating whether to load hidden records</param>
         /// <returns>Result</returns>
-        public virtual IList<UserRole> GetUserRoles(string userName, bool showHidden = false)
+        public virtual IList<UserRole> GetUserRoles(User user, bool showHidden = false)
         {
-            if (userName == null)
-                throw new ArgumentNullException(nameof(userName));
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
 
             var query = from ur in _userRoleRepository.GetAll()
                         join urm in _userUserRoleMappingRepository.GetAll() on ur.Id equals urm.UserRoleId
-                        where urm.UserName == userName &&
+                        where urm.UserName == user.Name &&
                               (showHidden || ur.Active)
                         select ur;
 
@@ -188,7 +196,7 @@ namespace Application.Services.Users
         /// <param name="userRoleSystemName">User role system name</param>
         /// <param name="onlyActiveUserRoles">A value indicating whether we should look only in active user roles</param>
         /// <returns>Result</returns>
-        public virtual bool IsInUserRole(string user,
+        public virtual bool IsInUserRole(User user,
             string userRoleSystemName, bool onlyActiveUserRoles = true)
         {
             if (user == null)
@@ -208,7 +216,7 @@ namespace Application.Services.Users
         /// <param name="user">User</param>
         /// <param name="onlyActiveUserRoles">A value indicating whether we should look only in active user roles</param>
         /// <returns>Result</returns>
-        public virtual bool IsAdmin(string user, bool onlyActiveUserRoles = true)
+        public virtual bool IsAdmin(User user, bool onlyActiveUserRoles = true)
         {
             return IsInUserRole(user, AppUserDefaults.AdministratorsRoleName, onlyActiveUserRoles);
         }
@@ -219,7 +227,7 @@ namespace Application.Services.Users
         /// <param name="user">User</param>
         /// <param name="onlyActiveUserRoles">A value indicating whether we should look only in active user roles</param>
         /// <returns>Result</returns>
-        public virtual bool IsForumModerator(string user, bool onlyActiveUserRoles = true)
+        public virtual bool IsForumModerator(User user, bool onlyActiveUserRoles = true)
         {
             return IsInUserRole(user, AppUserDefaults.ForumModeratorsRoleName, onlyActiveUserRoles);
         }
@@ -230,7 +238,7 @@ namespace Application.Services.Users
         /// <param name="user">User</param>
         /// <param name="onlyActiveUserRoles">A value indicating whether we should look only in active user roles</param>
         /// <returns>Result</returns>
-        public virtual bool IsRegistered(string user, bool onlyActiveUserRoles = true)
+        public virtual bool IsRegistered(User user, bool onlyActiveUserRoles = true)
         {
             return IsInUserRole(user, AppUserDefaults.RegisteredRoleName, onlyActiveUserRoles);
         }
@@ -250,7 +258,11 @@ namespace Application.Services.Users
             //_eventPublisher.EntityUpdated(userRole);
         }
 
-        #endregion
 
+        #endregion
+        public virtual string GetUserFio()
+        {
+            return UserPrincipal.Current.DisplayName;
+        }
     }
 }

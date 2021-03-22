@@ -16,7 +16,7 @@ namespace Application.Services.Users
         /// </summary>
         /// <param name="user">User</param>
         /// <param name="role">User role</param>
-        void RemoveUserRoleMapping(string user, UserRole role);
+        void RemoveUserRoleMapping(User user, UserRole role);
 
         /// <summary>
         /// Delete a user role
@@ -44,7 +44,7 @@ namespace Application.Services.Users
         /// <param name="user">User</param>
         /// <param name="showHidden">A value indicating whether to load hidden records</param>
         /// <returns>User role identifiers</returns>
-        string[] GetUserRoleIds(string user, bool showHidden = false);
+        string[] GetUserRoleIds(User user, bool showHidden = false);
 
         /// <summary>
         /// Gets list of user roles
@@ -52,7 +52,7 @@ namespace Application.Services.Users
         /// <param name="user">User</param>
         /// <param name="showHidden">A value indicating whether to load hidden records</param>
         /// <returns>Result</returns>
-        IList<UserRole> GetUserRoles(string user, bool showHidden = false);
+        IList<UserRole> GetUserRoles(User user, bool showHidden = false);
 
         /// <summary>
         /// Gets all user roles
@@ -74,7 +74,7 @@ namespace Application.Services.Users
         /// <param name="userRoleSystemName">User role system name</param>
         /// <param name="onlyActiveUserRoles">A value indicating whether we should look only in active user roles</param>
         /// <returns>Result</returns>
-        bool IsInUserRole(string user,
+        bool IsInUserRole(User user,
             string userRoleSystemName, bool onlyActiveUserRoles = true);
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace Application.Services.Users
         /// <param name="user">User</param>
         /// <param name="onlyActiveUserRoles">A value indicating whether we should look only in active user roles</param>
         /// <returns>Result</returns>
-        bool IsAdmin(string user, bool onlyActiveUserRoles = true);
+        bool IsAdmin(User user, bool onlyActiveUserRoles = true);
 
         /// <summary>
         /// Gets a value indicating whether user is a forum moderator
@@ -91,7 +91,7 @@ namespace Application.Services.Users
         /// <param name="user">User</param>
         /// <param name="onlyActiveUserRoles">A value indicating whether we should look only in active user roles</param>
         /// <returns>Result</returns>
-        bool IsForumModerator(string user, bool onlyActiveUserRoles = true);
+        bool IsForumModerator(User user, bool onlyActiveUserRoles = true);
 
         /// <summary>
         /// Gets a value indicating whether user is registered
@@ -99,12 +99,25 @@ namespace Application.Services.Users
         /// <param name="user">User</param>
         /// <param name="onlyActiveUserRoles">A value indicating whether we should look only in active user roles</param>
         /// <returns>Result</returns>
-        bool IsRegistered(string user, bool onlyActiveUserRoles = true);
+        bool IsRegistered(User user, bool onlyActiveUserRoles = true);
 
         /// <summary>
         /// Updates the user role
         /// </summary>
         /// <param name="userRole">User role</param>
         void UpdateUserRole(UserRole userRole);
+
+        /// <summary>
+        /// Get user Fio from current user 
+        /// </summary>
+        /// <returns></returns>
+        string GetUserFio();
+
+        /// <summary>
+        /// return User's record depended by userName
+        /// </summary>
+        /// <param name="identiyName"></param>
+        /// <returns></returns>
+        User GetUserByIdentityName(string identiyName);
     }
 }

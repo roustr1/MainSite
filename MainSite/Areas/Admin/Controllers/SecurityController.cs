@@ -37,14 +37,14 @@ namespace MainSite.Areas.Admin.Controllers
 
         public virtual IActionResult AccessDenied(string pageUrl)
         {
-            var currentUser = User.Identity.Name;
-            if (currentUser == null || !_userService.IsRegistered(currentUser))
+            var user = _userService.GetUserByIdentityName(User.Identity.Name);
+            if (user == null || !_userService.IsRegistered(user))
             {
                 _logger.LogInformation($"Access denied to anonymous request on {pageUrl}");
                 return View();
             }
 
-            _logger.LogInformation($"Access denied to user #{currentUser} on {pageUrl}");
+            _logger.LogInformation($"Access denied to user #{user.Name} on {pageUrl}");
 
             return View();
         }
