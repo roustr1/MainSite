@@ -31,6 +31,12 @@ namespace Application.Dal
                     new Setting
                     {
                         Id= Guid.NewGuid().ToString(),
+                        Name = "StoreFilesInDb",
+                        Value = "false"
+                    },
+                    new Setting
+                    {
+                        Id= Guid.NewGuid().ToString(),
                         Name = "Application.Icon",
                         Value = "/content/layout_icons/header.png"
                     },

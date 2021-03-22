@@ -51,7 +51,6 @@ namespace MainSite
             services.AddTransient<IAppFileProvider, AppFileProvider>();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IActionContextAccessor, ActionContextAccessor>();
-            services.AddTransient<IConfiguration>(p => Configuration);
 
             services.AddTransient<ISettingsService, SettingsService>();
 

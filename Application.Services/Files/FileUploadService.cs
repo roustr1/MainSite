@@ -7,6 +7,7 @@ using System.Text;
 using Application.Dal;
 using Application.Dal.Domain.Files;
 using Application.Dal.Infrastructure;
+using Application.Services.Settings;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using File = Application.Dal.Domain.Files.File;
@@ -25,18 +26,18 @@ namespace Application.Services.Files
         private readonly IAppFileProvider _fileProvider;
         private readonly IFileDownloadService _downloadService;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IConfiguration _configuration;
+        private readonly ISettingsService _iSettingsService;
 
         #endregion
 
-        public FileUploadService(IRepository<File> fileRepository, IRepository<FileBinary> fileBinaryRepository, IAppFileProvider fileProvider, IFileDownloadService downloadService, IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
+        public FileUploadService(IRepository<File> fileRepository, IRepository<FileBinary> fileBinaryRepository, IAppFileProvider fileProvider, IFileDownloadService downloadService, IHttpContextAccessor httpContextAccessor, ISettingsService iSettingsService)
         {
             _fileRepository = fileRepository;
             _fileBinaryRepository = fileBinaryRepository;
             _fileProvider = fileProvider;
             _downloadService = downloadService;
             _httpContextAccessor = httpContextAccessor;
-            _configuration = configuration;
+            _iSettingsService = iSettingsService;
         }
 
         #region Utilities
@@ -400,7 +401,7 @@ namespace Application.Services.Files
         /// </summary>
         public virtual bool StoreInDb
         {
-            get => bool.Parse(_configuration["StoreFilesInDb"]);
+            get => bool.Parse(_iSettingsService.SettingsDictionary["StoreFilesInDb"]);
             set
             {
                 //check whether it's a new value
@@ -408,7 +409,7 @@ namespace Application.Services.Files
                     return;
 
                 //save the new setting value
-                _configuration["StoreFilesInDb"] = value.ToString();
+                _iSettingsService.SettingsDictionary["StoreFilesInDb"] = value.ToString();
 
                 var pageIndex = 0;
                 const int pageSize = 400;
