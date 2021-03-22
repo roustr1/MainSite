@@ -8,7 +8,7 @@ namespace Application.Dal.Domain.Menu
     {
         public MenuItem()
         {
-            UserRoles = new List<UserRoles>();
+            UserRoles = new List<UserRole>();
         }
         /// <summary>
         /// отображаемый текст ссылки
@@ -43,6 +43,6 @@ namespace Application.Dal.Domain.Menu
         /// <summary>
         /// Роли, которым доступен данный пункт меню
         /// </summary>
-        public virtual ICollection<UserRoles> UserRoles { get; set; }
+        public virtual ICollection<UserRole> UserRoles { get; set; }
     }
 }
