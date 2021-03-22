@@ -57,8 +57,8 @@ namespace MainSite.Models
             return new NewsItemViewModel()
             {
                 Id = newsItem.Id,
-                Header = newsItem.Header,
-                Description = newsItem.Description,
+                Header = string.IsNullOrWhiteSpace(newsItem.Header) ? "" : newsItem.Header,
+                Description = string.IsNullOrWhiteSpace(newsItem.Description) ? "" : newsItem.Description,
                 Category = newsItem.Category,
                 Author = newsItem.AutorFio,
                 CreatedDate = newsItem.CreatedDate,
