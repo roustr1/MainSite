@@ -19,13 +19,13 @@
                     <div class="valign-wrapper">
                         <a style="cursor: pointer;" asp-area="" asp-controller="Home" asp-action="Index" class="valign-wrapper">
                             <img src="@service.SettingsDictionary.GetValueOrDefault("Application.Icon","~/images/layout_icons/header.png")" width="50" height="50" />
-                            @service.SettingsDictionary.GetValueOrDefault("Application.Name", "")
+                            <span class="bold">@service.SettingsDictionary.GetValueOrDefault("Application.Name", "WebSite")</span>
                         </a>
                         <a id="openMenu" data-target="mobile-demo" class="sidenav-trigger" style="float: right;cursor:pointer;"><i class="material-icons">menu</i></a>
                         <ul class="hide-on-med-and-down col m12 s12 l9 secondMenu">
                             <li>
                                 <div class="secondMenu-search">
-                                    <span>Поиск на сайте:</span> 
+                                    <span class="bold">Поиск на сайте:</span> 
                                     <input type="text"/>
                                     <button class="btn btn-default">Найти</button>
                                 </div>

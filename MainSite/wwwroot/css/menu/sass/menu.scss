@@ -59,6 +59,7 @@
                 position: absolute;
                 left: 0;
                 top: 0;
+                z-index: -1;
 
                 &.active {
                     position: inherit;
@@ -67,6 +68,8 @@
                     animation-duration: 0.5s;
                     animation-timing-function: ease-in-out;
                     animation-fill-mode: forwards;
+                    width: 100%;
+                    z-index: 10;
                     /*position: inherit;
           opacity: 1;
           transition: 0.3s;*/
@@ -81,8 +84,7 @@
             margin-bottom: 10px;
             min-height: $heigh_a_px;
             cursor: pointer;
-            padding-left: 5px;
-            border-left: 6px solid transparent;
+            padding-left: 10px;
 
             & > img, & object {
                 height: 40px;
@@ -94,19 +96,26 @@
                 height: 30px;
                 padding: 0px;
             }
-
-            @include animationTranslateBtn(rgba(0, 0, 0, 0.05), $otherTextColor);
+            //@include animationTranslateBtn(rgba(0, 0, 0, 0.05), $otherTextColor);
 
             &.active {
-                background-color: rgba(0, 0, 0, 0.05);
+                //background-color: rgba(0, 0, 0, 0.05);
+                //border-left-color: #64b5f6;
                 padding-left: 5px;
-                border-color: #64b5f6;
+                border-left: 5px solid #64b5f6;
+
+                &:hover {
+                    border-radius: 0px 8px 8px 0px;
+                }
+                //border-color: #64b5f6;
             }
 
             &:hover {
                 //padding-left: 5px;
                 //transition: 0.3s;
-                border-color: #64b5f6;
+                //border-color: #64b5f6;
+                @include animationTranslateBtn(rgba(0, 0, 0, 0.05), $otherTextColor);
+                border-radius: 8px 8px 8px 8px;
             }
 
             & > div {

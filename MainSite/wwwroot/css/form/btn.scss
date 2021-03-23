@@ -38,11 +38,11 @@ $btnSettings: (
             border-radius: 8px !important;
 
             @if($typeBtn != "default") {
-                line-height: 2.5rem !important;
+                line-height: 2.3rem !important;
 
                 @-moz-document url-prefix() {
                     height: 2.5rem !important;
-                    line-height: 2.5rem !important;
+                    line-height: 2.3rem !important;
                 }
             }
             //border-left: 3px solid $animationBorderBtnTextColor;
