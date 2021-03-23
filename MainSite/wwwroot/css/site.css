@@ -472,6 +472,9 @@
       background-color: #64b5f6;
       color: #ffffff; }
 
+.inputTextMainSite {
+  height: 1.5em; }
+
 html {
   font-family: "HelveticaNeueCyr" !important;
   overflow-x: hidden;
