@@ -12,7 +12,7 @@
 }
 
 <div id="newsComponent">
-    @Html.Partial("Create", new NewsItemViewModel())
+    @Html.Partial("Create", new NewsItemViewModel() { CategoryId = Model.CategoryId })
 
     <div class="card-panel row">
         @foreach (var item in Model.News)
