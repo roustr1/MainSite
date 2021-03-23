@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Application.Dal.Domain.News;
+using Application.Services.Infrastructure;
 
 namespace Application.Services.News
 {
@@ -12,7 +13,6 @@ namespace Application.Services.News
         void DeleteNews(NewsItem item);
 
         NewsItem GetNewsItem(string itemId);
-        IEnumerable<NewsItem> GetNewsItem(string authorId = null, string category = null,
-            DateTime? startDate = null, DateTime? endDate = null, bool isNewest = true);
+        IEnumerable<NewsItem> GetNewsItem(FilterNewsItemParameters filterNewsItemParameters);
     }
 }
