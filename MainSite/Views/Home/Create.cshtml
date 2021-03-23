@@ -9,16 +9,17 @@
         <a class="error close" v-on:click="showCreator(false, true)"><i class="material-icons">close</i></a>
 
         <form asp-action="Create" enctype="multipart/form-data" method="post">
-                <div class="input-field s12 m12">
-                    <i class="material-icons prefix">textsms</i>
-                    <textarea asp-for="Header" id="TextHeader" class="materialize-textarea"></textarea>
-                    <label class="active bold" for="TextHeader">Введите заголовок объявления</label>
-                </div>
-                <div class="input-field s12 m12">
-                    <i class="material-icons prefix">message</i>
-                    <textarea asp-for="Description" id="TextDescription" class="materialize-textarea"></textarea>
-                    <label class="active bold" for="TextDescription">Введите текстовое объявление</label>
-                </div>
+            <input asp-for="CategoryId" type="hidden" value="@Model.CategoryId" />
+            <div class="input-field s12 m12">
+                <i class="material-icons prefix">textsms</i>
+                <textarea asp-for="Header" id="TextHeader" class="materialize-textarea"></textarea>
+                <label class="active bold" for="TextHeader">Введите заголовок объявления</label>
+            </div>
+            <div class="input-field s12 m12">
+                <i class="material-icons prefix">message</i>
+                <textarea asp-for="Description" id="TextDescription" class="materialize-textarea"></textarea>
+                <label class="active bold" for="TextDescription">Введите текстовое объявление</label>
+            </div>
             <div class="file-field input-field creator-main-panel s12 m12">
                 <div class="btn btn-defaultMainSite">
                     <span>Прикрепить файл...</span>

@@ -58,5 +58,25 @@ namespace Application.Services.Menu
         {
             return _repository.GetAll().Where(m => m.UserRoles.Select(s => s.Id).Contains(userRole));
         }
+        
+        public IEnumerable<MenuItem> GetRecursionAllChildren(string id)
+        {
+            return AllChildrenCategories(id);
+        }
+
+        private IList<MenuItem> AllChildrenCategories(string categoryId)
+        {
+            var result = GetManyByParentId(categoryId).ToList();
+            var tres = new List<MenuItem>();
+
+            foreach (var menuItem in result)
+            {
+                tres.AddRange(GetManyByParentId(menuItem.Id));
+            }
+
+            result.AddRange(tres);
+
+            return result;
+        }
     }
 }

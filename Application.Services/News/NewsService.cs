@@ -4,6 +4,7 @@ using System.Linq;
 using Application.Dal;
 using Application.Dal.Domain;
 using Application.Dal.Domain.News;
+using Application.Services.Infrastructure;
 using Application.Services.Utils;
 
 namespace Application.Services.News
@@ -57,11 +58,17 @@ namespace Application.Services.News
         /// <param name="category">Категория</param>
         /// <param name="startDate">С даты</param>
         /// <param name="endDate">По дату</param>
-        public IEnumerable<NewsItem> GetNewsItem(string authorId = null, string category = null,
-            DateTime? startDate = null, DateTime? endDate = null, bool isNewest = true)
+        public IEnumerable<NewsItem> GetNewsItem(FilterNewsItemParameters filterNewsItemParameters)
         {
+            var category = filterNewsItemParameters.CategoryIds.FirstOrDefault();
+            var categories = filterNewsItemParameters.CategoryIds.ToList();
+            var authorId = filterNewsItemParameters.AuthorId;
+            var startDate = filterNewsItemParameters.StartDate;
+            var endDate = filterNewsItemParameters.EndDate;
+            var isNewest = filterNewsItemParameters.IsNewest;
+
             var collection = _newsRepository.GetAll()
-                .Where(a => category == null || a.Category == category)
+                .Where(a => category == null || categories.Contains(a.Category))
                 .Where(a => authorId == null || a.AutorFio == authorId || a.LastChangeAuthor == authorId)
                 .Where(a => startDate == null || a.LastChangeDate >= startDate)
                 .Where(a => endDate == null || a.LastChangeDate <= endDate)
@@ -69,8 +76,6 @@ namespace Application.Services.News
             
             return collection.AsQueryable();
         }
-
- 
         #endregion
     }
 }
