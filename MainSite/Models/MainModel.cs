@@ -4,7 +4,7 @@ using System.Linq;
 using Application.Dal;
 using Application.Dal.Domain.News;
 using Application.Services.Files;
-using Application.Services.Menu;
+using Application.Services.Infrastructure;
 using Application.Services.News;
 using Application.Services.Settings;
 using MainSite.Controllers;
@@ -79,8 +79,12 @@ namespace MainSite.Models
         public IList<NewsItemViewModel> GetManyNewsItemViewModel(string categoryId)
         {
             var result = new List<NewsItemViewModel>();
+            var filterNewsItemParameters = new FilterNewsItemParameters()
+            {
+                CategoryIds = new List<string>() {categoryId}
+            };
 
-            foreach (var newsItem in _newsService.GetNewsItem(category: categoryId))
+            foreach (var newsItem in _newsService.GetNewsItem(filterNewsItemParameters))
             {
                 if (newsItem == null) continue;
 
@@ -163,7 +167,6 @@ namespace MainSite.Models
                 LastChangeDate = dataTimeNow,
                 Category = newsItemViewModel.CategoryId,
             };
-
             var collection = new List<Application.Dal.Domain.Files.File>();
             //uploadFiles 
             foreach (var file in newsItemViewModel?.UploadedFiles)
