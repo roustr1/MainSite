@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Application.Dal;
+using Application.Dal.Domain.Menu;
 using Application.Dal.Domain.News;
 using Application.Services.Files;
 using Application.Services.Infrastructure;
+using Application.Services.Menu;
 using Application.Services.News;
 using Application.Services.Settings;
 using MainSite.Controllers;
@@ -25,7 +27,8 @@ namespace MainSite.Models
         private readonly ISettingsService _settingsService;
         private readonly IMenuService _menuService;
 
-        public MainModel(ILogger<HomeController> logger, INewsService newsService, IFileDownloadService downloadService, IFileUploadService uploadService, ISettingsService settingsService, IMenuService menuService)
+        public MainModel(ILogger<HomeController> logger, INewsService newsService, IFileDownloadService downloadService,
+            IFileUploadService uploadService, ISettingsService settingsService, IMenuService menuService)
         {
             _logger = logger;
             _newsService = newsService;
@@ -79,9 +82,16 @@ namespace MainSite.Models
         public IList<NewsItemViewModel> GetManyNewsItemViewModel(string categoryId)
         {
             var result = new List<NewsItemViewModel>();
+            var categoryIds = new List<string>();
+            
+            var childrenCategory = _menuService.GetRecursionAllChildren(categoryId);
+
+            if (categoryId != null) categoryIds.Add(categoryId);
+            categoryIds.AddRange(childrenCategory.Select(menuItem => menuItem.Id));
+
             var filterNewsItemParameters = new FilterNewsItemParameters()
             {
-                CategoryIds = new List<string>() {categoryId}
+                CategoryIds = categoryIds
             };
 
             foreach (var newsItem in _newsService.GetNewsItem(filterNewsItemParameters))
