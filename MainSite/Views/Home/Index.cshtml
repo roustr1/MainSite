@@ -24,7 +24,7 @@
                 <div class="col m11 s10 card_news-main">
                     <div class="col m12 s10">
                         <div class="card_news-main-header">
-                            <span class="bold">@item.Author</span> разместил @TypeMessage в разделе <a href="@Url.Action("Index", "Home", new {page = 0, category = item.Category})">@item.Category</a>
+                            <span class="bold">@item.Author</span> разместил @TypeMessage в разделе <a href="@Url.Action("Index", "Home", new {page = 0, category = item.CategoryId})">@item.Category</a>
                         </div>
 
                         <div class="card_news-main-title">
