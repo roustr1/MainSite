@@ -111,7 +111,7 @@ namespace Application.Services.Users
         /// Get user Fio from current user 
         /// </summary>
         /// <returns></returns>
-        string GetUserFio();
+        string GetUserNameFromAD();
 
         /// <summary>
         /// return User's record depended by userName

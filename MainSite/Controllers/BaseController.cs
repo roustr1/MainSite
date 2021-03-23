@@ -15,7 +15,7 @@ namespace MainSite.Controllers
         /// Access denied view
         /// </summary>
         /// <returns>Accexzss denied view</returns>
-        internal ActionResult AccessDeniedView() 
+        public ActionResult AccessDeniedView() 
             => RedirectToAction("AccessDenied", "Security", new { pageUrl = GetRawUrl(Request) });
 
 

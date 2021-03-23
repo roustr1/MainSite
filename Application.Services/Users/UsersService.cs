@@ -10,14 +10,17 @@ namespace Application.Services.Users
     public class UsersService : IUsersService
     {
         #region Fields
+
         private readonly IRepository<UserUserRoleMapping> _userUserRoleMappingRepository;
         private readonly IRepository<UserRole> _userRoleRepository;
         private readonly IRepository<User> _userRepository;
+
         #endregion
 
         #region Ctor
 
-        public UsersService(IRepository<UserUserRoleMapping> userUserRoleMappingRepository, IRepository<UserRole> userRoleRepository, IRepository<User> userRepository)
+        public UsersService(IRepository<UserUserRoleMapping> userUserRoleMappingRepository,
+            IRepository<UserRole> userRoleRepository, IRepository<User> userRepository)
         {
             _userUserRoleMappingRepository = userUserRoleMappingRepository;
             _userRoleRepository = userRoleRepository;
@@ -25,6 +28,7 @@ namespace Application.Services.Users
         }
 
         #endregion
+
         #region User roles
 
         /// <summary>
@@ -38,7 +42,7 @@ namespace Application.Services.Users
 
             _userUserRoleMappingRepository.Add(roleMapping);
 
-           // _eventPublisher.EntityInserted(roleMapping);
+            // _eventPublisher.EntityInserted(roleMapping);
         }
 
         /// <summary>
@@ -46,22 +50,23 @@ namespace Application.Services.Users
         /// </summary>
         /// <param name="user">User</param>
         /// <param name="role">User role</param>
-        public void RemoveUserRoleMapping(string userName, UserRole role)
+        public void RemoveUserRoleMapping(User user, UserRole role)
         {
-            if (userName is null)
-                throw new ArgumentNullException(nameof(userName));
+            if (user is null)
+                throw new ArgumentNullException(nameof(user));
 
             if (role is null)
                 throw new ArgumentNullException(nameof(role));
 
-            var mapping = _userUserRoleMappingRepository.GetAll().SingleOrDefault(ccrm => ccrm.UserName == userName && ccrm.UserRoleId == role.Id);
+            var mapping = _userUserRoleMappingRepository.GetAll()
+                .SingleOrDefault(ccrm => ccrm.UserId == user.Name && ccrm.UserRoleId == role.Id);
 
             if (mapping != null)
             {
                 _userUserRoleMappingRepository.Delete(mapping);
 
                 //event notification
-              //  _eventPublisher.EntityDeleted(mapping);
+                //  _eventPublisher.EntityDeleted(mapping);
             }
         }
 
@@ -80,7 +85,7 @@ namespace Application.Services.Users
             _userRoleRepository.Delete(userRole);
 
             //event notification
-           // _eventPublisher.EntityDeleted(userRole);
+            // _eventPublisher.EntityDeleted(userRole);
         }
 
         /// <summary>
@@ -129,8 +134,8 @@ namespace Application.Services.Users
 
             var query = from cr in _userRoleRepository.GetAll()
                         join crm in _userUserRoleMappingRepository.GetAll() on cr.Id equals crm.UserRoleId
-                        where crm.UserName == user.Name &&
-                        (showHidden || cr.Active)
+                        where crm.UserId == user.Name &&
+                              (showHidden || cr.Active)
                         select cr.Id;
 
 
@@ -150,7 +155,7 @@ namespace Application.Services.Users
 
             var query = from ur in _userRoleRepository.GetAll()
                         join urm in _userUserRoleMappingRepository.GetAll() on ur.Id equals urm.UserRoleId
-                        where urm.UserName == user.Name &&
+                        where urm.UserId == user.Id &&
                               (showHidden || ur.Active)
                         select ur;
 
@@ -259,10 +264,36 @@ namespace Application.Services.Users
         }
 
 
+
         #endregion
-        public virtual string GetUserFio()
+
+
+
+        public User GetUserByIdentityName(string identiyName)
+        {
+            if (identiyName == null) return null;
+            var founded = _userRepository.GetAll().FirstOrDefault(c => c.SystemName == identiyName);
+            if (founded != null) return founded;
+
+            return CreateUser(identiyName);
+        }
+
+        public virtual string GetUserNameFromAD()
         {
             return UserPrincipal.Current.DisplayName;
+        }
+
+        private User CreateUser(string identityName)
+        {
+            var user = new User
+            {
+                SystemName = identityName,
+                Active = true,
+                Deleted = false,
+                Name = GetUserNameFromAD()
+            };
+            _userRepository.Add(user);
+            return user;
         }
     }
 }
