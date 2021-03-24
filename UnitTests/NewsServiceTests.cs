@@ -693,5 +693,83 @@ namespace UnitTests
             Assert.IsTrue(result != null);
             Assert.IsTrue(result.Count == 3);
         }
+
+        [Test]
+        public void GetNewsItem_ItemWithDifferentCategorySelectNullCategory_ReturnAllNewsItem()
+        {
+            string guidSubCategory1 = Guid.NewGuid().ToString();
+            string guidSubCategory2 = Guid.NewGuid().ToString();
+            string guidSubCategory3 = Guid.NewGuid().ToString();
+
+            DateTime data = new DateTime(2019, 01, 01, 12, 00, 00);
+
+            NewsItem newsItem1 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = guidSubCategory1,
+                Description = "Description1",
+                Files = null,
+                Header = "Header1",
+                CreatedDate = data,
+                LastChangeDate = data
+            };
+            NewsItem newsItem2 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = guidSubCategory1,
+                Description = "Description2",
+                Files = null,
+                Header = "Header2",
+                CreatedDate = data,
+                LastChangeDate = data
+            };
+            NewsItem newsItem3 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = guidSubCategory2,
+                Description = "Description3",
+                Files = null,
+                Header = "Header3",
+                CreatedDate = data,
+                LastChangeDate = data
+            };
+            NewsItem newsItem4 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = guidSubCategory3,
+                Description = "Description4",
+                Files = null,
+                Header = "Header4",
+                CreatedDate = data,
+                LastChangeDate = data
+            };
+            NewsItem newsItem5 = new NewsItem()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Category = null,
+                Description = "Description4",
+                Files = null,
+                Header = "Header4",
+                CreatedDate = data,
+                LastChangeDate = data
+            };
+
+            Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
+            mock.Setup(m => m.GetAll()).Returns(new List<NewsItem>()
+            {
+                newsItem1, newsItem2, newsItem3, newsItem4, newsItem5
+            });
+
+            var filterParams = new FilterNewsItemParameters()
+            {
+                CategoryIds = new List<string>()
+            };
+
+            NewsService newsService = new NewsService(mock.Object);
+            List<NewsItem> result = newsService.GetNewsItem(filterParams).ToList();
+
+            Assert.IsTrue(result != null);
+            Assert.IsTrue(result.Count == 5);
+        }
     }
 }

@@ -86,7 +86,7 @@ namespace MainSite.Models
             
             var childrenCategory = _menuService.GetRecursionAllChildren(categoryId);
 
-            if (categoryId != null) categoryIds.Add(categoryId);
+            categoryIds.Add(categoryId);
             categoryIds.AddRange(childrenCategory.Select(menuItem => menuItem.Id));
 
             var filterNewsItemParameters = new FilterNewsItemParameters()
