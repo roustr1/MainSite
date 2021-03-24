@@ -35,7 +35,7 @@ namespace Application.Services.Permissions
         /// </summary>
         /// <param name="userRoleId">User role identifier</param>
         /// <returns>Permissions</returns>
-        protected virtual IList<PermissionRecord> GetPermissionRecordsByUserRoleId(string userRoleId)
+        public virtual IList<PermissionRecord> GetPermissionRecordsByUserRoleId(string userRoleId)
         {
 
             var query = from pr in _permissionRecordRepository.GetAll()

@@ -66,6 +66,8 @@ namespace MainSite
             services.AddTransient<IUsersService, UsersService>();
             services.AddTransient<IPermissionService, PermissionService>();
             services.AddTransient<ISecurityModelFactory, SecurityModelFactory>();
+            services.AddTransient<IUserRoleModelFactory, UserRoleModelFactory>();
+
 
         }
 

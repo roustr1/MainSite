@@ -8,12 +8,14 @@ namespace Application.Services.Settings
 {
     public class SettingsService : ISettingsService
     {
+        
         private readonly IRepository<Setting> _settingsRepository;
 
         public SettingsService(IRepository<Setting> settingsRepository)
         {
             _settingsRepository = settingsRepository;
         }
+
         public Setting GetParameterValue(string name) => _settingsRepository.GetAll().FirstOrDefault(c => c.Name == name);
 
         public Setting SetParameter(Setting setting)
@@ -67,6 +69,15 @@ namespace Application.Services.Settings
                 }
                 return collection;
             }
+        }
+
+        public string SetDictionaryParameter(string keyName, string value = null)
+        {
+            if (!SettingsDictionary.TryGetValue(keyName, out var val))
+            {
+                SettingsDictionary.Add(keyName, value);
+            }
+            return value;
         }
 
         public Setting GetSettingById(string id) => _settingsRepository.Get(id);

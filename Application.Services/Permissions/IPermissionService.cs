@@ -92,5 +92,12 @@ namespace Application.Services.Permissions
         /// </summary>
         /// <param name="permissionRecordUserRoleMapping">Permission record-user role mapping</param>
         void InsertPermissionRecordUserRoleMapping(PermissionRecordUserRoleMapping permissionRecordUserRoleMapping);
+
+        /// <summary>
+        /// Get permission records by user role identifier
+        /// </summary>
+        /// <param name="userRoleId">User role identifier</param>
+        /// <returns>Permissions</returns>
+        public  IList<PermissionRecord> GetPermissionRecordsByUserRoleId(string userRoleId);
     }
 }

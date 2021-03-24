@@ -1,7 +1,7 @@
 ﻿@model MainSite.Areas.Admin.Models.Security.PermissionMappingModel
 @{
     //page title
-    ViewBag.PageTitle = "Настройки безопасности";
+    ViewBag.Title = "Настройки безопасности";
     Layout = "_Layout";
 }
 
@@ -37,7 +37,7 @@
                         }
                         else
                         {
-                            <script>
+                            @*<script>
                                 $(document).ready(function () {
                                     @foreach (var cr in Model.AvailableUserRoles)
                                     {
@@ -49,7 +49,7 @@
                                     </text>
                                     }
                                 });
-                            </script>
+                            </script>*@
                             <div class="scroll-wrapper">
                                 <table class="table table-hover table-bordered">
                                     <thead>
