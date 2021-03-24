@@ -694,7 +694,6 @@ namespace UnitTests
             Assert.IsTrue(result.Count == 3);
         }
 
-        [Test]
         public void GetNewsItem_ItemWithDifferentCategorySelectNullCategory_ReturnAllNewsItem()
         {
             string guidSubCategory1 = Guid.NewGuid().ToString();

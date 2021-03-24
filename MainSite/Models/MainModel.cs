@@ -75,7 +75,8 @@ namespace MainSite.Models
                 Author = newsItem.AutorFio,
                 CreatedDate = newsItem.CreatedDate,
                 LastChangeDate = newsItem.LastChangeDate,
-                Files = filesResult
+                Files = filesResult,
+                IsMessage = !filesResult.Any()
             };
         }
 
@@ -86,7 +87,7 @@ namespace MainSite.Models
             
             var childrenCategory = _menuService.GetRecursionAllChildren(categoryId);
 
-            if (categoryId != null) categoryIds.Add(categoryId);
+            categoryIds.Add(categoryId);
             categoryIds.AddRange(childrenCategory.Select(menuItem => menuItem.Id));
 
             var filterNewsItemParameters = new FilterNewsItemParameters()

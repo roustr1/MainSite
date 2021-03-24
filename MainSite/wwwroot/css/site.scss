@@ -66,6 +66,35 @@ $fontDefaultAllSite: 18px;
 html {
     //font-family: 'Helvetica Neue' !important;
     font-family: "HelveticaNeueCyr" !important;
+
+    .navHeader {
+        display: flex;
+        align-items: center;
+
+        &-item {
+            display: flex;
+            align-items: center;
+            color: #9e9e9e;
+
+            &:before {
+                content: '\E5CC';
+                color: #9e9e9e;
+                vertical-align: top;
+                display: inline-block;
+                font-family: 'Material Icons';
+                font-weight: normal;
+                font-style: normal;
+                font-size: 25px;
+                margin: 0 10px 0 8px;
+                -webkit-font-smoothing: antialiased;
+            }
+
+            &:first-child:before {
+                display: none;
+            }
+        }
+    }
+
     .container {
         @media (max-width: 1400px) {
             width: 95%;
