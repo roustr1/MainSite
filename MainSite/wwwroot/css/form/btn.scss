@@ -17,7 +17,9 @@ $btnSettings: (
     "animation-fill-mode": forwards,
     "height": auto,
     "color": $otherTextColor,
-    "border": $borderDefault
+    "border": $borderDefault,
+    "line-height": 1.5em,
+    "box-shadow": none,
   ),
   "defaultMainSite": (
     "height": 2.5rem !important,
