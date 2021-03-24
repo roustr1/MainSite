@@ -44,16 +44,7 @@ namespace MainSite.ViewModels.News
             }
         }
 
-        public bool IsMessage
-        {
-            get
-            {
-                if (UploadedFiles == null) return true;
-                if (UploadedFiles.Count == 0) return true;
-
-                return false;
-            }
-        }
+        public bool IsMessage { get; set; }
 
         public ICollection<FileViewModel> Files { get; set; }
 

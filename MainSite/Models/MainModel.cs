@@ -75,7 +75,8 @@ namespace MainSite.Models
                 Author = newsItem.AutorFio,
                 CreatedDate = newsItem.CreatedDate,
                 LastChangeDate = newsItem.LastChangeDate,
-                Files = filesResult
+                Files = filesResult,
+                IsMessage = !filesResult.Any()
             };
         }
 
