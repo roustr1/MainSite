@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Application.Dal.Domain.Menu;
 using Application.Services.Menu;
+using MainSite.ViewModels.UI.Menu;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MainSite.Areas.Admin.Controllers
@@ -19,14 +20,29 @@ namespace MainSite.Areas.Admin.Controllers
 
         // GET: MenuService
 
-        [Route("Admin/Index")]
+        [Route("Admin/Menu")]
         public IActionResult Index()
         {
-            return View();
+            var menuItems = _menuService.GetAll();
+            var menuItemsViewModels = new List<MenuItemViewModel>();
+            foreach (var item in menuItems)
+            {
+                if(item == null) continue;
+
+                var vm = new MenuItemViewModel()
+                {
+                    Name = item.Name,
+                    Id = item.Id
+                };
+
+                menuItemsViewModels.Add(vm);
+
+            }
+            return View(menuItemsViewModels);
         }
 
 
-        [Route("Admin/CreateMenu")]
+        [Route("Admin/Menu/Create")]
         [HttpGet]
         public IActionResult Create()
         {
@@ -38,7 +54,7 @@ namespace MainSite.Areas.Admin.Controllers
         // POST: MenuService/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("Admin/CreateMenu")]
+        [Route("Admin/Menu/Create")]
         public IActionResult Create(MenuItem model)
         {
             if (ModelState.IsValid)
@@ -49,18 +65,16 @@ namespace MainSite.Areas.Admin.Controllers
 
             return View();
         }
- 
 
         // POST: MenuService/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpGet]
+        [Route("Admin/Menu/Delete")]
         public ActionResult Delete(string id)
         {
             var item = _menuService.Get(id);
             if(item!=null)
                 _menuService.DeleteItem(item);
             return RedirectToAction("Index");
-
         }
     }
 }

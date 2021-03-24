@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Application.Dal;
+using Application.Dal.Domain.Menu;
 using Application.Dal.Domain.News;
 using Application.Services.Files;
+using Application.Services.Infrastructure;
+using Application.Services.Menu;
 using Application.Services.News;
 using Application.Services.Settings;
 using MainSite.Controllers;
@@ -22,14 +25,17 @@ namespace MainSite.Models
         private readonly IFileDownloadService _downloadService;
         private readonly IFileUploadService _uploadService;
         private readonly ISettingsService _settingsService;
+        private readonly IMenuService _menuService;
 
-        public MainModel(ILogger<HomeController> logger, INewsService newsService, IFileDownloadService downloadService, IFileUploadService uploadService, ISettingsService settingsService)
+        public MainModel(ILogger<HomeController> logger, INewsService newsService, IFileDownloadService downloadService,
+            IFileUploadService uploadService, ISettingsService settingsService, IMenuService menuService)
         {
             _logger = logger;
             _newsService = newsService;
             _downloadService = downloadService;
             _uploadService = uploadService;
             _settingsService = settingsService;
+            _menuService = menuService;
         }
 
         public NewsItemViewModel GetNewsItemViewModel(string id)
@@ -43,21 +49,29 @@ namespace MainSite.Models
             {
                 return null;
             }
-            
+
             var filesResult = new List<FileViewModel>();
             var files = _uploadService.GetFilesByNewsId(newsItem.Id).ToList();
-            
+
             foreach (var newsItemFile in files)
             {
                 filesResult.Add(GetDownloadedFileViewModel(newsItemFile));
             }
-        
+
+            string categoryName = "";
+            if (newsItem.Category != null)
+            {
+                var cat = _menuService.Get(newsItem.Category);
+                categoryName = cat == null ? "" : cat.Name;
+            }
+
             return new NewsItemViewModel()
             {
                 Id = newsItem.Id,
                 Header = string.IsNullOrWhiteSpace(newsItem.Header) ? "" : newsItem.Header,
                 Description = string.IsNullOrWhiteSpace(newsItem.Description) ? "" : newsItem.Description,
-                Category = newsItem.Category,
+                CategoryId = newsItem.Category,
+                Category = categoryName,
                 Author = newsItem.AutorFio,
                 CreatedDate = newsItem.CreatedDate,
                 LastChangeDate = newsItem.LastChangeDate,
@@ -68,8 +82,19 @@ namespace MainSite.Models
         public IList<NewsItemViewModel> GetManyNewsItemViewModel(string categoryId)
         {
             var result = new List<NewsItemViewModel>();
+            var categoryIds = new List<string>();
+            
+            var childrenCategory = _menuService.GetRecursionAllChildren(categoryId);
 
-            foreach (var newsItem in _newsService.GetNewsItem(category: categoryId))
+            if (categoryId != null) categoryIds.Add(categoryId);
+            categoryIds.AddRange(childrenCategory.Select(menuItem => menuItem.Id));
+
+            var filterNewsItemParameters = new FilterNewsItemParameters()
+            {
+                CategoryIds = categoryIds
+            };
+
+            foreach (var newsItem in _newsService.GetNewsItem(filterNewsItemParameters))
             {
                 if (newsItem == null) continue;
 
@@ -150,7 +175,7 @@ namespace MainSite.Models
                 AutorFio = "Неавторизован",
                 CreatedDate = dataTimeNow,
                 LastChangeDate = dataTimeNow,
-                Category = newsItemViewModel.Category,
+                Category = newsItemViewModel.CategoryId,
             };
             var collection = new List<Application.Dal.Domain.Files.File>();
             //uploadFiles 

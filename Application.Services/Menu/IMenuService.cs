@@ -9,5 +9,6 @@ namespace Application.Services.Menu
         void InsertItem(MenuItem mi);
         void DeleteItem(MenuItem mi);
         IEnumerable<MenuItem> GetAll();
+        IEnumerable<MenuItem> GetRecursionAllChildren(string id);
     }
 }

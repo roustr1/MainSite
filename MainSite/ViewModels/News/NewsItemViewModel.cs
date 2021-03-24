@@ -25,6 +25,7 @@ namespace MainSite.ViewModels.News
         [Display(Name = "Описание")]
         public string Description { get; set; }
 
+        public string CategoryId { get; set; }
         [Display(Name = "Текущая категория")]
         public string Category { get; set; }
 

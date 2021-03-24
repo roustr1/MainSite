@@ -1,35 +1,34 @@
-﻿@inject Application.Services.Menu.IShowMenu menu;
+﻿@model IEnumerable<MainSite.ViewModels.UI.Menu.MenuItemViewModel>;
+
 @{
     Layout = "_Layout";
     ViewData["Title"] = "Админ. Меню.";
 }
 
+<h1>Index</h1>
 
-<div class=" container">
-    <label>Структура меню</label>
-    <!-- отображение древовидной иерархии-->
-    <ul>
-        @foreach (var l1Item in menu.GetManyByParentId())
+<p>
+    @Html.ActionLink("Создать", "Create", "Menu")
+</p>
+
+<table class="table">
+    <tbody>
+        @foreach (var item in Model)
         {
-            <li>@l1Item.Name
-                <ul>
-                    @foreach (var l2Item in menu.GetManyByParentId(l1Item.Id))
-                    {
-                        <li>@l2Item.Name
 
-                            <ul>
-                                @foreach (var l3item in menu.GetManyByParentId(l2Item.Id))
-                                {
-                                    <li>@l3item.Name</li>
-                                }
-                            </ul>
-                        </li>
-
-                    }
-                </ul>
-            </li>
-
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.ActionLink("Удалить", "Delete", "Menu", new { id = item.Id })
+                </td>
+            </tr>
         }
-    </ul>
-</div>
+    </tbody>
+</table>
+
 
