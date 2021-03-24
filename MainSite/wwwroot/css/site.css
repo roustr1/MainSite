@@ -145,12 +145,9 @@
       top: 0;
       z-index: -1; }
       #menuBlock > .menu li ul.active {
+        opacity: 1;
+        height: 100%;
         position: inherit;
-        animation: widthBlock;
-        animation-name: widthBlock;
-        animation-duration: 0.5s;
-        animation-timing-function: ease-in-out;
-        animation-fill-mode: forwards;
         width: 100%;
         z-index: 10;
         /*position: inherit;
@@ -210,7 +207,9 @@
   display: flex;
   padding: 0px !important;
   flex-direction: row; }
-  .secondMenu :last-child {
+  .secondMenu > :first-child {
+    flex-grow: 0.6; }
+  .secondMenu > :last-child {
     margin-left: auto; }
   .secondMenu-search {
     display: flex;
@@ -220,9 +219,10 @@
     .secondMenu-search * {
       font-size: 18px; }
     .secondMenu-search > * {
-      margin-right: 15px; }
+      margin-right: 20px; }
     .secondMenu-search > input {
       width: auto !important;
+      flex-grow: 1;
       margin-right: 15px !important; }
   .secondMenu-user * {
     font-size: 18px; }
@@ -288,8 +288,7 @@
         padding-top: 10px; }
       #mainBlock .creator-main > .close {
         position: absolute;
-        right: 15px;
-        top: 10px;
+        right: 10px;
         cursor: pointer;
         z-index: 10; }
       #mainBlock .creator-main-panel {
@@ -448,7 +447,9 @@
     animation-fill-mode: forwards;
     height: auto;
     color: #9e9e9e;
-    border: 1px solid #9e9e9e; }
+    border: 1px solid #9e9e9e;
+    line-height: 1.5em;
+    box-shadow: none; }
     .btn-default:hover {
       background-color: #eeeeee; }
   .btn-defaultMainSite {
@@ -472,15 +473,35 @@
       background-color: #64b5f6;
       color: #ffffff; }
 
-.inputTextMainSite {
-  height: 1.5em; }
+input[type=text].inputTextMainSite, textarea.inputTextMainSite {
+  font-size: 18px;
+  height: 1.5em;
+  border: 1px solid #9e9e9e;
+  border-radius: 8px;
+  background-color: #eeeeee;
+  color: #9e9e9e;
+  margin: 0 0 0px 0; }
+  input[type=text].inputTextMainSite:focus, textarea.inputTextMainSite:focus {
+    outline: none;
+    color: #9e9e9e;
+    border-bottom: 1px solid #9e9e9e !important;
+    box-shadow: none !important;
+    background-color: #ffffff; }
+
+textarea.inputTextMainSite {
+  height: 164px;
+  padding: 5px; }
+
+input[type=text].inputTextMainSite {
+  width: calc( 100% - 5px);
+  padding-left: 5px; }
 
 html {
   font-family: "HelveticaNeueCyr" !important;
   overflow-x: hidden;
   position: relative;
   min-height: 100%; }
-  @media (max-width: 1260px) {
+  @media (max-width: 1400px) {
     html .container {
       width: 95%; } }
   html .rectangle {
