@@ -9,6 +9,7 @@
         <a class="error close" v-on:click="showCreator(false, true)"><i class="material-icons">close</i></a>
 
         <form asp-action="Create" enctype="multipart/form-data" method="post">
+            <input asp-for="CategoryId" type="hidden"  value="@Model.CategoryId"/>
             <div class="s12 m12">
                 <div class="bold">Введите заголовок объявления:</div>
                 <input asp-for="Header" id="TextHeader" class="inputTextMainSite" type="text" />
