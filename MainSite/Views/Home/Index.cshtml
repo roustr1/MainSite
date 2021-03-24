@@ -17,7 +17,7 @@
     <div class="card-panel row">
         @foreach (var item in Model.News)
         {
-            var TypeMessage = item.IsMessage ? "сообщение" : "докумен";
+            var TypeMessage = item.IsMessage ? "сообщение" : "документ";
 
             <div class="card_news">
                 <div class="card_news-image"><img src="@Url.Content(@item.UrlIcon)" alt="" /></div>

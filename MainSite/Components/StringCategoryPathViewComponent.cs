@@ -23,7 +23,7 @@ namespace MainSite.Components
 
         public IViewComponentResult Invoke(string categoryId = null)
         {
-            const string breadcrumb = "breadcrumb";
+            const string breadcrumb = "navHeader-item";
             var stringBuilder = new StringBuilder();
 
             var listNames = new List<string>();
@@ -40,7 +40,7 @@ namespace MainSite.Components
 
             listNames.Reverse();
 
-            stringBuilder.Append("<div class=\"nav-wrapper\"><div class=\"col s12\">");
+            stringBuilder.Append("<div class=\"navHeader\">");
 
             if (string.IsNullOrWhiteSpace(categoryId))
             {
@@ -54,7 +54,7 @@ namespace MainSite.Components
                 }
             }
 
-            stringBuilder.Append("</div></div>");
+            stringBuilder.Append("</div>");
 
             var result = stringBuilder.ToString();
 
