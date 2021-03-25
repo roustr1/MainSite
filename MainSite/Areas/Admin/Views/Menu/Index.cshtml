@@ -11,23 +11,8 @@
     @Html.ActionLink("Создать", "Create", "Menu")
 </p>
 
-<table class="table">
-    <tbody>
-        @foreach (var item in Model)
-        {
 
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
-                <td>
-                    @Html.ActionLink("Удалить", "Delete", "Menu", new { id = item.Id })
-                </td>
-            </tr>
-        }
+        @await Html.PartialAsync("_AdminItemMenuPartial.cshtml", Model)
     </tbody>
 </table>
 

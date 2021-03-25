@@ -24,20 +24,8 @@ namespace MainSite.Areas.Admin.Controllers
         public IActionResult Index()
         {
             var menuItems = _menuService.GetAll();
-            var menuItemsViewModels = new List<MenuItemViewModel>();
-            foreach (var item in menuItems)
-            {
-                if(item == null) continue;
+            var menuItemsViewModels = MenuTreeGenerate();
 
-                var vm = new MenuItemViewModel()
-                {
-                    Name = item.Name,
-                    Id = item.Id
-                };
-
-                menuItemsViewModels.Add(vm);
-
-            }
             return View(menuItemsViewModels);
         }
 
@@ -75,6 +63,39 @@ namespace MainSite.Areas.Admin.Controllers
             if(item!=null)
                 _menuService.DeleteItem(item);
             return RedirectToAction("Index");
+        }
+
+        private IEnumerable<MenuItemViewModel> MenuTreeGenerate(string categoryId = null)
+        {
+            var result = new List<MenuItemViewModel>();
+
+            CreateTree(null, result);
+
+            return result;
+        }
+
+        private void CreateTree(string id, List<MenuItemViewModel> list)
+        {
+            foreach (var item in _menuService.GetManyByParentId(id).OrderBy(i => i.Index))
+            {
+                var itemViewModel = new MenuItemViewModel()
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    ToolTip = item.ToolTip,
+                    UrlIcon = item.UrlIcone,
+                    IsActive = true,
+                    Index = item.Index
+
+                };
+
+                list.Add(itemViewModel);
+            }
+
+            foreach (var item in list)
+            {
+                CreateTree(item.Id, item.Children);
+            }
         }
     }
 }

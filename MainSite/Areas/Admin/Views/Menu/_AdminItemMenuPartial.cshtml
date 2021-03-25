@@ -1,0 +1,29 @@
+﻿@model System.Collections.Generic.IEnumerable<MainSite.ViewModels.UI.Menu.MenuItemViewModel>
+
+@foreach (var item in Model)
+{
+    <table class="table">
+        <tbody>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Index)
+            </td>
+            <td>
+                @Html.ActionLink("Удалить", "Delete", "Menu", new {id = item.Id})
+            </td>
+        </tr>
+        @if (item.Children.Any())
+        {
+            <tr>
+                @await Html.PartialAsync("_AdminItemMenuPartial.cshtml", item.Children)
+            </tr>
+        }
+        </tbody>
+    </table>
+}
