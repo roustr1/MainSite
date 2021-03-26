@@ -11,9 +11,7 @@
     @Html.ActionLink("Создать", "Create", "Menu")
 </p>
 
+@await Html.PartialAsync("_AdminItemMenuPartial.cshtml", Model)
 
-        @await Html.PartialAsync("_AdminItemMenuPartial.cshtml", Model)
-    </tbody>
-</table>
 
 

@@ -1,29 +1,27 @@
 ﻿@model System.Collections.Generic.IEnumerable<MainSite.ViewModels.UI.Menu.MenuItemViewModel>
+<ul class="collapsible expandable">
+    @foreach (var item in Model)
+    {
 
-@foreach (var item in Model)
-{
-    <table class="table">
-        <tbody>
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Index)
-            </td>
-            <td>
-                @Html.ActionLink("Удалить", "Delete", "Menu", new {id = item.Id})
-            </td>
-        </tr>
-        @if (item.Children.Any())
-        {
-            <tr>
-                @await Html.PartialAsync("_AdminItemMenuPartial.cshtml", item.Children)
-            </tr>
-        }
-        </tbody>
-    </table>
-}
+        <li>
+            <div class="collapsible-header" style="justify-content:space-around;cursor: inherit;">
+                <div>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </div>
+                <div>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </div>
+                <div>
+                    @Html.EditorFor(modelItem => item.Index, new { @class= "text-center" })
+                </div>
+                @Html.ActionLink("Удалить", "Delete", "Menu", new { id = item.Id })
+            </div>
+            @if (item.Children.Any())
+            {
+                <div class="collapsible-body" style="display: block; padding: 10px;">
+                    @await Html.PartialAsync("_AdminItemMenuPartial.cshtml", item.Children)
+                </div>
+            }
+        </li> 
+    }
+</ul>
