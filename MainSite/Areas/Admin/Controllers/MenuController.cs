@@ -60,9 +60,55 @@ namespace MainSite.Areas.Admin.Controllers
         public ActionResult Delete(string id)
         {
             var item = _menuService.Get(id);
-            if(item!=null)
-                _menuService.DeleteItem(item);
+            if (item != null)
+            {
+
+            }
+
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        [Route("Admin/Menu/ItemUp")]
+        public IActionResult ItemUp(string id)
+        {
+            ItemMove(id: id, toDown: false);
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        [Route("Admin/Menu/ItemDown")]
+        public IActionResult ItemDown(string id)
+        {
+            ItemMove(id: id, toDown: true);
+
+            return RedirectToAction("Index");
+        }
+
+        private void ItemMove(string id, bool toDown)
+        {
+            var item = _menuService.Get(id);
+            var category = item.ParentId;
+            var index = item.Index;
+
+            if (item != null)
+            {
+                var newIndex = NewIndex(category, index, toDown: toDown);
+                if (item.Index != newIndex)
+                {
+                    var item2 = GetItemByCategoryAndIndex(category, newIndex);
+
+                    if (item2 != null)
+                    {
+                        item2.Index = index;
+                        _menuService.UpdateItem(item2);
+                    }
+
+                    item.Index = newIndex;
+                    _menuService.UpdateItem(item);
+                }
+            }
         }
 
         private IEnumerable<MenuItemViewModel> MenuTreeGenerate(string categoryId = null)
@@ -96,6 +142,40 @@ namespace MainSite.Areas.Admin.Controllers
             {
                 CreateTree(item.Id, item.Children);
             }
+        }
+
+        private int NewIndex(string categoryId, int currentIndex, bool toDown)
+        {
+            var newIndex = currentIndex;
+            var items = _menuService.GetManyByParentId(categoryId).ToList();
+            if (items.Any())
+            {
+                var item = items.OrderBy(m => m.Index).LastOrDefault();
+                var maxIndex = item != null ? item.Index : 0;
+
+                if (maxIndex > 0)
+                {
+                    if (currentIndex > 0 && currentIndex < maxIndex)
+                    {
+                        newIndex = toDown ? currentIndex + 1 : currentIndex - 1;
+                    }
+                    else if (currentIndex == 0 && toDown)
+                    {
+                        newIndex = currentIndex + 1;
+                    }
+                    else if (currentIndex == maxIndex && !toDown)
+                    {
+                        newIndex = currentIndex - 1;
+                    }
+                }
+            }
+
+            return newIndex;
+        }
+
+        private MenuItem GetItemByCategoryAndIndex(string categoryId, int currentIndex)
+        {
+            return _menuService.GetManyByParentId(categoryId).FirstOrDefault(i => i.Index == currentIndex);
         }
     }
 }
