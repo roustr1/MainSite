@@ -12,7 +12,10 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </div>
                 <div>
-                    @Html.EditorFor(modelItem => item.Index, new { @class= "text-center" })
+                    @Html.ActionLink("Up", "ItemUp", "Menu", new { id = item.Id })
+                </div>
+                <div>
+                    @Html.ActionLink("Down", "ItemDown", "Menu", new { id = item.Id })
                 </div>
                 @Html.ActionLink("Удалить", "Delete", "Menu", new { id = item.Id })
             </div>
