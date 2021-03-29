@@ -72,7 +72,7 @@ namespace MainSite.Components
 
         private void CreateTree(string id, List<MenuItemViewModel> list, List<string> selected)
         {
-            foreach (var item in _service.GetManyByParentId(id))
+            foreach (var item in _service.GetManyByParentId(id).OrderBy(i => i.Index))
             {
                 var itemViewModel = new MenuItemViewModel()
                 {
@@ -80,7 +80,9 @@ namespace MainSite.Components
                     Name = item.Name,
                     ToolTip = item.ToolTip,
                     UrlIcon = item.UrlIcone,
-                    IsActive = selected.Contains(item.Id)
+                    IsActive = selected.Contains(item.Id),
+                    Index = item.Index
+                    
                 };
 
                 list.Add(itemViewModel);

@@ -14,8 +14,10 @@ function aligmentWidthChildsBirthdayBlock() {
         el.style.justifyContent = "space-between";
     }
     else {
-        for (var item in items) {
-            item.style.paddingRight = "33px";
+        if (items.length != 0) {
+            for (var item in items) {
+                item.style.paddingRight = "33px";
+            }
         }
     }
 }
@@ -46,6 +48,13 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     var instances = M.Dropdown.init(elems, dropdownOptions);
 });
+
+/*document.addEventListener('DOMContentLoaded', function () {
+    var elems = document.querySelectorAll('.collapsible.expandable');
+    var instances = M.Collapsible.init(elems, {
+        accordion: false
+    });
+});*/
 
 document.addEventListener('DOMContentLoaded', function () {
     var elems = document.querySelectorAll('select');

@@ -44,5 +44,7 @@ namespace Application.Dal.Domain.Menu
         /// Роли, которым доступен данный пункт меню
         /// </summary>
         public virtual ICollection<UserRoles> UserRoles { get; set; }
+
+        public int Index { get; set; }
     }
 }
