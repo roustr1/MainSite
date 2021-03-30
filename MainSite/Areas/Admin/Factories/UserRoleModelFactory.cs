@@ -36,10 +36,10 @@ namespace MainSite.Areas.Admin.Factories
         /// <summary>
         /// Prepare customer role model
         /// </summary>
-        /// <param name="model">Customer role model</param>
-        /// <param name="UserRole">Customer role</param>
+        /// <param name="model">User role model</param>
+        /// <param name="UserRole">User role</param>
         /// <param name="excludeProperties">Whether to exclude populating of some properties of model</param>
-        /// <returns>Customer role model</returns>
+        /// <returns>User role model</returns>
         public virtual UserRoleModel PrepareUserRoleModel(UserRoleModel model, UserRole UserRole)
         {
             if (UserRole != null)

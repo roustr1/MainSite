@@ -13,9 +13,9 @@ namespace MainSite.Areas.Admin.Factories
         /// <summary>
         /// Prepare customer role model
         /// </summary>
-        /// <param name="model">Customer role model</param>
-        /// <param name="UserRole">Customer role</param>
-        /// <returns>Customer role model</returns>
+        /// <param name="model">User role model</param>
+        /// <param name="UserRole">User role</param>
+        /// <returns>User role model</returns>
         UserRoleModel PrepareUserRoleModel(UserRoleModel model, UserRole UserRole);
     }
 

@@ -82,7 +82,7 @@ namespace MainSite.Areas.Admin.Controllers
                 _userService.InsertUserRole(UserRole);
 
 
-                //_notificationService.SuccessNotification(_localizationService.GetResource("Admin.Customers.UserRoles.Added"));
+                //_notificationService.SuccessNotification(_localizationService.GetResource("Admin.Users.UserRoles.Added"));
 
                 return continueEditing ? RedirectToAction("Edit", new { id = UserRole.Id }) : RedirectToAction("List");
             }
@@ -147,7 +147,7 @@ namespace MainSite.Areas.Admin.Controllers
                     //_customerActivityService.InsertActivity("EditUserRole",
                     //    string.Format(_localizationService.GetResource("ActivityLog.EditUserRole"), UserRole.Name), UserRole);
 
-                    //_notificationService.SuccessNotification(_localizationService.GetResource("Admin.Customers.UserRoles.Updated"));
+                    //_notificationService.SuccessNotification(_localizationService.GetResource("Admin.Users.UserRoles.Updated"));
 
                     return continueEditing ? RedirectToAction("Edit", new { id = UserRole.Id }) : RedirectToAction("List");
                 }
@@ -184,7 +184,7 @@ namespace MainSite.Areas.Admin.Controllers
                 _userService.DeleteUserRole(UserRole);
 
 
-                //_notificationService.SuccessNotification(_localizationService.GetResource("Admin.Customers.UserRoles.Deleted"));
+                //_notificationService.SuccessNotification(_localizationService.GetResource("Admin.Users.UserRoles.Deleted"));
 
                 return RedirectToAction("List");
             }

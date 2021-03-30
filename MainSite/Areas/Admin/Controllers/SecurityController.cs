@@ -34,7 +34,7 @@ namespace MainSite.Areas.Admin.Controllers
 
         #endregion
 
-
+        [Route("/Security/AccessDenied")]
         public virtual IActionResult AccessDenied(string pageUrl)
         {
             var user = _userService.GetUserBySystemName(User.Identity.Name);

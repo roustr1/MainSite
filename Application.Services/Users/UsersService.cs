@@ -350,9 +350,9 @@ namespace Application.Services.Users
             if (customerRoleIds != null && customerRoleIds.Length > 0)
             {
                 query = query.Join(_userUserRoleMappingRepository.GetAll(), x => x.Id, y => y.UserId,
-                        (x, y) => new { Customer = x, Mapping = y })
+                        (x, y) => new { User = x, Mapping = y })
                     .Where(z => customerRoleIds.Contains(z.Mapping.UserRoleId))
-                    .Select(z => z.Customer)
+                    .Select(z => z.User)
                     .Distinct();
             }
 
