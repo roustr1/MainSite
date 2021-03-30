@@ -1,0 +1,30 @@
+﻿@model MainSite.Areas.Admin.Models.Users.UserRoleModel
+
+<div class="col s12 m6">
+    <div class="card blue-grey darken-1">
+        <div class="card-content white-text">
+            <span class="card-title">@Model.Name</span>
+            @Model.SystemName
+            <p>
+                Статус:
+                @(Model.Active?"Активна":"Приостановлена")
+            </p>
+            <p>
+                <ul>
+                    @foreach (var pm in Model.PermissionNames)
+                    {
+                        <li>@pm</li>
+                    }
+                </ul>
+            </p>
+        </div>
+        <div class="card-action">
+            <a href="@Url.Action("Edit",new {id=Model.Id})">Edit</a>
+            @using (Html.BeginForm("Delete", "UserRole", FormMethod.Post))
+            {
+                @Html.Hidden("id", Model.Id)
+                <input type="submit" value="Удалить" />
+            }
+        </div>
+    </div>
+</div>

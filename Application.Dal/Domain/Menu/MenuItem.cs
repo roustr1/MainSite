@@ -8,7 +8,7 @@ namespace Application.Dal.Domain.Menu
     {
         public MenuItem()
         {
-            UserRoles = new List<UserRoles>();
+            UserRoles = new List<UserRole>();
         }
         /// <summary>
         /// отображаемый текст ссылки

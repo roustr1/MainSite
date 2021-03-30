@@ -1,0 +1,101 @@
+﻿@model MainSite.Areas.Admin.Models.Security.PermissionMappingModel
+@{
+    //page title
+    ViewBag.Title = "Настройки безопасности";
+    Layout = "_Layout";
+}
+
+<form asp-controller="Security" asp-action="Permissions" method="post">
+    <div class="content-header clearfix">
+        <h1 class="pull-left">
+            Настройки безопасности
+        </h1>
+        <div class="pull-right">
+            <button type="submit" name="save" class="btn">
+                <i class="fa fa-floppy-o"></i>
+                Сохранить
+            </button>
+
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="form-horizontal">
+            <div class="panel-group">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <p>
+                            "Ограничение доступа - список доступа, ограниченный ролью пользователя. Этот список определяет права доступа пользователей к различным страницам."
+                        </p>
+                        @if (Model.AvailablePermissions.Count == 0)
+                        {
+                            <text>No permissions defined</text>
+                        }
+                        else if (Model.AvailableUserRoles.Count == 0)
+                        {
+                            <text>No customer roles available</text>
+                        }
+                        else
+                        {
+                            @*<script>
+                                $(document).ready(function () {
+                                    @foreach (var cr in Model.AvailableUserRoles)
+                                    {
+                                        <text>
+                                    $('#selectall-@(cr.Id)').click(function () {
+                                        $('.allow_@(cr.Id)').attr('checked', $(this).is(':checked')).change();
+                                    });
+
+                                    </text>
+                                    }
+                                });
+                            </script>*@
+                            <div class="scroll-wrapper">
+                                <table class="table table-hover table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">
+                                                <strong>"Название разрешения"</strong>
+                                            </th>
+                                            @foreach (var cr in Model.AvailableUserRoles)
+                                            {
+                                                <th scope="col">
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="checkbox" id="selectall-@(cr.Id)" />
+                                                            <span>@cr.Name</span>
+                                                        </label>
+                                                    </div>
+                                                </th>
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var pr in Model.AvailablePermissions)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <span>@pr.Name</span>
+                                                </td>
+                                                @foreach (var cr in Model.AvailableUserRoles)
+                                                {
+                                                    var allowed = Model.Allowed.ContainsKey(pr.SystemName) && Model.Allowed[pr.SystemName][cr.Id];
+                                                    <td>
+                                                        <label>
+                                                            <input class="allow_@(cr.Id)" type="checkbox" value="@(pr.SystemName)" name="allow_@(cr.Id)" @(allowed ? " checked=checked" : null) />
+                                                            <span></span>
+                                                        </label>
+                                                    </td>
+                                                }
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
