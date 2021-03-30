@@ -15,6 +15,7 @@ namespace Application.Services.Permissions
         public static readonly PermissionRecord ManageAcl = new PermissionRecord { Name = "Admin area. Manage ACL", SystemName = "ManageACL", Category = "Configuration" };
         public static readonly PermissionRecord ManageUsers = new PermissionRecord { Name = "Admin area. Manage users", SystemName = "ManageUsers", Category = "Users" };
         public static readonly PermissionRecord ManageMenu = new PermissionRecord { Name = "Admin area. Manage menu", SystemName = "ManageMenu", Category = "Standart" };
+        public static readonly PermissionRecord ManageSettings = new PermissionRecord { Name = "Admin area. Manage settings", SystemName = "ManageSettings", Category = "Standart" };
 
 
         /// <summary>
@@ -28,7 +29,8 @@ namespace Application.Services.Permissions
                 AccessAdminPanel,
                 ManageAcl,
                 ManageUsers,
-                ManageMenu
+                ManageMenu,
+                ManageSettings
             };
         }
 
@@ -47,7 +49,8 @@ namespace Application.Services.Permissions
                         AccessAdminPanel,
                         ManageAcl,
                         ManageUsers,
-                        ManageMenu
+                        ManageMenu,
+                        ManageSettings
 
                     }
                 ),

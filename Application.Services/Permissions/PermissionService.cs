@@ -5,7 +5,6 @@ using Application.Dal;
 using Application.Dal.Domain.Permissions;
 using Application.Dal.Domain.Users;
 using Application.Services.Users;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Application.Services.Permissions
 {
@@ -230,6 +229,16 @@ namespace Application.Services.Permissions
                 return false;
 
             return Authorize(permission.SystemName, user);
+        }
+        /// <summary>
+        /// Authorize permission
+        /// </summary>
+        /// <param name="permission">Permission record</param>
+        /// <param name="user">User</param>
+        /// <returns>true - authorized; otherwise, false</returns>
+        public virtual bool Authorize(PermissionRecord permission, string userName)
+        {
+            return Authorize(permission, _userService.GetUserBySystemName(userName));
         }
 
         /// <summary>

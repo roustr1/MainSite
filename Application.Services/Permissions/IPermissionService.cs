@@ -64,7 +64,13 @@ namespace Application.Services.Permissions
         /// <returns>true - authorized; otherwise, false</returns>
         bool Authorize(PermissionRecord permission, User userName);
 
- 
+        /// <summary>
+        /// Authorize permission
+        /// </summary>
+        /// <param name="permission">Permission record</param>
+        /// <param name="user">User</param>
+        /// <returns>true - authorized; otherwise, false</returns>
+        bool Authorize(PermissionRecord permission, string userName);
 
         /// <summary>
         /// Authorize permission
