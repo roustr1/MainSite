@@ -48,15 +48,17 @@ namespace MainSite.Areas.Admin.Controllers
 
             return View();
         }
-        
+
         [Route("admin/security/permissions")]
         [HttpGet, ActionName("Permissions")]
         public virtual IActionResult Permissions()
         {
-            var user = _userService.GetUserBySystemName(User.Identity.Name);
+#if RELEASE
+             var user = _userService.GetUserBySystemName(User.Identity.Name);
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageAcl, user))
-                return AccessDeniedView();
-
+                return AccessDeniedView();   
+#endif
+             
             //prepare model
             var model = _securityModelFactory.PreparePermissionMappingModel(new PermissionMappingModel());
 
@@ -67,9 +69,12 @@ namespace MainSite.Areas.Admin.Controllers
         [HttpPost, ActionName("Permissions")]
         public virtual IActionResult PermissionsSave(PermissionMappingModel model, IFormCollection form)
         {
-            var user = _userService.GetUserBySystemName(User.Identity.Name);
+#if RELEASE
+                 var user = _userService.GetUserBySystemName(User.Identity.Name);
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageAcl, user))
-                return AccessDeniedView();
+                return AccessDeniedView(); 
+#endif
+
 
             var permissionRecords = _permissionService.GetAllPermissionRecords();
             var userRoles = _userService.GetAllUserRoles(true);
