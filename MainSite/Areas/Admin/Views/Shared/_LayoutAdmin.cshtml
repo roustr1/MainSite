@@ -4,11 +4,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData?["Title"] - MainSite</title>
+    <title>Управление</title>
     <link href="~/css/materialize/sass/materialize.css" rel="stylesheet" />
     <link href="~/images/fonts/MaterialIcons/Material-Icons.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/fonts/fonts.css" />
-    <link rel="stylesheet" href="~/css/mainSite.css" />
+    <link rel="stylesheet" href="~/css/adminSite.css" />
     <script src="~/lib/vue/vue.js"></script>
 </head>
 <body class="row">
@@ -23,13 +23,6 @@
                         </a>
                         <a id="openMenu" data-target="mobile-demo" class="sidenav-trigger" style="float: right;cursor:pointer;"><i class="material-icons">menu</i></a>
                         <ul class="hide-on-med-and-down col m12 s12 l9 secondMenu">
-                            <li>
-                                <div class="secondMenu-search">
-                                    <span class="bold">Поиск на сайте:</span> 
-                                    <input class="inputTextMainSite" type="text"/>
-                                    <button class="btn btn-default" >Найти</button>
-                                </div>
-                            </li>
                             <li>
                                 <div class="secondMenu-user">
                                     <a data-target='dropdown1' class="dropdown-trigger valign-wrapper" style="padding: 0px;">
@@ -52,19 +45,13 @@
     </header>
 
     <div class="container">
-        <div class="col m12 s12 l3" id="menuBlock">
+        @*<div class="col m12 s12 l3" id="menuBlock">
             <div class="secondMenuBlock"></div>
             <ul class="menu">
-                <li>
-                    <a href="@Url.Action("Index", "Home")" title="Новости" class="@(ViewData["categoryId"] == null ? "active" : "")">
-                        <span class="rectangle" style="background-color: white;"></span>
-                        <div class="bold">Новости</div>
-                    </a>
-                </li>
-                @await Component.InvokeAsync("NavComponent", ViewData["categoryId"])
             </ul>
         </div>
-        <main role="main" class="col m12 s12 l9" id="mainBlock">
+        *@
+        <main role="main" class="col m12 s12 l12" id="mainBlock">
             @RenderBody()
         </main>
 
@@ -73,15 +60,12 @@
     <footer>
         <nav>
             <div class="container">
-                <a class="bold" href="#">Сообщить о проблеме или высказать пожелание</a>
-                <br />
                 <span>@service.SettingsDictionary.GetValueOrDefault("Application.Copy", "Разработка отдела труда и трудолюбия.2021")</span>
             </div>
         </nav>
     </footer>
 
     <script src="~/css/materialize/js/materialize.js"></script>
-    <script src="~/css/menu/js/eventClickElMenu.js"></script>
     <script src="~/scripts/onReadyState.js"></script>
     @RenderSection("Scripts", required: false)
 </body>

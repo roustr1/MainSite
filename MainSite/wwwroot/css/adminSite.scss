@@ -1,0 +1,12 @@
+﻿@import 'defaultSite.scss';
+@import "main/sass/mainAdmin.scss";
+@import "form/btn.scss";
+
+.secondMenu {
+    display:flex;
+    & > * {
+        &:last-child {
+            margin-left:auto;
+        }
+    }
+}

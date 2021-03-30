@@ -1,0 +1,32 @@
+﻿@import 'defaultSite.scss';
+@import "menu/sass/menu.scss";
+@import "main/sass/main.scss";
+@import "form/form.scss";
+
+
+/*
+.btn-6 {
+  color: #9467a2;
+}
+.btn-6 span {
+  position: absolute;
+  display: block;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background-color: #4d2e57;
+  transition: width 0.4s ease-in-out, height 0.4s ease-in-out;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+.btn-6:hover {
+  color: #e0d2e4;
+}
+.btn-6:hover span {
+  width: 225%;
+  height: 562.5px;
+}
+.btn-6:active {
+  background-color: #814c91;
+}
+*/

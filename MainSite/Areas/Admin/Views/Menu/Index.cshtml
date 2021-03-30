@@ -1,17 +1,19 @@
 ﻿@model IEnumerable<MainSite.ViewModels.UI.Menu.MenuItemViewModel>;
 
 @{
-    Layout = "_Layout";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
     ViewData["Title"] = "Админ. Меню.";
 }
 
-<h1>Index</h1>
+<div class="col s12 m12 card-panel">
+    <h5>Меню</h5>
 
-<p>
-    @Html.ActionLink("Создать", "Create", "Menu")
-</p>
+    <p>
+        @Html.ActionLink("Создать", "Create", "Menu")
+        @Html.ActionLink("Назад", "Index", "Home")
+    </p>
 
-@await Html.PartialAsync("_AdminItemMenuPartial.cshtml", Model)
+    @await Html.PartialAsync("_AdminItemMenuPartial.cshtml", Model)
 
-
+</div>
 
