@@ -1,15 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
-using System.Runtime.InteropServices;
 using Application.Dal.Domain.Users;
 using Application.Services.Permissions;
 using Application.Services.Users;
 using MainSite.Areas.Admin.Factories;
 using MainSite.Areas.Admin.Models.Users;
 using MainSite.Filters;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Primitives;
 
 namespace MainSite.Areas.Admin.Controllers
 {
@@ -39,9 +36,9 @@ namespace MainSite.Areas.Admin.Controllers
         [Route("Admin/UserRoles/List")]
         public virtual IActionResult List()
         {
-            //var user = _userService.GetUserByIdentityName(User.Identity.Name);
-            //if (!_permissionService.Authorize(StandardPermissionProvider.ManageUsers, user))
-            //    return AccessDeniedView();
+            var user = _userService.GetUserBySystemName(User.Identity.Name);
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageUsers, user))
+                return AccessDeniedView();
 
             //prepare model
             var roles = _userService.GetAllUserRoles(true);
@@ -54,10 +51,10 @@ namespace MainSite.Areas.Admin.Controllers
         [Route("Admin/UserRoles/Create")]
         public virtual IActionResult Create()
         {
-            //var user = _userService.GetUserByIdentityName(User.Identity.Name);
-            //if (!_permissionService.Authorize(StandardPermissionProvider.ManageUsers, user)
-            //    || !_permissionService.Authorize(StandardPermissionProvider.ManageAcl, user))
-            //    return AccessDeniedView();
+            var user = _userService.GetUserBySystemName(User.Identity.Name);
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageUsers, user)
+                || !_permissionService.Authorize(StandardPermissionProvider.ManageAcl, user))
+                return AccessDeniedView();
 
             //prepare model
             var model = _userRoleModelFactory.PrepareUserRoleModel(new UserRoleModel(), null);
@@ -68,9 +65,9 @@ namespace MainSite.Areas.Admin.Controllers
         [HttpPost, ParameterBasedOnFormName("save-continue", "continueEditing")]
         public virtual IActionResult Create(UserRoleModel model, bool continueEditing)
         {
-            //var user = _userService.GetUserByIdentityName(User.Identity.Name);
-            //if (!_permissionService.Authorize(StandardPermissionProvider.ManageUsers, user) || !_permissionService.Authorize(StandardPermissionProvider.ManageAcl, user))
-            //    return AccessDeniedView();
+            var user = _userService.GetUserBySystemName(User.Identity.Name);
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageUsers, user) || !_permissionService.Authorize(StandardPermissionProvider.ManageAcl, user))
+                return AccessDeniedView();
 
             if (ModelState.IsValid)
             {
@@ -84,9 +81,6 @@ namespace MainSite.Areas.Admin.Controllers
                 };
                 _userService.InsertUserRole(UserRole);
 
-                //activity log
-                //_customerActivityService.InsertActivity("AddNewUserRole",
-                //    string.Format(_localizationService.GetResource("ActivityLog.AddNewUserRole"), UserRole.Name), UserRole);
 
                 //_notificationService.SuccessNotification(_localizationService.GetResource("Admin.Customers.UserRoles.Added"));
 
@@ -102,10 +96,10 @@ namespace MainSite.Areas.Admin.Controllers
         [Route("Admin/UserRoles/Edit")]
         public virtual IActionResult Edit(string id)
         {
-            //var user = _userService.GetUserByIdentityName(User.Identity.Name);
-            //if (!_permissionService.Authorize(StandardPermissionProvider.ManageUsers, user)
-            //    || !_permissionService.Authorize(StandardPermissionProvider.ManageAcl, user))
-            //    return AccessDeniedView();
+            var user = _userService.GetUserBySystemName(User.Identity.Name);
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageUsers, user)
+                || !_permissionService.Authorize(StandardPermissionProvider.ManageAcl, user))
+                return AccessDeniedView();
 
             //try to get a customer role with the specified id
             var UserRole = _userService.GetUserRoleById(id);
@@ -121,10 +115,10 @@ namespace MainSite.Areas.Admin.Controllers
         [HttpPost, ParameterBasedOnFormName("save-continue", "continueEditing")]
         public virtual IActionResult Edit(UserRoleModel model, bool continueEditing)
         {
-            //var user = _userService.GetUserByIdentityName(User.Identity.Name);
-            //if (!_permissionService.Authorize(StandardPermissionProvider.ManageUsers, user)
-            //    || !_permissionService.Authorize(StandardPermissionProvider.ManageAcl, user))
-            //    return AccessDeniedView();
+            var user = _userService.GetUserBySystemName(User.Identity.Name);
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageUsers, user)
+                || !_permissionService.Authorize(StandardPermissionProvider.ManageAcl, user))
+                return AccessDeniedView();
 
             //try to get a customer role with the specified id
             var UserRole = _userService.GetUserRoleById(model.Id);
@@ -136,10 +130,10 @@ namespace MainSite.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
                     if (UserRole.IsSystemRole && !model.Active)
-                        throw new Exception("Admin.Customers.UserRoles.Fields.Active.CantEditSystem");
+                        throw new Exception("CantEditSystem");
 
                     if (UserRole.IsSystemRole && !UserRole.SystemName.Equals(model.SystemName, StringComparison.InvariantCultureIgnoreCase))
-                        throw new Exception("Admin.Customers.UserRoles.Fields.SystemName.CantEditSystem");
+                        throw new Exception("CantEditSystem");
 
 
                     //change all parameters available from the view
@@ -175,10 +169,10 @@ namespace MainSite.Areas.Admin.Controllers
         [Route("Admin/UserRoles/Delete")]
         public virtual IActionResult Delete(string id)
         {
-            //var user = _userService.GetUserByIdentityName(User.Identity.Name);
-            //if (!_permissionService.Authorize(StandardPermissionProvider.ManageUsers, user)
-            //    || !_permissionService.Authorize(StandardPermissionProvider.ManageAcl, user))
-            //    return AccessDeniedView();
+            var user = _userService.GetUserBySystemName(User.Identity.Name);
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageUsers, user)
+                || !_permissionService.Authorize(StandardPermissionProvider.ManageAcl, user))
+                return AccessDeniedView();
 
             //try to get a customer role with the specified id
             var UserRole = _userService.GetUserRoleById(id);
@@ -189,9 +183,6 @@ namespace MainSite.Areas.Admin.Controllers
             {
                 _userService.DeleteUserRole(UserRole);
 
-                //activity log
-                //   _customerActivityService.InsertActivity("DeleteUserRole",
-                //       string.Format(_localizationService.GetResource("ActivityLog.DeleteUserRole"), UserRole.Name), UserRole);
 
                 //_notificationService.SuccessNotification(_localizationService.GetResource("Admin.Customers.UserRoles.Deleted"));
 

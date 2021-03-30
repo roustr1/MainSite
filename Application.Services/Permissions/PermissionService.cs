@@ -5,6 +5,7 @@ using Application.Dal;
 using Application.Dal.Domain.Permissions;
 using Application.Dal.Domain.Users;
 using Application.Services.Users;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Application.Services.Permissions
 {
@@ -147,6 +148,7 @@ namespace Application.Services.Permissions
         /// Install permissions
         /// </summary>
         /// <param name="permissionProvider">Permission provider</param>
+  
         public virtual void InstallPermissions(IPermissionProvider permissionProvider)
         {
             //install new permissions

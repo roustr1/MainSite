@@ -15,21 +15,21 @@ namespace MainSite.Areas.Admin.Models.Users
         }
         #region Properties
 
-        [Display (Name="User.Name")]
+        [Display(Name = "User.Name")]
         public string Name { get; set; }
 
-        [Display (Name="User.IsActive")]
+        [Display(Name = "User.IsActive")]
         public bool Active { get; set; }
 
-        [Display (Name="User.IsSystemRole")]
+        [Display(Name = "User.IsSystemRole")]
         public bool IsSystemRole { get; set; }
 
-        [Display (Name="User.SystemName")]
+        [Display(Name = "User.SystemName")]
         public string SystemName { get; set; }
 
         [Display(Name = "User.ActualPermissions")]
         public IEnumerable<string> PermissionNames { get; set; }
-         
+
         #endregion
     }
 }

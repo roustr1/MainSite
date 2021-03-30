@@ -90,7 +90,7 @@ new Setting
                         Name = "Администратор",
                         Active = true,
                         IsSystemRole = true,
-                        SystemName = "Administrator",
+                        SystemName = AppUserDefaults.AdministratorsRoleName,
                         Id ="1"
                     },
                     new UserRole
@@ -98,14 +98,14 @@ new Setting
                         Name = "Модератор",
                         Active = true,
                         IsSystemRole = true,
-                        SystemName = "Moderator",
+                        SystemName = AppUserDefaults.ModeratorsRoleName,
                         Id ="2"
                     }, new UserRole
                     {
                         Name = "Сотрудник",
                         Active = true,
                         IsSystemRole = true,
-                        SystemName = "Сотрудник",
+                        SystemName = AppUserDefaults.RegisteredRoleName,
                         Id = "3"
                     }
                 }

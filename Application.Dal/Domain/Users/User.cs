@@ -15,6 +15,8 @@ namespace Application.Dal.Domain.Users
         /// </summary>
         public string SystemName { get; set; }
 
+        public string FullName { get; set; }
+
         /// <summary>
         /// Gets or sets the last IP address
         /// </summary>

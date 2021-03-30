@@ -1,10 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Application.Dal;
 using Application.Dal.Domain.Users;
 
 namespace Application.Services.Users
 {
     public interface IUsersService
     {
+
+        #region UserRoles 
         /// <summary>
         /// Add a user-user role mapping
         /// </summary>
@@ -47,7 +51,7 @@ namespace Application.Services.Users
         string[] GetUserRoleIds(User user, bool showHidden = false);
 
         /// <summary>
-        /// Gets list of user roles
+        /// Получить список ролей конкретного пользователя
         /// </summary>
         /// <param name="user">User</param>
         /// <param name="showHidden">A value indicating whether to load hidden records</param>
@@ -106,18 +110,103 @@ namespace Application.Services.Users
         /// </summary>
         /// <param name="userRole">User role</param>
         void UpdateUserRole(UserRole userRole);
+        #endregion
 
+        #region Users
+
+        /// <summary>
+        /// Gets all customers
+        /// </summary>
+        /// <param name="customerRoleIds">A list of customer role identifiers to filter by (at least one match); pass null or empty list in order to load all customers; </param>
+        /// <param name="username">Username; null to load all customers</param> 
+        /// <param name="ipAddress">IP address; null to load all customers</param>
+        /// <param name="pageIndex">Page index</param>
+        /// <param name="pageSize">Page size</param>
+        /// <param name="getOnlyTotalCount">A value in indicating whether you want to load only total number of records. Set to "true" if you don't want to load data from database</param>
+        /// <returns>Users</returns>
+        IPagedList<User> GetAllUsers(  string[] customerRoleIds = null,
+             string username = null, string ipAddress = null,
+            int pageIndex = 0, int pageSize = int.MaxValue, bool getOnlyTotalCount = false);
+
+ 
+        /// <summary>
+        /// Delete a customer
+        /// </summary>
+        /// <param name="customer">User</param>
+        void DeleteUser(User customer);
+
+ 
+
+ 
+        /// <summary>
+        /// Gets a customer
+        /// </summary>
+        /// <param name="customerId">User identifier</param>
+        /// <returns>A customer</returns>
+        User GetUserById(string customerId);
+
+        /// <summary>
+        /// Get customers by identifiers
+        /// </summary>
+        /// <param name="customerIds">User identifiers</param>
+        /// <returns>Users</returns>
+        IList<User> GetUsersByIds(string[] customerIds);
+ 
+
+ 
+
+        /// <summary>
+        /// Get customer by system role
+        /// </summary>
+        /// <param name="systemName">System name</param>
+        /// <returns>User</returns>
+        User GetUserBySystemName(string systemName);
+
+        ///// <summary>
+        ///// Get customer by username
+        ///// </summary>
+        ///// <param name="username">Username</param>
+        ///// <returns>User</returns>
+        //User GetUserByUsername(string username);
+
+ 
+
+        /// <summary>
+        /// Insert a customer
+        /// </summary>
+        /// <param name="customer">User</param>
+        void InsertUser(User customer);
+
+        /// <summary>
+        /// Updates the customer
+        /// </summary>
+        /// <param name="customer">User</param>
+        void UpdateUser(User customer);
+ 
+ 
+ 
         /// <summary>
         /// Get user Fio from current user 
         /// </summary>
         /// <returns></returns>
         string GetUserNameFromAD();
 
-        /// <summary>
-        /// return User's record depended by userName
-        /// </summary>
-        /// <param name="identiyName"></param>
-        /// <returns></returns>
-        User GetUserByIdentityName(string identiyName);
+        ///// <summary>
+        ///// Add selected roles to user
+        ///// </summary>
+        ///// <param name="userId"></param>
+        ///// <param name="roleIds"></param>
+        //void AddRoleToUser(string userId, string[] roleIds);
+
+        ///// <summary>
+        ///// Add selected roles to user
+        ///// </summary>
+        ///// <param name="userId"></param>
+        ///// <param name="roleIds"></param>
+        //void AddRoleToUser(string userId, string roleId);
     }
+
+    #endregion
+
+
 }

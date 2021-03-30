@@ -37,7 +37,7 @@ namespace MainSite.Areas.Admin.Controllers
 
         public virtual IActionResult AccessDenied(string pageUrl)
         {
-            var user = _userService.GetUserByIdentityName(User.Identity.Name);
+            var user = _userService.GetUserBySystemName(User.Identity.Name);
             if (user == null || !_userService.IsRegistered(user))
             {
                 _logger.LogInformation($"Access denied to anonymous request on {pageUrl}");
@@ -48,11 +48,12 @@ namespace MainSite.Areas.Admin.Controllers
 
             return View();
         }
+        
         [Route("admin/security/permissions")]
         [HttpGet, ActionName("Permissions")]
         public virtual IActionResult Permissions()
         {
-            var user = _userService.GetUserByIdentityName(User.Identity.Name);
+            var user = _userService.GetUserBySystemName(User.Identity.Name);
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageAcl, user))
                 return AccessDeniedView();
 
@@ -66,7 +67,7 @@ namespace MainSite.Areas.Admin.Controllers
         [HttpPost, ActionName("Permissions")]
         public virtual IActionResult PermissionsSave(PermissionMappingModel model, IFormCollection form)
         {
-            var user = _userService.GetUserByIdentityName(User.Identity.Name);
+            var user = _userService.GetUserBySystemName(User.Identity.Name);
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageAcl, user))
                 return AccessDeniedView();
 
@@ -83,7 +84,7 @@ namespace MainSite.Areas.Admin.Controllers
                 foreach (var pr in permissionRecords)
                 {
                     var allow = permissionRecordSystemNamesToRestrict.Contains(pr.SystemName);
-
+                    //если права уже есть
                     if (allow == _permissionService.Authorize(pr.SystemName, cr.Id))
                         continue;
 
@@ -105,5 +106,12 @@ namespace MainSite.Areas.Admin.Controllers
             return RedirectToAction("Permissions");
         }
 
+
+        [Route("Admin/InstallPermissions")]
+        public IActionResult InstallPermissions()
+        {
+            _permissionService.InstallPermissions(new StandardPermissionProvider());
+            return RedirectToAction("Index", "Users");
+        }
     }
 }

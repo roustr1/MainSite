@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.DirectoryServices.AccountManagement;
+using System.Globalization;
 using System.Linq;
 using Application.Dal;
 using Application.Dal.Domain.Users;
@@ -45,6 +47,37 @@ namespace Application.Services.Users
             // _eventPublisher.EntityInserted(roleMapping);
         }
 
+        //public void AddRoleToUser(string userId, string[] roleIds)
+        //{
+        //    if (string.IsNullOrEmpty(userId) || roleIds == null) return;
+        //    var user = _userRepository.Get(userId);
+
+        //    foreach (var roleId in roleIds)
+        //    {
+        //        var role = _userRoleRepository.Get(roleId);
+        //        try
+        //        {
+        //            var userRoleMapping = new UserUserRoleMapping
+        //            {
+        //                UserId = user.Id,
+        //                UserRoleId = role.Id
+        //            };
+        //            AddUserRoleMapping(userRoleMapping);
+        //        }
+        //        catch (DbException e)
+        //        {
+        //            e.Data.Add(user.SystemName, $"Не удалось добавить роль {AppUserDefaults.RegisteredRoleName}");
+        //            throw;
+        //        }
+        //    }
+        //}
+
+        //public void AddRoleToUser(string userId, string roleId)
+        //{
+        //    if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(roleId)) return; 
+        //    var user = _userRepository.Get(userId);
+        //}
+
         /// <summary>
         /// Remove a user-user role mapping
         /// </summary>
@@ -57,9 +90,9 @@ namespace Application.Services.Users
 
             if (role is null)
                 throw new ArgumentNullException(nameof(role));
-
+            
             var mapping = _userUserRoleMappingRepository.GetAll()
-                .SingleOrDefault(ccrm => ccrm.UserId == user.Name && ccrm.UserRoleId == role.Id);
+                .SingleOrDefault(ccrm => ccrm.UserId == user.Id && ccrm.UserRoleId == role.Id);
 
             if (mapping != null)
             {
@@ -234,7 +267,7 @@ namespace Application.Services.Users
         /// <returns>Result</returns>
         public virtual bool IsForumModerator(User user, bool onlyActiveUserRoles = true)
         {
-            return IsInUserRole(user, AppUserDefaults.ForumModeratorsRoleName, onlyActiveUserRoles);
+            return IsInUserRole(user, AppUserDefaults.ModeratorsRoleName, onlyActiveUserRoles);
         }
 
         /// <summary>
@@ -264,19 +297,11 @@ namespace Application.Services.Users
         }
 
 
-
         #endregion
 
+        #region User
 
 
-        public User GetUserByIdentityName(string identiyName)
-        {
-            if (identiyName == null) return null;
-            var founded = _userRepository.GetAll().FirstOrDefault(c => c.SystemName == identiyName);
-            if (founded != null) return founded;
-
-            return CreateUser(identiyName);
-        }
 
         public virtual string GetUserNameFromAD()
         {
@@ -289,11 +314,135 @@ namespace Application.Services.Users
             {
                 SystemName = identityName,
                 Active = true,
-                Deleted = false,
-                Name = GetUserNameFromAD()
+                Name = GetUserNameFromAD(),
+                LastActivityDate = DateTime.Now,
+                FullName = GetUserNameFromAD()
             };
             _userRepository.Add(user);
+            var role = GetUserRoleBySystemName(AppUserDefaults.RegisteredRoleName);
+            try
+            {
+                var userRoleMapping = new UserUserRoleMapping
+                {
+                    UserId = user.Id,
+                    UserRoleId = role.Id
+                };
+                AddUserRoleMapping(userRoleMapping);
+            }
+            catch (DbException e)
+            {
+                //В случае ошибки при добавлении роли пользователю он будет удален из бд
+                DeleteUser(user);
+                e.Data.Add(user.SystemName, $"Не удалось добавить роль {AppUserDefaults.RegisteredRoleName}");
+                throw;
+            }
+
             return user;
         }
+
+        public IPagedList<User> GetAllUsers(string[] customerRoleIds = null,
+            string username = null, string ipAddress = null,
+            int pageIndex = 0, int pageSize = int.MaxValue, bool getOnlyTotalCount = false)
+        {
+            var query = _userRepository.GetAll();
+            query = query.Where(c => !c.Deleted);
+
+            if (customerRoleIds != null && customerRoleIds.Length > 0)
+            {
+                query = query.Join(_userUserRoleMappingRepository.GetAll(), x => x.Id, y => y.UserId,
+                        (x, y) => new { Customer = x, Mapping = y })
+                    .Where(z => customerRoleIds.Contains(z.Mapping.UserRoleId))
+                    .Select(z => z.Customer)
+                    .Distinct();
+            }
+
+
+            if (!string.IsNullOrWhiteSpace(username))
+                query = query.Where(c => c.Name.Contains(username));
+
+
+
+            //search by IpAddress
+            if (!string.IsNullOrWhiteSpace(ipAddress))
+            {
+                query = query.Where(w => w.LastIpAddress == ipAddress);
+            }
+
+            query = query.OrderByDescending(c => c.Name);
+
+            var customers = new PagedList<User>(query.AsQueryable(), pageIndex, pageSize, getOnlyTotalCount);
+
+            return customers;
+        }
+
+        public void DeleteUser(User customer)
+        {
+            if (customer == null)
+                throw new ArgumentNullException(nameof(customer));
+
+            customer.Deleted = true;
+
+            UpdateUser(customer);
+
+            //event notification
+            //   _eventPublisher.EntityDeleted(customer);
+        }
+
+        public User GetUserById(string customerId) => string.IsNullOrEmpty(customerId) ? null : _userRepository.Get(customerId);
+
+        public IList<User> GetUsersByIds(string[] userIds)
+        {
+            if (userIds == null || userIds.Length == 0)
+                return new List<User>();
+
+            var query = from c in _userRepository.GetAll()
+                        where userIds.Contains(c.Id) && !c.Deleted
+                        select c;
+            var customers = query.ToList();
+            //sort by passed identifiers
+
+            return userIds.Select(id => customers.Find(x => x.Id == id)).Where(customer => customer != null).ToList();
+        }
+
+
+        public User GetUserBySystemName(string systemName)
+        {
+            if (string.IsNullOrWhiteSpace(systemName))
+                return null;
+
+            var query = from c in _userRepository.GetAll()
+                        orderby c.Id
+                        where c.SystemName == systemName
+                        select c;
+            var customer = query.FirstOrDefault();
+            if (customer != null) return customer;
+            return CreateUser(systemName);
+        }
+
+        public void InsertUser(User customer)
+        {
+            if (customer == null)
+                throw new ArgumentNullException(nameof(customer));
+
+            _userRepository.Add(customer);
+
+            //event notification
+            //_eventPublisher.EntityInserted(customer);
+        }
+
+        public void UpdateUser(User customer)
+        {
+            if (customer == null)
+                throw new ArgumentNullException(nameof(customer));
+
+            _userRepository.Update(customer);
+
+            //event notification
+            //_eventPublisher.EntityUpdated(customer);
+        }
+
+
+
+        #endregion
     }
 }
