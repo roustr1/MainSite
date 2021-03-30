@@ -1,0 +1,42 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="card card-panel col m3 s12">
+    <div class="card-content">
+        <span class="card-title activator grey-text text-darken-4">
+            Меню
+        </span>
+        <p> @Html.ActionLink("Добавить пункт меню", "Create", "Menu")</p>
+        <p>@Html.ActionLink("Редактирование иерархии меню", "Index", "Menu")</p>
+    </div>
+</div>
+<div class="card card-panel col m3 s12">
+    <div class="card-content">
+        <span class="card-title activator grey-text text-darken-4">
+            Настройки
+        </span>
+        <p>@Html.ActionLink("Перейти", "Index", "Settings")</p>
+    </div>
+</div>
+<div class="card card-panel col m3 s12">
+    <div class="card-content">
+        <span class="card-title activator grey-text text-darken-4">
+            Роли
+        </span>
+        <p><a href="#">Перейти</a></p>
+    </div>
+</div>
+
+<script>
+    var allElements = document.querySelectorAll('#mainBlock > div');
+    var maxHeight = allElements[0].offsetHeight;
+
+    for (var element in allElements) {
+        if (element.offsetHeight > maxHeight) maxHeight = element.offsetHeight;
+    }
+
+    for (var i = 0; i < allElements.length; i++) {
+        allElements[i].style.height = maxHeight + 'px';
+    }
+</script>

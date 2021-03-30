@@ -1,29 +1,30 @@
 ﻿@model Application.Dal.Domain.Menu.MenuItem
+
 @{
-    Layout = "_Layout";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
     ViewData["Title"] = "Меню - создание";
 }
 
-<div class="col s12 m6 card-panel">
+<div class="col s12 m12 card-panel">
     <h5 class="header">Добавление пункта меню</h5>
     <div>
         @using (Html.BeginForm(FormMethod.Post, true))
-    {
+        {
 
             <div class="row">
                 <div asp-validation-summary="ModelOnly" class=""></div>
                 <div class="input-field col s12 m12">
-                    @Html.TextBoxFor(model => model.Name, new { @class = "validate", type = "text"})
+                    @Html.TextBoxFor(model => model.Name, new { @class = "validate", type = "text" })
                     <label asp-for="Name" for="Name">Наименование</label>
                 </div>
                 <div class="input-field col s12 m12">
-                        @*<textarea asp-for="Header" id="TextMessage" class="materialize-textarea"></textarea>
-        <label asp-for="Header" class="active" for="TextMessage">Введите текст</label>*@
+                    @*<textarea asp-for="Header" id="TextMessage" class="materialize-textarea"></textarea>
+                        <label asp-for="Header" class="active" for="TextMessage">Введите текст</label>*@
                     @Html.DropDownListFor(c => c.ParentId, (List<SelectListItem>)ViewBag.MenuId, "--корневой элемент--")
                     <label asp-for="ParentId">Родительский элемент</label>
                 </div>
                 <div class="input-field col  s12 m12">
-                    <input id="ToolTip" type="text" class="validate"/>
+                    <input id="ToolTip" type="text" class="validate" />
                     <label asp-for="ToolTip" for="ToolTip">Всплывающая подсказка</label>
                 </div>
                 <div class="input-field col  s12 m12">
@@ -38,13 +39,13 @@
                     @Html.ListBoxFor(model => model.UserRoles, (List<SelectListItem>)ViewBag.Roles, new { Multiple = "Multiple " })
                     <label asp-for="UserRoles">Роли</label>
                 </div>
-                  
+
             </div>
             <div class="input-field m12">
                 <input type="submit" value="Добавить" class="btn btn-defaultMainSite" />
-                <a asp-action="Index" class="btn btn-defaultMainSite">Назад</a>
+                @Html.ActionLink("Назад", "Index", "Home", null, new { @class= "btn btn-defaultMainSite" })
             </div>
-    }
+        }
     </div>
 </div>
 

@@ -1,42 +1,44 @@
 ﻿@model IEnumerable<Application.Dal.Domain.Settings.Setting>
 
 @{
-    Layout = "_Layout";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
     ViewData["Title"] = "Index";
 }
+<div class="col s12 m12 card-panel">
+    <h5>Настройки</h5>
 
-<h1>Index</h1>
-
-<p>
-    <a href="@Url.Action("Create")">Добавить</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Value)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+    <p>
+        <a href="@Url.Action("Create")">Добавить</a> 
+        @Html.ActionLink("Назад", "Index", "Home")
+    </p>
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Value)
-                </td>
-                <td>
-                    @Html.ActionLink("Обновить", "Update", "Settings", new { item.Id })
-                    @Html.ActionLink("Удалить", "Delete", "Settings", new { item.Id })
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Value)
+                </th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Value)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Обновить", "Update", "Settings", new { item.Id })
+                        @Html.ActionLink("Удалить", "Delete", "Settings", new { item.Id })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

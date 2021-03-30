@@ -12,10 +12,10 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </div>
                 <div>
-                    @Html.ActionLink("Up", "ItemUp", "Menu", new { id = item.Id })
+                    @Html.ActionLink("Вверх", "ItemUp", "Menu", new { id = item.Id })
                 </div>
                 <div>
-                    @Html.ActionLink("Down", "ItemDown", "Menu", new { id = item.Id })
+                    @Html.ActionLink("Вниз", "ItemDown", "Menu", new { id = item.Id })
                 </div>
                 @Html.ActionLink("Удалить", "Delete", "Menu", new { id = item.Id })
             </div>

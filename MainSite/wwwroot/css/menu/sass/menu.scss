@@ -146,6 +146,15 @@
         margin-left: auto;
     }
 
+    &-admin {
+        flex-grow: initial;
+        display: flex;
+
+        & > * {
+            margin-left: auto;
+        }
+    }
+
     &-search {
         display: flex;
         align-items: center;

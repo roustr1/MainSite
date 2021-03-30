@@ -19,8 +19,14 @@ gulp.task("sass-lib", function () {
         .pipe(gulp.dest(paths.webroot + 'css/materialize/sass'));
 });
 
-gulp.task("sass-site", function () {
-    return gulp.src(paths.webroot + 'css/site.scss')
+gulp.task("sass-main", function () {
+    return gulp.src(paths.webroot + 'css/mainSite.scss')
+        .pipe(sass())
+        .pipe(gulp.dest(paths.webroot + 'css/'));
+});
+
+gulp.task("sass-admin", function () {
+    return gulp.src(paths.webroot + 'css/adminSite.scss')
         .pipe(sass())
         .pipe(gulp.dest(paths.webroot + 'css/'));
 });
