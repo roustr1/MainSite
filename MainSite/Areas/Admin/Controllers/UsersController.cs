@@ -44,9 +44,12 @@ namespace MainSite.Areas.Admin.Controllers
         [Route("Admin/Users/List")]
         public virtual IActionResult List()
         {
-            var user = _userService.GetUserBySystemName(User.Identity.Name);
+#if RELEASE
+              var user = _userService.GetUserBySystemName(User.Identity.Name);
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageUsers, user))
-                return AccessDeniedView();
+                return AccessDeniedView();   
+#endif
+
 
             //prepare model
             var model = _userModelFactory.PrepareUserModelList(new UserSearchModel());
@@ -77,11 +80,14 @@ namespace MainSite.Areas.Admin.Controllers
         [Route("Admin/Users/AddRoleToUser")]
         public IActionResult AddRolesToUser(string id)
         {
+#if RELEASE
+              var user = _userService.GetUserBySystemName(User.Identity.Name);
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageUsers, user))
+                return AccessDeniedView();   
+#endif
             if (string.IsNullOrEmpty(id)) return ErrorJson("Пользователь не указан");
 
-            var currentUser = _userService.GetUserBySystemName(User.Identity.Name);
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageUsers, currentUser))
-                return AccessDeniedView();
+
 
             //модель пользвателя с его текущими ролями
             var model = _userModelFactory.PrepareAddUserRoleModel(new UserAddUserRoleModel(id));
@@ -94,9 +100,11 @@ namespace MainSite.Areas.Admin.Controllers
         public IActionResult AddRolesToUser(string id, IFormCollection form)
         {
 
-            var currentUser = _userService.GetUserBySystemName(User.Identity.Name);
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageUsers, currentUser))
-                return AccessDeniedView();
+#if RELEASE
+              var user = _userService.GetUserBySystemName(User.Identity.Name);
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageUsers, user))
+                return AccessDeniedView();   
+#endif
 
             //if (string.IsNullOrEmpty(id) || roleIds == null)
 
@@ -116,7 +124,7 @@ namespace MainSite.Areas.Admin.Controllers
             {
                 var allow = userRolesSystemNamesToRestrict.Contains(ur.SystemName);
                 //проверить, есть ли данная роль у пользователя в данный момент
-                if (allow == _userService.GetUserRoles(user).Select(s=>s.SystemName).Contains(ur.SystemName))
+                if (allow == _userService.GetUserRoles(user).Select(s => s.SystemName).Contains(ur.SystemName))
                     continue;
 
                 if (allow)
