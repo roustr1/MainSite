@@ -1,0 +1,18 @@
+﻿@model IEnumerable<MainSite.Areas.Admin.Models.Users.UserRoleModel>
+
+@{
+    //page title
+    ViewBag.Title = "Роли пользователей";
+    Layout = "_Layout";
+}
+<a href="@Url.Action("Create")" class="waves-effect waves-light btn"><i class="material-icons">add</i>Add new role</a>
+<hr />
+<div class="row">
+    @foreach (var role in Model)
+    {
+        @await Component.InvokeAsync("UserRoleCard", role)
+    }
+</div>
+
+
+

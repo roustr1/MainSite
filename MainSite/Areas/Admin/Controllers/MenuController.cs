@@ -3,19 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using Application.Dal.Domain.Menu;
 using Application.Services.Menu;
+using Application.Services.Permissions;
+using Application.Services.Users;
 using MainSite.ViewModels.UI.Menu;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MainSite.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class MenuController : Controller
+    public class MenuController : BaseAdminController
     {
         private readonly IMenuService _menuService;
+        private readonly IUsersService _userService;
+        private readonly IPermissionService _permissionService;
 
-        public MenuController(IMenuService menuService)
+
+        public MenuController(IMenuService menuService, IUsersService userService, IPermissionService permissionService)
         {
             _menuService = menuService;
+            _userService = userService;
+            _permissionService = permissionService;
         }
 
         // GET: MenuService
@@ -23,6 +30,14 @@ namespace MainSite.Areas.Admin.Controllers
         [Route("Admin/Menu")]
         public IActionResult Index()
         {
+#if RELEASE
+     var user = _userService.GetUserBySystemName(User.Identity.Name);
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageMenu, user))
+                return AccessDeniedView();
+#endif
+
+
+
             var menuItems = _menuService.GetAll();
             var menuItemsViewModels = MenuTreeGenerate();
 
@@ -34,6 +49,12 @@ namespace MainSite.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+#if RELEASE
+     var user = _userService.GetUserBySystemName(User.Identity.Name);
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageMenu, user))
+                return AccessDeniedView();
+#endif
+ 
             ViewBag.Roles = new List<SelectListItem> { new SelectListItem("Admin", "1"), new SelectListItem("moderator", "2") };
             ViewBag.MenuId = _menuService.GetAll().Select(s => new SelectListItem { Text = s.Name, Value = s.Id }).ToList();
             return View();
@@ -45,6 +66,11 @@ namespace MainSite.Areas.Admin.Controllers
         [Route("Admin/Menu/Create")]
         public IActionResult Create(MenuItem model)
         {
+#if RELEASE
+     var user = _userService.GetUserBySystemName(User.Identity.Name);
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageMenu, user))
+                return AccessDeniedView();
+#endif
             if (ModelState.IsValid)
             {
                 _menuService.InsertItem(model);
@@ -59,10 +85,15 @@ namespace MainSite.Areas.Admin.Controllers
         [Route("Admin/Menu/Delete")]
         public ActionResult Delete(string id)
         {
+            #if RELEASE
+                 var user = _userService.GetUserBySystemName(User.Identity.Name);
+                        if (!_permissionService.Authorize(StandardPermissionProvider.ManageMenu, user))
+                            return AccessDeniedView();
+            #endif
             var item = _menuService.Get(id);
             if (item != null)
             {
-
+                _menuService.DeleteItem(item);
             }
 
             return RedirectToAction("Index");
@@ -72,6 +103,11 @@ namespace MainSite.Areas.Admin.Controllers
         [Route("Admin/Menu/ItemUp")]
         public IActionResult ItemUp(string id)
         {
+#if RELEASE
+     var user = _userService.GetUserBySystemName(User.Identity.Name);
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageMenu, user))
+                return AccessDeniedView();
+#endif
             ItemMove(id: id, toDown: false);
 
             return RedirectToAction("Index");
@@ -81,11 +117,17 @@ namespace MainSite.Areas.Admin.Controllers
         [Route("Admin/Menu/ItemDown")]
         public IActionResult ItemDown(string id)
         {
+#if RELEASE
+     var user = _userService.GetUserBySystemName(User.Identity.Name);
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageMenu, user))
+                return AccessDeniedView();
+#endif
             ItemMove(id: id, toDown: true);
 
             return RedirectToAction("Index");
         }
 
+        [NonAction]
         private void ItemMove(string id, bool toDown)
         {
             var item = _menuService.Get(id);
@@ -110,7 +152,7 @@ namespace MainSite.Areas.Admin.Controllers
                 }
             }
         }
-
+        [NonAction]
         private IEnumerable<MenuItemViewModel> MenuTreeGenerate(string categoryId = null)
         {
             var result = new List<MenuItemViewModel>();
@@ -119,7 +161,7 @@ namespace MainSite.Areas.Admin.Controllers
 
             return result;
         }
-
+        [NonAction]
         private void CreateTree(string id, List<MenuItemViewModel> list)
         {
             foreach (var item in _menuService.GetManyByParentId(id).OrderBy(i => i.Index))
@@ -143,7 +185,7 @@ namespace MainSite.Areas.Admin.Controllers
                 CreateTree(item.Id, item.Children);
             }
         }
-
+        [NonAction]
         private int NewIndex(string categoryId, int currentIndex, bool toDown)
         {
             var newIndex = currentIndex;
@@ -172,7 +214,7 @@ namespace MainSite.Areas.Admin.Controllers
 
             return newIndex;
         }
-
+        [NonAction]
         private MenuItem GetItemByCategoryAndIndex(string categoryId, int currentIndex)
         {
             return _menuService.GetManyByParentId(categoryId).FirstOrDefault(i => i.Index == currentIndex);

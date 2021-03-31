@@ -1,0 +1,28 @@
+﻿@model MainSite.Areas.Admin.Models.Users.UserRoleModel
+
+@{
+    //page title
+    ViewBag.Title = "Добавление ролей";
+    Layout = "_Layout";
+}
+
+<form asp-controller="UserRole" asp-action="Create" method="post">
+    <div class="content-header clearfix">
+        <h1 class="pull-left">
+            Добавление ролей
+      
+        </h1>
+        <p>      <a href="@Url.Action("List")">Вернуться к списку ролей</a></p>
+        <div class="pull-right">
+            <button type="submit" name="save" class="btn bg-blue">
+                <i class="fa fa-floppy-o"></i>
+               Сохранить
+            </button>
+            <button type="submit" name="save-continue" class="btn bg-blue">
+                <i class="fa fa-floppy-o"></i>
+               Сохранить и продолжить
+            </button>
+        </div>
+    </div>
+    @await Html.PartialAsync("_CreateOrUpdate", Model)
+</form>
