@@ -14,17 +14,21 @@
 <div class="card card-panel col m3 s12">
     <div class="card-content">
         <span class="card-title activator grey-text text-darken-4">
-            Настройки
+            Роли
         </span>
-        <p>@Html.ActionLink("Перейти", "Index", "Settings")</p>
+        <p> @Html.ActionLink("Роли пользователей", "Index", "UserRole")</p>
+        <p> @Html.ActionLink("Список пользователей", "Index", "Users")</p>
+        <p> @Html.ActionLink("Настройки прав для ролей", "Permissions", "Security")</p>
+        <hr />
+        <p> @Html.ActionLink("Установка ролей *", "InstallPermissions", "Security")</p>
     </div>
 </div>
 <div class="card card-panel col m3 s12">
     <div class="card-content">
         <span class="card-title activator grey-text text-darken-4">
-            Роли
+            Параметры приложения
         </span>
-        <p><a href="#">Перейти</a></p>
+        <p>@Html.ActionLink("Перейти", "Index", "Settings")</p>
     </div>
 </div>
 
