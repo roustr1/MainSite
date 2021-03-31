@@ -172,7 +172,7 @@ var user = _userService.GetUserBySystemName(User.Identity.Name);
                 //if we got this far, something failed, redisplay form
                 return View(model);
             }
-            catch (Exception exc)
+            catch (Exception )
             {
                 //   _notificationService.ErrorNotification(exc);
                 return RedirectToAction("Edit", new { id = UserRole.Id });
@@ -205,7 +205,7 @@ var user = _userService.GetUserBySystemName(User.Identity.Name);
 
                 return RedirectToAction("List");
             }
-            catch (Exception exc)
+            catch (Exception  )
             {
                 // _notificationService.ErrorNotification(exc.Message);
                 return RedirectToAction("Edit", new { id = UserRole.Id });
