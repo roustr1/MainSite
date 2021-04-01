@@ -101,8 +101,7 @@ namespace MainSite.Areas.Admin.Controllers
         {
 
 #if RELEASE
-              var user = _userService.GetUserBySystemName(User.Identity.Name);
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageUsers, user))
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageUsers, _userService.GetUserBySystemName(User.Identity.Name)))
                 return AccessDeniedView();   
 #endif
 
