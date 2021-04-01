@@ -44,7 +44,7 @@ namespace MainSite.Areas.Admin.Controllers
                 return View();
             }
 
-            _logger.LogInformation($"Access denied to user #{user.Name} on {pageUrl}");
+            _logger.LogInformation($"Access denied to user #{user.SystemName} on {pageUrl}");
 
             return View();
         }

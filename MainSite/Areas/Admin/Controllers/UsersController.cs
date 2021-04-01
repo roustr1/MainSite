@@ -124,7 +124,7 @@ namespace MainSite.Areas.Admin.Controllers
             {
                 var allow = userRolesSystemNamesToRestrict.Contains(ur.SystemName);
                 //проверить, есть ли данная роль у пользователя в данный момент
-                if (allow == _userService.GetUserRoles(user).Select(s => s.SystemName).Contains(ur.SystemName))
+                if (allow == _userService.GetUserRoles(user).Contains(ur))
                     continue;
 
                 if (allow)
