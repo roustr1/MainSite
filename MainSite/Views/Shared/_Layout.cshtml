@@ -25,9 +25,9 @@
                         <ul class="hide-on-med-and-down col m12 s12 l9 secondMenu">
                             <li>
                                 <div class="secondMenu-search">
-                                    <span class="bold">Поиск на сайте:</span> 
-                                    <input class="inputTextMainSite" style="width:500px;" type="text"/>
-                                    <button class="btn btn-default" >Найти</button>
+                                    <span class="bold">Поиск на сайте:</span>
+                                    <input class="inputTextMainSite" style="width:500px;" type="text" />
+                                    <button class="btn btn-default">Найти</button>
                                 </div>
                             </li>
                             <li>
@@ -54,15 +54,7 @@
     <div class="container">
         <div class="col m12 s12 l3" id="menuBlock">
             <div class="secondMenuBlock"></div>
-            <ul class="menu">
-                <li>
-                    <a href="@Url.Action("Index", "Home")" title="Новости" class="@(ViewData["categoryId"] == null ? "active" : "")">
-                        <span class="rectangle" style="background-color: white;"></span>
-                        <div class="bold">Новости</div>
-                    </a>
-                </li>
-                @await Component.InvokeAsync("NavComponent", ViewData["categoryId"])
-            </ul>
+            @Html.Partial("Menu",(String) ViewData["categoryId"])
         </div>
         <main role="main" class="col m12 s12 l9" id="mainBlock">
             @RenderBody()
@@ -79,7 +71,6 @@
             </div>
         </nav>
     </footer>
-
     <script src="~/css/materialize/js/materialize.js"></script>
     <script src="~/css/menu/js/eventClickElMenu.js"></script>
     <script src="~/scripts/onReadyState.js"></script>

@@ -1,0 +1,21 @@
+﻿@model String
+@{
+    Layout = null;
+}
+<div id="appMenu">
+    <ms-menu></ms-menu>
+</div>
+
+@*<ul class="menu">
+
+    <li>
+        <a href="@Url.Action("Index", "Home")" title="Новости" class="@(Model == null ? "active" : "")">
+            <span class="rectangle" style="background-color: white;"></span>
+            <div class="bold">Новости</div>
+        </a>
+    </li>
+    @await Component.InvokeAsync("NavComponent", Model)
+</ul>
+*@
+
+<script src="@Url.Content("~/bundle/Shared.js")"></script>
