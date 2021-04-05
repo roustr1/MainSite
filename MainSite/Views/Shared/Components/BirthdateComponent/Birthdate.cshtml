@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Application.Services.Birthday.UserModel>
+@{
+    Layout = null;
+}
+
+
+<div class="card-panel row card_birthday">
+    <div class="card_birthday-title bold">
+        C днём рождения!
+        @*<div><img src="~/content/layout_icons/header.png" width="50" height="50" /></div>*@
+    </div>
+    <div class="card_birthday-content">
+        @foreach (var item in Model)
+        {
+        <div>
+            <img class="rectangle" src="@item.PhotoPath" alt="" />
+            @*<img src="data:image/png;base64,@item.ImageBytes">*@
+            @*<p>@item.MrangName</p>*@
+            <span>@item.FullFio</span>
+        </div>
+        }
+    </div>
+</div>
