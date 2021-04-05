@@ -5,38 +5,33 @@
     ViewData["Title"] = "Update";
 }
 
-<h1>Update</h1>
+<div class="col s12 m12 card-panel">
 
-<h4>Setting</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Update" method="post">
+    <h5>Обновить настройки</h5>
+    <hr />
+        <div class="col-md-4">
+            <form asp-action="Update" method="post">
 
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" class="form-control" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                @Html.TextBoxFor(c => c.Name, new { @class = "form-control", disabled = "disabled" })
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Value" class="control-label"></label>
-                @Html.TextBoxFor(c => c.Value, new { @class = "form-control" })
-                <span asp-validation-for="Value" class="text-danger"></span>
-            </div>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" class="form-control" />
+                <div class="form-group">
+                    <label for="Name">Наименование параметра</label>
+                    @Html.TextBoxFor(c => c.Name, new { @class = "form-control", disabled = "disabled" })
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label for="Value">Значение</label>
+                    @Html.TextBoxFor(c => c.Value, new { @class = "form-control" })
+                    <span asp-validation-for="Value" class="text-danger"></span>
+                </div>
 
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+                <div class="input-field m12">
+                    <input type="submit" value="Сохранить" class="btn btn-defaultMainSite" />
+                    @Html.ActionLink("Назад", "Index", "Settings", null, new { @class = "btn btn-defaultMainSite" })
+                </div>
+            </form>
+        </div>
 </div>
-
-<div>
-    <a href="@Url.Action(nameof(Index))">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }

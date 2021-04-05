@@ -8,6 +8,8 @@ namespace Application.Services.Menu
         MenuItem Get(string id);
         void InsertItem(MenuItem mi);
         void DeleteItem(MenuItem mi);
+        void UpdateItem(MenuItem mi);
         IEnumerable<MenuItem> GetAll();
+        IEnumerable<MenuItem> GetRecursionAllChildren(string id);
     }
 }

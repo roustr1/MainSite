@@ -62,12 +62,14 @@
                 z-index: -1;
 
                 &.active {
+                    opacity: 1;
+                    height: 100%;
                     position: inherit;
-                    animation: widthBlock;
-                    animation-name: widthBlock;
-                    animation-duration: 0.5s;
-                    animation-timing-function: ease-in-out;
-                    animation-fill-mode: forwards;
+                    //animation: widthBlock;
+                    //animation-name: widthBlock;
+                    //animation-duration: 0.5s;
+                    //animation-timing-function: ease-in-out;
+                    //animation-fill-mode: forwards;
                     width: 100%;
                     z-index: 10;
                     /*position: inherit;
@@ -136,8 +138,21 @@
     padding: 0px !important;
     flex-direction: row;
 
-    :last-child {
+    & > :first-child {
+        flex-grow: 0.6;
+    }
+
+    & > :last-child {
         margin-left: auto;
+    }
+
+    &-admin {
+        flex-grow: initial;
+        display: flex;
+
+        & > * {
+            margin-left: auto;
+        }
     }
 
     &-search {
@@ -151,11 +166,12 @@
         }
 
         & > * {
-            margin-right: 15px;
+            margin-right: 20px;
         }
 
         & > input {
             width: auto !important;
+            flex-grow: 1;
             margin-right: 15px !important;
         }
     }

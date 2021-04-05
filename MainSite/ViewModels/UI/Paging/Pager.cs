@@ -516,7 +516,7 @@ namespace MainSite.ViewModels.UI.Paging
                     routeValues.Remove(pageQueryName);
                 }
             }
-#warning вероятна ошибка с некорректным отображением URL на ссылке
+ 
             var url = _httpContextAccessor.HttpContext.Request.Path;
             //var url = UrlHelper.GenerateUrl(null, null, null, routeValues, RouteTable.Routes, viewContext.RequestContext,true);
             //foreach (var routeValue in routeValues)

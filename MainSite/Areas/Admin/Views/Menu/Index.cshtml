@@ -1,35 +1,19 @@
-﻿@inject Application.Services.Menu.IShowMenu menu;
+﻿@model IEnumerable<MainSite.ViewModels.UI.Menu.MenuItemViewModel>;
+
 @{
     Layout = "_Layout";
     ViewData["Title"] = "Админ. Меню.";
 }
 
+<div class="col s12 m12 card-panel">
+    <h5>Меню</h5>
 
-<div class=" container">
-    <label>Структура меню</label>
-    <!-- отображение древовидной иерархии-->
-    <ul>
-        @foreach (var l1Item in menu.GetManyByParentId())
-        {
-            <li>@l1Item.Name
-                <ul>
-                    @foreach (var l2Item in menu.GetManyByParentId(l1Item.Id))
-                    {
-                        <li>@l2Item.Name
+    <p>
+        @Html.ActionLink("Создать", "Create", "Menu")
+        @Html.ActionLink("Назад", "Index", "Home")
+    </p>
 
-                            <ul>
-                                @foreach (var l3item in menu.GetManyByParentId(l2Item.Id))
-                                {
-                                    <li>@l3item.Name</li>
-                                }
-                            </ul>
-                        </li>
+    @await Html.PartialAsync("_AdminItemMenuPartial.cshtml", Model)
 
-                    }
-                </ul>
-            </li>
-
-        }
-    </ul>
 </div>
 

@@ -13,7 +13,7 @@ namespace MainSite.ViewModels.UI.Menu
         public string ToolTip { get; set; }
         public bool IsActive { get; set; }
         public List<MenuItemViewModel> Children { get; set; }
-
+        public int Index { get; set; }
         public MenuItemViewModel()
         {
             Children = new List<MenuItemViewModel>();

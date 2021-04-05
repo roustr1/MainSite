@@ -8,22 +8,23 @@
 
 @if (String.IsNullOrWhiteSpace(Model.CategoryId))
 {
-    @Html.Partial("BirthdayUsers")
+    @await Html.PartialAsync("BirthdayUsers")
 }
 
 <div id="newsComponent">
-    @Html.Partial("Create", new NewsItemViewModel())
+    @await Html.PartialAsync("Create", new NewsItemViewModel() { CategoryId = Model.CategoryId })
+
     <div class="card-panel row">
         @foreach (var item in Model.News)
         {
-            var TypeMessage = item.IsMessage ? "сообщение" : "докумен";
+            var TypeMessage = item.IsMessage ? "сообщение" : "документ";
 
             <div class="card_news">
                 <div class="card_news-image"><img src="@Url.Content(@item.UrlIcon)" alt="" /></div>
                 <div class="col m11 s10 card_news-main">
                     <div class="col m12 s10">
                         <div class="card_news-main-header">
-                            <span class="bold">@item.Author</span> разместил @TypeMessage в разделе <a href="@Url.Action("Index", "Home", new {page = 0, category = item.Category})">@item.Category</a>
+                            <span class="bold">@item.Author</span> разместил @TypeMessage в разделе <a href="@Url.Action("Index", "Home", new {page = 0, category = item.CategoryId})">@item.Category</a>
                         </div>
 
                         <div class="card_news-main-title">

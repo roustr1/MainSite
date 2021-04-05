@@ -5,36 +5,32 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Setting</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        @using (Html.BeginForm("Create", "Settings", FormMethod.Post, true))
-        {
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                @Html.NameFor(model => model.Name)
-                @Html.TextBoxFor(model => model.Name)
-                @Html.ValidationMessageFor(model => model.Name, "")
-            </div>
-            <div class="form-group">
-                @Html.NameFor(model => model.Value)
-                @Html.TextBoxFor(model => model.Value)
-                @Html.ValidationMessageFor(model => model.Value, "")
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        }
+<div class="col s12 m12 card-panel">
+    <h5>Добавить настройки</h5>
+    <hr />
+    <div>
+        <div class="col-md-4">
+            @using (Html.BeginForm("Create", "Settings", FormMethod.Post, true))
+            {
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label for="Name">Наименование параметра</label>
+                    @Html.TextBoxFor(model => model.Name)
+                    @Html.ValidationMessageFor(model => model.Name, "")
+                </div>
+                <div class="form-group">
+                    <label for="Value">Значение</label>
+                    @Html.TextBoxFor(model => model.Value)
+                    @Html.ValidationMessageFor(model => model.Value, "")
+                </div>
+                <div class="input-field m12">
+                    <input type="submit" value="Добавить" class="btn btn-defaultMainSite" />
+                    @Html.ActionLink("Назад", "Index", "Settings", null, new { @class = "btn btn-defaultMainSite" })
+                </div>
+            }
+        </div>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

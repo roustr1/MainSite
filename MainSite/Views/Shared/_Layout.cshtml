@@ -8,7 +8,7 @@
     <link href="~/css/materialize/sass/materialize.css" rel="stylesheet" />
     <link href="~/images/fonts/MaterialIcons/Material-Icons.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/fonts/fonts.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/mainSite.css" />
     <script src="~/lib/vue/vue.js"></script>
 </head>
 <body class="row">
@@ -25,15 +25,15 @@
                         <ul class="hide-on-med-and-down col m12 s12 l9 secondMenu">
                             <li>
                                 <div class="secondMenu-search">
-                                    <span class="bold">Поиск на сайте:</span>
-                                    <input class="inputTextMainSite" style="width:500px;" type="text" />
-                                    <button class="btn btn-default">Найти</button>
+                                    <span class="bold">Поиск на сайте:</span> 
+                                    <input class="inputTextMainSite" type="text"/>
+                                    <button class="btn btn-default" >Найти</button>
                                 </div>
                             </li>
                             <li>
                                 <div class="secondMenu-user">
                                     <a data-target='dropdown1' class="dropdown-trigger valign-wrapper" style="padding: 0px;">
-                                        <span class="secondMenu-infoUser">Долгопрудный А.Р.</span>
+                                        <span class="secondMenu-infoUser">@User.Identity.Name</span>
                                         <i class="material-icons">keyboard_arrow_down</i>
                                         <img class="rectangle" src="~/images/layout_icons/user.png" alt="" />
 
@@ -65,7 +65,7 @@
     <footer>
         <nav>
             <div class="container">
-                <a>Сообщить о проблеме или высказать пожелание</a>
+                <a class="bold" href="#">Сообщить о проблеме или высказать пожелание</a>
                 <br />
                 <span>@service.SettingsDictionary.GetValueOrDefault("Application.Copy", "Разработка отдела труда и трудолюбия.2021")</span>
             </div>
