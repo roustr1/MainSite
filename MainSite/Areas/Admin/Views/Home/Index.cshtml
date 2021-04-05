@@ -1,0 +1,46 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<div class="card card-panel col m3 s12">
+    <div class="card-content">
+        <span class="card-title activator grey-text text-darken-4">
+            Меню
+        </span>
+        <p> @Html.ActionLink("Добавить пункт меню", "Create", "Menu")</p>
+        <p>@Html.ActionLink("Редактирование иерархии меню", "Index", "Menu")</p>
+    </div>
+</div>
+<div class="card card-panel col m3 s12">
+    <div class="card-content">
+        <span class="card-title activator grey-text text-darken-4">
+            Роли
+        </span>
+        <p> @Html.ActionLink("Роли пользователей", "Index", "UserRole")</p>
+        <p> @Html.ActionLink("Список пользователей", "Index", "Users")</p>
+        <p> @Html.ActionLink("Настройки прав для ролей", "Permissions", "Security")</p>
+        <hr />
+        <p> @Html.ActionLink("Установка ролей *", "InstallPermissions", "Security")</p>
+    </div>
+</div>
+<div class="card card-panel col m3 s12">
+    <div class="card-content">
+        <span class="card-title activator grey-text text-darken-4">
+            Параметры приложения
+        </span>
+        <p>@Html.ActionLink("Перейти", "Index", "Settings")</p>
+    </div>
+</div>
+
+<script>
+    var allElements = document.querySelectorAll('#mainBlock > div');
+    var maxHeight = allElements[0].offsetHeight;
+
+    for (var element in allElements) {
+        if (element.offsetHeight > maxHeight) maxHeight = element.offsetHeight;
+    }
+
+    for (var i = 0; i < allElements.length; i++) {
+        allElements[i].style.height = maxHeight + 'px';
+    }
+</script>

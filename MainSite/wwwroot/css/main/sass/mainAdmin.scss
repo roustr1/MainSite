@@ -1,0 +1,21 @@
+﻿$mainTextColor: black;
+$animationBtnTextColor: #fff;
+$animationBorderBtnTextColor: #64b5f6;
+
+$paddingLeftBlock: 15px !default;
+$paddingRightBlock: 15px !default;
+$paddingBottomBlock: 5px !default;
+$paddingTopBlock: 5px !default;
+
+#mainBlock {
+    padding-left: 0px;
+
+    & > div {
+        margin-right: 20px;
+
+        &.card-panel {
+            border-radius: 8px;
+            padding: $paddingTopBlock $paddingRightBlock $paddingBottomBlock $paddingLeftBlock;
+        }
+    }
+}

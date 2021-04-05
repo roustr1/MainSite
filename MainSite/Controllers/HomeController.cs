@@ -19,7 +19,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MainSite.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly MainModel _mainMode;
 

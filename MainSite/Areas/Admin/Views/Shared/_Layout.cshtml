@@ -1,0 +1,72 @@
+﻿@inject Application.Services.Settings.ISettingsService service;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Управление</title>
+    <link href="~/css/materialize/sass/materialize.css" rel="stylesheet" />
+    <link href="~/images/fonts/MaterialIcons/Material-Icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/fonts/fonts.css" />
+    <link rel="stylesheet" href="~/css/adminSite.css" />
+    <script src="~/lib/vue/vue.js"></script>
+</head>
+<body class="row">
+    <header class="navbar-fixed">
+        <nav class="nav-header">
+            <div class="container">
+                <div class="nav-wrapper">
+                    <div class="valign-wrapper">
+                        <a style="cursor: pointer;" asp-area="" asp-controller="Home" asp-action="Index" class="valign-wrapper">
+                            <img src="@service.SettingsDictionary.GetValueOrDefault("Application.Icon","~/images/layout_icons/header.png")" width="50" height="50" />
+                            <span class="bold">@service.SettingsDictionary.GetValueOrDefault("Application.Name", "WebSite")</span>
+                        </a>
+                        <a id="openMenu" data-target="mobile-demo" class="sidenav-trigger" style="float: right;cursor:pointer;"><i class="material-icons">menu</i></a>
+                        <ul class="hide-on-med-and-down col m12 s12 l9 secondMenu">
+                            <li>
+                                <div class="secondMenu-user">
+                                    <a data-target='dropdown1' class="dropdown-trigger valign-wrapper" style="padding: 0px;">
+                                        <span class="secondMenu-infoUser">@User.Identity.Name</span>
+                                        <i class="material-icons">keyboard_arrow_down</i>
+                                        <img class="rectangle" src="~/images/layout_icons/user.png" alt="" />
+
+                                    </a>
+                                    <ul id='dropdown1' class='dropdown-content secondMenu-settingsUser'>
+                                        <li><a href="#!"><i class="material-icons">home</i>Личный кабинет</a></li>
+                                        <li><a href="#!"><i class="material-icons">cloud</i>Управление сервисами</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        @*<div class="col m12 s12 l3" id="menuBlock">
+            <div class="secondMenuBlock"></div>
+            <ul class="menu">
+            </ul>
+        </div>
+        *@
+        <main role="main" class="col m12 s12 l12" id="mainBlock">
+            @RenderBody()
+        </main>
+
+    </div>
+
+    <footer>
+        <nav>
+            <div class="container">
+                <span>@service.SettingsDictionary.GetValueOrDefault("Application.Copy", "Разработка отдела труда и трудолюбия.2021")</span>
+            </div>
+        </nav>
+    </footer>
+
+    <script src="~/css/materialize/js/materialize.js"></script>
+    <script src="~/scripts/onReadyState.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -13,9 +13,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Application.Services.Birthday;
+using Application.Services.Permissions;
 using Application.Services.Settings;
 using MainSite.Models;
+using Application.Services.Users;
+using MainSite.Areas.Admin.Factories;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Server.HttpSys;
+using Microsoft.AspNetCore.Server.IISIntegration;
 
 namespace MainSite
 {
@@ -38,6 +43,7 @@ namespace MainSite
                 options.UseSqlServer(connection));
 
             services.AddControllersWithViews();
+            services.AddAuthentication(HttpSysDefaults.AuthenticationScheme);
 
             services.AddControllersWithViews(mvcOtions =>
             {
@@ -60,6 +66,14 @@ namespace MainSite
 
             services.AddTransient<INewsService, NewsService>();
             services.AddTransient<IBirthdayService, BirthdayService>();
+            services.AddTransient<IUsersService, UsersService>();
+            services.AddTransient<IPermissionService, PermissionService>();
+            services.AddTransient<ISecurityModelFactory, SecurityModelFactory>();
+            services.AddTransient<IUserRoleModelFactory, UserRoleModelFactory>();
+            services.AddTransient<IUserModelFactory, UserModelFactory>();
+
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -79,6 +93,8 @@ namespace MainSite
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseAuthorization();
+            app.UseAuthentication();
+
 
             //app.UseStaticFiles(new StaticFileOptions
             //{
@@ -88,13 +104,13 @@ namespace MainSite
             app.UseRouting();
             app.UseMvc(routes =>
             {
-
+         
                 routes.MapRoute(
                     name: "default",
                     template: "{controller}/{action}",
                     defaults: new {controller = "Home", action = "Index"});
-
             });
+
         }
     }
 }

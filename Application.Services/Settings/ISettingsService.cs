@@ -5,6 +5,7 @@ namespace Application.Services.Settings
 {
     public interface ISettingsService
     {
+ 
         Setting GetParameterValue(string name);
 
         /// <summary>
@@ -38,5 +39,7 @@ namespace Application.Services.Settings
         ICollection<Setting> GetAllSettings();
 
         Setting GetSettingById(string id);
+
+        string SetDictionaryParameter(string keyName, string value = null);
     }
 }

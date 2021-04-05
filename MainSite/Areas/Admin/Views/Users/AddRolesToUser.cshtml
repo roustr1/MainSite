@@ -1,0 +1,49 @@
+﻿@model MainSite.Areas.Admin.Models.Users.UserAddUserRoleModel
+@{
+    Layout = "_Layout";
+}
+
+@using (Html.BeginForm("AddRolesToUser", "Users", FormMethod.Post))
+{
+    @Html.Hidden("id",Model.UserId)
+    <div class="row">
+        <div class="col s12 m6">
+            <div class="card blue-grey darken-1">
+                <div class="card-content white-text">
+                    <span class="card-title">@Model.UserName</span>
+                    <span class="card_news-main-title">@Model.SystemName</span>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Роль</th>
+                                <th> </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var ar in Model.AvailableUserRoles)
+                            {
+                                var allowed = Model.Allowed.ContainsKey(ar.SystemName) && Model.Allowed[ar.SystemName];
+                                <tr>
+                                    <td>
+                                        <span>@ar.Name</span>
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input class="allow_@(ar.Id)" type="checkbox" value="@(ar.SystemName)" name="allow_@(Model.UserId)" @(allowed ? " checked=checked" : null) />
+                                            <span></span>
+                                        </label>
+                                    </td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-action">
+                    <input type="submit" class="btn waves-effect green accent-2" value="Сохранить" />
+
+                </div>
+            </div>
+        </div>
+    </div>
+}

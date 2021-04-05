@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using Application.Dal.Domain.Settings;
+using Application.Services.Permissions;
 using Application.Services.Settings;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,14 +11,16 @@ using Microsoft.Extensions.Primitives;
 namespace MainSite.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class SettingsController : Controller
+    public class SettingsController : BaseAdminController
     {
         private readonly ISettingsService _settingsService;
         private readonly FirstConfigService _configDbService;
+        private readonly IPermissionService _permissionService;
 
-        public SettingsController(ISettingsService settingsService, FirstConfigService configDbService)
+        public SettingsController(ISettingsService settingsService, IPermissionService permissionService, FirstConfigService configDbService)
         {
             _settingsService = settingsService;
+            _permissionService = permissionService;
             _configDbService = configDbService;
         }
 
@@ -25,6 +28,12 @@ namespace MainSite.Areas.Admin.Controllers
         [Route("Admin/Settings")]
         public ActionResult Index()
         {
+#if RELEASE
+   if (!_permissionService.Authorize(StandardPermissionProvider.ManageSettings, User.Identity.Name))
+                return AccessDeniedView(); 
+#endif
+
+
             var settings = _settingsService.GetAllSettings();
             return View(settings);
         }
@@ -32,7 +41,10 @@ namespace MainSite.Areas.Admin.Controllers
         [Route("Admin/Settings/Create")]
         public ActionResult Create()
         {
-
+#if RELEASE
+   if (!_permissionService.Authorize(StandardPermissionProvider.ManageSettings, User.Identity.Name))
+                return AccessDeniedView(); 
+#endif
 
             return View();
         }
@@ -42,6 +54,10 @@ namespace MainSite.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create([FromForm] Setting setting)
         {
+#if RELEASE
+   if (!_permissionService.Authorize(StandardPermissionProvider.ManageSettings, User.Identity.Name))
+                return AccessDeniedView(); 
+#endif
             if (ModelState.IsValid)
             {
                 _settingsService.SetParameter(setting);
@@ -54,12 +70,20 @@ namespace MainSite.Areas.Admin.Controllers
         [HttpGet("Admin/Settings/Update")]
         public IActionResult Update(string id)
         {
+#if RELEASE
+   if (!_permissionService.Authorize(StandardPermissionProvider.ManageSettings, User.Identity.Name))
+                return AccessDeniedView(); 
+#endif
             return View(_settingsService.GetSettingById(id));
         }
 
         [HttpPost("Admin/Settings/Update")]
         public IActionResult Update(Setting setting)
         {
+#if RELEASE
+   if (!_permissionService.Authorize(StandardPermissionProvider.ManageSettings, User.Identity.Name))
+                return AccessDeniedView(); 
+#endif
             var entity = _settingsService.GetSettingById(setting.Id);
             if (entity == null) ModelState.AddModelError("", "Запись не найдена");
             if (ModelState.IsValid)
@@ -85,6 +109,10 @@ namespace MainSite.Areas.Admin.Controllers
         [Route("Admin/Settings/Delete")]
         public ActionResult Delete(string id)
         {
+#if RELEASE
+   if (!_permissionService.Authorize(StandardPermissionProvider.ManageSettings, User.Identity.Name))
+                return AccessDeniedView(); 
+#endif
             _settingsService.DeleteSetting(id);
             return RedirectToAction("Index");
         }
