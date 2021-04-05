@@ -69,6 +69,12 @@ namespace Application.Dal
                         Name = "Application.Copy"
                         ,Value = ""
                     },
+                    new Setting
+                    {
+                        Id= Guid.NewGuid().ToString(),
+                        Name = "BirthdayPath"
+                        ,Value = "http://localhost:50510/api/People/Birthdate?skip=0&take=10"
+                    }, 
 #if DEBUG
                     new Setting
                     {

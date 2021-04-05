@@ -1,21 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using MainSite.ViewModels;
+﻿using MainSite.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System.Diagnostics;
-using System.Linq;
-using Application.Dal;
-using Application.Dal.Domain.Files;
-using Application.Dal.Domain.News;
-using Application.Services.Files;
-using Application.Services.News;
-using Application.Services.Settings;
 using MainSite.Models;
-using MainSite.ViewModels.Common;
 using MainSite.ViewModels.News;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 
 namespace MainSite.Controllers
 {
@@ -70,17 +57,17 @@ namespace MainSite.Controllers
             if (string.IsNullOrWhiteSpace(id)) return RedirectToAction("Error");
 
             var model = _mainMode.GetNewsItemViewModel(id);
-            if(model == null) return RedirectToAction("Error");
+            if (model == null) return RedirectToAction("Error");
 
             return View(model);
         }
 
         [HttpGet]
         [Route("GetFile")]
-        public IActionResult  GetFile(string fileId)
+        public IActionResult GetFile(string fileId)
         {
             var file = _mainMode.GetDownloadedFileViewModel(fileId);
-            if(file == null) return new EmptyResult();
+            if (file == null) return new EmptyResult();
 
             var fileBinary = _mainMode.GeDownloadedFile(fileId);
 
@@ -97,6 +84,12 @@ namespace MainSite.Controllers
             _mainMode.DeleteNewsItem(id);
 
             return RedirectToAction("Index");
+        }
+
+        public IActionResult BirtdayView()
+        {
+          //  var url = _mainMode.
+            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

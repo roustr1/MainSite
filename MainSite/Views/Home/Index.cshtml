@@ -8,7 +8,7 @@
 
 @if (String.IsNullOrWhiteSpace(Model.CategoryId))
 {
-    @await Html.PartialAsync("BirthdayUsers")
+    @await Component.InvokeAsync("BirthdateComponent")
 }
 
 <div id="newsComponent">
