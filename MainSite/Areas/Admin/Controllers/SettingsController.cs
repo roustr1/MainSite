@@ -11,10 +11,10 @@ namespace MainSite.Areas.Admin.Controllers
         private readonly ISettingsService _settingsService;
         private readonly IPermissionService _permissionService;
 
-        public SettingsController(ISettingsService settingsService)
+        public SettingsController(ISettingsService settingsService, IPermissionService permissionService)
         {
             _settingsService = settingsService;
-
+            _permissionService = permissionService;
         }
 
         // GET: SettingsController
