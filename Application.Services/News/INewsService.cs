@@ -14,5 +14,6 @@ namespace Application.Services.News
 
         NewsItem GetNewsItem(string itemId);
         IEnumerable<NewsItem> GetNewsItem(FilterNewsItemParameters filterNewsItemParameters);
+        IEnumerable<NewsItem> FindFreeText(string query);
     }
 }

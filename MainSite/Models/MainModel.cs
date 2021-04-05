@@ -82,7 +82,6 @@ namespace MainSite.Models
 
         public IList<NewsItemViewModel> GetManyNewsItemViewModel(string categoryId)
         {
-            var result = new List<NewsItemViewModel>();
             var categoryIds = new List<string>();
             
             var childrenCategory = _menuService.GetRecursionAllChildren(categoryId);
@@ -95,18 +94,7 @@ namespace MainSite.Models
                 CategoryIds = categoryIds
             };
 
-            foreach (var newsItem in _newsService.GetNewsItem(filterNewsItemParameters))
-            {
-                if (newsItem == null) continue;
-
-                var newsItemViewModel = GetNewsItemViewModel(newsItem);
-
-                if(newsItemViewModel == null) continue;
-
-                result.Add(newsItemViewModel);
-            }
-
-            return result;
+            return GetNewsItemsViewModel(_newsService.GetNewsItem(filterNewsItemParameters));
         }
 
         public NewsListViewModel GetNewsListViewModel(int? page, int? pagesize, string category = null)
@@ -209,6 +197,29 @@ namespace MainSite.Models
             }
 
             return pagesize;
+        }
+        
+        public IList<NewsItemViewModel> GetManySearchResultNewsItemViewModel(string query)
+        {
+            return GetNewsItemsViewModel(_newsService.FindFreeText(query));
+        }
+
+        private IList<NewsItemViewModel> GetNewsItemsViewModel(IEnumerable<NewsItem> newsItems)
+        {
+            var result = new List<NewsItemViewModel>();
+
+            foreach (var newsItem in newsItems)
+            {
+                if (newsItem == null) continue;
+
+                var newsItemViewModel = GetNewsItemViewModel(newsItem);
+
+                if (newsItemViewModel == null) continue;
+
+                result.Add(newsItemViewModel);
+            }
+
+            return result;
         }
     }
 }

@@ -6,6 +6,7 @@ using Application.Dal.Domain;
 using Application.Dal.Domain.News;
 using Application.Services.Infrastructure;
 using Application.Services.Utils;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services.News
 {
@@ -75,6 +76,13 @@ namespace Application.Services.News
                 .SortByNewestOrOldest(isNewest, item => item.LastChangeDate);
             
             return collection.AsQueryable();
+        }
+
+        public IEnumerable<NewsItem> FindFreeText(string query)
+        {
+            var collection = _newsRepository.GetMany(x => EF.Functions.FreeText(x.Description, query));
+
+            return collection;
         }
         #endregion
     }
