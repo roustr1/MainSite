@@ -45,6 +45,8 @@ namespace MainSite
             });
             services.AddTransient(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddTransient<MainModel, MainModel>();
+            services.AddTransient<ConfigDb, ConfigDb>();
+            services.AddTransient<FirstConfigService, FirstConfigService>();
             services.AddTransient<IShowMenu, MenuService>();
             services.AddTransient<IMenuService, MenuService>();
             services.AddTransient<INewsService, NewsService>();

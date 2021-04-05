@@ -13,10 +13,12 @@ namespace MainSite.Areas.Admin.Controllers
     public class SettingsController : Controller
     {
         private readonly ISettingsService _settingsService;
+        private readonly FirstConfigService _configDbService;
 
-        public SettingsController(ISettingsService settingsService)
+        public SettingsController(ISettingsService settingsService, FirstConfigService configDbService)
         {
             _settingsService = settingsService;
+            _configDbService = configDbService;
         }
 
         // GET: SettingsController
@@ -70,7 +72,13 @@ namespace MainSite.Areas.Admin.Controllers
             return View(setting);
         }
 
+        [Route("Admin/Settings/CreateIndex")]
+        public IActionResult CreateIndex()
+        {
+            _configDbService.CreateIndex();
 
+            return RedirectToAction("Index");
+        }
 
         // GET: SettingsController/Delete/5
         [HttpGet]
