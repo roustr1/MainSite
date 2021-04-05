@@ -84,6 +84,11 @@ namespace Application.Dal
             return _context.Set<TEntity>().Find(where);
         }
 
+        public IEnumerable<TEntity> GetMany(Expression<Func<TEntity, bool>> @where)
+        {
+            return _context.Set<TEntity>().Where(@where);
+        }
+
         public IEnumerable<TEntity> GetAll()
         {
             return _context.Set<TEntity>();
