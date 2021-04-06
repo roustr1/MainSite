@@ -19,9 +19,9 @@ namespace MainSite.Components
         public IViewComponentResult Invoke()
         {
             string path = null;
-       
+
             _settingsService?.SettingsDictionary.TryGetValue("BirthdayPath", out path);
-            if (path != null)
+            if (path != null && !string.IsNullOrEmpty(path))
             {
                 var model = _birthdayService.GetUsers(path).ToList();
                 if (model.Any())
@@ -30,8 +30,7 @@ namespace MainSite.Components
                 }
             }
 
-            return View("Empty");
-
+            return Content(string.Empty);
         }
     }
 }
