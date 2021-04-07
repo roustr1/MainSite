@@ -303,9 +303,11 @@ namespace Application.Services.Users
 
 
 
-        public virtual string GetUserNameFromAD(string userName)
+        public virtual string GetUserNameFromAD(string identityName)
         {
+            var userName = identityName.Split('\\')[1];
 #if RELEASE
+
             var context = new PrincipalContext(ContextType.Domain,"rocket");
             var user = UserPrincipal.FindByIdentity(context, IdentityType.SamAccountName, userName);
             return user.ToString();

@@ -9,6 +9,7 @@ using Application.Services.Infrastructure;
 using Application.Services.Menu;
 using Application.Services.News;
 using Application.Services.Settings;
+using Application.Services.Users;
 using MainSite.Controllers;
 using MainSite.ViewModels.Common;
 using MainSite.ViewModels.News;
@@ -26,9 +27,9 @@ namespace MainSite.Models
         private readonly IFileUploadService _uploadService;
         private readonly ISettingsService _settingsService;
         private readonly IMenuService _menuService;
+        private readonly IUsersService _usersService;
 
-        public MainModel(ILogger<HomeController> logger, INewsService newsService, IFileDownloadService downloadService,
-            IFileUploadService uploadService, ISettingsService settingsService, IMenuService menuService)
+        public MainModel(ILogger<HomeController> logger, INewsService newsService, IFileDownloadService downloadService, IFileUploadService uploadService, ISettingsService settingsService, IMenuService menuService, IUsersService usersService)
         {
             _logger = logger;
             _newsService = newsService;
@@ -36,6 +37,7 @@ namespace MainSite.Models
             _uploadService = uploadService;
             _settingsService = settingsService;
             _menuService = menuService;
+            _usersService = usersService;
         }
 
         public NewsItemViewModel GetNewsItemViewModel(string id)
@@ -83,7 +85,7 @@ namespace MainSite.Models
         public IList<NewsItemViewModel> GetManyNewsItemViewModel(string categoryId)
         {
             var categoryIds = new List<string>();
-            
+
             var childrenCategory = _menuService.GetRecursionAllChildren(categoryId);
 
             categoryIds.Add(categoryId);
@@ -161,7 +163,7 @@ namespace MainSite.Models
             {
                 Header = newsItemViewModel.Header,
                 Description = newsItemViewModel.Description,
-                AutorFio = "Неавторизован",
+                AutorFio = _usersService.GetUserBySystemName(newsItemViewModel.Author).FullName,
                 CreatedDate = dataTimeNow,
                 LastChangeDate = dataTimeNow,
                 Category = newsItemViewModel.CategoryId,
@@ -198,7 +200,7 @@ namespace MainSite.Models
 
             return pagesize;
         }
-        
+
         public IList<NewsItemViewModel> GetManySearchResultNewsItemViewModel(string query)
         {
             return GetNewsItemsViewModel(_newsService.FindFreeText(query));
