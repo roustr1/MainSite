@@ -189,7 +189,7 @@ namespace Application.Services.Users
         /// Get user Fio from current user 
         /// </summary>
         /// <returns></returns>
-        string GetUserNameFromAD();
+        string GetUserNameFromAD(string userName);
 
         ///// <summary>
         ///// Add selected roles to user

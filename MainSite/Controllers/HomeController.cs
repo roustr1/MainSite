@@ -1,6 +1,8 @@
 ﻿using MainSite.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using Application.Services.Permissions;
+using Application.Services.Users;
 using MainSite.Models;
 using MainSite.ViewModels.News;
 
@@ -9,13 +11,16 @@ namespace MainSite.Controllers
     public class HomeController : BaseController
     {
         private readonly MainModel _mainMode;
+        private readonly IPermissionService _permissionService;
+        private readonly IUsersService _usersService;
 
         private static int _pagesize;
 
-        public HomeController(MainModel mainModel)
+        public HomeController(MainModel mainMode, IPermissionService permissionService, IUsersService usersService)
         {
-            _mainMode = mainModel;
-
+            _mainMode = mainMode;
+            _permissionService = permissionService;
+            _usersService = usersService;
             SetPageSize();
         }
 
@@ -27,6 +32,10 @@ namespace MainSite.Controllers
 
         public IActionResult Index(int page = 0, string category = null)
         {
+            var user = _usersService.GetUserBySystemName(User.Identity.Name);
+            if (!_permissionService.Authorize(StandardPermissionProvider.AccessToIndexPage, user))
+                return AccessDeniedView();
+
             var model = _mainMode.GetNewsListViewModel(page, _pagesize, category);
             return View(model);
         }
@@ -88,7 +97,7 @@ namespace MainSite.Controllers
 
         public IActionResult BirtdayView()
         {
-          //  var url = _mainMode.
+            //  var url = _mainMode.
             return View();
         }
 

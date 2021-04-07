@@ -16,7 +16,7 @@ namespace Application.Services.Permissions
         public static readonly PermissionRecord ManageUsers = new PermissionRecord { Name = "Admin area. Manage users", SystemName = "ManageUsers", Category = "Users" };
         public static readonly PermissionRecord ManageMenu = new PermissionRecord { Name = "Admin area. Manage menu", SystemName = "ManageMenu", Category = "Standart" };
         public static readonly PermissionRecord ManageSettings = new PermissionRecord { Name = "Admin area. Manage settings", SystemName = "ManageSettings", Category = "Standart" };
-
+        public static readonly PermissionRecord AccessToIndexPage = new PermissionRecord { Name = "User area. Access to common page", SystemName = "AccessToIndex", Category = "Standart" };
 
         /// <summary>
         /// Get permissions
@@ -30,7 +30,7 @@ namespace Application.Services.Permissions
                 ManageAcl,
                 ManageUsers,
                 ManageMenu,
-                ManageSettings
+                ManageSettings,AccessToIndexPage
             };
         }
 
@@ -50,7 +50,7 @@ namespace Application.Services.Permissions
                         ManageAcl,
                         ManageUsers,
                         ManageMenu,
-                        ManageSettings
+                        ManageSettings,AccessToIndexPage
 
                     }
                 ),
@@ -58,7 +58,7 @@ namespace Application.Services.Permissions
                     AppUserDefaults.ModeratorsRoleName,
                     new[]
                     {
-                        AccessAdminPanel,
+                        AccessAdminPanel,AccessToIndexPage
                     }
                 ),
 
@@ -67,6 +67,7 @@ namespace Application.Services.Permissions
                     new[]
                     {
                         AccessAdminPanel,
+                        AccessToIndexPage
                     }
                 )
             };
