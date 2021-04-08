@@ -259,5 +259,25 @@ namespace MainSite.Models
 
             return result;
         }
+
+        public void PinNewsItem(string newsItemId)
+        {
+            var newsItem = _newsService.GetNewsItem(newsItemId);
+            if(newsItem == null) return;
+
+            var categoryId = newsItem.Category;
+
+            _pinNewsService.PinNews(newsItemId, categoryId);
+        }
+
+        public void UnpinNewsItem(string newsItemId)
+        {
+            var newsItem = _newsService.GetNewsItem(newsItemId);
+            if (newsItem == null) return;
+
+            var categoryId = newsItem.Category;
+
+            _pinNewsService.UnpinNews(newsItemId);
+        }
     }
 }
