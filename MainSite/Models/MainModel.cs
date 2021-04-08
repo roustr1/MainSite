@@ -89,15 +89,20 @@ namespace MainSite.Models
         public IList<NewsItemViewModel> GetManyNewsItemViewModel(string categoryId)
         {
             var categoryIds = new List<string>();
+            var pinnedNewsIds = new List<string>();
+
 
             var childrenCategory = _menuService.GetRecursionAllChildren(categoryId);
+            var pinnedNews = _pinNewsService.GetAllPinnedNewsByCategory(categoryId);
 
             categoryIds.Add(categoryId);
             categoryIds.AddRange(childrenCategory.Select(menuItem => menuItem.Id));
+            pinnedNewsIds.AddRange(pinnedNews.Select(p => p.NewsItemId));
 
             var filterNewsItemParameters = new FilterNewsItemParameters()
             {
-                CategoryIds = categoryIds
+                CategoryIds = categoryIds,
+                PinnedNewsIds = pinnedNewsIds
             };
 
             return GetNewsItemsViewModel(_newsService.GetNewsItem(filterNewsItemParameters));
