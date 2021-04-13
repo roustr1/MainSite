@@ -16,6 +16,7 @@ using MainSite.ViewModels.Common;
 using MainSite.ViewModels.News;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace MainSite.Controllers
 {
@@ -40,8 +41,7 @@ namespace MainSite.Controllers
 
         public IActionResult Index(int page = 0, string category = null)
         {
-            var model = _mainMode.GetNewsListViewModel(page, _pagesize, category);
-            return View(model);
+            return View();
         }
 
         [Route("Create")]
@@ -53,14 +53,17 @@ namespace MainSite.Controllers
         }
 
         //[Route("Create")]
-        [HttpPost("{Create}")]
-        public IActionResult Create([FromForm] NewsItemViewModel model)
+        [HttpPost]
+        public string Create([FromForm] NewsItemViewModel model)
         {
             if (ModelState.IsValid)
             {
+                model.UploadedFiles = Request.Form.Files.ToList();
                 _mainMode.CreateNewNewsItem(model);
-            }
-            return RedirectToAction(nameof(Index));
+            } 
+
+            return JsonConvert.SerializeObject(_mainMode.GetNewsItemViewModel(model.Id));
+           // return RedirectToAction(nameof(Index));
         }
 
         [Route("Details")]

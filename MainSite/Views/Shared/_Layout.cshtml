@@ -9,7 +9,7 @@
     <link href="~/images/fonts/MaterialIcons/Material-Icons.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/fonts/fonts.css" />
     <link rel="stylesheet" href="~/css/mainSite.css" />
-    <script src="~/lib/vue/vue.js"></script>
+    @*<script src="~/lib/vue/vue.js"></script>*@
 </head>
 <body class="row">
     <header class="navbar-fixed">
@@ -25,9 +25,9 @@
                         <ul class="hide-on-med-and-down col m12 s12 l9 secondMenu">
                             <li>
                                 <div class="secondMenu-search">
-                                    <span class="bold">Поиск на сайте:</span> 
-                                    <input class="inputTextMainSite" type="text"/>
-                                    <button class="btn btn-default" >Найти</button>
+                                    <span class="bold">Поиск на сайте:</span>
+                                    <input class="inputTextMainSite" type="text" />
+                                    <button class="btn btn-default">Найти</button>
                                 </div>
                             </li>
                             <li>
@@ -51,15 +51,14 @@
         </nav>
     </header>
 
-    <div class="container">
+    <div class="container" id="vueRootComponent">
         <div class="col m12 s12 l3" id="menuBlock">
-            <div class="secondMenuBlock"></div>
-            @Html.Partial("Menu",(String) ViewData["categoryId"])
+            @*<div class="secondMenuBlock"></div>*@
+            @Html.Partial("Menu")
         </div>
         <main role="main" class="col m12 s12 l9" id="mainBlock">
             @RenderBody()
         </main>
-
     </div>
 
     <footer>
@@ -72,7 +71,7 @@
         </nav>
     </footer>
     <script src="~/css/materialize/js/materialize.js"></script>
-    <script src="~/css/menu/js/eventClickElMenu.js"></script>
+    <script src="~/bundle/App.js"></script>
     <script src="~/scripts/onReadyState.js"></script>
     @RenderSection("Scripts", required: false)
 </body>

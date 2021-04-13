@@ -5,7 +5,7 @@
 }
 
 <div class="creator">
-    <div class="card-panel creator-main" v-bind:class="classObject">
+    <div class="card-panel creator-main" @*v-bind:class="classObject"*@>
         @await Component.InvokeAsync("CategoryPathComponent", @Model.CategoryId)
         <a class="error close" v-on:click="showCreator(false, true)"><i class="material-icons">close</i></a>
 
@@ -31,7 +31,7 @@
             </div>
         </form>
     </div>
-    <div class="creator-menu" v-bind:class="classObject">
+    <div class="creator-menu" @*v-bind:class="classObject"*@>
         <button class="btn btn-defaultMainSite" v-on:click="showCreator(true, false)">Новое сообщение</button>
     </div>
 </div>

@@ -10,6 +10,7 @@ using Application.Services.Menu;
 using Application.Services.News;
 using Application.Services.Settings;
 using MainSite.Controllers;
+using MainSite.Extensions;
 using MainSite.ViewModels.Common;
 using MainSite.ViewModels.News;
 using Microsoft.AspNetCore.Http;
@@ -134,6 +135,7 @@ namespace MainSite.Models
                 }
             };
 
+            PageExtensions.Pager(model.PagerModel);
             return model;
         }
 
@@ -187,6 +189,7 @@ namespace MainSite.Models
 
             entity.Files = collection;
             _newsService.CreateNews(entity);
+            newsItemViewModel.Id = entity.Id;
         }
 
         public void DeleteNewsItem(string id)

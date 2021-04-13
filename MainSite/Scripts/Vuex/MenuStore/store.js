@@ -1,32 +1,33 @@
-﻿import Vue from 'vue'
-import Vuex from 'vuex'
+﻿import axios from 'axios'
 
-Vue.use(Vuex);
-
-let store = {
+let menuStore = {
+    namespaced: false,
     state: {
-        categoryies: []
+        categories: [], 
     },
     actions: {
-        /*GET_USERS_FROM_API({ commit }) {
-            return axios('http://localhost:3000/users', {
+        GET_CATEGORIES({ commit }) {
+            return axios('/api/ApiMenu/categories', {
                 method: 'GET'
             })
-                .then(responce => {
-                    commit('SET_USERS_TO_VUEX', responce.data);
-                });
-        }*/
+            .then(responce => {
+                commit('SET_CATEGORIES', responce.data);
+            });
+        },
+        CHANGE_IS_ACTIVE_COMPONENT() {
+            return false;
+        }
     },
     mutations: {
-       /* SET_USERS_TO_VUEX: (state, users) => {
-            state.users = users;
-        }*/
+        SET_CATEGORIES: (state, categories) => {
+            state.categories = categories;
+        }
     },
     getters: {
-        CATEGORYIES(state) {
-            return state.categoryies;
+        CATEGORIES(state) {
+            return state.categories;
         }
     },
 };
 
-export default store;
+export default menuStore;

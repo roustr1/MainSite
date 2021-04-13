@@ -20,7 +20,6 @@ fs.readdirSync(appBasePath).forEach(function (name) {
 
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
-
 module.exports = {
     entry: jsEntries,
     output: {
@@ -65,8 +64,15 @@ module.exports = {
                 query: {
                     name: '[name].[ext]?[hash]'
                 }
+            },
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: "babel-loader"
+                },
             }
-        ]
+        ],
     },
     devtool: '#source-map', //'#eval-source-map'
 }
