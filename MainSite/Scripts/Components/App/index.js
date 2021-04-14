@@ -13,7 +13,7 @@ new Vue({
         /*msBirthday,
         msMenu,
         msNews,*/
-        msMainWrapper,
-        msMenu
+        msMenu,
+        msMainWrapper
     },
 });

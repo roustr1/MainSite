@@ -1,14 +1,11 @@
 ﻿<template>
     <div>
         <VueBreadcrumbs />
-        <keep-alive>
-            <router-view />
-        </keep-alive>
+        <router-view />
     </div>
 </template>
 
 <script>
-    import VueBreadcrumbs from 'vue-breadcrumbs'
     export default {
         name: 'ms-category',
         props: {
@@ -18,9 +15,6 @@
                     return {}
                 }
             }
-        },
-        components: {
-            VueBreadcrumbs
         },
         data() {
             return {}

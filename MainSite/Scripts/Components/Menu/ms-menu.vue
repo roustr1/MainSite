@@ -12,7 +12,7 @@
         </li>
         <ms-menu-item
 
-                      v-for="category in this.CATEGORIES"
+                      v-for="category in DATA_CATEGORIES"
                       :key="category.id"
                       :menu_item="category"
                       @eventClickElementMenu="eventClickElementMenu"
@@ -41,9 +41,12 @@
              msMenuItem
         },
         computed: {
-            ...mapGetters({
-                CATEGORIES: 'CATEGORIES'
-            })
+            ...mapGetters([
+                'CATEGORIES'
+            ]),
+            DATA_CATEGORIES() {
+                return this.CATEGORIES;
+            }
         },
         watch: {
             IsCurrent() {
@@ -51,9 +54,9 @@
             }
         },
         methods: {
-            ...mapActions({
-                GET_CATEGORIES: 'GET_CATEGORIES'
-            }),
+            ...mapActions([
+                'GET_CATEGORIES'
+            ]),
             eventClickElementMenu(e) {
                 ItemMenuActive.eventClickElementMenu(e);
                 if (this.$route.params.categoryId) {
@@ -62,7 +65,7 @@
                 
             }
         },
-        mounted() {
+        created() {
             this.GET_CATEGORIES();
         }
     };

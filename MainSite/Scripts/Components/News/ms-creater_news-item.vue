@@ -89,7 +89,9 @@
                     action: e.target.action
                 };
 
-                this.CREATE_NEW(result);
+                this.CREATE_NEW(result).then(responce => {
+                    this.$emit("addNew", responce);
+                });
             }
         }
     }

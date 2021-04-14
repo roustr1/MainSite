@@ -31,7 +31,7 @@ let router = new Router({
             component: msCategory,
             children: [
                 {
-                    path: '/page=:page&&categoryId=:categoryId',
+                    path: '/page=:page/categoryId=:categoryId',
                     name: 'categoryDetails',
                     component: msNews,
                     props: true,

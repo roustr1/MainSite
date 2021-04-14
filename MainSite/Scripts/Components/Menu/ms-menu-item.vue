@@ -20,7 +20,6 @@
     </li>
 </template>
 <script>
-    //@Url.Action(" Index", "Home", new { page=0, category=item.Id })
     import { ItemMenuActive } from '../../Filters/Menu'
 
     export default {

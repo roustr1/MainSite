@@ -29,6 +29,30 @@ namespace MainSite.Controllers
             return result;
         }
 
+        [Route("breadcrumbs")]
+        public IEnumerable<MenuItemViewModel> GetCategoresByBreadCrumbs(string categoryId = null)
+        {
+            var listNames = new List<MenuItemViewModel>();
+            var id = categoryId;
+
+            while (id != null)
+            {
+                var item = _service.Get(id);
+
+                listNames.Add( 
+                    new MenuItemViewModel { 
+                        Name = item.Name,
+                        Id = item.Id
+                });
+
+                id = item.ParentId;
+            }
+
+            listNames.Reverse();
+
+            return listNames;
+        }
+
         public List<string> GenerateAllSelected(string id)
         {
             var localId = id;
@@ -61,6 +85,7 @@ namespace MainSite.Controllers
                     Name = item.Name,
                     ToolTip = item.ToolTip,
                     UrlIcon = item.UrlIcone,
+                    ParentId = item.ParentId,
                     IsActive = selected.Contains(item.Id),
                     Index = item.Index
 

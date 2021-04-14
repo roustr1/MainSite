@@ -46,5 +46,7 @@
 </script>
 
 <style>
-
+    .ms-category-item {
+        margin-right: 10px;
+    }
 </style>

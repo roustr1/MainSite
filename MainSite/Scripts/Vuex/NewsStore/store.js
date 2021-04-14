@@ -3,27 +3,31 @@
 let newsStore = {
     namespaced: false,
     state: {
-        news: [],
-        pager: {}
+        newsModel: {
+            news: [],
+            pager: {}
+        }
     },
     actions: {
         GET_NEWS({ commit }, data) {
-            axios.get(`/api/ApiNews/newsItems/?`, {
+            return axios.get(`/api/ApiNews/newsItems/`, {
+                method: 'GET',
                 params: {
                     category: data.categoryId ? data.categoryId : null,
-                    page: data.page
+                    page: data.page ? data.page: 1
                 }
             })
             .then(responce => {
                 commit('SET_PAGER', responce.data.PagerModel);
-                commit('SET_NEWS', responce.data.News/*{ data: responce.data, category: data.category }*/);
+                commit('SET_NEWS', responce.data.News);
+                return responce.data;
             })
             .catch(function (error) {
                 alert(error);
             });
         },
         CREATE_NEW({ commit }, data) {
-            axios(
+            return axios(
                 {
                     method: 'post',
                     url: data.action,
@@ -33,8 +37,9 @@ let newsStore = {
                     }
                 }
             )
-                .then(responce => {
-                    commit('ADD_NEW', responce.data);
+            .then(responce => {
+                commit('ADD_NEW', responce.data);
+                return responce.data;
             })
             .catch(function (error) {
                 alert(error);
@@ -60,23 +65,26 @@ let newsStore = {
     },
     mutations: {
         SET_NEWS: (state, news) => {
-            state.news = news;
+            state.newsModel.news = news;
             //state.news = news.data;
         },
         SET_PAGER: (state, pager) => {
-            Object.assign(state.pager,pager);
+            Object.assign(state.newsModel.pager,pager);
             //state.news = news.data;
         },
         ADD_NEW: (state, news) => {
-            state.news.push(news);
+            state.newsModel.news.unshift(news);
         }
     },
     getters: {
         NEWS(state) {
-            return state.news;
+            return state.newsModel.news;
         },
         PAGER(state) {
-            return state.pager;
+            return state.newsModel.pager;
+        },
+        NEWS_MODEL(state) {
+            return state.newsModel;
         }
     },
 };
