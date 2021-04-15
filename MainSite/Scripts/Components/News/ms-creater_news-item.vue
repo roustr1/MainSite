@@ -1,7 +1,6 @@
 ﻿<template>
     <div class="creator">
         <div class="card-panel creator-main" v-bind:class="classObject">
-            @await Component.InvokeAsync("CategoryPathComponent", @Model.CategoryId)
             <a class="error close" @click="showCreater(false, true)"><i class="material-icons">close</i></a>
 
             <form ref="formCreateNews" @submit="submit" action="/Home/Create/" enctype="multipart/form-data" method="post">
@@ -56,7 +55,7 @@
             }
         },
         methods: {
-            ...mapActions([
+            ...mapActions('news',[
                 'CREATE_NEW'
             ]),
             showCreater(active, desActive) {
@@ -89,9 +88,7 @@
                     action: e.target.action
                 };
 
-                this.CREATE_NEW(result).then(responce => {
-                    this.$emit("addNew", responce);
-                });
+                this.CREATE_NEW(result);
             }
         }
     }

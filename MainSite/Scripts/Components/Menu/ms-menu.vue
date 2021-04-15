@@ -11,13 +11,11 @@
             </a>
         </li>
         <ms-menu-item
-
-                      v-for="category in DATA_CATEGORIES"
-                      :key="category.id"
-                      :menu_item="category"
-                      @eventClickElementMenu="eventClickElementMenu"
-                      >
-
+            v-for="category in categories"
+            :key="category.id"
+            :menu_item="category"
+            @eventClickElementMenu="eventClickElementMenu"
+            >
         </ms-menu-item>
 
     </ul>
@@ -25,7 +23,7 @@
 
 <script>
     import msMenuItem from './ms-menu-item.vue';
-    import { mapActions, mapGetters } from 'vuex'
+    import { mapActions, mapState } from 'vuex'
     import { ItemMenuActive } from '../../Filters/Menu'
 
     export default {
@@ -41,26 +39,18 @@
              msMenuItem
         },
         computed: {
-            ...mapGetters([
-                'CATEGORIES'
-            ]),
-            DATA_CATEGORIES() {
-                return this.CATEGORIES;
-            }
-        },
-        watch: {
-            IsCurrent() {
-                return this.IsCurrent;
-            }
+            ...mapState('menu', [
+                'categories'
+            ])
         },
         methods: {
-            ...mapActions([
+            ...mapActions('menu',[
                 'GET_CATEGORIES'
             ]),
             eventClickElementMenu(e) {
                 ItemMenuActive.eventClickElementMenu(e);
                 if (this.$route.params.categoryId) {
-                    this.$router.push({ name: "news" });
+                    this.$router.push({ name: "news", params: { page: 1 }});
                 }
                 
             }

@@ -4,23 +4,22 @@
         <div id="newsComponent">
             <msBreadCrumbs
                    v-if="!IsNews"
-                   :items="BREADCRUMBS"
+                   :items="breadcrumbs"
                    />
             <msCreaterNewsItem 
-                               :categoryId="$route.params.categoryId" 
-                               @addNew="addNew"
+                               :categoryId="$route.params.categoryId"
                                />
-            <msNewsItem v-for="item in newsByCategory.news"
+            <msNewsItem v-for="item in news"
                 :key="item.id"
                 :news_item="item" />
             <msPage
-            v-show="AreViewPageList"
-            :pageIndex="newsByCategory.pager.PageIndex"
-            :currentPage="CurrentPage"
-            :totalPages="newsByCategory.pager.TotalPages"
-            :individualPagesDisplayedCount="newsByCategory.pager.IndividualPagesDisplayedCount"
-            :list="newsByCategory.pager.ViewPageList"
-            @changePage="changePage"
+                v-if="pager.ViewPageList && pager.ViewPageList.length"
+                :pageIndex="pager.PageIndex"
+                :parentPage="pager.CurrentPage"
+                :totalPages="pager.TotalPages"
+                :individualPagesDisplayedCount="pager.IndividualPagesDisplayedCount"
+                :list="pager.ViewPageList"
+                @changePage="changePage"
             />
         </div>
     </div>
@@ -30,45 +29,24 @@
     import msNewsItem from './ms-news-item.vue';
     import msCreaterNewsItem from './ms-creater_news-item.vue';
     import msPage from '../../DefaultComponents/ms-page.vue';
-    import { mapActions, mapGetters } from 'vuex';
+    import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
     import msBirthday from '../Birthday/ms-birthday.vue';
     import msBreadCrumbs from '../../DefaultComponents/ms-breadcrumbs-category.vue';
 
     export default {
         name: "ms-news",
 
-        props: {
-            newsByCategory: {
-                type: Object,
-                default: () => {
-                    return {
-                        news: new Array(),
-                        pager: {}
-                    }
-                }
-            }
-        },
         computed: {
-            ...mapGetters([
-                'BREADCRUMBS'
+            ...mapState('news', [
+                'news',
+                'pager'
             ]),
-            AreViewPageList() {
-                if (this.newsByCategory.pager != undefined) {
-                    if (this.newsByCategory.pager.ViewPageList != undefined) {
-                        if (this.newsByCategory.pager.ViewPageList.length) {
-                            return true;
-                        }
-                    }
-                }
-
-                return false;
-            },
+            ...mapState('menu', [
+                'breadcrumbs'
+            ]),
             IsNews() {
                 return typeof (this.$route.params.categoryId) === 'undefined';
             },
-            CurrentPage() {
-                return this.$route.params.page;
-            }
         },
         components: {
             msNewsItem,
@@ -81,9 +59,14 @@
             $route: 'fetchData'
         },
         methods: {
-            ...mapActions([
+            ...mapActions('news',[
                 'GET_NEWS',
-                'GET_CATEGORIES_BY_BREADCRUMBS'
+            ]),
+            ...mapActions('menu',[
+                'GET_CATEGORIES_BY_BREADCRUMBS',
+            ]),
+            ...mapMutations('news',[
+                'DELETE_CURRENT_NEWS'
             ]),
             fetchData() {
                 this.getNewsForCategory();
@@ -97,29 +80,29 @@
                         page: this.$route.params.page,
                         categoryId: this.$route.params.categoryId
                     }
-                ).then(responce => {
-                    this.newsByCategory.news = responce.News;
-                    this.newsByCategory.pager = responce.PagerModel;
-                });
+                )
             },
             changePage(new_page) {
                 if (new_page !== this.$route.params.page) {
-                    this.$route.params.page = new_page;
+
+                    let news_page = this.$route.name == 'news' ? new_page : 1;
                     let routerParams = typeof (this.$route.params.categoryId) === 'undefined' ?
-                    { name: 'news', params: { page: this.$route.params.page } }
+                        { name: 'news', params: { page: news_page } }
                     :
-                    { name: 'categoryDetails', params: { page: this.$route.params.page, categoryId: this.$route.params.categoryId } }
+                        { name: 'categoryDetails', params: { page: new_page, categoryId: this.$route.params.categoryId } }
 
                     this.$router.push(routerParams);
                 }
             },
-            addNew(item) {
-                this.newsByCategory.news.unshift(item);
-            }
         },
         created() {
             this.getNewsForCategory();
-            this.GET_CATEGORIES_BY_BREADCRUMBS(this.$route.params.categoryId);
+            if (!this.IsNews) {
+                this.GET_CATEGORIES_BY_BREADCRUMBS(this.$route.params.categoryId);
+            }
+        },
+        beforeDestroy() {
+            this.DELETE_CURRENT_NEWS();
         }
     };
 </script>

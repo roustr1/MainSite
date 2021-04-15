@@ -1,6 +1,5 @@
 ﻿<template>
     <div>
-        <VueBreadcrumbs />
         <router-view />
     </div>
 </template>

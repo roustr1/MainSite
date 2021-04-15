@@ -20,10 +20,7 @@ let router = new Router({
                     component: msNews,
                     props: true
                 }
-            ],
-            meta: {
-                breadcrumb: 'Home Page',
-            },
+            ]
         },
         {
             path: '/category',
@@ -34,19 +31,13 @@ let router = new Router({
                     path: '/page=:page/categoryId=:categoryId',
                     name: 'categoryDetails',
                     component: msNews,
-                    props: true,
-                    meta: {
-                        breadcrumb: 'categoryDetails',
-                    }
+                    props: true
                 },
                 {
                     path: '/category/categoryId=:categoryId',
                     name: 'categoryList',
                     component: msCategoryList,
-                    props: true,
-                    meta: {
-                        breadcrumb: 'categoryList',
-                    }
+                    props: true
                 }
             ],
             props:true

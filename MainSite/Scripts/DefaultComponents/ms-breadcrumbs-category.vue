@@ -9,7 +9,9 @@
             class="navHeader-item"
             v-for="(item, index) in items"
             :key="index"
-            v-on:click.prevent.self="clickEvent(item)">
+            v-on:click.prevent.self="clickEvent(item)"
+            v-bind:class="CheckLastItem(index)"
+           >
             {{item.name}}
         </a>
     </div>
@@ -30,7 +32,16 @@
         },
         methods: {
             clickEvent(item) {
-                this.$router.push({ name: 'categoryList', params: { categoryId: item.id } });
+                if (this.$route.params.categoryId !== item.id)
+                    this.$router.push({ name: 'categoryList', params: { categoryId: item.id } });
+            },
+            CheckLastItem(indexItem) {
+                if (this.items.length > 0) {
+                    if (this.items.length - 1 == indexItem)
+                        return 'bold';
+                }
+
+                return '';
             }
         }
     }
