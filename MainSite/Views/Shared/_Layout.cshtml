@@ -9,7 +9,7 @@
     <link href="~/images/fonts/MaterialIcons/Material-Icons.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/fonts/fonts.css" />
     <link rel="stylesheet" href="~/css/mainSite.css" />
-    <script src="~/lib/vue/vue.js"></script>
+    @*<script src="~/lib/vue/vue.js"></script>*@
 </head>
 <body class="row">
     <header class="navbar-fixed">
@@ -54,23 +54,14 @@
         </nav>
     </header>
 
-    <div class="container">
+    <div class="container" id="vueRootComponent">
         <div class="col m12 s12 l3" id="menuBlock">
-            <div class="secondMenuBlock"></div>
-            <ul class="menu">
-                <li>
-                    <a href="@Url.Action("Index", "Home")" title="Новости" class="@(ViewData["categoryId"] == null ? "active" : "")">
-                        <span class="rectangle" style="background-color: white;"></span>
-                        <div class="bold">Новости</div>
-                    </a>
-                </li>
-                @await Component.InvokeAsync("NavComponent", ViewData["categoryId"])
-            </ul>
+            @*<div class="secondMenuBlock"></div>*@
+            @Html.Partial("Menu")
         </div>
         <main role="main" class="col m12 s12 l9" id="mainBlock">
             @RenderBody()
         </main>
-
     </div>
 
     <footer>
@@ -82,9 +73,8 @@
             </div>
         </nav>
     </footer>
-
     <script src="~/css/materialize/js/materialize.js"></script>
-    <script src="~/css/menu/js/eventClickElMenu.js"></script>
+    <script src="~/bundle/App.js"></script>
     <script src="~/scripts/onReadyState.js"></script>
     @RenderSection("Scripts", required: false)
 </body>

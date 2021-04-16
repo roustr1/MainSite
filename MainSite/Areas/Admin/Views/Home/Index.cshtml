@@ -1,4 +1,4 @@
-﻿@{
+﻿@{ 
     Layout = "_Layout";
 }
 
@@ -36,8 +36,8 @@
     var allElements = document.querySelectorAll('#mainBlock > div');
     var maxHeight = allElements[0].offsetHeight;
 
-    for (var element in allElements) {
-        if (element.offsetHeight > maxHeight) maxHeight = element.offsetHeight;
+    for (var i = 0; i < allElements.length; i++) {
+        if (allElements[i].offsetHeight > maxHeight) maxHeight = allElements[i].offsetHeight;
     }
 
     for (var i = 0; i < allElements.length; i++) {

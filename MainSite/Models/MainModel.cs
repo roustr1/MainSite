@@ -11,6 +11,7 @@ using Application.Services.News;
 using Application.Services.Settings;
 using Application.Services.Users;
 using MainSite.Controllers;
+using MainSite.Extensions;
 using MainSite.ViewModels.Common;
 using MainSite.ViewModels.News;
 using Microsoft.AspNetCore.Http;
@@ -28,8 +29,11 @@ namespace MainSite.Models
         private readonly ISettingsService _settingsService;
         private readonly IMenuService _menuService;
         private readonly IUsersService _usersService;
+        private readonly PinNewsService _pinNewsService;
 
-        public MainModel(ILogger<HomeController> logger, INewsService newsService, IFileDownloadService downloadService, IFileUploadService uploadService, ISettingsService settingsService, IMenuService menuService, IUsersService usersService)
+        public MainModel(ILogger<HomeController> logger, INewsService newsService, IFileDownloadService downloadService,
+            IFileUploadService uploadService, ISettingsService settingsService, IMenuService menuService, IUsersService usersService,
+            PinNewsService pinNewsService)
         {
             _logger = logger;
             _newsService = newsService;
@@ -38,6 +42,7 @@ namespace MainSite.Models
             _settingsService = settingsService;
             _menuService = menuService;
             _usersService = usersService;
+            _pinNewsService = pinNewsService;
         }
 
         public NewsItemViewModel GetNewsItemViewModel(string id)
@@ -85,18 +90,48 @@ namespace MainSite.Models
         public IList<NewsItemViewModel> GetManyNewsItemViewModel(string categoryId)
         {
             var categoryIds = new List<string>();
+            var pinnedNewsIds = new List<string>();
+
 
             var childrenCategory = _menuService.GetRecursionAllChildren(categoryId);
+            var pinnedNews = _pinNewsService.GetAllPinnedNewsByCategory(categoryId);
 
             categoryIds.Add(categoryId);
             categoryIds.AddRange(childrenCategory.Select(menuItem => menuItem.Id));
+            pinnedNewsIds.AddRange(pinnedNews.Select(p => p.NewsItemId));
 
             var filterNewsItemParameters = new FilterNewsItemParameters()
             {
-                CategoryIds = categoryIds
+                CategoryIds = categoryIds,
+                PinnedNewsIds = pinnedNewsIds
             };
 
             return GetNewsItemsViewModel(_newsService.GetNewsItem(filterNewsItemParameters));
+        }
+
+        public IList<PinnedNewsViewModel> GetAllPinnedNewsByCategory(string categoryId)
+        {
+            var result = new List<PinnedNewsViewModel>();
+
+            foreach (var pn in _pinNewsService.GetAllPinnedNewsByCategory(categoryId))
+            {
+                var pnvm = new PinnedNewsViewModel();
+                pnvm.Index = pn.Index;
+
+                var newsItem = _newsService.GetNewsItem(pn.NewsItemId);
+                if (newsItem == null)
+                {
+                    _pinNewsService.UnpinNews(pn.NewsItemId);
+                }
+                else
+                {
+                    pnvm.NewsItem = GetNewsItemViewModel(newsItem);
+
+                    result.Add(pnvm);
+                }
+            }
+
+            return result;
         }
 
         public NewsListViewModel GetNewsListViewModel(int? page, int? pagesize, string category = null)
@@ -108,6 +143,7 @@ namespace MainSite.Models
             }
             var pageSize = pagesize.GetValueOrDefault(10);
 
+            var pinnedNews = GetAllPinnedNewsByCategory(category);
             var records = GetManyNewsItemViewModel(category).ToList();
 
             var list = new PagedList<NewsItemViewModel>(records, pageIndex, pageSize);
@@ -115,6 +151,7 @@ namespace MainSite.Models
             {
                 CategoryId = category,
                 News = list,
+                PinnedNews = pinnedNews,
                 PagerModel = new PagerViewModel
                 {
                     PageSize = list.PageSize,
@@ -124,6 +161,7 @@ namespace MainSite.Models
                 }
             };
 
+            PageExtensions.Pager(model.PagerModel);
             return model;
         }
 
@@ -177,6 +215,7 @@ namespace MainSite.Models
 
             entity.Files = collection;
             _newsService.CreateNews(entity);
+            newsItemViewModel.Id = entity.Id;
         }
 
         public void DeleteNewsItem(string id)
@@ -200,7 +239,7 @@ namespace MainSite.Models
 
             return pagesize;
         }
-
+        
         public IList<NewsItemViewModel> GetManySearchResultNewsItemViewModel(string query)
         {
             return GetNewsItemsViewModel(_newsService.FindFreeText(query));
@@ -222,6 +261,26 @@ namespace MainSite.Models
             }
 
             return result;
+        }
+
+        public void PinNewsItem(string newsItemId)
+        {
+            var newsItem = _newsService.GetNewsItem(newsItemId);
+            if(newsItem == null) return;
+
+            var categoryId = newsItem.Category;
+
+            _pinNewsService.PinNews(newsItemId, categoryId);
+        }
+
+        public void UnpinNewsItem(string newsItemId)
+        {
+            var newsItem = _newsService.GetNewsItem(newsItemId);
+            if (newsItem == null) return;
+
+            var categoryId = newsItem.Category;
+
+            _pinNewsService.UnpinNews(newsItemId);
         }
     }
 }

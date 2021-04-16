@@ -5,6 +5,10 @@ using Application.Services.Permissions;
 using Application.Services.Users;
 using MainSite.Models;
 using MainSite.ViewModels.News;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using System.Linq;
 
 namespace MainSite.Controllers
 {
@@ -32,12 +36,7 @@ namespace MainSite.Controllers
 
         public IActionResult Index(int page = 0, string category = null)
         {
-            var user = _usersService.GetUserBySystemName(User.Identity.Name);
-            if (!_permissionService.Authorize(StandardPermissionProvider.AccessToIndexPage, user))
-                return AccessDeniedView();
-
-            var model = _mainMode.GetNewsListViewModel(page, _pagesize, category);
-            return View(model);
+            return View();
         }
 
         [Route("Create")]
@@ -49,14 +48,17 @@ namespace MainSite.Controllers
         }
 
         //[Route("Create")]
-        [HttpPost("{Create}")]
-        public IActionResult Create([FromForm] NewsItemViewModel model)
+        [HttpPost]
+        public string Create([FromForm] NewsItemViewModel model)
         {
             if (ModelState.IsValid)
             {
+                model.UploadedFiles = Request.Form.Files.ToList();
                 _mainMode.CreateNewNewsItem(model);
-            }
-            return RedirectToAction(nameof(Index));
+            } 
+
+            return JsonConvert.SerializeObject(_mainMode.GetNewsItemViewModel(model.Id));
+           // return RedirectToAction(nameof(Index));
         }
 
         [Route("Details")]
@@ -95,16 +97,24 @@ namespace MainSite.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult BirtdayView()
-        {
-            //  var url = _mainMode.
-            return View();
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [HttpPost]
+        public IActionResult PinNews(string newsItemId, string currentCategoryId=null, int currentPage = 0)
+        {
+            _mainMode.PinNewsItem(newsItemId);
+            return RedirectToAction("Index", new {page = currentPage, category = currentCategoryId});
+        }
+
+        [HttpPost]
+        public IActionResult UnpinNews(string newsItemId, string currentCategoryId = null, int currentPage = 0)
+        {
+            _mainMode.UnpinNewsItem(newsItemId);
+            return RedirectToAction("Index", new { page = currentPage, category = currentCategoryId });
         }
     }
 }

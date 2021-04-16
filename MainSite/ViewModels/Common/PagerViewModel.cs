@@ -1,5 +1,12 @@
-﻿namespace MainSite.ViewModels.Common
+﻿using System.Collections.Generic;
+
+namespace MainSite.ViewModels.Common
 {
+    public partial class PagerElementModel
+    {
+        public int Index { get; set; }
+        public bool IsActive { get; set; } = false;
+    }
     public partial class PagerViewModel
     {
         #region Fields
@@ -264,6 +271,8 @@
             }
             return (PageIndex + num);
         }
+
+        public ICollection<PagerElementModel> ViewPageList { get; set; }
 
         #endregion Methods
     }

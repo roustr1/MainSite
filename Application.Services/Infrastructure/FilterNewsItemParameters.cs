@@ -10,5 +10,6 @@ namespace Application.Services.Infrastructure
         public DateTime? EndDate { get; set; } = null;
         public bool IsNewest { get; set; } = true;
         public IEnumerable<string> CategoryIds { get; set; } = new List<string>();
+        public IEnumerable<string> PinnedNewsIds { get; set; } = new List<string>();
     }
 }
