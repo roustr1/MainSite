@@ -1,7 +1,12 @@
-﻿using Application.Dal.Domain.Settings;
+﻿using System;
+using System.Diagnostics;
+using System.Linq;
+using Application.Dal.Domain.Settings;
 using Application.Services.Permissions;
 using Application.Services.Settings;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 
 namespace MainSite.Areas.Admin.Controllers
 {
@@ -9,12 +14,14 @@ namespace MainSite.Areas.Admin.Controllers
     public class SettingsController : BaseAdminController
     {
         private readonly ISettingsService _settingsService;
+        private readonly FirstConfigService _configDbService;
         private readonly IPermissionService _permissionService;
 
-        public SettingsController(ISettingsService settingsService, IPermissionService permissionService)
+        public SettingsController(ISettingsService settingsService, IPermissionService permissionService, FirstConfigService configDbService)
         {
             _settingsService = settingsService;
             _permissionService = permissionService;
+            _configDbService = configDbService;
         }
 
         // GET: SettingsController
@@ -89,7 +96,13 @@ namespace MainSite.Areas.Admin.Controllers
             return View(setting);
         }
 
+        [Route("Admin/Settings/CreateIndex")]
+        public IActionResult CreateIndex()
+        {
+            _configDbService.CreateIndex();
 
+            return RedirectToAction("Index");
+        }
 
         // GET: SettingsController/Delete/5
         [HttpGet]

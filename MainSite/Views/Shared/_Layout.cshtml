@@ -24,11 +24,14 @@
                         <a id="openMenu" data-target="mobile-demo" class="sidenav-trigger" style="float: right;cursor:pointer;"><i class="material-icons">menu</i></a>
                         <ul class="hide-on-med-and-down col m12 s12 l9 secondMenu">
                             <li>
-                                <div class="secondMenu-search">
-                                    <span class="bold">Поиск на сайте:</span>
-                                    <input class="inputTextMainSite" type="text" />
-                                    <button class="btn btn-default">Найти</button>
-                                </div>
+                                @using (Html.BeginForm("Index", "Search"))
+                                {
+                                    <div class="secondMenu-search">
+                                        <span class="bold">Поиск на сайте:</span>
+                                        <input name="textSearch" class="inputTextMainSite" type="text"/>
+                                        <input type="submit" value="Найти" class="btn btn-default"/>
+                                    </div>
+                                }
                             </li>
                             <li>
                                 <div class="secondMenu-user">

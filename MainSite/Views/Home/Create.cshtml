@@ -11,6 +11,7 @@
 
         <form asp-action="Create" enctype="multipart/form-data" method="post">
             <input asp-for="CategoryId" type="hidden" value="@Model.CategoryId" />
+            <input asp-for="Author" type="hidden" value="@User.Identity.Name" />
             <div class="s12 m12">
                 <div class="bold">Введите заголовок объявления:</div>
                 <input asp-for="Header" id="TextHeader" class="inputTextMainSite" type="text" />

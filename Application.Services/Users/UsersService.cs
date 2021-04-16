@@ -90,7 +90,7 @@ namespace Application.Services.Users
 
             if (role is null)
                 throw new ArgumentNullException(nameof(role));
-            
+
             var mapping = _userUserRoleMappingRepository.GetAll()
                 .SingleOrDefault(ccrm => ccrm.UserId == user.Id && ccrm.UserRoleId == role.Id);
 
@@ -303,9 +303,18 @@ namespace Application.Services.Users
 
 
 
-        public virtual string GetUserNameFromAD()
+        public virtual string GetUserNameFromAD(string identityName)
         {
-            return UserPrincipal.Current.DisplayName;
+            var userName = identityName.Split('\\')[1];
+#if RELEASE
+
+            var context = new PrincipalContext(ContextType.Domain,"rocket");
+            var user = UserPrincipal.FindByIdentity(context, IdentityType.SamAccountName, userName);
+            return user.ToString();
+#endif
+#if DEBUG
+            return userName + "_Debug_Record";
+#endif
         }
 
         private User CreateUser(string identityName)
@@ -314,9 +323,9 @@ namespace Application.Services.Users
             {
                 SystemName = identityName,
                 Active = true,
-                Name = GetUserNameFromAD(),
+                Name = GetUserNameFromAD(identityName),
                 LastActivityDate = DateTime.Now,
-                FullName = GetUserNameFromAD()
+                FullName = GetUserNameFromAD(identityName)
             };
             _userRepository.Add(user);
             var role = GetUserRoleBySystemName(AppUserDefaults.RegisteredRoleName);

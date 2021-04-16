@@ -1,35 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using MainSite.ViewModels;
+﻿using MainSite.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System.Diagnostics;
-using System.Linq;
-using Application.Dal;
-using Application.Dal.Domain.Files;
-using Application.Dal.Domain.News;
-using Application.Services.Files;
-using Application.Services.News;
-using Application.Services.Settings;
+using Application.Services.Permissions;
+using Application.Services.Users;
 using MainSite.Models;
-using MainSite.ViewModels.Common;
 using MainSite.ViewModels.News;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Linq;
 
 namespace MainSite.Controllers
 {
     public class HomeController : BaseController
     {
         private readonly MainModel _mainMode;
+        private readonly IPermissionService _permissionService;
+        private readonly IUsersService _usersService;
 
         private static int _pagesize;
 
-        public HomeController(MainModel mainModel)
+        public HomeController(MainModel mainMode, IPermissionService permissionService, IUsersService usersService)
         {
-            _mainMode = mainModel;
-
+            _mainMode = mainMode;
+            _permissionService = permissionService;
+            _usersService = usersService;
             SetPageSize();
         }
 
@@ -73,17 +68,17 @@ namespace MainSite.Controllers
             if (string.IsNullOrWhiteSpace(id)) return RedirectToAction("Error");
 
             var model = _mainMode.GetNewsItemViewModel(id);
-            if(model == null) return RedirectToAction("Error");
+            if (model == null) return RedirectToAction("Error");
 
             return View(model);
         }
 
         [HttpGet]
         [Route("GetFile")]
-        public IActionResult  GetFile(string fileId)
+        public IActionResult GetFile(string fileId)
         {
             var file = _mainMode.GetDownloadedFileViewModel(fileId);
-            if(file == null) return new EmptyResult();
+            if (file == null) return new EmptyResult();
 
             var fileBinary = _mainMode.GeDownloadedFile(fileId);
 
