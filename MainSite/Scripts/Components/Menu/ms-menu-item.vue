@@ -27,9 +27,7 @@
         props: {
             menu_item: {
                 type: Object,
-                default() {
-                    return {}
-                }
+                default: () => { return {} }
             },
         },
         data:() => {

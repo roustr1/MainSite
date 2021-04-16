@@ -11,68 +11,70 @@
     <link rel="stylesheet" href="~/css/mainSite.css" />
     @*<script src="~/lib/vue/vue.js"></script>*@
 </head>
-<body class="row">
-    <header class="navbar-fixed">
-        <nav class="nav-header">
-            <div class="container">
-                <div class="nav-wrapper">
-                    <div class="valign-wrapper">
-                        <a style="cursor: pointer;" asp-area="" asp-controller="Home" asp-action="Index" class="valign-wrapper">
-                            <img src="@service.SettingsDictionary.GetValueOrDefault("Application.Icon","~/images/layout_icons/header.png")" width="50" height="50" />
-                            <span class="bold">@service.SettingsDictionary.GetValueOrDefault("Application.Name", "WebSite")</span>
-                        </a>
-                        <a id="openMenu" data-target="mobile-demo" class="sidenav-trigger" style="float: right;cursor:pointer;"><i class="material-icons">menu</i></a>
-                        <ul class="hide-on-med-and-down col m12 s12 l9 secondMenu">
-                            <li>
-                                @using (Html.BeginForm("Index", "Search"))
-                                {
-                                    <div class="secondMenu-search">
-                                        <span class="bold">Поиск на сайте:</span>
-                                        <input name="textSearch" class="inputTextMainSite" type="text"/>
-                                        <input type="submit" value="Найти" class="btn btn-default"/>
-                                    </div>
-                                }
-                            </li>
-                            <li>
-                                <div class="secondMenu-user">
-                                    <a data-target='dropdown1' class="dropdown-trigger valign-wrapper" style="padding: 0px;">
-                                        <span class="secondMenu-infoUser">@User.Identity.Name</span>
-                                        <i class="material-icons">keyboard_arrow_down</i>
-                                        <img class="rectangle" src="~/images/layout_icons/user.png" alt="" />
+<body class="row" >
+    <div>
+        <header class="navbar-fixed">
+            <nav class="nav-header">
+                <div class="container">
+                    <div class="nav-wrapper">
+                        <div class="valign-wrapper">
+                            <a style="cursor: pointer;" asp-area="" asp-controller="Home" asp-action="Index" class="valign-wrapper">
+                                <img src="@service.SettingsDictionary.GetValueOrDefault("Application.Icon","~/images/layout_icons/header.png")" width="50" height="50" />
+                                <span class="bold">@service.SettingsDictionary.GetValueOrDefault("Application.Name", "WebSite")</span>
+                            </a>
+                            <a id="openMenu" data-target="mobile-demo" class="sidenav-trigger" style="float: right;cursor:pointer;"><i class="material-icons">menu</i></a>
+                            <ul class="hide-on-med-and-down col m12 s12 l9 secondMenu">
+                                <li>
+                                    @using (Html.BeginForm("Index", "Search"))
+                                    {
+                                        <div class="secondMenu-search">
+                                            <span class="bold">Поиск на сайте:</span>
+                                            <input name="textSearch" class="inputTextMainSite" type="text"/>
+                                            <input type="submit" value="Найти" class="btn btn-default"/>
+                                        </div>
+                                    }
+                                </li>
+                                <li>
+                                    <div class="secondMenu-user">
+                                        <a data-target='dropdown1' class="dropdown-trigger valign-wrapper" style="padding: 0px;">
+                                            <span class="secondMenu-infoUser">@User.Identity.Name</span>
+                                            <i class="material-icons">keyboard_arrow_down</i>
+                                            <img class="rectangle" src="~/images/layout_icons/user.png" alt="" />
 
-                                    </a>
-                                    <ul id='dropdown1' class='dropdown-content secondMenu-settingsUser'>
-                                        <li><a href="#!"><i class="material-icons">home</i>Личный кабинет</a></li>
-                                        <li><a href="#!"><i class="material-icons">cloud</i>Управление сервисами</a></li>
-                                    </ul>
-                                </div>
-                            </li>
-                        </ul>
+                                        </a>
+                                        <ul id='dropdown1' class='dropdown-content secondMenu-settingsUser'>
+                                            <li><a href="#!"><i class="material-icons">home</i>Личный кабинет</a></li>
+                                            <li><a href="#!"><i class="material-icons">cloud</i>Управление сервисами</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </nav>
-    </header>
+            </nav>
+        </header>
 
-    <div class="container" id="vueRootComponent">
-        <div class="col m12 s12 l3" id="menuBlock">
-            @*<div class="secondMenuBlock"></div>*@
-            @Html.Partial("Menu")
+        <div class="container" id="vueRootComponent">
+            <div class="col m12 s12 l3" id="menuBlock">
+                @*<div class="secondMenuBlock"></div>*@
+                @Html.Partial("Menu")
+            </div>
+            <main role="main" class="col m12 s12 l9" id="mainBlock">
+                @RenderBody()
+            </main>
         </div>
-        <main role="main" class="col m12 s12 l9" id="mainBlock">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer>
-        <nav>
-            <div class="container">
-                <a class="bold" href="#">Сообщить о проблеме или высказать пожелание</a>
-                <br />
-                <span>@service.SettingsDictionary.GetValueOrDefault("Application.Copy", "Разработка отдела труда и трудолюбия.2021")</span>
-            </div>
-        </nav>
-    </footer>
+        <footer>
+            <nav>
+                <div class="container">
+                    <a class="bold" href="#">Сообщить о проблеме или высказать пожелание</a>
+                    <br />
+                    <span>@service.SettingsDictionary.GetValueOrDefault("Application.Copy", "Разработка отдела труда и трудолюбия.2021")</span>
+                </div>
+            </nav>
+        </footer>
+    </div>
     <script src="~/css/materialize/js/materialize.js"></script>
     <script src="~/bundle/App.js"></script>
     <script src="~/scripts/onReadyState.js"></script>

@@ -30,7 +30,6 @@
         name: "ms-menu",
         data: () => {
             return {
-                title: "Menu",
                 IsActiveLink: true,
                 IsActive: 'active'
             }
