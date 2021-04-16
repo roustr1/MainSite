@@ -2,6 +2,7 @@
     <li>
         <a href="javascript:void(0)"
            :title="menu_item.toolTip"
+           :class="IsActive"
            @click="eventClickElementMenu(arguments[0])">
             <span src="/content/layout_icons/free-icon-ads-2625106.svg"></span>
             <div>{{menu_item.name}}</div>
@@ -20,7 +21,8 @@
     </li>
 </template>
 <script>
-    import { ItemMenuActive } from '../../Filters/Menu'
+    //import { ItemMenuActive } from '../../Filters/Menu'
+    import { mapState, mapMutations } from 'vuex'
 
     export default {
         name: "ms-menu-item",
@@ -28,23 +30,33 @@
             menu_item: {
                 type: Object,
                 default: () => { return {} }
-            },
+            }
         },
         data:() => {
             return {
-                IsActiveLink: false,
+            }
+        },
+        computed: {
+            ...mapState('menu',[
+                'activeCategoryId'
+            ]),
+            IsActive() {
+                return this.menu_item.id == this.activeCategoryId || this.$route.params.categoryId == this.menu_item.id ? 'active' : '';
             }
         },
         methods: {
-            eventClickElementMenu(e) {
-                ItemMenuActive.eventClickElementMenu(e);
-                if (this.$route.params.categoryId !== this.menu_item.id) {
-                    if (this.menu_item.children && this.menu_item.children.length) {
-                        this.$router.push({ name: "categoryList", params: { categoryId: this.menu_item.id, category: this.menu_item } });
-                    }
-                    else {
-                        this.$router.push({ name: "categoryDetails", params: { categoryId: this.menu_item.id, page: 1 } });
-                    }
+            ...mapMutations('menu',[
+                'SET_OR_UPDATE_ACTIVE_CATEGORY'
+            ]),
+            eventClickElementMenu(e) { 
+;                //ItemMenuActive.eventClickElementMenu(e);
+                this.SET_OR_UPDATE_ACTIVE_CATEGORY(this.menu_item.id);
+
+                if (this.menu_item.children && this.menu_item.children.length) {
+                    this.$router.push({ name: "categoryList", params: { categoryId: this.menu_item.id, category: this.menu_item } });
+                }
+                else {
+                    this.$router.push({ name: "categoryDetails", params: { categoryId: this.menu_item.id, page: 1 } });
                 }
             },
         }

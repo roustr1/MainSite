@@ -1,4 +1,5 @@
 ﻿export default {
     categories: [],
-    breadcrumbs: []
+    breadcrumbs: [],
+    activeCategoryId: undefined
 }
