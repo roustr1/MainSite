@@ -102,5 +102,19 @@ namespace MainSite.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        [HttpPost]
+        public IActionResult PinNews(string newsItemId, string currentCategoryId=null, int currentPage = 0)
+        {
+            _mainMode.PinNewsItem(newsItemId);
+            return RedirectToAction("Index", new {page = currentPage, category = currentCategoryId});
+        }
+
+        [HttpPost]
+        public IActionResult UnpinNews(string newsItemId, string currentCategoryId = null, int currentPage = 0)
+        {
+            _mainMode.UnpinNewsItem(newsItemId);
+            return RedirectToAction("Index", new { page = currentPage, category = currentCategoryId });
+        }
     }
 }
