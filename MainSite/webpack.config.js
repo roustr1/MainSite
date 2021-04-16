@@ -1,6 +1,7 @@
 ﻿var path = require('path');
 var webpack = require('webpack');
 var fs = require('fs');
+require("babel-polyfill");
 
 var appBasePath = './Scripts/Components/'; // where the source files located
 var publicPath = '../bundle/'; // public path to modify asset urls. eg: '../bundle' => 'www.example.com/bundle/main.js'
@@ -14,7 +15,7 @@ fs.readdirSync(appBasePath).forEach(function (name) {
     // assumption: modules are located in separate directory and each module component is imported to index.js of particular module
     var indexFile = appBasePath + name + '/index.js'
     if (fs.existsSync(indexFile)) {
-        jsEntries[name] = indexFile
+        jsEntries[name] = ["babel-polyfill", indexFile ]
     }
 });
 
