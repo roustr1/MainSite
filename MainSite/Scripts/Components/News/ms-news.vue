@@ -70,9 +70,7 @@
             ]),
             fetchData() {
                 this.getNewsForCategory();
-                if (!this.IsNews) {
-                    this.GET_CATEGORIES_BY_BREADCRUMBS(this.$route.params.categoryId);
-                }
+                this.getBreadCrumbs();
             },
             getNewsForCategory() {
                 this.GET_NEWS(
@@ -94,12 +92,15 @@
                     this.$router.push(routerParams);
                 }
             },
+            getBreadCrumbs() {
+                if (!this.IsNews) {
+                    this.GET_CATEGORIES_BY_BREADCRUMBS(this.$route.params.categoryId);
+                }
+            }
         },
         created() {
             this.getNewsForCategory();
-            if (!this.IsNews) {
-                this.GET_CATEGORIES_BY_BREADCRUMBS(this.$route.params.categoryId);
-            }
+            this.getBreadCrumbs();
         },
         beforeDestroy() {
             this.DELETE_CURRENT_NEWS();
