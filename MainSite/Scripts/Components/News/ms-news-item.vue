@@ -4,14 +4,18 @@
         <div class="card_news card_news-details">
             <div class="card_news-image"><img :src="this.news_item.UrlIcon" alt="" /></div>
             <div class="card_news-main">
-                <div class="card_news-main-header">
+                <div v-if="isNews" class="card_news-main-header">
                     <span class="bold">{{this.news_item.Author}}</span>
                     <span class="bold" v-if="IsMessageDetails">{{this.Message}} запись в разделе</span>
-                    <a v-if="IsMessageDetails" href="#" :id="news_item.Id">{{this.news_item.Category}}</a>
-
+                    <router-link
+                                  :id="news_item.Id"
+                                  :to="{name: 'categoryDetails', params: {categoryId : news_item.CategoryId, page: 1}}"
+                                 >
+                        {{this.news_item.Category}}
+                    </router-link>
                 </div>
-                <div class="card_news-main-footer">{{this.news_item.CreateDate}}</div>
                 <div class="card_news-main-title"><a>{{this.news_item.Header}}</a></div>
+                <div class="card_news-main-footer"><b v-if="!isNews">{{this.news_item.Author}}</b> {{RefactDate}}</div>
             </div>
 
             <div class="card_news-editor">
@@ -34,7 +38,6 @@
 </template>
 
 <script>
-    //href="@Url.Action(" Index", "Home" , new {page=0, category=item.CategoryId})"
     import { mapActions } from 'vuex';
     export default {
         name: "ms-news-item",
@@ -42,16 +45,28 @@
             news_item: {
                 type: Object,
                 default: () => { return {} }
+            },
+            isNews: {
+                type: Boolean,
+                default: () => { return true }
             }
         },
         data: () => {
             return {
-                IsMessageDetails :true
             }
         },
         computed: {
             Message() {
                 return this.news_item.isMessage ? "разместил" : "отредактировал";
+            },
+            RefactDate() {
+                let options = {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                }
+
+                return new Date(this.news_item.CreatedDate).toLocaleDateString("ru", options);
             }
         },
         methods: {

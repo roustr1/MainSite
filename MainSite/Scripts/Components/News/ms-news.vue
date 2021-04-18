@@ -3,14 +3,15 @@
         <ms-birthday v-if="IsNews" />
         <div id="newsComponent">
             <msBreadCrumbs
-                   v-if="!IsNews"
-                   :items="breadcrumbs"
-                   />
+                v-if="!IsNews"
+                :items="breadcrumbs"
+            />
             <msCreaterNewsItem 
-                               :categoryId="$route.params.categoryId"
-                               />
+                :categoryId="$route.params.categoryId"
+            />
             <msNewsItem v-for="item in news"
                 :key="item.id"
+                :isNews="IsNews"
                 :news_item="item" />
             <msPage
                 v-if="pager.ViewPageList && pager.ViewPageList.length"
@@ -29,13 +30,19 @@
     import msNewsItem from './ms-news-item.vue';
     import msCreaterNewsItem from './ms-creater_news-item.vue';
     import msPage from '../../DefaultComponents/ms-page.vue';
-    import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
+    import { mapActions, mapMutations, mapState } from 'vuex';
     import msBirthday from '../Birthday/ms-birthday.vue';
     import msBreadCrumbs from '../../DefaultComponents/ms-breadcrumbs-category.vue';
 
     export default {
         name: "ms-news",
-
+        components: {
+            msNewsItem,
+            msCreaterNewsItem,
+            msPage,
+            msBirthday,
+            msBreadCrumbs
+        },
         computed: {
             ...mapState('news', [
                 'news',
@@ -47,13 +54,6 @@
             IsNews() {
                 return typeof (this.$route.params.categoryId) === 'undefined';
             },
-        },
-        components: {
-            msNewsItem,
-            msCreaterNewsItem,
-            msPage,
-            msBirthday,
-            msBreadCrumbs
         },
         watch: {
             $route: 'fetchData'
@@ -95,6 +95,7 @@
             getBreadCrumbs() {
                 if (!this.IsNews) {
                     this.GET_CATEGORIES_BY_BREADCRUMBS(this.$route.params.categoryId);
+
                 }
             }
         },
