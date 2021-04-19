@@ -75,12 +75,12 @@ namespace MainSite.Controllers
         [Route("GetFile")]
         public IActionResult GetFile(string fileId)
         {
-            var file = _mainMode.GetDownloadedFileViewModel(fileId);
-            if (file == null) return new EmptyResult();
+         //   var file = _mainMode.GetDownloadedFileViewModel(fileId);
+         //   if (file == null) return new EmptyResult();
 
-            var fileBinary = _mainMode.GeDownloadedFile(fileId);
-
-            return File(fileBinary, file.MimeType, file.Name);
+            var file = _mainMode.GeDownloadedFile(fileId);
+            string fileName = $"{file.OriginalName}{file.LastPart}";
+            return File(file.FileBinary, file.MimeType, fileName);
         }
 
 

@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Application.Dal;
+using Application.Dal.Domain.Files;
 using Application.Dal.Domain.Menu;
 using Application.Dal.Domain.News;
+using Application.Dal.Infrastructure;
 using Application.Services.Files;
 using Application.Services.Infrastructure;
 using Application.Services.Menu;
@@ -24,12 +26,13 @@ namespace MainSite.Models
         private readonly ILogger<HomeController> _logger;
         private readonly INewsService _newsService;
         private readonly IFileDownloadService _downloadService;
-        private readonly IFileUploadService _uploadService;
+        private readonly IPictureService _uploadService;
         private readonly ISettingsService _settingsService;
         private readonly IMenuService _menuService;
         private readonly IUsersService _usersService;
+        private readonly IAppFileProvider _fileProvider;
 
-        public MainModel(ILogger<HomeController> logger, INewsService newsService, IFileDownloadService downloadService, IFileUploadService uploadService, ISettingsService settingsService, IMenuService menuService, IUsersService usersService)
+        public MainModel(ILogger<HomeController> logger, INewsService newsService, IFileDownloadService downloadService, IPictureService uploadService, ISettingsService settingsService, IMenuService menuService, IUsersService usersService, IAppFileProvider fileProvider)
         {
             _logger = logger;
             _newsService = newsService;
@@ -38,6 +41,7 @@ namespace MainSite.Models
             _settingsService = settingsService;
             _menuService = menuService;
             _usersService = usersService;
+            _fileProvider = fileProvider;
         }
 
         public NewsItemViewModel GetNewsItemViewModel(string id)
@@ -53,7 +57,7 @@ namespace MainSite.Models
             }
 
             var filesResult = new List<FileViewModel>();
-            var files = _uploadService.GetFilesByNewsId(newsItem.Id).ToList();
+            var files = _downloadService.GetFilesByNewsId(newsItem.Id).ToList();
 
             foreach (var newsItemFile in files)
             {
@@ -147,13 +151,9 @@ namespace MainSite.Models
             };
         }
 
-        public byte[] GeDownloadedFile(string newsItemId)
+        public File GeDownloadedFile(string newsItemId)
         {
-            var file = _uploadService.GetFileById(newsItemId);
-
-            if (file == null) return new byte[0];
-
-            return _uploadService.LoadFileBinary(file);
+            return _downloadService.GetDownloadById(newsItemId);
         }
 
         public void CreateNewNewsItem(NewsItemViewModel newsItemViewModel)
@@ -172,8 +172,29 @@ namespace MainSite.Models
             //uploadFiles 
             foreach (var file in newsItemViewModel?.UploadedFiles)
             {
-                collection.Add(_uploadService.InsertFile(file));
+                var fileBinary = _downloadService.GetDownloadBits(file);
+                var fileName = file.FileName;
+                //remove path (passed in IE)
+                fileName = _fileProvider.GetFileName(fileName);
+                var contentType = file.ContentType;
+                var fileExtension = _fileProvider.GetFileExtension(fileName);
+
+                if (!string.IsNullOrEmpty(fileExtension))
+                    fileExtension = fileExtension.ToLowerInvariant();
+
+                var download = new File
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    FileBinary = fileBinary,
+                    MimeType = contentType,
+                    //we store filename without extension for downloads
+                    OriginalName = _fileProvider.GetFileNameWithoutExtension(fileName),
+                    LastPart = _fileProvider.GetFileExtension(fileName)
+                };
+                _downloadService.InsertDownload(download);
+                collection.Add(download);
             }
+
 
             entity.Files = collection;
             _newsService.CreateNews(entity);

@@ -1,0 +1,10 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+
+@using (Html.BeginForm("Upload","Picture",FormMethod.Post,new{ @enctype = "multipart/form-data" }))
+{
+    <input type="file" class="file-path" name ="Upload"/>
+    <input type="submit" value="Отправить"/>
+}
