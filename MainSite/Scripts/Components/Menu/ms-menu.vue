@@ -4,7 +4,7 @@
             <a
                href="javascript:void(0)"
                @click="eventClickElementMenu(arguments[0])"
-               :class="IsActive"
+               v-bind:class="IsActive"
                >
                 <span class="rectangle"></span>
                 <div class="bold">Новости</div>
@@ -14,7 +14,6 @@
             v-for="category in categories"
             :key="category.id"
             :menu_item="category"
-            @eventClickElementMenu="eventClickElementMenu"
             >
         </ms-menu-item>
 
@@ -23,15 +22,14 @@
 
 <script>
     import msMenuItem from './ms-menu-item.vue';
-    import { mapActions, mapState } from 'vuex'
-    import { ItemMenuActive } from '../../Filters/Menu'
-
+    import { mapActions, mapState, mapMutations } from 'vuex'
+    //import { ItemMenuActive } from '../../Filters/Menu'
+    
     export default {
         name: "ms-menu",
-        data: () => {
+        data() {
             return {
-                IsActiveLink: true,
-                IsActive: 'active'
+                categoryId: undefined
             }
         },
         components: {
@@ -39,16 +37,25 @@
         },
         computed: {
             ...mapState('menu', [
-                'categories'
-            ])
+                'categories',
+                'activeCategoryId'
+            ]),
+            IsActive() {
+                return this.categoryId == this.activeCategoryId && this.$route.params.categoryId == this.categoryId ? 'active' : '';
+            }
         },
         methods: {
             ...mapActions('menu',[
                 'GET_CATEGORIES'
             ]),
+            ...mapMutations('menu', [
+                'SET_OR_UPDATE_ACTIVE_CATEGORY'
+            ]),
             eventClickElementMenu(e) {
-                ItemMenuActive.eventClickElementMenu(e);
+                //ItemMenuActive.eventClickElementMenu(e);
+
                 if (this.$route.params.categoryId) {
+                    this.SET_OR_UPDATE_ACTIVE_CATEGORY(null);
                     this.$router.push({ name: "news", params: { page: 1 }});
                 }
                 
@@ -56,6 +63,7 @@
         },
         created() {
             this.GET_CATEGORIES();
+            if (this.categoryId != this.activeCategoryId) this.SET_OR_UPDATE_ACTIVE_CATEGORY(null);
         }
     };
 </script>
