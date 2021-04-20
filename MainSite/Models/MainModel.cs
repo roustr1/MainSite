@@ -201,7 +201,7 @@ namespace MainSite.Models
             {
                 Header = newsItemViewModel.Header,
                 Description = newsItemViewModel.Description,
-                AutorFio = _usersService.GetUserBySystemName(newsItemViewModel.Author).FullName,
+                AutorFio = _usersService.GetUserBySystemName(newsItemViewModel.Author)?.FullName?? "Автор не указан",
                 CreatedDate = dataTimeNow,
                 LastChangeDate = dataTimeNow,
                 Category = newsItemViewModel.CategoryId,

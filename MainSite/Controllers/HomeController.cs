@@ -54,6 +54,7 @@ namespace MainSite.Controllers
             if (ModelState.IsValid)
             {
                 model.UploadedFiles = Request.Form.Files.ToList();
+                model.Author = User.Identity.Name;
                 _mainMode.CreateNewNewsItem(model);
             } 
 
