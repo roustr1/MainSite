@@ -5,6 +5,7 @@ using Application.Services.Permissions;
 using Application.Services.Users;
 using MainSite.Models;
 using MainSite.ViewModels.News;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MainSite.Controllers
 {
@@ -44,14 +45,22 @@ namespace MainSite.Controllers
         [HttpGet]
         public IActionResult Create(string currentCategory)
         {
-            var model = new NewsItemViewModel();
+            var user = _usersService.GetUserBySystemName(User.Identity.Name);
+            if (!_permissionService.Authorize(StandardPermissionProvider.EditNews, user))
+                return AccessDeniedView();
+            var model = new NewsItemViewModel(currentCategory);
             return View(model);
         }
 
         //[Route("Create")]
         [HttpPost("{Create}")]
+
         public IActionResult Create([FromForm] NewsItemViewModel model)
         {
+            var user = _usersService.GetUserBySystemName(User.Identity.Name);
+            if (!_permissionService.Authorize(StandardPermissionProvider.EditNews, user))
+                return AccessDeniedView();
+
             if (ModelState.IsValid)
             {
                 _mainMode.CreateNewNewsItem(model);
@@ -59,6 +68,21 @@ namespace MainSite.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        }
+        /*CREATE_EXTEND*/
+        [Route("CreateExtend")]
+        [HttpGet]
+        public IActionResult CreateExtend(string currentCategory = null)
+        {
+            var user = _usersService.GetUserBySystemName(User.Identity.Name);
+            if (!_permissionService.Authorize(StandardPermissionProvider.EditNews, user))
+                return AccessDeniedView();
+
+            var model = new NewsItemViewModel(currentCategory);
+            return View("Create_Editor", model);
+        }
+
+        /*END CREATE_EXTEND*/
         [Route("Details")]
         [HttpGet]
         public IActionResult Details(string id)

@@ -13,6 +13,7 @@ using Application.Services.Users;
 using MainSite.Controllers;
 using MainSite.ViewModels.Common;
 using MainSite.ViewModels.News;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
