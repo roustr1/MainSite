@@ -7,6 +7,5 @@
     },
     SET_OR_UPDATE_ACTIVE_CATEGORY: (state, categoryId) => {
         state.activeCategoryId = categoryId;
-        console.log(state.activeCategoryId);
     }
 }
