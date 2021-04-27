@@ -206,14 +206,25 @@ namespace MainSite.Models
                 LastChangeDate = dataTimeNow,
                 Category = newsItemViewModel.CategoryId,
             };
+
+
             var collection = new List<Application.Dal.Domain.Files.File>();
             //uploadFiles 
             foreach (var file in newsItemViewModel?.UploadedFiles)
             {
-                collection.Add(_uploadService.InsertFile(file));
+                var newFile = _uploadService.InsertFile(file);
+
+                if (newsItemViewModel.IsAdvancedEditor)
+                {
+                    var newDescription = entity.Description.Replace(file.Name, newFile.Id);
+                    entity.Description = newDescription;
+                }
+
+                collection.Add(newFile);
             }
 
             entity.Files = collection;
+
             _newsService.CreateNews(entity);
             newsItemViewModel.Id = entity.Id;
         }

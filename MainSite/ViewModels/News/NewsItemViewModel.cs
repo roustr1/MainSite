@@ -50,5 +50,7 @@ namespace MainSite.ViewModels.News
 
         public ICollection<IFormFile> UploadedFiles { get; set; }
 
+        public bool IsAdvancedEditor { get; set; }
+
     }
 }

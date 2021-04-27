@@ -1,5 +1,5 @@
 ﻿<template>
-    <div class="card-panel row detailsNew">
+    <div class="card-panel row detailsNew" :id="GetUnicIdBlock">
 
         <div class="card_news card_news-details">
             <div class="card_news-image"><img :src="this.news_item.UrlIcon" alt="" /></div>
@@ -20,21 +20,20 @@
             </div>
         </div>
 
-        <div class="card_news-description">{{this.news_item.Description}}</div>
+        <div class="card_news-description" v-html="this.news_item.Description"></div>
 
         <ul class="dropdownFiles">
             <li
                 v-for="item in news_item.Files"
                 :key="item.Id"
                 >
-                <a href="#" @click="downloadFile(item)">{{item.Name}}</a>
+                <a href="#" @click="downloadFile(item)"><i class="material-icons">download</i> {{item.Name}}</a>
             </li>
         </ul>
     </div>
 </template>
 
 <script>
-    //href="@Url.Action(" Index", "Home" , new {page=0, category=item.CategoryId})"
     import { mapActions } from 'vuex';
     export default {
         name: "ms-news-item",
@@ -46,26 +45,55 @@
         },
         data: () => {
             return {
-                IsMessageDetails :true
+                IsMessageDetails: true
             }
         },
         computed: {
             Message() {
                 return this.news_item.isMessage ? "разместил" : "отредактировал";
+            },
+            GetUnicIdBlock() {
+                return "new_" + this.news_item.Id;
             }
         },
         methods: {
-            ...mapActions([
+            ...mapActions('news', [
                 'DOWNLOADFILE'
             ]),
             downloadFile(item) {
                 this.DOWNLOADFILE(item);
+            },
+            listenByAdvancedDesription() {
+                let vm = this;
+                document.querySelector("#" + vm.GetUnicIdBlock).addEventListener('click', function (e) {
+                    e.preventDefault();   
+
+                    let itemAdvancedEditor = {
+                        Name: e.target.innerHTML,
+                        Id: e.target.getAttribute('href')
+                    }
+
+                    vm.downloadFile(itemAdvancedEditor);
+                });
             }
         },
         mounted() {
+            this.news_item.IsAdvancedEditor = true;
+            if (this.news_item.IsAdvancedEditor) {
+                this.listenByAdvancedDesription();
+            }
         }
     };
 </script>
 
 <style scoped lang="scss">
+    .dropdownFiles a {
+        display:flex;
+        align-items:center;
+        &:hover {
+            i {
+                color:#9e9e9e !important;
+             }
+        }
+    }
 </style>
