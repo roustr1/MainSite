@@ -4,14 +4,16 @@
         <div class="card_news card_news-details">
             <div class="card_news-image"><img :src="this.news_item.UrlIcon" alt="" /></div>
             <div class="card_news-main">
-                <div class="card_news-main-header">
+                <div v-if="isNews" class="card_news-main-header">
                     <span class="bold">{{this.news_item.Author}}</span>
                     <span class="bold" v-if="IsMessageDetails">{{this.Message}} запись в разделе</span>
-                    <a v-if="IsMessageDetails" href="#" :id="news_item.Id">{{this.news_item.Category}}</a>
-
+                    <router-link :id="news_item.Id"
+                                 :to="{name: 'categoryDetails', params: {categoryId : news_item.CategoryId, page: 1}}">
+                        {{this.news_item.Category}}
+                    </router-link>
                 </div>
-                <div class="card_news-main-footer">{{this.news_item.CreateDate}}</div>
                 <div class="card_news-main-title"><a>{{this.news_item.Header}}</a></div>
+                <div class="card_news-main-footer"><b v-if="!isNews">{{this.news_item.Author}}</b> {{RefactDate}}</div>
             </div>
 
             <div class="card_news-editor">
@@ -41,6 +43,10 @@
             news_item: {
                 type: Object,
                 default: () => { return {} }
+            },
+            isNews: {
+                type: Boolean,
+                default: () => { return true }
             }
         },
         data: () => {
@@ -54,6 +60,15 @@
             },
             GetUnicIdBlock() {
                 return "new_" + this.news_item.Id;
+            },
+            RefactDate() {
+                let options = {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                }
+
+                return new Date(this.news_item.CreatedDate).toLocaleDateString("ru", options);
             }
         },
         methods: {
@@ -65,16 +80,18 @@
             },
             listenByAdvancedDesription() {
                 let vm = this;
-                document.querySelector("#" + vm.GetUnicIdBlock).addEventListener('click', function (e) {
-                    e.preventDefault();   
+                for (var selector of document.querySelectorAll("#" + vm.GetUnicIdBlock + " > .card_news-description a")) {
+                    selector.addEventListener('click', function (e) {
+                        e.preventDefault();
 
-                    let itemAdvancedEditor = {
-                        Name: e.target.innerHTML,
-                        Id: e.target.getAttribute('href')
-                    }
+                        let itemAdvancedEditor = {
+                            Name: e.target.innerHTML,
+                            Id: e.target.getAttribute('href')
+                        }
 
-                    vm.downloadFile(itemAdvancedEditor);
-                });
+                        vm.downloadFile(itemAdvancedEditor);
+                    });
+                }
             }
         },
         mounted() {

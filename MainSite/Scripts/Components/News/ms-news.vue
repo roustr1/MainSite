@@ -11,6 +11,7 @@
                                />
             <msNewsItem v-for="item in news"
                 :key="item.id"
+                :isNews="IsNews"
                 :news_item="item" />
             <msPage
                 v-if="pager.ViewPageList && pager.ViewPageList.length"

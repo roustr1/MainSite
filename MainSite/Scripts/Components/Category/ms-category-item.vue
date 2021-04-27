@@ -1,8 +1,13 @@
 ﻿<template>
-    <div class="card-panel row">
-        <h4>
-            <router-link :to="{name: getNamePath(), params: this.params }">{{category_item.name}}</router-link>
-        </h4>
+    <div>
+        <div class="card-panel" style="padding:0px;overflow:hidden;height: 200px;">
+            <h5 class="text-center" style="margin:0px;">
+                <router-link :to="{name: getNamePath(), params: this.params }">{{category_item.name}}</router-link>
+            </h5>
+            <div style="relative;padding:0px">
+                <img style="width: 100%; height:100%; display:block;" src="/images/layout_icons/header.png"  />
+            </div>
+        </div>
     </div>
 </template>
 
