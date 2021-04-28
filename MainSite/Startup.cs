@@ -53,6 +53,7 @@ namespace MainSite
             services.AddTransient<MainModel, MainModel>();
             services.AddTransient<ConfigDb, ConfigDb>();
             services.AddTransient<FirstConfigService, FirstConfigService>();
+            services.AddTransient<PinNewsService, PinNewsService>();
             services.AddTransient<IShowMenu, MenuService>();
             services.AddTransient<IMenuService, MenuService>();
             services.AddTransient<INewsService, NewsService>();

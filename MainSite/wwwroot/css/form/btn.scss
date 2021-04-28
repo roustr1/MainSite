@@ -53,7 +53,7 @@ $btnSettings: (
                 #{$setting}: $value;
             }
 
-            &:hover {
+            &:hover, &:active, &:focus {
                 @each $hoverSetting, $hoverValue in map-get($hoverSettings, $typeBtn) {
                     #{$hoverSetting}: $hoverValue;
                 }
