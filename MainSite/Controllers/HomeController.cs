@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Linq;
+using System;
 
 namespace MainSite.Controllers
 {
@@ -62,6 +63,8 @@ namespace MainSite.Controllers
             if (ModelState.IsValid)
             {
                 model.UploadedFiles = Request.Form.Files.ToList();
+          
+                model.Author = User.Identity.Name;
                 _mainMode.CreateNewNewsItem(model);
             } 
 

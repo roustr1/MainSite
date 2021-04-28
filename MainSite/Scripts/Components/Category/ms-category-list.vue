@@ -3,12 +3,15 @@
         <msBreadCrumbs
             :items="breadcrumbs"
          />
-        <div style="display:flex;flex-wrap:wrap;flex-direction:row;justify-content:space-between;">
+        <div class="row">
             <msCategoryItem
                 v-for="item in getCategoryChildren"
                 :key="item.id"
                 :category_item="item"
-                style="flex-basis: 50%;" 
+                class="col s12 m6"
+            />
+            <msCategoryAddItem
+                class="col s12 m6"
             />
         </div>
     </div>
@@ -17,6 +20,7 @@
 <script>
     import msCategoryItem from '../Category/ms-category-item.vue';
     import msBreadCrumbs from '../../DefaultComponents/ms-breadcrumbs-category.vue';
+    import msCategoryAddItem from '../Category/ms-category-add_item.vue';
     import { mapActions, mapState } from 'vuex';
     export default {
         props: {
@@ -31,7 +35,8 @@
         },
         components: {
             msCategoryItem,
-            msBreadCrumbs
+            msBreadCrumbs,
+            msCategoryAddItem
         },
         watch: {
             $route: 'fetchData'

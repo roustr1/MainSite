@@ -202,19 +202,30 @@ namespace MainSite.Models
             {
                 Header = newsItemViewModel.Header,
                 Description = newsItemViewModel.Description,
-                AutorFio = _usersService.GetUserBySystemName(newsItemViewModel.Author).FullName,
+                AutorFio = _usersService.GetUserBySystemName(newsItemViewModel.Author)?.FullName?? "Автор не указан",
                 CreatedDate = dataTimeNow,
                 LastChangeDate = dataTimeNow,
                 Category = newsItemViewModel.CategoryId,
             };
+
+
             var collection = new List<Application.Dal.Domain.Files.File>();
             //uploadFiles 
             foreach (var file in newsItemViewModel?.UploadedFiles)
             {
-                collection.Add(_uploadService.InsertFile(file));
+                var newFile = _uploadService.InsertFile(file);
+
+                if (newsItemViewModel.IsAdvancedEditor)
+                {
+                    var newDescription = entity.Description.Replace(file.Name, newFile.Id);
+                    entity.Description = newDescription;
+                }
+
+                collection.Add(newFile);
             }
 
             entity.Files = collection;
+
             _newsService.CreateNews(entity);
             newsItemViewModel.Id = entity.Id;
         }

@@ -1,5 +1,5 @@
 ﻿<template>
-    <div class="card-panel row detailsNew">
+    <div class="card-panel row detailsNew" :id="GetUnicIdBlock">
 
         <div class="card_news card_news-details">
             <div class="card_news-image"><img :src="this.news_item.UrlIcon" alt="" /></div>
@@ -7,10 +7,8 @@
                 <div v-if="isNews" class="card_news-main-header">
                     <span class="bold">{{this.news_item.Author}}</span>
                     <span class="bold" v-if="IsMessageDetails">{{this.Message}} запись в разделе</span>
-                    <router-link
-                                  :id="news_item.Id"
-                                  :to="{name: 'categoryDetails', params: {categoryId : news_item.CategoryId, page: 1}}"
-                                 >
+                    <router-link :id="news_item.Id"
+                                 :to="{name: 'categoryDetails', params: {categoryId : news_item.CategoryId, page: 1}}">
                         {{this.news_item.Category}}
                     </router-link>
                 </div>
@@ -24,14 +22,14 @@
             </div>
         </div>
 
-        <div class="card_news-description">{{this.news_item.Description}}</div>
+        <div class="card_news-description" v-html="this.news_item.Description"></div>
 
         <ul class="dropdownFiles">
             <li
                 v-for="item in news_item.Files"
                 :key="item.Id"
                 >
-                <a href="#" @click="downloadFile(item)">{{item.Name}}</a>
+                <a href="#" @click="downloadFile(item)"><i class="material-icons">download</i> {{item.Name}}</a>
             </li>
         </ul>
     </div>
@@ -53,11 +51,15 @@
         },
         data: () => {
             return {
+                IsMessageDetails: true
             }
         },
         computed: {
             Message() {
                 return this.news_item.isMessage ? "разместил" : "отредактировал";
+            },
+            GetUnicIdBlock() {
+                return "new_" + this.news_item.Id;
             },
             RefactDate() {
                 let options = {
@@ -70,17 +72,45 @@
             }
         },
         methods: {
-            ...mapActions([
+            ...mapActions('news', [
                 'DOWNLOADFILE'
             ]),
             downloadFile(item) {
                 this.DOWNLOADFILE(item);
+            },
+            listenByAdvancedDesription() {
+                let vm = this;
+                for (var selector of document.querySelectorAll("#" + vm.GetUnicIdBlock + " > .card_news-description a")) {
+                    selector.addEventListener('click', function (e) {
+                        e.preventDefault();
+
+                        let itemAdvancedEditor = {
+                            Name: e.target.innerHTML,
+                            Id: e.target.getAttribute('href')
+                        }
+
+                        vm.downloadFile(itemAdvancedEditor);
+                    });
+                }
             }
         },
         mounted() {
+            this.news_item.IsAdvancedEditor = true;
+            if (this.news_item.IsAdvancedEditor) {
+                this.listenByAdvancedDesription();
+            }
         }
     };
 </script>
 
 <style scoped lang="scss">
+    .dropdownFiles a {
+        display:flex;
+        align-items:center;
+        &:hover {
+            i {
+                color:#9e9e9e !important;
+             }
+        }
+    }
 </style>

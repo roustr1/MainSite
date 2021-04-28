@@ -60,8 +60,6 @@
                 'SET_OR_UPDATE_ACTIVE_CATEGORY'
             ]),
             eventClickElementMenu(e) { 
-;                //ItemMenuActive.eventClickElementMenu(e);
-
                 if (!this.IsActive) {
                     this.SET_OR_UPDATE_ACTIVE_CATEGORY(this.menu_item.id);
 

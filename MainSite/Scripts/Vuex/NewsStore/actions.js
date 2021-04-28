@@ -32,14 +32,20 @@ export default {
         }
         catch (ex) {}
     },
-    DOWNLOADFILE({ commit }, item) {
-        return axios.get(`/GetFile/`, {
-            params: {
-                fileId: item.Id
-            }
-        }).then(response => {
-            var fileURL = window.URL.createObjectURL(new Blob([response.data]));
-            var fileLink = document.createElement('a');
+    async DOWNLOADFILE({ commit }, item) {
+        try {
+            let result = await axios
+                (
+                    {
+                        method: 'get',
+                        url: '/GetFile/',
+                        params: { fileId: item.Id },
+                        responseType: 'blob'
+                    }
+            );
+
+            let fileURL = window.URL.createObjectURL(new File([result.data], item.Name, { type: result.data.type }));
+            let fileLink = document.createElement('a');
 
             fileLink.href = fileURL;
             fileLink.setAttribute('download', item.Name);
@@ -47,6 +53,7 @@ export default {
             document.body.appendChild(fileLink);
 
             fileLink.click();
-        }).catch(console.error);
+        }
+        catch (ex) {}
     }
 }
