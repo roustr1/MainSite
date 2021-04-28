@@ -67,7 +67,7 @@
                 },
                 textEditor: '',
                 fileList: [],
-                isAdvancedEditor: true
+                isAdvancedEditor: false
             }
         },
         computed: {
