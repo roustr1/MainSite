@@ -53,7 +53,7 @@ namespace MainSite.Controllers
             return listNames;
         }
 
-        public List<string> GenerateAllSelected(string id)
+        private List<string> GenerateAllSelected(string id)
         {
             var localId = id;
             var result = new List<string>();

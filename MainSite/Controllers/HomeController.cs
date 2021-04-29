@@ -10,6 +10,9 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Linq;
 using System;
+using Application.Dal.Domain.Menu;
+using Application.Services.Menu;
+using Application.Services.Files;
 
 namespace MainSite.Controllers
 {
@@ -18,12 +21,19 @@ namespace MainSite.Controllers
         private readonly MainModel _mainMode;
         private readonly IPermissionService _permissionService;
         private readonly IUsersService _usersService;
+ 
+        private readonly IMenuService _menuService;
+        private readonly IFileUploadService _uploadService;
+
         private static int _pagesize;
-        public HomeController(MainModel mainMode, IPermissionService permissionService, IUsersService usersService)
+
+        public HomeController(MainModel mainMode, IPermissionService permissionService, IUsersService usersService, IMenuService menuService, IFileUploadService fileUploadService)
         {
             _mainMode = mainMode;
             _permissionService = permissionService;
             _usersService = usersService;
+            _menuService = menuService;
+            _uploadService = fileUploadService;
             SetPageSize();
         }
         private void SetPageSize()
@@ -34,16 +44,9 @@ namespace MainSite.Controllers
         {
             return View();
         }
-        [Route("Create")]
-        [HttpGet]
-        public IActionResult Create(string currentCategory)
-        {
-            var model = new NewsItemViewModel();
-            return View(model);
-        }
-        //[Route("Create")]
+ 
         [HttpPost]
-        public string Create([FromForm] NewsItemViewModel model)
+        public IActionResult Create([FromForm] NewsItemViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -51,19 +54,14 @@ namespace MainSite.Controllers
 
                 model.Author = User.Identity.Name;
                 _mainMode.CreateNewNewsItem(model);
-            }
-            return JsonConvert.SerializeObject(_mainMode.GetNewsItemViewModel(model.Id));
-            // return RedirectToAction(nameof(Index));
+ 
+            } 
+
+            return Json(JsonConvert.SerializeObject(_mainMode.GetNewsItemViewModel(model.Id)));
+           // return RedirectToAction(nameof(Index));
         }
-        [Route("Details")]
-        [HttpGet]
-        public IActionResult Details(string id)
-        {
-            if (string.IsNullOrWhiteSpace(id)) return RedirectToAction("Error");
-            var model = _mainMode.GetNewsItemViewModel(id);
-            if (model == null) return RedirectToAction("Error");
-            return View(model);
-        }
+
+ 
         [HttpGet]
         [Route("GetFile")]
         public IActionResult GetFile(string fileId)
@@ -73,6 +71,29 @@ namespace MainSite.Controllers
             var fileBinary = _mainMode.GeDownloadedFile(fileId);
             return File(fileBinary, file.MimeType, file.Name);
         }
+ 
+
+        // POST: MenuService/Create
+        [HttpPost]
+        public IActionResult CreateCategory(MenuItem model)
+        {
+            if (ModelState.IsValid)
+            {
+                var fileForm = Request.Form.Files.Count() > 0 ? Request.Form.Files[0] : null;
+                if (fileForm != null)
+                {
+                    _uploadService.StoreInDb = true;
+                    var insertFile = _uploadService.InsertFile(fileForm);
+                    model.UrlIcone = insertFile.StoredName;
+                }
+
+                _menuService.InsertItem(model);
+                return Json(JsonConvert.SerializeObject(model));
+            }
+
+            return new EmptyResult();
+        }
+ 
         [HttpPost]
         public IActionResult Delete(string id)
         {
