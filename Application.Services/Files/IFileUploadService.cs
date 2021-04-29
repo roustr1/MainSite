@@ -68,14 +68,7 @@ namespace Application.Services.Files
         /// <param name="file">The file to update</param>
         /// <returns>file</returns>
         File UpdateFile(File file);
-
-        /// <summary>
-        /// Get product file binary by file identifier
-        /// </summary>
-        /// <param name="fileId">The file identifier</param>
-        /// <returns>file binary</returns>
-        FileBinary GetFileBinaryById(string fileId);
-
+        
         /// <summary>
         /// Gets or sets a value indicating whether the files should be stored in data base.
         /// </summary>

@@ -339,15 +339,7 @@ namespace Application.Services.Files
             return file;
         }
 
-        /// <summary>
-        /// Get product file binary by file identifier
-        /// </summary>
-        /// <param name="fileId">The file identifier</param>
-        /// <returns>file binary</returns>
-        public virtual FileBinary GetFileBinaryById(string fileId)
-        {
-            return _fileBinaryRepository.Get(fileId);
-        }
+ 
 
 
         #endregion
