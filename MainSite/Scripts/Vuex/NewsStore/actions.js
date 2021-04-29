@@ -28,7 +28,7 @@ export default {
                     }
                 }
             );
-            commit('ADD_NEW', result.data);
+            commit('ADD_NEW', JSON.parse(result.data));
         }
         catch (ex) {}
     },

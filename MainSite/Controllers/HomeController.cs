@@ -50,7 +50,7 @@ namespace MainSite.Controllers
 
         //[Route("Create")]
         [HttpPost]
-        public string Create([FromForm] NewsItemViewModel model)
+        public IActionResult Create([FromForm] NewsItemViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -60,7 +60,7 @@ namespace MainSite.Controllers
                 _mainMode.CreateNewNewsItem(model);
             } 
 
-            return JsonConvert.SerializeObject(_mainMode.GetNewsItemViewModel(model.Id));
+            return Json(JsonConvert.SerializeObject(_mainMode.GetNewsItemViewModel(model.Id)));
            // return RedirectToAction(nameof(Index));
         }
 
