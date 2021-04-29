@@ -1,6 +1,8 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
 using Application.Dal;
 using Application.Dal.Domain.Permissions;
 using Application.Dal.Domain.Users;
@@ -18,8 +20,8 @@ namespace Application.Services.Permissions
         #endregion
 
         #region ctor
-
-        public PermissionService(IRepository<PermissionRecord> permissionRecordRepository, IRepository<PermissionRecordUserRoleMapping> permissionRecordUserRoleMappingRepository, IUsersService userService)
+        
+        public PermissionService( IRepository<PermissionRecord> permissionRecordRepository, IRepository<PermissionRecordUserRoleMapping> permissionRecordUserRoleMappingRepository, IUsersService userService)
         {
             _permissionRecordRepository = permissionRecordRepository;
             _permissionRecordUserRoleMappingRepository = permissionRecordUserRoleMappingRepository;
@@ -37,9 +39,13 @@ namespace Application.Services.Permissions
         /// <returns>Permissions</returns>
         public virtual IList<PermissionRecord> GetPermissionRecordsByUserRoleId(string userRoleId)
         {
+            var pr1 = _permissionRecordRepository.GetAll.ToList();
+            var prurmr = _permissionRecordUserRoleMappingRepository.GetAll.ToList();
 
-            var query = from pr in _permissionRecordRepository.GetAll()
-                        join prcrm in _permissionRecordUserRoleMappingRepository.GetAll() on pr.Id equals prcrm
+       
+
+            var query = from pr in pr1
+                        join prcrm in prurmr on pr.Id equals prcrm
                             .PermissionRecordId
                         where prcrm.UserRoleId == userRoleId
                         orderby pr.Id
@@ -91,7 +97,7 @@ namespace Application.Services.Permissions
             if (string.IsNullOrWhiteSpace(systemName))
                 return null;
 
-            var query = from pr in _permissionRecordRepository.GetAll()
+            var query = from pr in _permissionRecordRepository.GetAll 
                         where pr.SystemName == systemName
                         orderby pr.Id
                         select pr;
@@ -106,7 +112,7 @@ namespace Application.Services.Permissions
         /// <returns>Permissions</returns>
         public virtual IList<PermissionRecord> GetAllPermissionRecords()
         {
-            var query = from pr in _permissionRecordRepository.GetAll()
+            var query = from pr in _permissionRecordRepository.GetAll 
                         orderby pr.Name
                         select pr;
             var permissions = query.ToList();
@@ -288,7 +294,7 @@ namespace Application.Services.Permissions
         /// <param name="permissionId">Permission identifier</param>
         public virtual IList<PermissionRecordUserRoleMapping> GetMappingByPermissionRecordId(string permissionId)
         {
-            var query = _permissionRecordUserRoleMappingRepository.GetAll();
+            var query = _permissionRecordUserRoleMappingRepository.GetAll ;
 
             query = query.Where(x => x.PermissionRecordId == permissionId);
 
@@ -302,7 +308,7 @@ namespace Application.Services.Permissions
         /// <param name="userRoleId">User role identifier</param>
         public virtual void DeletePermissionRecordUserRoleMapping(string permissionId, string userRoleId)
         {
-            var mapping = _permissionRecordUserRoleMappingRepository.GetAll().FirstOrDefault(prcm => prcm.UserRoleId == userRoleId && prcm.PermissionRecordId == permissionId);
+            var mapping = _permissionRecordUserRoleMappingRepository.GetAll.FirstOrDefault(prcm => prcm.UserRoleId == userRoleId && prcm.PermissionRecordId == permissionId);
 
             if (mapping is null)
                 throw new Exception(string.Empty);

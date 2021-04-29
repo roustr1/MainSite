@@ -16,7 +16,7 @@ namespace Application.Services.Settings
             _settingsRepository = settingsRepository;
         }
 
-        public Setting GetParameterValue(string name) => _settingsRepository.GetAll().FirstOrDefault(c => c.Name == name);
+        public Setting GetParameterValue(string name) => _settingsRepository.GetAll.FirstOrDefault(c => c.Name == name);
 
         public Setting SetParameter(Setting setting)
         {
@@ -63,7 +63,7 @@ namespace Application.Services.Settings
             get
             {
                 var collection = new Dictionary<string, string>();
-                foreach (var kvp in _settingsRepository.GetAll())
+                foreach (var kvp in _settingsRepository.GetAll)
                 {
                     collection[kvp.Name] = kvp.Value;
                 }
@@ -82,6 +82,6 @@ namespace Application.Services.Settings
 
         public Setting GetSettingById(string id) => _settingsRepository.Get(id);
 
-        public ICollection<Setting> GetAllSettings() => _settingsRepository.GetAll().ToList();
+        public ICollection<Setting> GetAllSettings() => _settingsRepository.GetAll.ToList();
     }
 }

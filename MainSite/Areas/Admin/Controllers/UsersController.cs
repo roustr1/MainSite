@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Application.Dal.Domain.Permissions;
 using Application.Dal.Domain.Users;
 using Application.Services.Permissions;
 using Application.Services.Users;
@@ -10,9 +9,7 @@ using MainSite.Areas.Admin.Models.Users;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Primitives;
-using UserModelFactory = MainSite.Areas.Admin.Factories.UserModelFactory;
 
 namespace MainSite.Areas.Admin.Controllers
 {

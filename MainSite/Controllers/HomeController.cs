@@ -21,6 +21,7 @@ namespace MainSite.Controllers
         private readonly MainModel _mainMode;
         private readonly IPermissionService _permissionService;
         private readonly IUsersService _usersService;
+ 
         private readonly IMenuService _menuService;
         private readonly IFileUploadService _uploadService;
 
@@ -35,44 +36,42 @@ namespace MainSite.Controllers
             _uploadService = fileUploadService;
             SetPageSize();
         }
-
         private void SetPageSize()
         {
             _pagesize = _mainMode.GetSettingNewsPerPage();
         }
-
-
         public IActionResult Index(int page = 0, string category = null)
         {
             return View();
         }
-
+ 
         [HttpPost]
         public IActionResult Create([FromForm] NewsItemViewModel model)
         {
             if (ModelState.IsValid)
             {
                 model.UploadedFiles = Request.Form.Files.ToList();
-          
+
                 model.Author = User.Identity.Name;
                 _mainMode.CreateNewNewsItem(model);
+ 
             } 
 
             return Json(JsonConvert.SerializeObject(_mainMode.GetNewsItemViewModel(model.Id)));
            // return RedirectToAction(nameof(Index));
         }
 
+ 
         [HttpGet]
         [Route("GetFile")]
         public IActionResult GetFile(string fileId)
         {
             var file = _mainMode.GetDownloadedFileViewModel(fileId);
             if (file == null) return new EmptyResult();
-
             var fileBinary = _mainMode.GeDownloadedFile(fileId);
-
             return File(fileBinary, file.MimeType, file.Name);
         }
+ 
 
         // POST: MenuService/Create
         [HttpPost]
@@ -94,8 +93,7 @@ namespace MainSite.Controllers
 
             return new EmptyResult();
         }
-
-
+ 
         [HttpPost]
         public IActionResult Delete(string id)
         {
@@ -103,23 +101,19 @@ namespace MainSite.Controllers
             var item = _mainMode.GetNewsItemViewModel(id);
             if (item == null) return Error();
             _mainMode.DeleteNewsItem(id);
-
             return RedirectToAction("Index");
         }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
         [HttpPost]
-        public IActionResult PinNews(string newsItemId, string currentCategoryId=null, int currentPage = 0)
+        public IActionResult PinNews(string newsItemId, string currentCategoryId = null, int currentPage = 0)
         {
             _mainMode.PinNewsItem(newsItemId);
-            return RedirectToAction("Index", new {page = currentPage, category = currentCategoryId});
+            return RedirectToAction("Index", new { page = currentPage, category = currentCategoryId });
         }
-
         [HttpPost]
         public IActionResult UnpinNews(string newsItemId, string currentCategoryId = null, int currentPage = 0)
         {

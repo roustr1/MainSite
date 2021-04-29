@@ -12,6 +12,7 @@ namespace Application.Dal
 {
     public class ApplicationContext : DbContext
     {
+         
         public DbSet<MenuItem> MenuItems { get; set; }
         public DbSet<File> Files { get; set; }
         public DbSet<FileBinary> FileBinary { get; set; }
@@ -32,7 +33,6 @@ namespace Application.Dal
         /// Маппер Permission-userRole
         /// </summary>
         public DbSet<PermissionRecordUserRoleMapping> PRURM { get; set; }
-
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)

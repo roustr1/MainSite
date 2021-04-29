@@ -69,7 +69,7 @@ namespace Application.Services.News
             var isNewest = filterNewsItemParameters.IsNewest;
             var pinnedNews = filterNewsItemParameters.PinnedNewsIds;
 
-            var collection = _newsRepository.GetAll()
+            var collection = _newsRepository.GetAll
                 .Where(a => category == null || categories.Contains(a.Category))
                 .Where(a => !pinnedNews.Contains(a.Id))
                 .Where(a => authorId == null || a.AutorFio == authorId || a.LastChangeAuthor == authorId)

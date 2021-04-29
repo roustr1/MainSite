@@ -100,7 +100,7 @@ namespace UnitTests
                 }
             };
             Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
-            mock.Setup(m => m.GetAll()).Returns(listItems);
+            mock.Setup(m => m.GetAll).Returns(listItems);
 
             NewsService newsService = new NewsService(mock.Object);
             List<NewsItem> result = newsService.GetNewsItem(new FilterNewsItemParameters()).ToList();
@@ -148,7 +148,7 @@ namespace UnitTests
             };
 
             Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
-            mock.Setup(m => m.GetAll()).Returns(new List<NewsItem>()
+            mock.Setup(m => m.GetAll).Returns(new List<NewsItem>()
             {
                 newsItem1, newsItem2, newsItem3
             });
@@ -201,7 +201,7 @@ namespace UnitTests
             };
 
             Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
-            mock.Setup(m => m.GetAll()).Returns(new List<NewsItem>()
+            mock.Setup(m => m.GetAll).Returns(new List<NewsItem>()
             {
                 newsItem1, newsItem2, newsItem3
             });
@@ -258,7 +258,7 @@ namespace UnitTests
             };
 
             Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
-            mock.Setup(m => m.GetAll()).Returns(new List<NewsItem>()
+            mock.Setup(m => m.GetAll).Returns(new List<NewsItem>()
             {
                 newsItem1, newsItem2, newsItem3
             });
@@ -315,7 +315,7 @@ namespace UnitTests
             };
 
             Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
-            mock.Setup(m => m.GetAll()).Returns(new List<NewsItem>()
+            mock.Setup(m => m.GetAll).Returns(new List<NewsItem>()
             {
                 newsItem1, newsItem2, newsItem3
             });
@@ -371,7 +371,7 @@ namespace UnitTests
             };
 
             Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
-            mock.Setup(m => m.GetAll()).Returns(new List<NewsItem>()
+            mock.Setup(m => m.GetAll).Returns(new List<NewsItem>()
             {
                 newsItem2, newsItem1, newsItem3
             });
@@ -428,7 +428,7 @@ namespace UnitTests
 
 
             Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
-            mock.Setup(m => m.GetAll()).Returns(new List<NewsItem>()
+            mock.Setup(m => m.GetAll).Returns(new List<NewsItem>()
             {
                 newsItem1, newsItem2, newsItem3
             });
@@ -479,7 +479,7 @@ namespace UnitTests
             };
 
             Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
-            mock.Setup(m => m.GetAll()).Returns(new List<NewsItem>()
+            mock.Setup(m => m.GetAll).Returns(new List<NewsItem>()
             {
                 newsItem1, newsItem2, newsItem3
             });
@@ -544,7 +544,7 @@ namespace UnitTests
             };
 
             Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
-            mock.Setup(m => m.GetAll()).Returns(new List<NewsItem>()
+            mock.Setup(m => m.GetAll).Returns(new List<NewsItem>()
             {
                 newsItem1, newsItem2, newsItem3, newsItem4
             });
@@ -610,7 +610,7 @@ namespace UnitTests
             };
 
             Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
-            mock.Setup(m => m.GetAll()).Returns(new List<NewsItem>()
+            mock.Setup(m => m.GetAll).Returns(new List<NewsItem>()
             {
                 newsItem1, newsItem2, newsItem3, newsItem4
             });
@@ -677,7 +677,7 @@ namespace UnitTests
             };
 
             Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
-            mock.Setup(m => m.GetAll()).Returns(new List<NewsItem>()
+            mock.Setup(m => m.GetAll).Returns(new List<NewsItem>()
             {
                 newsItem1, newsItem2, newsItem3, newsItem4
             });
@@ -755,7 +755,7 @@ namespace UnitTests
             };
 
             Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
-            mock.Setup(m => m.GetAll()).Returns(new List<NewsItem>()
+            mock.Setup(m => m.GetAll).Returns(new List<NewsItem>()
             {
                 newsItem1, newsItem2, newsItem3, newsItem4, newsItem5
             });
