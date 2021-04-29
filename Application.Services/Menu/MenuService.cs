@@ -57,17 +57,17 @@ namespace Application.Services.Menu
 
         public IEnumerable<MenuItem> GetAll()
         {
-            return _repository.GetAll();
+            return _repository.GetAll;
         }
 
         public IEnumerable<MenuItem> GetManyByParentId(string parentId = null)
         {
-            return _repository.GetAll().Where(p => p.ParentId == parentId);
+            return _repository.GetAll.Where(p => p.ParentId == parentId);
         }
 
         public IEnumerable<MenuItem> GetMenu(string userRole)
         {
-            return _repository.GetAll().Where(m => m.UserRoles.Select(s => s.Id).Contains(userRole));
+            return _repository.GetAll.Where(m => m.UserRoles.Select(s => s.Id).Contains(userRole));
         }
         
         public IEnumerable<MenuItem> GetRecursionAllChildren(string id)

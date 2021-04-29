@@ -105,7 +105,7 @@ namespace Application.Services.Files
 
         public virtual FileBinary GetFileBinaryByFileId(string fileId)
         {
-            return _fileBinaryRepository.GetAll().FirstOrDefault(pb => pb.FileId == fileId);
+            return _fileBinaryRepository.GetAll.FirstOrDefault(pb => pb.FileId == fileId);
         }
         /// <summary>
         /// Gets the loaded file binary depending on file storage settings
@@ -152,7 +152,7 @@ namespace Application.Services.Files
 
         public virtual IEnumerable<File> GetFilesByNewsId(string id)
         {
-            return _fileRepository.GetAll().Where(c => c.NewsItemId == id);
+            return _fileRepository.GetAll.Where(c => c.NewsItemId == id);
 
         }
 
@@ -184,7 +184,7 @@ namespace Application.Services.Files
         ///// <returns>Paged list of files</returns>
         public virtual IPagedList<File> GetFiles(string virtualPath = "", int pageIndex = 0, int pageSize = int.MaxValue)
         {
-            var query = _fileRepository.GetAll();
+            var query = _fileRepository.GetAll;
 
             if (!string.IsNullOrEmpty(virtualPath))
                 query = (ICollection<File>)(virtualPath.EndsWith('/') ? query.Where(p => p.VirtualPath.StartsWith(virtualPath) || p.VirtualPath == virtualPath.TrimEnd('/')) : query.Where(p => p.VirtualPath == virtualPath));
@@ -370,7 +370,7 @@ namespace Application.Services.Files
 
         private File CheckAnotherFileWithMd5(string md5)
         {
-            return _fileRepository.GetAll().FirstOrDefault(c => c.Md5Hash == md5);
+            return _fileRepository.GetAll.FirstOrDefault(c => c.Md5Hash == md5);
         }
 
 
