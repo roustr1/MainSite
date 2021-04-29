@@ -2,6 +2,7 @@
 
 export default {
     async GET_NEWS({ commit }, data) {
+        document.getElementById('progressLoad').style.display = 'block';
         try {
             let result = await axios.get(`/api/ApiNews/newsItems/`, {
                 method: 'GET',
@@ -15,8 +16,10 @@ export default {
         catch (ex) {
 
         }
+        document.getElementById('progressLoad').style.display = 'none';
     },
     async CREATE_NEW({ commit }, data) {
+        document.getElementById('progressLoad').style.display = 'block';
         try {
             let result = await axios(
                 {
@@ -30,7 +33,8 @@ export default {
             );
             commit('ADD_NEW', JSON.parse(result.data));
         }
-        catch (ex) {}
+        catch (ex) { }
+        document.getElementById('progressLoad').style.display = 'none';
     },
     async DOWNLOADFILE({ commit }, item) {
         try {

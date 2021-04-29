@@ -2,6 +2,7 @@
 
 export default {
     async GET_CATEGORIES({ commit }) {
+        document.getElementById('progressLoad').style.display = 'none';
         try {
             let result = await axios('/api/ApiMenu/categories', {
                 method: 'GET'
@@ -9,12 +10,13 @@ export default {
             commit('SET_CATEGORIES', result.data);
         }
         catch (ex) { }
+        document.getElementById('progressLoad').style.display = 'block';
     },
     CHANGE_IS_ACTIVE_COMPONENT() {
         return false;
     },
     async ADD_CATEGORY({ commit }, data) {
-        console.log(data);
+        document.getElementById('progressLoad').style.display = 'none';
         try {
             let result = await axios('/Home/CreateCategory', {
                 method: 'POST',
@@ -23,6 +25,7 @@ export default {
             if (result.data.trim()) commit('ADD_CATEGORY', JSON.parse(result.data));
         }
         catch (ex) { }
+        document.getElementById('progressLoad').style.display = 'block';
     },
     CHANGE_IS_ACTIVE_COMPONENT() {
         return false;
@@ -37,6 +40,6 @@ export default {
             });
             commit('SET_BREADCRUMBS', result.data);
         }
-        catch (ex) {}
+        catch (ex) { }
     }
 }

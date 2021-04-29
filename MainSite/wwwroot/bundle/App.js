@@ -25288,29 +25288,33 @@ exports.default = (_GET_CATEGORIES$CHANG = {
                 while (1) {
                     switch (_context.prev = _context.next) {
                         case 0:
-                            _context.prev = 0;
-                            _context.next = 3;
+                            document.getElementById('progressLoad').style.display = 'none';
+                            _context.prev = 1;
+                            _context.next = 4;
                             return (0, _axios2.default)('/api/ApiMenu/categories', {
                                 method: 'GET'
                             });
 
-                        case 3:
+                        case 4:
                             result = _context.sent;
 
                             commit('SET_CATEGORIES', result.data);
-                            _context.next = 9;
+                            _context.next = 10;
                             break;
 
-                        case 7:
-                            _context.prev = 7;
-                            _context.t0 = _context['catch'](0);
+                        case 8:
+                            _context.prev = 8;
+                            _context.t0 = _context['catch'](1);
 
-                        case 9:
+                        case 10:
+                            document.getElementById('progressLoad').style.display = 'block';
+
+                        case 11:
                         case 'end':
                             return _context.stop();
                     }
                 }
-            }, _callee, _this, [[0, 7]]);
+            }, _callee, _this, [[1, 8]]);
         }))();
     },
     CHANGE_IS_ACTIVE_COMPONENT: function CHANGE_IS_ACTIVE_COMPONENT() {
@@ -25326,7 +25330,7 @@ exports.default = (_GET_CATEGORIES$CHANG = {
                 while (1) {
                     switch (_context2.prev = _context2.next) {
                         case 0:
-                            console.log(data);
+                            document.getElementById('progressLoad').style.display = 'none';
                             _context2.prev = 1;
                             _context2.next = 4;
                             return (0, _axios2.default)('/Home/CreateCategory', {
@@ -25346,6 +25350,9 @@ exports.default = (_GET_CATEGORIES$CHANG = {
                             _context2.t0 = _context2['catch'](1);
 
                         case 10:
+                            document.getElementById('progressLoad').style.display = 'block';
+
+                        case 11:
                         case 'end':
                             return _context2.stop();
                     }
@@ -26304,8 +26311,9 @@ exports.default = {
                 while (1) {
                     switch (_context.prev = _context.next) {
                         case 0:
-                            _context.prev = 0;
-                            _context.next = 3;
+                            document.getElementById('progressLoad').style.display = 'block';
+                            _context.prev = 1;
+                            _context.next = 4;
                             return _axios2.default.get('/api/ApiNews/newsItems/', {
                                 method: 'GET',
                                 params: {
@@ -26314,23 +26322,26 @@ exports.default = {
                                 }
                             });
 
-                        case 3:
+                        case 4:
                             result = _context.sent;
 
                             commit('SET_NEWS_MODEL', result.data);
-                            _context.next = 9;
+                            _context.next = 10;
                             break;
 
-                        case 7:
-                            _context.prev = 7;
-                            _context.t0 = _context['catch'](0);
+                        case 8:
+                            _context.prev = 8;
+                            _context.t0 = _context['catch'](1);
 
-                        case 9:
+                        case 10:
+                            document.getElementById('progressLoad').style.display = 'none';
+
+                        case 11:
                         case 'end':
                             return _context.stop();
                     }
                 }
-            }, _callee, _this, [[0, 7]]);
+            }, _callee, _this, [[1, 8]]);
         }))();
     },
     CREATE_NEW: function CREATE_NEW(_ref2, data) {
@@ -26343,8 +26354,9 @@ exports.default = {
                 while (1) {
                     switch (_context2.prev = _context2.next) {
                         case 0:
-                            _context2.prev = 0;
-                            _context2.next = 3;
+                            document.getElementById('progressLoad').style.display = 'block';
+                            _context2.prev = 1;
+                            _context2.next = 4;
                             return (0, _axios2.default)({
                                 method: 'post',
                                 url: data.action,
@@ -26354,23 +26366,26 @@ exports.default = {
                                 }
                             });
 
-                        case 3:
+                        case 4:
                             result = _context2.sent;
 
                             commit('ADD_NEW', JSON.parse(result.data));
-                            _context2.next = 9;
+                            _context2.next = 10;
                             break;
 
-                        case 7:
-                            _context2.prev = 7;
-                            _context2.t0 = _context2['catch'](0);
+                        case 8:
+                            _context2.prev = 8;
+                            _context2.t0 = _context2['catch'](1);
 
-                        case 9:
+                        case 10:
+                            document.getElementById('progressLoad').style.display = 'none';
+
+                        case 11:
                         case 'end':
                             return _context2.stop();
                     }
                 }
-            }, _callee2, _this2, [[0, 7]]);
+            }, _callee2, _this2, [[1, 8]]);
         }))();
     },
     DOWNLOADFILE: function DOWNLOADFILE(_ref3, item) {
