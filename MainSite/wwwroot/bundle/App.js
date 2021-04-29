@@ -25265,15 +25265,19 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _GET_CATEGORIES$CHANG;
+
 var _axios = __webpack_require__(99);
 
 var _axios2 = _interopRequireDefault(_axios);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-exports.default = {
+exports.default = (_GET_CATEGORIES$CHANG = {
     GET_CATEGORIES: function GET_CATEGORIES(_ref) {
         var _this = this;
 
@@ -25312,7 +25316,7 @@ exports.default = {
     CHANGE_IS_ACTIVE_COMPONENT: function CHANGE_IS_ACTIVE_COMPONENT() {
         return false;
     },
-    GET_CATEGORIES_BY_BREADCRUMBS: function GET_CATEGORIES_BY_BREADCRUMBS(_ref2, categoryId) {
+    ADD_CATEGORY: function ADD_CATEGORY(_ref2, data) {
         var _this2 = this;
 
         var commit = _ref2.commit;
@@ -25322,35 +25326,73 @@ exports.default = {
                 while (1) {
                     switch (_context2.prev = _context2.next) {
                         case 0:
-                            _context2.prev = 0;
-                            _context2.next = 3;
-                            return (0, _axios2.default)('/api/ApiMenu/breadcrumbs', {
-                                method: 'GET',
-                                params: {
-                                    categoryId: categoryId
-                                }
+                            console.log(data);
+                            _context2.prev = 1;
+                            _context2.next = 4;
+                            return (0, _axios2.default)('/Home/CreateCategory', {
+                                method: 'POST',
+                                data: data
                             });
 
-                        case 3:
+                        case 4:
                             result = _context2.sent;
 
-                            commit('SET_BREADCRUMBS', result.data);
-                            _context2.next = 9;
+                            if (result.data.trim()) commit('ADD_CATEGORY', JSON.parse(result.data));
+                            _context2.next = 10;
                             break;
 
-                        case 7:
-                            _context2.prev = 7;
-                            _context2.t0 = _context2['catch'](0);
+                        case 8:
+                            _context2.prev = 8;
+                            _context2.t0 = _context2['catch'](1);
 
-                        case 9:
+                        case 10:
                         case 'end':
                             return _context2.stop();
                     }
                 }
-            }, _callee2, _this2, [[0, 7]]);
+            }, _callee2, _this2, [[1, 8]]);
         }))();
     }
-};
+}, _defineProperty(_GET_CATEGORIES$CHANG, 'CHANGE_IS_ACTIVE_COMPONENT', function CHANGE_IS_ACTIVE_COMPONENT() {
+    return false;
+}), _defineProperty(_GET_CATEGORIES$CHANG, 'GET_CATEGORIES_BY_BREADCRUMBS', function GET_CATEGORIES_BY_BREADCRUMBS(_ref3, categoryId) {
+    var _this3 = this;
+
+    var commit = _ref3.commit;
+    return _asyncToGenerator(regeneratorRuntime.mark(function _callee3() {
+        var result;
+        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+            while (1) {
+                switch (_context3.prev = _context3.next) {
+                    case 0:
+                        _context3.prev = 0;
+                        _context3.next = 3;
+                        return (0, _axios2.default)('/api/ApiMenu/breadcrumbs', {
+                            method: 'GET',
+                            params: {
+                                categoryId: categoryId
+                            }
+                        });
+
+                    case 3:
+                        result = _context3.sent;
+
+                        commit('SET_BREADCRUMBS', result.data);
+                        _context3.next = 9;
+                        break;
+
+                    case 7:
+                        _context3.prev = 7;
+                        _context3.t0 = _context3['catch'](0);
+
+                    case 9:
+                    case 'end':
+                        return _context3.stop();
+                }
+            }
+        }, _callee3, _this3, [[0, 7]]);
+    }))();
+}), _GET_CATEGORIES$CHANG);
 
 /***/ }),
 /* 369 */
@@ -32379,6 +32421,15 @@ exports.default = {
         };
     },
 
+    computed: {
+        getPathImg: function getPathImg() {
+            if (this.category_item.urlIcon) {
+                return '/files/' + this.category_item.urlIcon;
+            }
+
+            return "/images/layout_icons/education.jpg";
+        }
+    },
     methods: {
         getNamePath: function getNamePath() {
             if (this.category_item.children.length > 0) {
@@ -32416,16 +32467,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('h5', {
     staticClass: "text-center ms-category-item_title bold"
-  }, [_vm._v("\n        " + _vm._s(_vm.category_item.name) + "\n    ")]), _vm._v(" "), _vm._m(0)])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
+  }, [_vm._v("\n        " + _vm._s(_vm.category_item.name) + "\n    ")]), _vm._v(" "), _c('div', {
     staticClass: "ms-category-item_image"
   }, [_c('img', {
     attrs: {
-      "src": "/images/layout_icons/education.jpg"
+      "src": _vm.getPathImg
     }
-  })])
-}]}
+  })])])
+},staticRenderFns: []}
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
@@ -32486,6 +32535,11 @@ exports.push([module.i, "\n.ms-category-add_item {\n  cursor: pointer;\n  margin
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _vuex = __webpack_require__(46);
+
 exports.default = {
     name: "ms-category-item_create",
     props: {
@@ -32508,13 +32562,20 @@ exports.default = {
 
     components: {},
     computed: {},
-    methods: {
+    methods: _extends({}, (0, _vuex.mapActions)('menu', ['ADD_CATEGORY']), {
         createCategory: function createCategory() {},
         backToCategoryList: function backToCategoryList() {
             this.$router.push({ name: "categoryList", params: { categoryId: this.parentCategoryId } });
         },
-        submit: function submit() {}
-    },
+        submit: function submit(e) {
+            e.preventDefault();
+            var data = new FormData(this.$refs.formCreate);
+            data.set("IsActive", document.getElementById('IsActive').checked);
+
+            this.ADD_CATEGORY(data);
+            this.$router.push({ name: "categoryList", params: { categoryId: this.parentCategoryId } });
+        }
+    }),
     mounted: function mounted() {}
 };
 
@@ -32527,11 +32588,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "col s12 m12 card-panel ms-category-item_create"
   }, [_c('h5', {
     staticClass: "header"
-  }, [_vm._v("Добавить подраздел")]), _vm._v(" "), _c('div', [_c('form', {
-    ref: "formCreateNews",
+  }, [_vm._v("Добавить подраздел")]), _vm._v(" "), _c('br'), _vm._v(" "), _c('form', {
+    ref: "formCreate",
     attrs: {
       "action": "/Admin/Menu/Create/",
-      "enctype": "multipart/form-data",
       "method": "post"
     },
     on: {
@@ -32539,7 +32599,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('div', {
     staticClass: "row"
-  }, [_vm._m(0), _vm._v(" "), _c('div', {
+  }, [_c('div', {
     staticClass: "input-field col s12 m12"
   }, [_c('input', {
     attrs: {
@@ -32565,7 +32625,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "for": "ParentName"
     }
-  }, [_vm._v("Родительский элемент")])]), _vm._v(" "), _vm._m(1)]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Родительский элемент")])]), _vm._v(" "), _vm._m(0), _vm._v(" "), _vm._m(1), _vm._v(" "), _vm._m(2)]), _vm._v(" "), _c('div', {
     staticClass: "input-field m12"
   }, [_c('input', {
     staticClass: "btn btn-defaultMainSite",
@@ -32578,7 +32638,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.backToCategoryList
     }
-  }, [_vm._v("Назад")])])])])])
+  }, [_vm._v("Назад")])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "input-field col s12 m12"
@@ -32597,9 +32657,36 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("Наименование подраздела")])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
+    staticClass: "file-field input-field col s12 m12"
+  }, [_c('div', {
+    staticClass: "btn btn-defaultMainSite"
+  }, [_c('span', [_vm._v("Выбрать изображение...")]), _vm._v(" "), _c('input', {
+    attrs: {
+      "type": "file",
+      "name": "UploadedFiles",
+      "multiple": "multiple"
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "file-path-wrapper",
+    staticStyle: {
+      "flex-grow": "1"
+    }
+  }, [_c('input', {
+    staticClass: "file-path",
+    staticStyle: {
+      "border": "none",
+      "color": "rgb(101, 147, 92)"
+    },
+    attrs: {
+      "disabled": "disabled",
+      "type": "text",
+      "placeholder": "Наименование изображения"
+    }
+  })])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
     staticClass: "input-field col  s12 m12"
   }, [_c('p', [_c('label', [_c('input', {
-    staticClass: "validate",
     attrs: {
       "name": "IsActive",
       "id": "IsActive",

@@ -7,7 +7,7 @@
                 {{category_item.name}}
             </h5>
             <div class="ms-category-item_image">
-                <img  src="/images/layout_icons/education.jpg"  />
+                <img v-bind:src="getPathImg" />
             </div>
         </div>
 </template>
@@ -25,6 +25,15 @@
             return {
                 namePath: '',
                 params: {}
+            }
+        },
+        computed: {
+            getPathImg() {
+                if (this.category_item.urlIcon) {
+                    return '/files/' + this.category_item.urlIcon;
+                }
+
+                return "/images/layout_icons/education.jpg";
             }
         },
         methods: {
