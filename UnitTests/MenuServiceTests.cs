@@ -35,7 +35,7 @@ namespace UnitTests
                 },
             };
             Mock<IRepository<MenuItem>> mock = new Mock<IRepository<MenuItem>>();
-            mock.Setup(m => m.GetAll()).Returns(listObjects);
+            mock.Setup(m => m.GetAll).Returns(listObjects);
 
             MenuService menuService = new MenuService(mock.Object);
             IEnumerable<MenuItem> result = menuService.GetManyByParentId();
@@ -66,7 +66,7 @@ namespace UnitTests
                 },
             };
             Mock<IRepository<MenuItem>> mock = new Mock<IRepository<MenuItem>>();
-            mock.Setup(m => m.GetAll()).Returns(listObjects);
+            mock.Setup(m => m.GetAll).Returns(listObjects);
 
             MenuService menuService = new MenuService(mock.Object);
             IEnumerable<MenuItem> result = menuService.GetAll();
@@ -87,7 +87,7 @@ namespace UnitTests
                 menuItem1, menuItem2, menuItem3
             };
             Mock<IRepository<MenuItem>> mock = new Mock<IRepository<MenuItem>>();
-            mock.Setup(m => m.GetAll()).Returns(listObjects);
+            mock.Setup(m => m.GetAll).Returns(listObjects);
 
             MenuService menuService = new MenuService(mock.Object);
             IEnumerable<MenuItem> result = menuService.GetManyByParentId();
@@ -115,7 +115,7 @@ namespace UnitTests
                 menuItem5, menuItem6, menuItem7, menuItem8,
             };
             Mock<IRepository<MenuItem>> mock = new Mock<IRepository<MenuItem>>();
-            mock.Setup(m => m.GetAll()).Returns(listObjects);
+            mock.Setup(m => m.GetAll).Returns(listObjects);
 
             MenuService menuService = new MenuService(mock.Object);
             IEnumerable<MenuItem> result = menuService.GetRecursionAllChildren(guidRootMenuWithChildren);
