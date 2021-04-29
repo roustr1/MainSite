@@ -62,7 +62,6 @@ namespace MainSite.Areas.Admin.Controllers
 
         // POST: MenuService/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Route("Admin/Menu/Create")]
         public IActionResult Create(MenuItem model)
         {

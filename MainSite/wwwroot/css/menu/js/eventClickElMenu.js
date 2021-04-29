@@ -2,7 +2,6 @@
 function eventClickElementMenu() {
     //выбираем нужные элементы
     var a = document.querySelectorAll('.menu a');
-    
     //перебираем все найденные элементы и вешаем на них события
     [].forEach.call(a, function (el) {
         //вешаем событие

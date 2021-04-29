@@ -1,32 +1,18 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    Layout = null;
 }
+<ms-menu></ms-menu>
 
-<ul class="menu" id="menu">
+@*<ul class="menu">
+
     <li>
-        <a href="@Url.Action("Index", "Home")" title="Новости" class="@(ViewData["categoryId"] == null ? "active" : "")">
+        <a href="@Url.Action("Index", "Home")" title="Новости" class="@(Model == null ? "active" : "")">
             <span class="rectangle" style="background-color: white;"></span>
             <div class="bold">Новости</div>
         </a>
     </li>
-    @await Component.InvokeAsync("NavComponent", ViewData["categoryId"])
+    @await Component.InvokeAsync("NavComponent", Model)
 </ul>
+*@
 
-@*<script>
-        var v = new Vue({
-            el: '#menu',
-            data: {
-                view: null,
-            },
-            methods: {
-                routerMenu: function (url) {
-                    axios.get(url).then(response => (this.view = response));
-                    console.log(this.view);
-                    var obj = document.getElementById('news');
-                    obj.innerHTML = this.view.data;
-                }
-            }
-        });
-    </script>*@
+@*<script src="@Url.Content("~/bundle/Menu.js")"></script>*@

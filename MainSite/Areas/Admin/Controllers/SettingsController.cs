@@ -1,12 +1,7 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
-using Application.Dal.Domain.Settings;
+﻿using Application.Dal.Domain.Settings;
 using Application.Services.Permissions;
 using Application.Services.Settings;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Primitives;
 
 namespace MainSite.Areas.Admin.Controllers
 {

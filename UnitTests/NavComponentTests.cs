@@ -39,7 +39,7 @@ namespace UnitTests
             };
             Mock<IMenuService> mock = new Mock<IMenuService>();
             mock.Setup(m => m.GetManyByParentId(null)).Returns(listObjects);
-            mock.Setup(m => m.GetAll()).Returns(listObjects);
+            mock.Setup(m => m.GetAll).Returns(listObjects);
             NavViewComponent navViewComponent = new NavViewComponent(mock.Object);
 
             IEnumerable<MenuItemViewModel> result = (IEnumerable<MenuItemViewModel>)((ViewViewComponentResult)navViewComponent.Invoke()).ViewData.Model;
@@ -73,7 +73,7 @@ namespace UnitTests
             mock.Setup(m => m.GetManyByParentId(null)).Returns(listObjects);
             mock.Setup(m => m.Get(guidSelectedMenuItem))
                 .Returns(listObjects.FirstOrDefault(i => i.Id == guidSelectedMenuItem));
-            mock.Setup(m => m.GetAll()).Returns(listObjects);
+            mock.Setup(m => m.GetAll).Returns(listObjects);
             NavViewComponent navViewComponent = new NavViewComponent(mock.Object);
 
             IEnumerable<MenuItemViewModel> result = (IEnumerable<MenuItemViewModel>)((ViewViewComponentResult)navViewComponent.Invoke(guidSelectedMenuItem)).ViewData.Model;
@@ -113,7 +113,7 @@ namespace UnitTests
             mock.Setup(m => m.GetManyByParentId(null)).Returns(listObjects);
             mock.Setup(m => m.Get(guidSelectedMenuItem))
                 .Returns(listObjects.FirstOrDefault(i => i.Id == guidSelectedMenuItem));
-            mock.Setup(m => m.GetAll()).Returns(listObjects);
+            mock.Setup(m => m.GetAll).Returns(listObjects);
             NavViewComponent navViewComponent = new NavViewComponent(mock.Object);
 
             IEnumerable<MenuItemViewModel> result = (IEnumerable<MenuItemViewModel>)((ViewViewComponentResult)navViewComponent.Invoke(guidSelectedMenuItem)).ViewData.Model;
@@ -169,7 +169,7 @@ namespace UnitTests
             mock.Setup(m => m.GetManyByParentId(null)).Returns(listMenuObjects.Where(i => i.ParentId == null));
             mock.Setup(m => m.GetManyByParentId(guidParentId1)).Returns(listMenuObjects.Where(i => i.ParentId == guidParentId1));
             mock.Setup(m => m.GetManyByParentId(guidParentId2)).Returns(listMenuObjects.Where(i => i.ParentId == guidParentId2));
-            mock.Setup(m => m.GetAll()).Returns(listMenuObjects);
+            mock.Setup(m => m.GetAll).Returns(listMenuObjects);
 
             NavViewComponent navViewComponent = new NavViewComponent(mock.Object);
 
@@ -231,7 +231,7 @@ namespace UnitTests
             mock.Setup(m => m.GetManyByParentId(guidParentId2)).Returns(listMenuObjects.Where(i => i.ParentId == guidParentId2));
             mock.Setup(m => m.Get(guidSelectedItemFirstLvl)).Returns(listMenuObjects.FirstOrDefault(i => i.Id == guidSelectedItemFirstLvl));
             mock.Setup(m => m.Get(guidSelectedItemSecondLvl)).Returns(listMenuObjects.FirstOrDefault(i => i.Id == guidSelectedItemSecondLvl));
-            mock.Setup(m => m.GetAll()).Returns(listMenuObjects);
+            mock.Setup(m => m.GetAll).Returns(listMenuObjects);
 
             NavViewComponent navViewComponent = new NavViewComponent(mock.Object);
 

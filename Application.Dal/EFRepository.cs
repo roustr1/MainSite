@@ -89,10 +89,16 @@ namespace Application.Dal
             return _context.Set<TEntity>().Where(@where);
         }
 
-        public IEnumerable<TEntity> GetAll()
+        public IEnumerable<TEntity> GetAll
         {
-            return _context.Set<TEntity>();
+            get
+            {
+                return _context.Set<TEntity>();
+            }
         }
+      
+         
+        
         
         private TEntity CheckAndCreateGuid(TEntity entity)
         {

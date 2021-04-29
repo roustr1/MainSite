@@ -91,7 +91,7 @@ namespace Application.Services.Users
             if (role is null)
                 throw new ArgumentNullException(nameof(role));
 
-            var mapping = _userUserRoleMappingRepository.GetAll()
+            var mapping = _userUserRoleMappingRepository.GetAll
                 .SingleOrDefault(ccrm => ccrm.UserId == user.Id && ccrm.UserRoleId == role.Id);
 
             if (mapping != null)
@@ -145,7 +145,7 @@ namespace Application.Services.Users
                 return null;
 
 
-            var query = from cr in _userRoleRepository.GetAll()
+            var query = from cr in _userRoleRepository.GetAll
                         orderby cr.Id
                         where cr.SystemName == systemName
                         select cr;
@@ -164,9 +164,11 @@ namespace Application.Services.Users
         {
             if (user == null)
                 throw new ArgumentNullException(nameof(user));
+            var useroleRepo = _userRoleRepository.GetAll.ToList();
+            var userUserRoleMappingRepo = _userUserRoleMappingRepository.GetAll.ToList();
 
-            var query = from cr in _userRoleRepository.GetAll()
-                        join crm in _userUserRoleMappingRepository.GetAll() on cr.Id equals crm.UserRoleId
+            var query = from cr in useroleRepo
+                        join crm in userUserRoleMappingRepo on cr.Id equals crm.UserRoleId
                         where crm.UserId == user.Name &&
                               (showHidden || cr.Active)
                         select cr.Id;
@@ -185,9 +187,11 @@ namespace Application.Services.Users
         {
             if (user == null)
                 throw new ArgumentNullException(nameof(user));
+            var useroleRepo = _userRoleRepository.GetAll.ToList();
+            var userUserRoleMappingRepo = _userUserRoleMappingRepository.GetAll.ToList();
 
-            var query = from ur in _userRoleRepository.GetAll()
-                        join urm in _userUserRoleMappingRepository.GetAll() on ur.Id equals urm.UserRoleId
+            var query = from ur in useroleRepo
+                        join urm in userUserRoleMappingRepo on ur.Id equals urm.UserRoleId
                         where urm.UserId == user.Id &&
                               (showHidden || ur.Active)
                         select ur;
@@ -202,7 +206,7 @@ namespace Application.Services.Users
         /// <returns>User roles</returns>
         public virtual IList<UserRole> GetAllUserRoles(bool showHidden = false)
         {
-            var query = from cr in _userRoleRepository.GetAll()
+            var query = from cr in _userRoleRepository.GetAll
                         orderby cr.Name
                         where showHidden || cr.Active
                         select cr;
@@ -353,12 +357,12 @@ namespace Application.Services.Users
             string username = null, string ipAddress = null,
             int pageIndex = 0, int pageSize = int.MaxValue, bool getOnlyTotalCount = false)
         {
-            var query = _userRepository.GetAll();
+            var query = _userRepository.GetAll;
             query = query.Where(c => !c.Deleted);
 
             if (customerRoleIds != null && customerRoleIds.Length > 0)
             {
-                query = query.Join(_userUserRoleMappingRepository.GetAll(), x => x.Id, y => y.UserId,
+                query = query.Join(_userUserRoleMappingRepository.GetAll, x => x.Id, y => y.UserId,
                         (x, y) => new { User = x, Mapping = y })
                     .Where(z => customerRoleIds.Contains(z.Mapping.UserRoleId))
                     .Select(z => z.User)
@@ -404,7 +408,7 @@ namespace Application.Services.Users
             if (userIds == null || userIds.Length == 0)
                 return new List<User>();
 
-            var query = from c in _userRepository.GetAll()
+            var query = from c in _userRepository.GetAll
                         where userIds.Contains(c.Id) && !c.Deleted
                         select c;
             var customers = query.ToList();
@@ -419,7 +423,7 @@ namespace Application.Services.Users
             if (string.IsNullOrWhiteSpace(systemName))
                 return null;
 
-            var query = from c in _userRepository.GetAll()
+            var query = from c in _userRepository.GetAll
                         orderby c.Id
                         where c.SystemName == systemName
                         select c;

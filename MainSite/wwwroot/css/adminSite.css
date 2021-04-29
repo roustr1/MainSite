@@ -177,7 +177,7 @@ html {
     border: 1px solid #9e9e9e;
     line-height: 1.5em;
     box-shadow: none; }
-    .btn-default:hover {
+    .btn-default:hover, .btn-default:active, .btn-default:focus {
       background-color: #eeeeee; }
   .btn-defaultMainSite {
     font-family: 'HelveticaNeueCyr' !important;
@@ -196,7 +196,7 @@ html {
   .btn-defaultMainSite {
     height: 2.5rem !important;
     line-height: 2.3rem !important; } }
-    .btn-defaultMainSite:hover {
+    .btn-defaultMainSite:hover, .btn-defaultMainSite:active, .btn-defaultMainSite:focus {
       background-color: #64b5f6;
       color: #ffffff; }
 

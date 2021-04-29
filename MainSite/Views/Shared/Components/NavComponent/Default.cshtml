@@ -2,8 +2,8 @@
 
 @foreach (var item in Model)
 {
-    var resultImgHtml = !String.IsNullOrWhiteSpace(item.UrlIcon) 
-            ? $"<img src=\"{item.UrlIcon}\" />" 
+    var resultImgHtml = !String.IsNullOrWhiteSpace(item.UrlIcon)
+            ? $"<img src=\"{item.UrlIcon}\" />"
             : "<span style=\"background-color: black; height:2px;width:30px;\" src=\"/content/layout_icons/free-icon-ads-2625106.svg\"></span>";
 
     <li>
