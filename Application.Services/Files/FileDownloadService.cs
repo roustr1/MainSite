@@ -108,7 +108,7 @@ namespace Application.Services.Files
 
         public virtual IEnumerable<File> GetFilesByNewsId(string newsId)
         {
-            return _downloadRepository.GetAll().Where(c => c.NewsItemId == newsId);
+            return _downloadRepository.GetAll.Where(c => c.NewsItemId == newsId);
         }
 
         /// <summary>

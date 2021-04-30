@@ -5,11 +5,8 @@ using Application.Services.Permissions;
 using Application.Services.Users;
 using MainSite.Models;
 using MainSite.ViewModels.News;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Linq;
-using System;
 using Application.Dal.Domain.Menu;
 using Application.Services.Menu;
 using Application.Services.Files;
@@ -21,13 +18,13 @@ namespace MainSite.Controllers
         private readonly MainModel _mainMode;
         private readonly IPermissionService _permissionService;
         private readonly IUsersService _usersService;
- 
+
         private readonly IMenuService _menuService;
-        private readonly IFileUploadService _uploadService;
+        private readonly IPictureService _uploadService;
 
         private static int _pagesize;
 
-        public HomeController(MainModel mainMode, IPermissionService permissionService, IUsersService usersService, IMenuService menuService, IFileUploadService fileUploadService)
+        public HomeController(MainModel mainMode, IPermissionService permissionService, IUsersService usersService, IMenuService menuService, IPictureService fileUploadService)
         {
             _mainMode = mainMode;
             _permissionService = permissionService;
@@ -44,7 +41,7 @@ namespace MainSite.Controllers
         {
             return View();
         }
- 
+
         [HttpPost]
         public IActionResult Create([FromForm] NewsItemViewModel model)
         {
@@ -54,14 +51,14 @@ namespace MainSite.Controllers
 
                 model.Author = User.Identity.Name;
                 _mainMode.CreateNewNewsItem(model);
- 
-            } 
+
+            }
 
             return Json(JsonConvert.SerializeObject(_mainMode.GetNewsItemViewModel(model.Id)));
-           // return RedirectToAction(nameof(Index));
+            // return RedirectToAction(nameof(Index));
         }
 
- 
+
         [HttpGet]
         [Route("GetFile")]
         public IActionResult GetFile(string fileId)
@@ -69,9 +66,9 @@ namespace MainSite.Controllers
             var file = _mainMode.GetDownloadedFileViewModel(fileId);
             if (file == null) return new EmptyResult();
             var fileBinary = _mainMode.GeDownloadedFile(fileId);
-            return File(fileBinary, file.MimeType, file.Name);
+            return File(fileBinary.FileBinary, file.MimeType, file.Name);
         }
- 
+
 
         // POST: MenuService/Create
         [HttpPost]
@@ -82,14 +79,18 @@ namespace MainSite.Controllers
                 var fileForm = Request.Form.Files.Count() > 0 ? Request.Form.Files[0] : null;
                 if (fileForm != null)
                 {
-                    _uploadService.StoreInDb = true;
-                    var insertFile = _uploadService.InsertFile(fileForm);
-                    model.UrlIcone = insertFile.StoredName;
+
+                    var file = _uploadService.InsertPicture(fileForm);
+                    _uploadService.GetPictureUrl(file.Id);
+
+                    model.UrlIcone = _uploadService.GetPictureUrl(file.Id);
                 }
 
                 _menuService.InsertItem(model);
                 return Json(JsonConvert.SerializeObject(model));
             }
+            return Json(null);
+        }
 
 
         [HttpPost]
@@ -101,6 +102,7 @@ namespace MainSite.Controllers
             _mainMode.DeleteNewsItem(id);
             return RedirectToAction("Index");
         }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

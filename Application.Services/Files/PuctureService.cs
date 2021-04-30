@@ -619,7 +619,7 @@ namespace Application.Services.Files
         /// <returns>Paged list of pictures</returns>
         public virtual IPagedList<Picture> GetPictures(string virtualPath = "", int pageIndex = 0, int pageSize = int.MaxValue)
         {
-            var query = _pictureRepository.GetAll().AsQueryable();
+            var query = _pictureRepository.GetAll.AsQueryable();
 
             if (!string.IsNullOrEmpty(virtualPath))
                 query = virtualPath.EndsWith('/') ? query.Where(p => p.VirtualPath.StartsWith(virtualPath) || p.VirtualPath == virtualPath.TrimEnd('/')) : query.Where(p => p.VirtualPath == virtualPath);
@@ -828,7 +828,7 @@ namespace Application.Services.Files
         /// <returns>Picture binary</returns>
         public virtual FileBinary GetPictureBinaryByPictureId(string pictureId)
         {
-            return _pictureBinaryRepository.GetAll().FirstOrDefault(pb => pb.FileId == pictureId);
+            return _pictureBinaryRepository.GetAll.FirstOrDefault(pb => pb.FileId == pictureId);
         }
 
 
