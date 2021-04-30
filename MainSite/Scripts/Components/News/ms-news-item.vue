@@ -18,7 +18,7 @@
 
             <div class="card_news-editor">
                 <a href="#"><i class="material-icons">edit</i></a>
-                <a href="#" class="error"><i class="material-icons">close</i></a>
+                <a href="#" class="error" @click="deleteNews()"><i class="material-icons">close</i></a>
             </div>
         </div>
 
@@ -47,6 +47,10 @@
             isNews: {
                 type: Boolean,
                 default: () => { return true }
+            },
+            index: {
+                type: Number,
+                default: () => { return null }
             }
         },
         data: () => {
@@ -77,6 +81,9 @@
             ]),
             downloadFile(item) {
                 this.DOWNLOADFILE(item);
+            },
+            deleteNews() {
+                this.$emit('deleteNews', this.index, this.news_item.Id);
             },
             listenByAdvancedDesription() {
                 let vm = this;

@@ -9,5 +9,8 @@
     DELETE_CURRENT_NEWS: (state) => {
         state.news = [];
         state.pager = {};
+    },
+    REMOVE_NEW_FOR_LIST: (state, index) => {
+        state.news.splice(index, 1);
     }
 }

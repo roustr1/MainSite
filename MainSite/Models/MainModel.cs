@@ -234,10 +234,12 @@ namespace MainSite.Models
         {
             var item = _newsService.GetNewsItem(id);
             _newsService.DeleteNews(item);
-
-            foreach (var file in item.Files)
+            if (item.Files != null)
             {
-                _downloadService.DeleteDownload(file);
+                foreach (var file in item.Files)
+                {
+                    _downloadService.DeleteDownload(file);
+                }
             }
         }
 

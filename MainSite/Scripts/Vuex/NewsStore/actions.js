@@ -36,6 +36,19 @@ export default {
         catch (ex) { }
         document.getElementById('progressLoad').style.display = 'none';
     },
+    async DELETE_NEW({ commit }, data) {
+        try {
+            let result = await axios(
+                {
+                    method: 'post',
+                    url: '/Home/Delete',
+                    params: { id: data.id}
+                }
+            );
+            commit('REMOVE_NEW_FOR_LIST', data.index);
+        }
+        catch (ex) { }
+    },
     async DOWNLOADFILE({ commit }, item) {
         try {
             let result = await axios

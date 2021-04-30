@@ -9,9 +9,11 @@
             <msCreaterNewsItem 
                 :categoryId="$route.params.categoryId"
             />
-            <msNewsItem v-for="item in news"
+            <msNewsItem v-for="(item, index) in news"
                 :key="item.id"
+                :index="index"
                 :isNews="IsNews"
+                 @deleteNews="deleteNews"
                 :news_item="item" />
             <msPage
                 v-if="pager.ViewPageList && pager.ViewPageList.length"
@@ -61,16 +63,17 @@
         methods: {
             ...mapActions('news',[
                 'GET_NEWS',
+                'DELETE_NEW'
             ]),
             ...mapActions('menu',[
                 'GET_CATEGORIES_BY_BREADCRUMBS',
             ]),
-            ...mapMutations('news',[
-                'DELETE_CURRENT_NEWS'
-            ]),
             fetchData() {
                 this.getNewsForCategory();
                 this.getBreadCrumbs();
+            },
+            deleteNews(index, id) {
+                this.DELETE_NEW({ index:index, id:id });
             },
             getNewsForCategory() {
                 this.GET_NEWS(
