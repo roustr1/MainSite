@@ -32424,7 +32424,7 @@ exports.default = {
     computed: {
         getPathImg: function getPathImg() {
             if (this.category_item.urlIcon) {
-                return '/files/' + this.category_item.urlIcon;
+                return this.category_item.urlIcon;
             }
 
             return "/images/layout_icons/education.jpg";

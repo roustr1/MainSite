@@ -1,15 +1,13 @@
 ﻿<template>
-        <div 
-            class="card-panel ms-category-item" 
-            @click="toCategory"
-        >
-            <h5 class="text-center ms-category-item_title bold">
-                {{category_item.name}}
-            </h5>
-            <div class="ms-category-item_image">
-                <img v-bind:src="getPathImg" />
-            </div>
+    <div class="card-panel ms-category-item"
+         @click="toCategory">
+        <h5 class="text-center ms-category-item_title bold">
+            {{category_item.name}}
+        </h5>
+        <div class="ms-category-item_image">
+            <img v-bind:src="getPathImg" />
         </div>
+    </div>
 </template>
 
 <script>
@@ -30,7 +28,7 @@
         computed: {
             getPathImg() {
                 if (this.category_item.urlIcon) {
-                    return '/files/' + this.category_item.urlIcon;
+                    return this.category_item.urlIcon;
                 }
 
                 return "/images/layout_icons/education.jpg";
@@ -54,7 +52,7 @@
                 }
             },
             toCategory() {
-                this.$router.push({ name: this.getNamePath(), params: this.params});
+                this.$router.push({ name: this.getNamePath(), params: this.params });
             }
         },
         mounted() {
@@ -70,22 +68,28 @@
         width: 47%;
         margin: 10px 10px;
         cursor: pointer;
-        &_title {
-            padding:0px 5px;
-            margin:0px;
-        }
-        &_image {
-            border-radius: 20px;
-            overflow: hidden;
-            position:relative;
-            padding: 5px 5px;
-            filter: blur(2px);
-            height:200px;
-            & > img {
-                width: 100%; 
-                height: 100%; 
-                display:inline-block;
-            }
-        }
+        &_title
+
+    {
+        padding: 0px 5px;
+        margin: 0px;
+    }
+
+    &_image {
+        border-radius: 20px;
+        overflow: hidden;
+        position: relative;
+        padding: 5px 5px;
+        filter: blur(2px);
+        height: 200px;
+        & > img
+
+    {
+        width: 100%;
+        height: 100%;
+        display: inline-block;
+    }
+
+    }
     }
 </style>

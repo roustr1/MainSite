@@ -18,9 +18,7 @@ using Application.Services.Settings;
 using MainSite.Models;
 using Application.Services.Users;
 using MainSite.Areas.Admin.Factories;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Server.HttpSys;
-using Microsoft.AspNetCore.Server.IISIntegration;
 
 namespace MainSite
 {
@@ -58,7 +56,7 @@ namespace MainSite
             services.AddTransient<IMenuService, MenuService>();
             services.AddTransient<INewsService, NewsService>();
             services.AddTransient<IFileDownloadService, FileDownloadService>();
-            services.AddTransient<IFileUploadService, FileUploadService>();
+            services.AddTransient<IPictureService, PictureService>();
             services.AddTransient<IAppFileProvider, AppFileProvider>();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IActionContextAccessor, ActionContextAccessor>();
