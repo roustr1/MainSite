@@ -1,25 +1,31 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Application.Dal;
+using Application.Dal.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using File = Application.Dal.Domain.Files.File;
 
 namespace Application.Services.Files
 {    /// <summary>
-     /// Download service
+     /// Сервис обработки файлов
      /// </summary>
     public partial class FileDownloadService : IFileDownloadService
-     {
+    {
         #region Fields
 
-        private readonly IRepository<File> _repository;
+        //   private readonly IEventPublisher _eventPubisher;
+        private readonly IRepository<File> _downloadRepository;
+        private readonly IAppFileProvider _fileProvider;
         #endregion
 
         #region Ctor
 
-        public FileDownloadService(IRepository<File> repository)
+        public FileDownloadService(IRepository<File> downloadRepository, IAppFileProvider fileProvider)
         {
-            _repository = repository;
+            _downloadRepository = downloadRepository;
+            _fileProvider = fileProvider;
         }
 
         #endregion
@@ -33,10 +39,10 @@ namespace Application.Services.Files
         /// <returns>Download</returns>
         public virtual File GetDownloadById(string downloadId)
         {
-            if (string.IsNullOrEmpty(downloadId))
+            if (downloadId == null)
                 return null;
 
-            return _repository.Get(downloadId);
+            return _downloadRepository.Get(downloadId);
         }
 
 
@@ -45,11 +51,15 @@ namespace Application.Services.Files
         /// Deletes a download
         /// </summary>
         /// <param name="download">Download</param>
-        public virtual void DeleteDownload(File file)
+        public virtual void DeleteDownload(File download)
         {
-            if (file == null)
-                throw new ArgumentNullException(nameof(file));
-            _repository.Delete(file);
+            if (download == null)
+                throw new ArgumentNullException(nameof(download));
+
+            _downloadRepository.Delete(download);
+
+            //event notification
+            //   _eventPubisher.EntityDeleted(download);
         }
 
         /// <summary>
@@ -60,7 +70,25 @@ namespace Application.Services.Files
         {
             if (download == null)
                 throw new ArgumentNullException(nameof(download));
-            _repository.Add(download);
+
+            _downloadRepository.Add(download);
+
+            //event notification
+            //   _eventPubisher.EntityInserted(download);
+        }
+
+        /// <summary>
+        /// Save file on file system
+        /// </summary>
+        /// <param name="fileName">file name  </param>
+        /// <param name="fileBinary">file binary</param>
+        protected virtual void SaveFileInFileSystem(string fileName, byte[] fileBinary)
+        {
+            _fileProvider.WriteAllBytes(GetLocalPath(fileName), fileBinary);
+        }
+        protected virtual string GetLocalPath(string fileName)
+        {
+            return _fileProvider.GetAbsolutePath("files", fileName);
         }
 
         /// <summary>
@@ -71,7 +99,16 @@ namespace Application.Services.Files
         {
             if (download == null)
                 throw new ArgumentNullException(nameof(download));
-            _repository.Update(download);
+
+            _downloadRepository.Update(download);
+
+            //event notification
+            //_eventPubisher.EntityUpdated(download);
+        }
+
+        public virtual IEnumerable<File> GetFilesByNewsId(string newsId)
+        {
+            return _downloadRepository.GetAll.Where(c => c.NewsItemId == newsId);
         }
 
         /// <summary>

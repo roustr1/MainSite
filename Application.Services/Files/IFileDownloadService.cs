@@ -1,4 +1,5 @@
-﻿using Application.Dal.Domain.Files;
+﻿using System.Collections.Generic;
+using Application.Dal.Domain.Files;
 using Microsoft.AspNetCore.Http;
 
 namespace Application.Services.Files
@@ -36,5 +37,7 @@ namespace Application.Services.Files
         /// <param name="file">File</param>
         /// <returns>Download binary array</returns>
         byte[] GetDownloadBits(IFormFile file);
+
+        IEnumerable<File> GetFilesByNewsId(string newsId);
     }
 }

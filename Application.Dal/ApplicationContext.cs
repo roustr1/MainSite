@@ -15,6 +15,7 @@ namespace Application.Dal
          
         public DbSet<MenuItem> MenuItems { get; set; }
         public DbSet<File> Files { get; set; }
+        public DbSet<Picture> Pictures { get; set; }
         public DbSet<FileBinary> FileBinary { get; set; }
         public DbSet<NewsItem> NewsItems { get; set; }
         public DbSet<PinNews> PinnedNews { get; set; }
