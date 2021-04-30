@@ -2,48 +2,42 @@
 using System.Collections.Generic;
 using System.Linq;
 using Application.Dal;
+using Application.Dal.Domain.Files;
 using Application.Dal.Domain.Menu;
 using Application.Dal.Domain.News;
+using Application.Dal.Infrastructure;
 using Application.Services.Files;
 using Application.Services.Infrastructure;
 using Application.Services.Menu;
 using Application.Services.News;
 using Application.Services.Settings;
 using Application.Services.Users;
-using MainSite.Controllers;
 using MainSite.Extensions;
 using MainSite.ViewModels.Common;
 using MainSite.ViewModels.News;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace MainSite.Models
 {
     public class MainModel
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly INewsService _newsService;
         private readonly IFileDownloadService _downloadService;
-        private readonly IFileUploadService _uploadService;
         private readonly ISettingsService _settingsService;
         private readonly IMenuService _menuService;
         private readonly IUsersService _usersService;
         private readonly PinNewsService _pinNewsService;
+        private readonly IAppFileProvider _fileProvider;
 
-        public MainModel(ILogger<HomeController> logger, INewsService newsService, IFileDownloadService downloadService,
-            IFileUploadService uploadService, ISettingsService settingsService, IMenuService menuService, IUsersService usersService,
-            PinNewsService pinNewsService)
+        public MainModel(INewsService newsService, IFileDownloadService downloadService, ISettingsService settingsService, IMenuService menuService, IUsersService usersService, PinNewsService pinNewsService, IAppFileProvider fileProvider)
         {
-            _logger = logger;
             _newsService = newsService;
             _downloadService = downloadService;
-            _uploadService = uploadService;
             _settingsService = settingsService;
             _menuService = menuService;
             _usersService = usersService;
             _pinNewsService = pinNewsService;
+            _fileProvider = fileProvider;
         }
 
         public NewsItemViewModel GetNewsItemViewModel(string id)
@@ -59,7 +53,7 @@ namespace MainSite.Models
             }
 
             var filesResult = new List<FileViewModel>();
-            var files = _uploadService.GetFilesByNewsId(newsItem.Id).ToList();
+            var files = _downloadService.GetFilesByNewsId(newsItem.Id).ToList();
 
             foreach (var newsItemFile in files)
             {
@@ -186,13 +180,9 @@ namespace MainSite.Models
             };
         }
 
-        public byte[] GeDownloadedFile(string newsItemId)
+        public File GeDownloadedFile(string newsItemId)
         {
-            var file = _uploadService.GetFileById(newsItemId);
-
-            if (file == null) return new byte[0];
-
-            return _uploadService.LoadFileBinary(file);
+            return _downloadService.GetDownloadById(newsItemId);
         }
 
         public void CreateNewNewsItem(NewsItemViewModel newsItemViewModel)
@@ -202,30 +192,42 @@ namespace MainSite.Models
             {
                 Header = newsItemViewModel.Header,
                 Description = newsItemViewModel.Description,
-                AutorFio = _usersService.GetUserBySystemName(newsItemViewModel.Author)?.FullName?? "Автор не указан",
+                AutorFio = _usersService.GetUserBySystemName(newsItemViewModel.Author)?.FullName ?? "Автор не указан",
                 CreatedDate = dataTimeNow,
                 LastChangeDate = dataTimeNow,
                 Category = newsItemViewModel.CategoryId,
             };
 
-
-            var collection = new List<Application.Dal.Domain.Files.File>();
             //uploadFiles 
-            foreach (var file in newsItemViewModel?.UploadedFiles)
+            var collection = new List<File>();
+            foreach (var file in newsItemViewModel.UploadedFiles)
             {
-                var newFile = _uploadService.InsertFile(file);
 
+                var fileName = file.FileName;
+                //remove path (passed in IE)
+                fileName = _fileProvider.GetFileName(fileName);
+
+                var download = new File
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    FileBinary = _downloadService?.GetDownloadBits(file) ?? null,
+                    MimeType = file.ContentType,
+                    //we store filename without extension for downloads
+                    OriginalName = _fileProvider.GetFileNameWithoutExtension(fileName),
+                    LastPart = _fileProvider.GetFileExtension(fileName)
+                };
+#warning  Некорректно сохраняется ссылка на файл
+                //todo Исправить ссылку
                 if (newsItemViewModel.IsAdvancedEditor)
                 {
-                    var newDescription = entity.Description.Replace(file.Name, newFile.Id);
+                    var newDescription = entity.Description.Replace(file.Name, download.Id);
                     entity.Description = newDescription;
                 }
-
-                collection.Add(newFile);
+                _downloadService?.InsertDownload(download);
+                collection.Add(download);
             }
 
             entity.Files = collection;
-
             _newsService.CreateNews(entity);
             newsItemViewModel.Id = entity.Id;
         }
@@ -253,7 +255,7 @@ namespace MainSite.Models
 
             return pagesize;
         }
-        
+
         public IList<NewsItemViewModel> GetManySearchResultNewsItemViewModel(string query)
         {
             return GetNewsItemsViewModel(_newsService.FindFreeText(query));
@@ -280,7 +282,7 @@ namespace MainSite.Models
         public void PinNewsItem(string newsItemId)
         {
             var newsItem = _newsService.GetNewsItem(newsItemId);
-            if(newsItem == null) return;
+            if (newsItem == null) return;
 
             var categoryId = newsItem.Category;
 
@@ -296,5 +298,28 @@ namespace MainSite.Models
 
             _pinNewsService.UnpinNews(newsItemId);
         }
+
+        public File SaveFile(IFormFile file)
+        {
+
+            var fileBinary = _downloadService.GetDownloadBits(file);
+            var fileName = file.FileName;
+            //remove path (passed in IE)
+            fileName = _fileProvider.GetFileName(fileName);
+            var contentType = file.ContentType;
+
+            var download = new File
+            {
+                Id = Guid.NewGuid().ToString(),
+                FileBinary = fileBinary,
+                MimeType = contentType,
+                //we store filename without extension for downloads
+                OriginalName = _fileProvider.GetFileNameWithoutExtension(fileName),
+                LastPart = _fileProvider.GetFileExtension(fileName)
+            };
+            _downloadService.InsertDownload(download);
+            return download;
+        }
+
     }
 }
