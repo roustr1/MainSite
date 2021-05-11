@@ -7,6 +7,7 @@ namespace MainSite.Areas.Admin.Components.UserRoles
     {
         public IViewComponentResult Invoke(UserRoleModel model)
         {
+            // ReSharper disable once Mvc.ViewComponentViewNotResolved
             return View("Default", model);
         }
     }
