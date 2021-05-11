@@ -6,6 +6,7 @@
 
 <div class="creator">
     <div class="card-panel creator-main" @*v-bind:class="classObject"*@>
+        @* ReSharper disable once Mvc.ViewComponentNotResolved *@
         @await Component.InvokeAsync("CategoryPathComponent", @Model.CategoryId)
         <a class="error close" v-on:click="showCreator(false, true)"><i class="material-icons">close</i></a>
 

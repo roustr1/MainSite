@@ -1,5 +1,4 @@
-﻿using System.Net;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 using Application.Services.Files;
 using Microsoft.AspNetCore.Http;
@@ -17,10 +16,7 @@ namespace MainSite.Controllers
             _downloadService = downloadService;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+ 
 
         [HttpGet]
         public IActionResult Upload()
