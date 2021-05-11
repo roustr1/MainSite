@@ -107,7 +107,6 @@
             this.getBreadCrumbs();
         },
         beforeDestroy() {
-            this.DELETE_CURRENT_NEWS();
         }
     };
 </script>
