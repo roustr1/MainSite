@@ -1,5 +1,5 @@
 ﻿<template>
-    <div class="card-panel row detailsNew" :id="GetUnicIdBlock">
+    <div class="card-panel detailsNew" :id="GetUnicIdBlock">
 
         <div class="card_news card_news-details">
             <div class="card_news-image"><img :src="this.news_item.UrlIcon" alt="" /></div>

@@ -1,5 +1,5 @@
 ﻿<template>
-    <div>
+    <div class="row">
         <ms-birthday v-if="IsNews" />
         <div id="newsComponent">
             <msBreadCrumbs
@@ -68,6 +68,9 @@
             ...mapActions('menu',[
                 'GET_CATEGORIES_BY_BREADCRUMBS',
             ]),
+            ...mapMutations('news', [
+                'DELETE_CURRENT_NEWS'
+            ]),
             fetchData() {
                 this.getNewsForCategory();
                 this.getBreadCrumbs();
@@ -107,6 +110,7 @@
             this.getBreadCrumbs();
         },
         beforeDestroy() {
+            this.DELETE_CURRENT_NEWS();
         }
     };
 </script>

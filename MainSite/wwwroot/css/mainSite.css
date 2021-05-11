@@ -328,8 +328,6 @@ html {
       width: 0; }
   #mainBlock .creator {
     margin-bottom: 1rem;
-    margin-left: -0.75rem;
-    margin-right: -0.75rem;
     position: relative; }
     #mainBlock .creator > .card-panel {
       border-radius: 8px; }
