@@ -10,6 +10,7 @@ using System.Linq;
 using Application.Dal.Domain.Menu;
 using Application.Services.Menu;
 using Application.Services.Files;
+using MainSite.ViewModels.UI.Menu;
 
 namespace MainSite.Controllers
 {
@@ -87,7 +88,19 @@ namespace MainSite.Controllers
                 }
 
                 _menuService.InsertItem(model);
-                return Json(JsonConvert.SerializeObject(model));
+
+                var itemViewModel = new MenuItemViewModel()
+                {
+                    Id = model.Id,
+                    Name = model.Name,
+                    ToolTip = model.ToolTip,
+                    UrlIcon = model.UrlIcone,
+                    ParentId = model.ParentId,
+                    Index = model.Index
+
+                };
+
+                return Json(JsonConvert.SerializeObject(itemViewModel));
             }
             return Json(null);
         }

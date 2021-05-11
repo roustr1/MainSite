@@ -9,7 +9,9 @@ export default {
             });
             commit('SET_CATEGORIES', result.data);
         }
-        catch (ex) { }
+        catch (ex) {
+            console.log(ex);
+        }
         document.getElementById('progressLoad').style.display = 'none';
     },
     CHANGE_IS_ACTIVE_COMPONENT() {

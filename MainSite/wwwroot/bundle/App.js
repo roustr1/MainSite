@@ -25092,24 +25092,24 @@ exports.default = {
     },
     computed: _extends({}, (0, _vuex.mapState)('menu', ['activeCategoryId', 'breadcrumbs']), {
         IsActive: function IsActive() {
-            if (this.$route.params.categoryId != undefined && this.$route.params.categoryId != this.menu_item.id) {
+            if (this.$route.params.categoryId != undefined && this.$route.params.categoryId != this.menu_item.Id) {
                 if (this.breadcrumbs.length) {
-                    return this.breadcrumbs[0].id == this.menu_item.id ? true : false;
+                    return this.breadcrumbs[0].id == this.menu_item.Id ? true : false;
                 }
             }
 
-            return this.menu_item.id == this.activeCategoryId || this.$route.params.categoryId == this.menu_item.id ? true : false;
+            return this.menu_item.Id == this.activeCategoryId || this.$route.params.categoryId == this.menu_item.Id ? true : false;
         }
     }),
     methods: _extends({}, (0, _vuex.mapMutations)('menu', ['SET_OR_UPDATE_ACTIVE_CATEGORY']), {
         eventClickElementMenu: function eventClickElementMenu(e) {
             if (!this.IsActive) {
-                this.SET_OR_UPDATE_ACTIVE_CATEGORY(this.menu_item.id);
+                this.SET_OR_UPDATE_ACTIVE_CATEGORY(this.menu_item.Id);
 
-                if (this.menu_item.children && this.menu_item.children.length) {
-                    this.$router.push({ name: "categoryList", params: { categoryId: this.menu_item.id, category: this.menu_item } });
+                if (this.menu_item.Children && this.menu_item.Children.length) {
+                    this.$router.push({ name: "categoryList", params: { categoryId: this.menu_item.Id, category: this.menu_item } });
                 } else {
-                    this.$router.push({ name: "categoryDetails", params: { categoryId: this.menu_item.id, page: 1 } });
+                    this.$router.push({ name: "categoryDetails", params: { categoryId: this.menu_item.Id, page: 1 } });
                 }
             }
         }
@@ -25136,7 +25136,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "src": "/content/layout_icons/free-icon-ads-2625106.svg"
     }
-  }), _vm._v(" "), _c('div', [_vm._v(_vm._s(_vm.menu_item.name))])])])
+  }), _vm._v(" "), _c('div', [_vm._v(_vm._s(_vm.menu_item.Name))])])])
 },staticRenderFns: []}
 if (false) {
   module.hot.accept()
@@ -25299,17 +25299,19 @@ exports.default = (_GET_CATEGORIES$CHANG = {
                             result = _context.sent;
 
                             commit('SET_CATEGORIES', result.data);
-                            _context.next = 10;
+                            _context.next = 11;
                             break;
 
                         case 8:
                             _context.prev = 8;
                             _context.t0 = _context['catch'](1);
 
-                        case 10:
-                            document.getElementById('progressLoad').style.display = 'none';
+                            console.log(_context.t0);
 
                         case 11:
+                            document.getElementById('progressLoad').style.display = 'none';
+
+                        case 12:
                         case 'end':
                             return _context.stop();
                     }
@@ -26211,6 +26213,26 @@ exports.default = {
     },
     SET_OR_UPDATE_ACTIVE_CATEGORY: function SET_OR_UPDATE_ACTIVE_CATEGORY(state, categoryId) {
         state.activeCategoryId = categoryId;
+    },
+    ADD_CATEGORY: function ADD_CATEGORY(state, category) {
+        console.log(category);
+        function searchParentCategory(array, searchId) {
+            array.forEach(function (element) {
+                if (element != null) {
+                    if (element.Id === searchId) {
+                        console.log(element);
+                        element.Children.push(category);
+                        console.log(element);
+                        console.log("Нашелся");
+                        return;
+                    } else {
+                        if (element.Children !== []) searchParentCategory(element.Children, searchId);
+                    }
+                }
+            });
+        }
+
+        searchParentCategory(state.categories, category.ParentId);
     }
 };
 
@@ -32335,13 +32357,15 @@ exports.default = {
     computed: _extends({}, (0, _vuex.mapState)('menu', ['breadcrumbs', 'categories']), {
         getCategoryChildren: function getCategoryChildren() {
             if (!this.$route.params.categoryId) return [];
+            var children = [];
 
             if (Object.keys(this.category).length == 0) {
-                var children = this.getCategoryById(this.$route.params.categoryId);
-                return children;
+                children = this.getCategoryById(this.$route.params.categoryId);
+            } else {
+                children = this.category.Children;
             }
 
-            return this.category.children;
+            return children;
         }
     }),
     methods: _extends({}, (0, _vuex.mapActions)('menu', ['GET_CATEGORIES_BY_BREADCRUMBS']), {
@@ -32355,17 +32379,17 @@ exports.default = {
             function arrMaper(arr) {
                 arr.forEach(function (element) {
                     if (element != null) {
-                        if (element.children !== []) arrMaper(element.children);
+                        if (element.Children !== []) arrMaper(element.Children);
                         set.add(element);
                     }
                 });
             };
             arrMaper(this.categories.slice());
             var categoryes = Array.from(set).find(function (item) {
-                if (item.id == categoryId) return item;
+                if (item.Id == categoryId) return item;
             });
 
-            return Object.keys(categoryes).length == 0 ? [] : categoryes.children;
+            return Object.keys(categoryes).length == 0 ? [] : categoryes.Children;
         },
         createCategory: function createCategory() {
             var parentCategoryName = this.breadcrumbs && this.breadcrumbs.length > 0 ? this.breadcrumbs[this.breadcrumbs.length - 1].name : "";
@@ -32497,8 +32521,8 @@ exports.default = {
 
     computed: {
         getPathImg: function getPathImg() {
-            if (this.category_item.urlIcon) {
-                return this.category_item.urlIcon;
+            if (this.category_item.UrlIcon) {
+                return this.category_item.UrlIcon;
             }
 
             return "/images/layout_icons/education.jpg";
@@ -32506,7 +32530,7 @@ exports.default = {
     },
     methods: {
         getNamePath: function getNamePath() {
-            if (this.category_item.children.length > 0) {
+            if (this.category_item.Children.length > 0) {
                 return 'categoryList';
             } else {
                 return 'categoryDetails';
@@ -32514,9 +32538,9 @@ exports.default = {
         },
         setParamsPath: function setParamsPath() {
             this.params = {};
-            this.params.categoryId = this.category_item.id;
+            this.params.categoryId = this.category_item.Id;
             this.params.page = 1;
-            if (this.category_item.children.length > 0) {
+            if (this.category_item.Children.length > 0) {
                 this.params.category = this.category_item;
             }
         },
@@ -32541,7 +32565,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('h5', {
     staticClass: "text-center ms-category-item_title bold"
-  }, [_vm._v("\n        " + _vm._s(_vm.category_item.name) + "\n    ")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n        " + _vm._s(_vm.category_item.Name) + "\n    ")]), _vm._v(" "), _c('div', {
     staticClass: "ms-category-item_image"
   }, [_c('img', {
     attrs: {
@@ -32793,7 +32817,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "row flexCategoryList"
   }, [_vm._l((_vm.getCategoryChildren), function(item) {
     return _c('msCategoryItem', {
-      key: item.id,
+      key: item.Id,
       attrs: {
         "category_item": item
       }

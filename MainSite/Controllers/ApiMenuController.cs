@@ -2,6 +2,7 @@
 using Application.Services.Menu;
 using MainSite.ViewModels.UI.Menu;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -18,7 +19,7 @@ namespace MainSite.Controllers
             _service = menuService;
         }
         [Route("categories")]
-        public IEnumerable<MenuItemViewModel> MenuTreeGenerate(string categoryId = null)
+        public string MenuTreeGenerate(string categoryId = null)
         {
             var result = new List<MenuItemViewModel>();
 
@@ -26,7 +27,7 @@ namespace MainSite.Controllers
 
             CreateTree(null, result, selectedCategory);
 
-            return result;
+            return JsonConvert.SerializeObject(result);
         }
 
         [Route("breadcrumbs")]
