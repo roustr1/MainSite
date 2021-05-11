@@ -31,6 +31,7 @@ export default {
         return false;
     },
     async GET_CATEGORIES_BY_BREADCRUMBS({ commit }, categoryId) {
+        document.getElementById('progressLoad').style.display = 'block';
         try {
             let result = await axios('/api/ApiMenu/breadcrumbs', {
                 method: 'GET',
@@ -41,5 +42,6 @@ export default {
             commit('SET_BREADCRUMBS', result.data);
         }
         catch (ex) { }
+        document.getElementById('progressLoad').style.display = 'none';
     }
 }

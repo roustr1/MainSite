@@ -25370,8 +25370,9 @@ exports.default = (_GET_CATEGORIES$CHANG = {
             while (1) {
                 switch (_context3.prev = _context3.next) {
                     case 0:
-                        _context3.prev = 0;
-                        _context3.next = 3;
+                        document.getElementById('progressLoad').style.display = 'block';
+                        _context3.prev = 1;
+                        _context3.next = 4;
                         return (0, _axios2.default)('/api/ApiMenu/breadcrumbs', {
                             method: 'GET',
                             params: {
@@ -25379,23 +25380,26 @@ exports.default = (_GET_CATEGORIES$CHANG = {
                             }
                         });
 
-                    case 3:
+                    case 4:
                         result = _context3.sent;
 
                         commit('SET_BREADCRUMBS', result.data);
-                        _context3.next = 9;
+                        _context3.next = 10;
                         break;
 
-                    case 7:
-                        _context3.prev = 7;
-                        _context3.t0 = _context3['catch'](0);
+                    case 8:
+                        _context3.prev = 8;
+                        _context3.t0 = _context3['catch'](1);
 
-                    case 9:
+                    case 10:
+                        document.getElementById('progressLoad').style.display = 'none';
+
+                    case 11:
                     case 'end':
                         return _context3.stop();
                 }
             }
-        }, _callee3, _this3, [[0, 7]]);
+        }, _callee3, _this3, [[1, 8]]);
     }))();
 }), _GET_CATEGORIES$CHANG);
 
@@ -26387,7 +26391,8 @@ exports.default = {
                         case 4:
                             result = _context2.sent;
 
-                            commit('ADD_NEW', JSON.parse(result.data));
+
+                            if (JSON.parse(result.data) != null) commit('ADD_NEW', JSON.parse(result.data));
                             _context2.next = 10;
                             break;
 
@@ -30300,7 +30305,8 @@ exports.default = {
                 'desActive': false
             },
             model: {
-                CategoryId: ''
+                CategoryId: '',
+                FilesName: ''
             },
             textEditor: '',
             fileList: [],
@@ -30340,6 +30346,12 @@ exports.default = {
             };
 
             this.CREATE_NEW(result);
+
+            this.fileList = [];
+            if (!this.isAdvancedEditor) {
+                this.model = {};
+                this.$refs.fileInputNameList.value = '';
+            }
         }
     })
 };
@@ -31450,7 +31462,24 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "UploadedFiles",
       "multiple": ""
     }
-  })]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c('input', {
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "file-path-wrapper",
+    staticStyle: {
+      "flex-grow": "1"
+    }
+  }, [_c('input', {
+    ref: "fileInputNameList",
+    staticClass: "file-path",
+    staticStyle: {
+      "border": "none",
+      "color": "#65935C"
+    },
+    attrs: {
+      "disabled": "",
+      "type": "text",
+      "placeholder": "Список выбранных файлов"
+    }
+  })]), _vm._v(" "), _c('input', {
     staticClass: "btn btn-defaultMainSite",
     attrs: {
       "type": "submit",
@@ -31467,25 +31496,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_vm._v("Новое сообщение")])])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "file-path-wrapper",
-    staticStyle: {
-      "flex-grow": "1"
-    }
-  }, [_c('input', {
-    staticClass: "file-path",
-    staticStyle: {
-      "border": "none",
-      "color": "#65935C"
-    },
-    attrs: {
-      "disabled": "",
-      "type": "text",
-      "placeholder": "Список выбранных файлов"
-    }
-  })])
-}]}
+},staticRenderFns: []}
 if (false) {
   module.hot.accept()
   if (module.hot.data) {

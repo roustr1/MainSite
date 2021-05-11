@@ -28,10 +28,10 @@
                     <div class="file-field input-field creator-main-panel s12 m12">
                         <div class="btn btn-defaultMainSite">
                             <span>Прикрепить файл...</span>
-                            <input ref="fileInput" type="file" name="UploadedFiles" multiple>
+                            <input ref="fileInput" type="file" name="UploadedFiles" multiple />
                         </div>
                         <div class="file-path-wrapper" style="flex-grow: 1;">
-                            <input disabled class="file-path" style="border: none;color: #65935C;" type="text" placeholder="Список выбранных файлов">
+                            <input ref="fileInputNameList" disabled class="file-path" style="border: none;color: #65935C;" type="text" placeholder="Список выбранных файлов">
                         </div>
                         <input type="submit" class="btn btn-defaultMainSite" value="Опубликовать" />
                     </div>
@@ -63,7 +63,8 @@
                     'desActive': false
                 },
                 model: {
-                    CategoryId: ''
+                    CategoryId: '',
+                    FilesName: ''
                 },
                 textEditor: '',
                 fileList: [],
@@ -107,6 +108,12 @@
                 };
 
                 this.CREATE_NEW(result);
+
+                this.fileList = [];
+                if (!this.isAdvancedEditor) {
+                    this.model = {};
+                    this.$refs.fileInputNameList.value = '';
+                }
             }
         }
     }

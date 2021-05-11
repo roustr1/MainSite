@@ -31,7 +31,8 @@ export default {
                     }
                 }
             );
-            commit('ADD_NEW', JSON.parse(result.data));
+
+            if (JSON.parse(result.data) != null) commit('ADD_NEW', JSON.parse(result.data));
         }
         catch (ex) { }
         document.getElementById('progressLoad').style.display = 'none';
