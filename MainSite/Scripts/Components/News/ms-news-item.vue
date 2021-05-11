@@ -1,41 +1,46 @@
 ﻿<template>
     <div class="card-panel detailsNew" :id="GetUnicIdBlock">
-
-        <div class="card_news card_news-details">
-            <div class="card_news-image"><img :src="this.news_item.UrlIcon" alt="" /></div>
-            <div class="card_news-main">
-                <div v-if="isNews" class="card_news-main-header">
-                    <span class="bold">{{this.news_item.Author}}</span>
-                    <span class="bold" v-if="IsMessageDetails">{{this.Message}} запись в разделе</span>
-                    <router-link :id="news_item.Id"
-                                 :to="{name: 'categoryDetails', params: {categoryId : news_item.CategoryId, page: 1}}">
-                        {{this.news_item.Category}}
-                    </router-link>
+        <template v-if="true">
+            <div class="card_news card_news-details">
+                <div class="card_news-image"><img :src="this.news_item.UrlIcon" alt="" /></div>
+                <div class="card_news-main">
+                    <div v-if="isNews" class="card_news-main-header">
+                        <span class="bold">{{this.news_item.Author}}</span>
+                        <span class="bold" v-if="IsMessageDetails">{{this.Message}} запись в разделе</span>
+                        <router-link :id="news_item.Id"
+                                     :to="{name: 'categoryDetails', params: {categoryId : news_item.CategoryId, page: 1}}">
+                            {{this.news_item.Category}}
+                        </router-link>
+                    </div>
+                    <div class="card_news-main-title"><a>{{this.news_item.Header}}</a></div>
+                    <div class="card_news-main-footer"><b v-if="!isNews">{{this.news_item.Author}}</b> {{RefactDate}}</div>
                 </div>
-                <div class="card_news-main-title"><a>{{this.news_item.Header}}</a></div>
-                <div class="card_news-main-footer"><b v-if="!isNews">{{this.news_item.Author}}</b> {{RefactDate}}</div>
+
+                <div class="card_news-editor">
+                    <a href="#"><i class="material-icons">edit</i></a>
+                    <a href="#" class="error" @click="deleteNews()"><i class="material-icons">close</i></a>
+                </div>
             </div>
 
-            <div class="card_news-editor">
-                <a href="#"><i class="material-icons">edit</i></a>
-                <a href="#" class="error" @click="deleteNews()"><i class="material-icons">close</i></a>
+            <div class="card_news-description" v-html="this.news_item.Description"></div>
+
+            <ul class="dropdownFiles">
+                <li v-for="item in news_item.Files"
+                    :key="item.Id">
+                    <a href="#" @click="downloadFile(item)"><i class="material-icons">download</i> {{item.Name}}</a>
+                </li>
+            </ul>
+        </template>
+        <template v-else>
+            <div>
+                <msEditerNewsItem />
             </div>
-        </div>
-
-        <div class="card_news-description" v-html="this.news_item.Description"></div>
-
-        <ul class="dropdownFiles">
-            <li
-                v-for="item in news_item.Files"
-                :key="item.Id"
-                >
-                <a href="#" @click="downloadFile(item)"><i class="material-icons">download</i> {{item.Name}}</a>
-            </li>
-        </ul>
-    </div>
+        </template>
+</div>
 </template>
 
 <script>
+    import msEditerNewsItem from './ms-editer_news-item.vue';
     import { mapActions } from 'vuex';
     export default {
         name: "ms-news-item",
@@ -57,6 +62,9 @@
             return {
                 IsMessageDetails: true
             }
+        },
+        components: {
+            msEditerNewsItem
         },
         computed: {
             Message() {
@@ -112,12 +120,17 @@
 
 <style scoped lang="scss">
     .dropdownFiles a {
-        display:flex;
-        align-items:center;
-        &:hover {
-            i {
-                color:#9e9e9e !important;
-             }
-        }
+        display: flex;
+        align-items: center;
+        &:hover
+
+    {
+        i
+
+    {
+        color: #9e9e9e !important;
+    }
+
+    }
     }
 </style>
