@@ -341,3 +341,6 @@ ASALocalRun/
 healthchecksdb
 /MainSite/wwwroot/files
 /MainSite/wwwroot/images
+*.png
+*.jpeg
+
