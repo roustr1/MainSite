@@ -10,7 +10,7 @@
                 :categoryId="$route.params.categoryId"
             />
             <msNewsItem v-for="(item, index) in news"
-                :key="item.id"
+                :key="item.Id"
                 :index="index"
                 :isNews="IsNews"
                  @deleteNews="deleteNews"

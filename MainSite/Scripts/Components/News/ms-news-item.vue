@@ -1,6 +1,6 @@
 ﻿<template>
     <div class="card-panel detailsNew" :id="GetUnicIdBlock">
-        <template v-if="true">
+        <template v-if="!isEditer">
             <div class="card_news card_news-details">
                 <div class="card_news-image"><img :src="this.news_item.UrlIcon" alt="" /></div>
                 <div class="card_news-main">
@@ -17,7 +17,7 @@
                 </div>
 
                 <div class="card_news-editor">
-                    <a href="#"><i class="material-icons">edit</i></a>
+                    <a href="#" @click="changeSectionEditer"><i class="material-icons">edit</i></a>
                     <a href="#" class="error" @click="deleteNews()"><i class="material-icons">close</i></a>
                 </div>
             </div>
@@ -33,14 +33,24 @@
         </template>
         <template v-else>
             <div>
-                <msEditerNewsItem />
+                <div class="card_news-editor" style="right:10px;">
+                    <a href="#" @click="changeSectionEditer"><i class="material-icons">reply</i></a>
+                </div>
+                <msChangeNewsForm 
+                   :isAdvancedEditor="news_item.IsAdvanced"
+                   :categoryId="news_item.CategoryId"
+                   @changeNew="changeNew" 
+                   :editModel="news_item"
+                   :editFiles="news_item.Files"
+                   textSubmit="Редактировать"
+                />
             </div>
         </template>
 </div>
 </template>
 
 <script>
-    import msEditerNewsItem from './ms-editer_news-item.vue';
+    import msChangeNewsForm from './ms-change_news-form.vue';
     import { mapActions } from 'vuex';
     export default {
         name: "ms-news-item",
@@ -60,11 +70,13 @@
         },
         data: () => {
             return {
-                IsMessageDetails: true
+                isEditer: false ,
+                IsMessageDetails: true,
+                model: {}
             }
         },
         components: {
-            msEditerNewsItem
+            msChangeNewsForm
         },
         computed: {
             Message() {
@@ -85,13 +97,24 @@
         },
         methods: {
             ...mapActions('news', [
-                'DOWNLOADFILE'
+                'DOWNLOADFILE',
+                'UPDATE_NEW'
             ]),
+            changeSectionEditer() {
+                this.isEditer = !this.isEditer;
+            },
             downloadFile(item) {
                 this.DOWNLOADFILE(item);
             },
             deleteNews() {
                 this.$emit('deleteNews', this.index, this.news_item.Id);
+            },
+            async changeNew(result) {
+                let res = await this.UPDATE_NEW({ data: result, index: this.index });
+                if (res) {
+                    await this.changeSectionEditer();
+                    this.listenByAdvancedDesription();
+                }
             },
             listenByAdvancedDesription() {
                 let vm = this;
@@ -109,8 +132,7 @@
                 }
             }
         },
-        mounted() {
-            this.news_item.IsAdvancedEditor = true;
+        mounted() {            
             if (this.news_item.IsAdvancedEditor) {
                 this.listenByAdvancedDesription();
             }

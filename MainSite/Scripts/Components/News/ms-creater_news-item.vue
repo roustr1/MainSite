@@ -7,7 +7,7 @@
             <msChangeNewsForm
                 :isAdvancedEditor="isAdvancedEditor"
                 :categoryId="categoryId"
-                @createNew="createNew"
+                @changeNew="changeNew"
              />
         </div>
         <div v-bind:class="classObject" class="creator-menu">
@@ -52,7 +52,7 @@
             ...mapActions('news',[
                 'CREATE_NEW'
             ]),
-            createNew(result) {
+            changeNew(result) {
                 this.CREATE_NEW(result);
             },
             changeEditor() {

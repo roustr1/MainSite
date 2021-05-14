@@ -4,14 +4,18 @@ export default {
     async GET_NEWS({ commit }, data) {
         document.getElementById('progressLoad').style.display = 'block';
         try {
-            let result = await axios.get(`/api/ApiNews/newsItems/`, {
-                method: 'GET',
-                params: {
-                    category: data.categoryId ? data.categoryId : null,
-                    page: data.page ? data.page : 1
+            let result = await axios('/api/ApiNews/newsItems/',
+                {
+                    method: 'post',
+                    url: '/api/ApiNews/newsItems/',
+                    params: {
+                        category: data.categoryId ? data.categoryId : null,
+                        page: data.page ? data.page : 1
+                    }
                 }
-            });
-            commit('SET_NEWS_MODEL', result.data);
+            );
+            commit('SET_PAGE', result.data.PagerModel);
+            commit('SET_NEWS', result.data.News);
         }
         catch (ex) {
 
@@ -32,10 +36,36 @@ export default {
                 }
             );
 
-            if (JSON.parse(result.data) != null) commit('ADD_NEW', JSON.parse(result.data));
+            if (JSON.parse(result.data) != null) {
+                var res = JSON.parse(result.data);
+                commit('ADD_NEW', res);
+            }
         }
         catch (ex) { }
         document.getElementById('progressLoad').style.display = 'none';
+    },
+    async UPDATE_NEW({ commit }, result) {
+        try {
+            let resultApiEditModel = await axios(
+                {
+                    method: 'post',
+                    url: '/Home/Edit/',
+                    data: result.data.params,
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    }
+                }
+            );
+
+            if (JSON.parse(resultApiEditModel.data) != null) {
+                commit('UPDATE_NEW', JSON.parse(resultApiEditModel.data), result.index);
+                return true;
+            }
+        }
+        catch (ex) {
+        }
+
+        return false;
     },
     async DELETE_NEW({ commit }, data) {
         try {

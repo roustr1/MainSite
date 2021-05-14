@@ -59,6 +59,21 @@ namespace MainSite.Controllers
             // return RedirectToAction(nameof(Index));
         }
 
+        [HttpPost]
+        public IActionResult Edit([FromForm] NewsItemViewModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                model.UploadedFiles = Request.Form.Files.ToList();
+
+                model.Author = User.Identity.Name;
+                _mainMode.EditNewNewsItem(model);
+
+               return Json(JsonConvert.SerializeObject(_mainMode.GetNewsItemViewModel(model.Id)));
+            }
+            
+            return Json(null);
+        }
 
         [HttpGet]
         [Route("GetFile")]
