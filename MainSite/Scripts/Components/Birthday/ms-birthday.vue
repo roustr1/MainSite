@@ -1,5 +1,5 @@
 ﻿<template>
-    <div class="card-panel row card_birthday">
+    <div class="card-panel card_birthday">
         <div class="card_birthday-title bold">
             C днём рождения!
         </div>

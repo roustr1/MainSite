@@ -2,19 +2,22 @@
 
 export default {
     async GET_CATEGORIES({ commit }) {
+        document.getElementById('progressLoad').style.display = 'block';
         try {
             let result = await axios('/api/ApiMenu/categories', {
                 method: 'GET'
             });
             commit('SET_CATEGORIES', result.data);
         }
-        catch (ex) { }
+        catch (ex) {
+            console.log(ex);
+        }
+        document.getElementById('progressLoad').style.display = 'none';
     },
     CHANGE_IS_ACTIVE_COMPONENT() {
         return false;
     },
     async ADD_CATEGORY({ commit }, data) {
-        console.log(data);
         try {
             let result = await axios('/Home/CreateCategory', {
                 method: 'POST',
@@ -28,6 +31,7 @@ export default {
         return false;
     },
     async GET_CATEGORIES_BY_BREADCRUMBS({ commit }, categoryId) {
+        document.getElementById('progressLoad').style.display = 'block';
         try {
             let result = await axios('/api/ApiMenu/breadcrumbs', {
                 method: 'GET',
@@ -37,6 +41,7 @@ export default {
             });
             commit('SET_BREADCRUMBS', result.data);
         }
-        catch (ex) {}
+        catch (ex) { }
+        document.getElementById('progressLoad').style.display = 'none';
     }
 }

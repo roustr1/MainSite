@@ -48,7 +48,7 @@
             </div>
         </div>
         <div class='holder'>
-            <div v-on:input="changeTextEditor" contentEditable="true" name='wysiwyg' id='wysiwyg'></div>
+            <div v-on:input="changeTextEditor" contentEditable="true" name='wysiwyg' class="wysiwyg" :id='GUUID' v-html="parentTextEditor"></div>
         </div>
     </div>
 </template>
@@ -63,6 +63,10 @@
                 type: Array,
                 default: () => { return [] }
             },
+            parentTextEditor: {
+                type: String,
+                default: () => { return '' }
+            }
         },
         data() {
             return {
@@ -94,6 +98,9 @@
                 else {
                     return 'Добавить файл';
                 }
+            },
+            GUUID() {
+                return "wysiwyg_" + new Date();
             }
         },
         methods: {   
@@ -101,7 +108,8 @@
                 this.$emit('input', this.editor.innerHTML);
             },
             loadIframe() { 
-                this.editor = document.getElementById('wysiwyg');
+                this.editor = document.getElementById(this.GUUID);
+                if (this.parentTextEditor !== '') this.$emit('input', this.parentTextEditor);
                 let vm = this;
 
                 this.editor.addEventListener('click', function (e) {
@@ -251,7 +259,7 @@
         height: 100%;
     }
 
-    #wysiwyg {
+    .wysiwyg {
         padding: 15px;
         border: 1px solid #9e9e9e;
         border-radius: 8px;
@@ -265,7 +273,7 @@
         }
     }
 
-    #wysiwyg {
+    .wysiwyg {
         & ul, ol
         {
             padding-inline-start: 40px;

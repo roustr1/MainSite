@@ -25,7 +25,7 @@
                 <div class="input-field col  s12 m12">
                     <p>
                         <label>
-                            <input name="IsActive" id="IsActive" type="checkbox" />
+                            <input id="IsActive" type="checkbox" />
                             <span>Отображать в списке меню</span>
                         </label>
                     </p>
@@ -76,7 +76,7 @@ import { mapActions } from "vuex"
             submit(e) {
                 e.preventDefault();
                 let data = new FormData(this.$refs.formCreate);
-                data.set("IsActive", document.getElementById('IsActive').checked);
+                data.append("IsActive", document.getElementById('IsActive').checked);
 
                 this.ADD_CATEGORY(data);
                 this.$router.push({ name: "categoryList", params: { categoryId: this.parentCategoryId } });

@@ -10,6 +10,7 @@ using System.Linq;
 using Application.Dal.Domain.Menu;
 using Application.Services.Menu;
 using Application.Services.Files;
+using MainSite.ViewModels.UI.Menu;
 
 namespace MainSite.Controllers
 {
@@ -58,6 +59,21 @@ namespace MainSite.Controllers
             // return RedirectToAction(nameof(Index));
         }
 
+        [HttpPost]
+        public IActionResult Edit([FromForm] NewsItemViewModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                model.UploadedFiles = Request.Form.Files.ToList();
+
+                model.Author = User.Identity.Name;
+                _mainMode.EditNewNewsItem(model);
+
+               return Json(JsonConvert.SerializeObject(_mainMode.GetNewsItemViewModel(model.Id)));
+            }
+            
+            return Json(null);
+        }
 
         [HttpGet]
         [Route("GetFile")]
@@ -87,7 +103,19 @@ namespace MainSite.Controllers
                 }
 
                 _menuService.InsertItem(model);
-                return Json(JsonConvert.SerializeObject(model));
+
+                var itemViewModel = new MenuItemViewModel()
+                {
+                    Id = model.Id,
+                    Name = model.Name,
+                    ToolTip = model.ToolTip,
+                    UrlIcon = model.UrlIcone,
+                    ParentId = model.ParentId,
+                    Index = model.Index
+
+                };
+
+                return Json(JsonConvert.SerializeObject(itemViewModel));
             }
             return Json(null);
         }

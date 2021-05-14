@@ -5,7 +5,7 @@
            v-bind:class="activeClass[IsActive]"
            @click="eventClickElementMenu(arguments[0])">
             <span src="/content/layout_icons/free-icon-ads-2625106.svg"></span>
-            <div>{{menu_item.name}}</div>
+            <div>{{menu_item.Name}}</div>
         </a>
 
         <!--<ul
@@ -46,13 +46,13 @@
                 'breadcrumbs'
             ]),
             IsActive() {
-                if (this.$route.params.categoryId != undefined && this.$route.params.categoryId != this.menu_item.id) {
+                if (this.$route.params.categoryId != undefined && this.$route.params.categoryId != this.menu_item.Id) {
                     if (this.breadcrumbs.length) {
-                        return this.breadcrumbs[0].id == this.menu_item.id ? true : false;
+                        return this.breadcrumbs[0].id == this.menu_item.Id ? true : false;
                     }
                 }
 
-                return this.menu_item.id == this.activeCategoryId || this.$route.params.categoryId == this.menu_item.id ? true : false;
+                return this.menu_item.Id == this.activeCategoryId || this.$route.params.categoryId == this.menu_item.Id ? true : false;
             }
         },
         methods: {
@@ -61,13 +61,13 @@
             ]),
             eventClickElementMenu(e) { 
                 if (!this.IsActive) {
-                    this.SET_OR_UPDATE_ACTIVE_CATEGORY(this.menu_item.id);
+                    this.SET_OR_UPDATE_ACTIVE_CATEGORY(this.menu_item.Id);
 
-                    if (this.menu_item.children && this.menu_item.children.length) {
-                        this.$router.push({ name: "categoryList", params: { categoryId: this.menu_item.id, category: this.menu_item } });
+                    if (this.menu_item.Children && this.menu_item.Children.length) {
+                        this.$router.push({ name: "categoryList", params: { categoryId: this.menu_item.Id, category: this.menu_item } });
                     }
                     else {
-                        this.$router.push({ name: "categoryDetails", params: { categoryId: this.menu_item.id, page: 1 } });
+                        this.$router.push({ name: "categoryDetails", params: { categoryId: this.menu_item.Id, page: 1 } });
                     }
                 }
             },

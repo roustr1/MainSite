@@ -1,5 +1,5 @@
 ﻿<template>
-    <div class="card-panel row">
+    <div class="card-panel">
         <ul class="pagination">
             <li v-if="ShowFirst" class="first-page btn btn-defaultMainSite">
                 <a href="#"  @click.prevent="() => $emit('changePage', 1)" title="Первая страница">Первая</a>

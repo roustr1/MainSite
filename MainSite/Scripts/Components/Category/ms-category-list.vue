@@ -1,12 +1,12 @@
 ﻿<template>
-    <div class="row">
+    <div class="row" style="margin-top:10px;">
         <msBreadCrumbs
             :items="breadcrumbs"
          />
         <div class="row flexCategoryList">
             <msCategoryItem
                 v-for="item in getCategoryChildren"
-                :key="item.id"
+                :key="item.Id"
                 :category_item="item"
             >
             </msCategoryItem>
@@ -58,13 +58,16 @@
             ]),
             getCategoryChildren() {
                 if (!this.$route.params.categoryId) return [];
+                let children = [];
 
                 if (Object.keys(this.category).length == 0) {
-                    let children = this.getCategoryById(this.$route.params.categoryId);
-                    return children;
+                    children = this.getCategoryById(this.$route.params.categoryId);
+                }
+                else {
+                    children = this.category.Children;
                 }
 
-                return this.category.children;
+                return children;
             }
         },
         methods: {
@@ -81,17 +84,17 @@
                 function arrMaper(arr) {
                     arr.forEach(element => {
                         if (element != null) {
-                            if (element.children !== []) arrMaper(element.children);
+                            if (element.Children !== []) arrMaper(element.Children);
                             set.add(element);
                         }
                     })
                 };
                 arrMaper(this.categories.slice());
                 let categoryes = Array.from(set).find(function (item) {
-                    if (item.id == categoryId) return item;
+                    if (item.Id == categoryId) return item;
                 });
 
-                return Object.keys(categoryes).length == 0 ? [] : categoryes.children; 
+                return Object.keys(categoryes).length == 0 ? [] : categoryes.Children; 
             },
             createCategory() {
                 let parentCategoryName = this.breadcrumbs && this.breadcrumbs.length > 0 ?

@@ -2,7 +2,7 @@
     <div class="card-panel ms-category-item"
          @click="toCategory">
         <h5 class="text-center ms-category-item_title bold">
-            {{category_item.name}}
+            {{category_item.Name}}
         </h5>
         <div class="ms-category-item_image">
             <img v-bind:src="getPathImg" />
@@ -27,8 +27,8 @@
         },
         computed: {
             getPathImg() {
-                if (this.category_item.urlIcon) {
-                    return this.category_item.urlIcon;
+                if (this.category_item.UrlIcon) {
+                    return this.category_item.UrlIcon;
                 }
 
                 return "/images/layout_icons/education.jpg";
@@ -36,7 +36,7 @@
         },
         methods: {
             getNamePath() {
-                if (this.category_item.children.length > 0) {
+                if (this.category_item.Children.length > 0) {
                     return 'categoryList'
                 }
                 else {
@@ -45,9 +45,9 @@
             },
             setParamsPath() {
                 this.params = {};
-                this.params.categoryId = this.category_item.id;
+                this.params.categoryId = this.category_item.Id;
                 this.params.page = 1;
-                if (this.category_item.children.length > 0) {
+                if (this.category_item.Children.length > 0) {
                     this.params.category = this.category_item;
                 }
             },
