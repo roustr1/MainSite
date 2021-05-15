@@ -37,7 +37,7 @@
                     <a href="#" @click="changeSectionEditer"><i class="material-icons">reply</i></a>
                 </div>
                 <msChangeNewsForm 
-                   :isAdvancedEditor="news_item.IsAdvanced"
+                   :isAdvancedEditor="news_item.IsAdvancedEditor"
                    :categoryId="news_item.CategoryId"
                    @changeNew="changeNew" 
                    :editModel="news_item"
