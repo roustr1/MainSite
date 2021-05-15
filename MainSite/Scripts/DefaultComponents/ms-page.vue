@@ -13,7 +13,14 @@
                 :key="index"
                 v-bind:class="{ active: item.IsActive }"
                 >
-                <a href="#" @click.prevent="() =>  $emit('changePage', item.Index)" :title="setTitle(item.Index)">{{item.Index}}</a>
+                <a 
+                   href="#" 
+                   @click.prevent="() =>  $emit('changePage', item.Index)"
+                   :title="setTitle(item.Index)"
+                   v-bind:class="{ disabled:item.IsActive }"
+                >
+                    {{item.Index}}
+                </a>
             </li>
             <li v-if="ShowNext" class="next-page btn btn-defaultMainSite">
                 <a href="#" @click.prevent="() => $emit('changePage', Number(GetCurrentPage) + 1)" title="Следующая страница">Далее</a>
@@ -104,5 +111,7 @@
 </script>
 
 <style lang="scss" scoped>
-
+    a.disabled {
+        pointer-events: none; /* делаем ссылку некликабельной */
+    }
 </style>

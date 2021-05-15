@@ -29952,13 +29952,10 @@ exports.default = {
     watch: {
         $route: 'fetchData'
     },
-    methods: _extends({}, (0, _vuex.mapActions)('news', ['GET_NEWS', 'DELETE_NEW']), (0, _vuex.mapActions)('menu', ['GET_CATEGORIES_BY_BREADCRUMBS']), (0, _vuex.mapMutations)('news', ['DELETE_CURRENT_NEWS']), {
+    methods: _extends({}, (0, _vuex.mapActions)('news', ['GET_NEWS']), (0, _vuex.mapActions)('menu', ['GET_CATEGORIES_BY_BREADCRUMBS']), (0, _vuex.mapMutations)('news', ['DELETE_CURRENT_NEWS']), {
         fetchData: function fetchData() {
             this.getNewsForCategory();
             this.getBreadCrumbs();
-        },
-        deleteNews: function deleteNews(index, id) {
-            this.DELETE_NEW({ index: index, id: id });
         },
         getNewsForCategory: function getNewsForCategory() {
             this.GET_NEWS({
@@ -29967,13 +29964,11 @@ exports.default = {
             });
         },
         changePage: function changePage(new_page) {
-            if (new_page !== this.$route.params.page) {
 
-                var news_page = this.$route.name == 'news' ? new_page : 1;
-                var routerParams = typeof this.$route.params.categoryId === 'undefined' ? { name: 'news', params: { page: news_page } } : { name: 'categoryDetails', params: { page: new_page, categoryId: this.$route.params.categoryId } };
+            var news_page = this.$route.name == 'news' ? new_page : 1;
+            var routerParams = typeof this.$route.params.categoryId === 'undefined' ? { name: 'news', params: { page: news_page } } : { name: 'categoryDetails', params: { page: new_page, categoryId: this.$route.params.categoryId } };
 
-                this.$router.push(routerParams);
-            }
+            this.$router.push(routerParams);
         },
         getBreadCrumbs: function getBreadCrumbs() {
             if (!this.IsNews) {
@@ -30153,7 +30148,7 @@ exports.default = {
             return new Date(this.news_item.CreatedDate).toLocaleDateString("ru", options);
         }
     },
-    methods: _extends({}, (0, _vuex.mapActions)('news', ['DOWNLOADFILE', 'UPDATE_NEW']), {
+    methods: _extends({}, (0, _vuex.mapActions)('news', ['DOWNLOADFILE', 'UPDATE_NEW', 'DELETE_NEW']), {
         changeSectionEditer: function changeSectionEditer() {
             this.isEditer = !this.isEditer;
         },
@@ -30161,7 +30156,7 @@ exports.default = {
             this.DOWNLOADFILE(item);
         },
         deleteNews: function deleteNews() {
-            this.$emit('deleteNews', this.index, this.news_item.Id);
+            this.DELETE_NEW({ index: this.index, id: this.news_item.Id });
         },
         changeNew: function changeNew(result) {
             var _this = this;
@@ -31628,9 +31623,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "href": "#"
     },
     on: {
-      "click": function($event) {
-        return _vm.deleteNews()
-      }
+      "click": _vm.deleteNews
     }
   }, [_c('i', {
     staticClass: "material-icons"
@@ -31991,7 +31984,7 @@ exports = module.exports = __webpack_require__(10)();
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, "\n@charset \"UTF-8\";\na.disabled[data-v-24b1065c] {\n  pointer-events: none;\n  /* делаем ссылку некликабельной */\n}\n", ""]);
 
 // exports
 
@@ -32124,6 +32117,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         active: item.IsActive
       }
     }, [_c('a', {
+      class: {
+        disabled: item.IsActive
+      },
       attrs: {
         "href": "#",
         "title": _vm.setTitle(item.Index)
@@ -32134,7 +32130,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           return (function () { return _vm.$emit('changePage', item.Index); })($event)
         }
       }
-    }, [_vm._v(_vm._s(item.Index))])])
+    }, [_vm._v("\n                " + _vm._s(item.Index) + "\n            ")])])
   }), _vm._v(" "), (_vm.ShowNext) ? _c('li', {
     staticClass: "next-page btn btn-defaultMainSite"
   }, [_c('a', {
@@ -32473,9 +32469,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "index": index,
         "isNews": _vm.IsNews,
         "news_item": item
-      },
-      on: {
-        "deleteNews": _vm.deleteNews
       }
     })
   }), _vm._v(" "), (_vm.pager.ViewPageList && _vm.pager.ViewPageList.length) ? _c('msPage', {

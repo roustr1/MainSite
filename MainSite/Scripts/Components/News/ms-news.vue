@@ -13,7 +13,6 @@
                 :key="item.Id"
                 :index="index"
                 :isNews="IsNews"
-                 @deleteNews="deleteNews"
                 :news_item="item" />
             <msPage
                 v-if="pager.ViewPageList && pager.ViewPageList.length"
@@ -62,8 +61,7 @@
         },
         methods: {
             ...mapActions('news',[
-                'GET_NEWS',
-                'DELETE_NEW'
+                'GET_NEWS'
             ]),
             ...mapActions('menu',[
                 'GET_CATEGORIES_BY_BREADCRUMBS',
@@ -75,9 +73,6 @@
                 this.getNewsForCategory();
                 this.getBreadCrumbs();
             },
-            deleteNews(index, id) {
-                this.DELETE_NEW({ index:index, id:id });
-            },
             getNewsForCategory() {
                 this.GET_NEWS(
                     {
@@ -87,16 +82,14 @@
                 )
             },
             changePage(new_page) {
-                if (new_page !== this.$route.params.page) {
 
-                    let news_page = this.$route.name == 'news' ? new_page : 1;
-                    let routerParams = typeof (this.$route.params.categoryId) === 'undefined' ?
-                        { name: 'news', params: { page: news_page } }
-                    :
-                        { name: 'categoryDetails', params: { page: new_page, categoryId: this.$route.params.categoryId } }
+                let news_page = this.$route.name == 'news' ? new_page : 1;
+                let routerParams = typeof (this.$route.params.categoryId) === 'undefined' ?
+                { name: 'news', params: { page: news_page } }
+                :
+                { name: 'categoryDetails', params: { page: new_page, categoryId: this.$route.params.categoryId } }
 
-                    this.$router.push(routerParams);
-                }
+                this.$router.push(routerParams);
             },
             getBreadCrumbs() {
                 if (!this.IsNews) {

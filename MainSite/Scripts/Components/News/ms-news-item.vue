@@ -18,7 +18,7 @@
 
                 <div class="card_news-editor">
                     <a href="#" @click="changeSectionEditer"><i class="material-icons">edit</i></a>
-                    <a href="#" class="error" @click="deleteNews()"><i class="material-icons">close</i></a>
+                    <a href="#" class="error" @click="deleteNews"><i class="material-icons">close</i></a>
                 </div>
             </div>
 
@@ -98,7 +98,8 @@
         methods: {
             ...mapActions('news', [
                 'DOWNLOADFILE',
-                'UPDATE_NEW'
+                'UPDATE_NEW',
+                'DELETE_NEW'
             ]),
             changeSectionEditer() {
                 this.isEditer = !this.isEditer;
@@ -107,7 +108,7 @@
                 this.DOWNLOADFILE(item);
             },
             deleteNews() {
-                this.$emit('deleteNews', this.index, this.news_item.Id);
+                this.DELETE_NEW({ index: this.index, id: this.news_item.Id });
             },
             async changeNew(result) {
                 let res = await this.UPDATE_NEW({ data: result, index: this.index });
