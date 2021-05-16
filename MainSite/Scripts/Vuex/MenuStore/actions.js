@@ -2,7 +2,7 @@
 
 export default {
     async GET_CATEGORIES({ commit }) {
-        document.getElementById('progressLoad').style.display = 'block';
+        //document.getElementById('progressLoad').style.display = 'block';
         try {
             let result = await axios('/api/ApiMenu/categories', {
                 method: 'GET'
@@ -12,7 +12,7 @@ export default {
         catch (ex) {
             console.log(ex);
         }
-        document.getElementById('progressLoad').style.display = 'none';
+        //document.getElementById('progressLoad').style.display = 'none';
     },
     CHANGE_IS_ACTIVE_COMPONENT() {
         return false;

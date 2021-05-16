@@ -2,12 +2,11 @@
 
 export default {
     async GET_NEWS({ commit }, data) {
-        document.getElementById('progressLoad').style.display = 'block';
+       // document.getElementById('progressLoad').style.display = 'block';
         try {
             let result = await axios('/api/ApiNews/newsItems/',
                 {
                     method: 'post',
-                    url: '/api/ApiNews/newsItems/',
                     params: {
                         category: data.categoryId ? data.categoryId : null,
                         page: data.page ? data.page : 1
@@ -20,10 +19,29 @@ export default {
         catch (ex) {
 
         }
-        document.getElementById('progressLoad').style.display = 'none';
+        //document.getElementById('progressLoad').style.display = 'none';
+    },
+    async GET_NEWS_BY_SEARCH({ commit }, data) {
+       // document.getElementById('progressLoad').style.display = 'block';
+        try {
+            let result = await axios('/api/ApiNews/search/',
+                {
+                    method: 'post',
+                    params: {
+                        search: data
+                    }
+                }
+            );
+            commit('SET_PAGE', {});
+            commit('SET_NEWS', result.data);
+        }
+        catch (ex) {
+
+        }
+       // document.getElementById('progressLoad').style.display = 'none';
     },
     async CREATE_NEW({ commit }, data) {
-        document.getElementById('progressLoad').style.display = 'block';
+        //document.getElementById('progressLoad').style.display = 'block';
         try {
             let result = await axios(
                 {
@@ -42,7 +60,7 @@ export default {
             }
         }
         catch (ex) { }
-        document.getElementById('progressLoad').style.display = 'none';
+        //document.getElementById('progressLoad').style.display = 'none';
     },
     async UPDATE_NEW({ commit }, result) {
         try {

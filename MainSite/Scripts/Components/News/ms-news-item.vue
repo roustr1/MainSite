@@ -80,7 +80,7 @@
         },
         computed: {
             Message() {
-                return this.news_item.isMessage ? "разместил" : "отредактировал";
+                return this.news_item.isMessage ? "отредактировал" : "разместил";
             },
             GetUnicIdBlock() {
                 return "new_" + this.news_item.Id;
@@ -143,17 +143,12 @@
 
 <style scoped lang="scss">
     .dropdownFiles a {
-        display: flex;
-        align-items: center;
-        &:hover
-
-    {
-        i
-
-    {
-        color: #9e9e9e !important;
-    }
-
-    }
+      display: flex;
+      align-items: center;
+      &:hover {
+        i {
+          color: #9e9e9e !important;
+        }
+      }
     }
 </style>

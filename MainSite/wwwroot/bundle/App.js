@@ -24548,6 +24548,10 @@ var _msMenu = __webpack_require__(356);
 
 var _msMenu2 = _interopRequireDefault(_msMenu);
 
+var _msHeader = __webpack_require__(470);
+
+var _msHeader2 = _interopRequireDefault(_msHeader);
+
 var _allStore = __webpack_require__(367);
 
 var _allStore2 = _interopRequireDefault(_allStore);
@@ -24568,6 +24572,7 @@ new _vue2.default({
     store: _allStore2.default,
     router: _router2.default,
     components: {
+        msHeader: _msHeader2.default,
         msMenu: _msMenu2.default,
         msMainWrapper: _msMainWrapper2.default
     }
@@ -25336,35 +25341,31 @@ exports.default = (_GET_CATEGORIES$CHANG = {
                 while (1) {
                     switch (_context.prev = _context.next) {
                         case 0:
-                            document.getElementById('progressLoad').style.display = 'block';
-                            _context.prev = 1;
-                            _context.next = 4;
+                            _context.prev = 0;
+                            _context.next = 3;
                             return (0, _axios2.default)('/api/ApiMenu/categories', {
                                 method: 'GET'
                             });
 
-                        case 4:
+                        case 3:
                             result = _context.sent;
 
                             commit('SET_CATEGORIES', result.data);
-                            _context.next = 11;
+                            _context.next = 10;
                             break;
 
-                        case 8:
-                            _context.prev = 8;
-                            _context.t0 = _context['catch'](1);
+                        case 7:
+                            _context.prev = 7;
+                            _context.t0 = _context['catch'](0);
 
                             console.log(_context.t0);
 
-                        case 11:
-                            document.getElementById('progressLoad').style.display = 'none';
-
-                        case 12:
+                        case 10:
                         case 'end':
                             return _context.stop();
                     }
                 }
-            }, _callee, _this, [[1, 8]]);
+            }, _callee, _this, [[0, 7]]);
         }))();
     },
     CHANGE_IS_ACTIVE_COMPONENT: function CHANGE_IS_ACTIVE_COMPONENT() {
@@ -26381,54 +26382,87 @@ exports.default = {
                 while (1) {
                     switch (_context.prev = _context.next) {
                         case 0:
-                            document.getElementById('progressLoad').style.display = 'block';
-                            _context.prev = 1;
-                            _context.next = 4;
+                            _context.prev = 0;
+                            _context.next = 3;
                             return (0, _axios2.default)('/api/ApiNews/newsItems/', {
                                 method: 'post',
-                                url: '/api/ApiNews/newsItems/',
                                 params: {
                                     category: data.categoryId ? data.categoryId : null,
                                     page: data.page ? data.page : 1
                                 }
                             });
 
-                        case 4:
+                        case 3:
                             result = _context.sent;
 
                             commit('SET_PAGE', result.data.PagerModel);
                             commit('SET_NEWS', result.data.News);
-                            _context.next = 11;
+                            _context.next = 10;
                             break;
 
-                        case 9:
-                            _context.prev = 9;
-                            _context.t0 = _context['catch'](1);
+                        case 8:
+                            _context.prev = 8;
+                            _context.t0 = _context['catch'](0);
 
-                        case 11:
-                            document.getElementById('progressLoad').style.display = 'none';
-
-                        case 12:
+                        case 10:
                         case 'end':
                             return _context.stop();
                     }
                 }
-            }, _callee, _this, [[1, 9]]);
+            }, _callee, _this, [[0, 8]]);
         }))();
     },
-    CREATE_NEW: function CREATE_NEW(_ref2, data) {
+    GET_NEWS_BY_SEARCH: function GET_NEWS_BY_SEARCH(_ref2, data) {
         var _this2 = this;
 
         var commit = _ref2.commit;
         return _asyncToGenerator(regeneratorRuntime.mark(function _callee2() {
-            var result, res;
+            var result;
             return regeneratorRuntime.wrap(function _callee2$(_context2) {
                 while (1) {
                     switch (_context2.prev = _context2.next) {
                         case 0:
-                            document.getElementById('progressLoad').style.display = 'block';
-                            _context2.prev = 1;
-                            _context2.next = 4;
+                            _context2.prev = 0;
+                            _context2.next = 3;
+                            return (0, _axios2.default)('/api/ApiNews/search/', {
+                                method: 'post',
+                                params: {
+                                    search: data
+                                }
+                            });
+
+                        case 3:
+                            result = _context2.sent;
+
+                            commit('SET_PAGE', {});
+                            commit('SET_NEWS', result.data);
+                            _context2.next = 10;
+                            break;
+
+                        case 8:
+                            _context2.prev = 8;
+                            _context2.t0 = _context2['catch'](0);
+
+                        case 10:
+                        case 'end':
+                            return _context2.stop();
+                    }
+                }
+            }, _callee2, _this2, [[0, 8]]);
+        }))();
+    },
+    CREATE_NEW: function CREATE_NEW(_ref3, data) {
+        var _this3 = this;
+
+        var commit = _ref3.commit;
+        return _asyncToGenerator(regeneratorRuntime.mark(function _callee3() {
+            var result, res;
+            return regeneratorRuntime.wrap(function _callee3$(_context3) {
+                while (1) {
+                    switch (_context3.prev = _context3.next) {
+                        case 0:
+                            _context3.prev = 0;
+                            _context3.next = 3;
                             return (0, _axios2.default)({
                                 method: 'post',
                                 url: data.action,
@@ -26438,8 +26472,8 @@ exports.default = {
                                 }
                             });
 
-                        case 4:
-                            result = _context2.sent;
+                        case 3:
+                            result = _context3.sent;
 
 
                             if (JSON.parse(result.data) != null) {
@@ -26447,36 +26481,33 @@ exports.default = {
 
                                 commit('ADD_NEW', res);
                             }
-                            _context2.next = 10;
+                            _context3.next = 9;
                             break;
 
-                        case 8:
-                            _context2.prev = 8;
-                            _context2.t0 = _context2['catch'](1);
+                        case 7:
+                            _context3.prev = 7;
+                            _context3.t0 = _context3['catch'](0);
 
-                        case 10:
-                            document.getElementById('progressLoad').style.display = 'none';
-
-                        case 11:
+                        case 9:
                         case 'end':
-                            return _context2.stop();
+                            return _context3.stop();
                     }
                 }
-            }, _callee2, _this2, [[1, 8]]);
+            }, _callee3, _this3, [[0, 7]]);
         }))();
     },
-    UPDATE_NEW: function UPDATE_NEW(_ref3, result) {
-        var _this3 = this;
+    UPDATE_NEW: function UPDATE_NEW(_ref4, result) {
+        var _this4 = this;
 
-        var commit = _ref3.commit;
-        return _asyncToGenerator(regeneratorRuntime.mark(function _callee3() {
+        var commit = _ref4.commit;
+        return _asyncToGenerator(regeneratorRuntime.mark(function _callee4() {
             var resultApiEditModel;
-            return regeneratorRuntime.wrap(function _callee3$(_context3) {
+            return regeneratorRuntime.wrap(function _callee4$(_context4) {
                 while (1) {
-                    switch (_context3.prev = _context3.next) {
+                    switch (_context4.prev = _context4.next) {
                         case 0:
-                            _context3.prev = 0;
-                            _context3.next = 3;
+                            _context4.prev = 0;
+                            _context4.next = 3;
                             return (0, _axios2.default)({
                                 method: 'post',
                                 url: '/Home/Edit/',
@@ -26487,47 +26518,47 @@ exports.default = {
                             });
 
                         case 3:
-                            resultApiEditModel = _context3.sent;
+                            resultApiEditModel = _context4.sent;
 
                             if (!(JSON.parse(resultApiEditModel.data) != null)) {
-                                _context3.next = 7;
+                                _context4.next = 7;
                                 break;
                             }
 
                             commit('UPDATE_NEW', JSON.parse(resultApiEditModel.data), result.index);
-                            return _context3.abrupt('return', true);
+                            return _context4.abrupt('return', true);
 
                         case 7:
-                            _context3.next = 11;
+                            _context4.next = 11;
                             break;
 
                         case 9:
-                            _context3.prev = 9;
-                            _context3.t0 = _context3['catch'](0);
+                            _context4.prev = 9;
+                            _context4.t0 = _context4['catch'](0);
 
                         case 11:
-                            return _context3.abrupt('return', false);
+                            return _context4.abrupt('return', false);
 
                         case 12:
                         case 'end':
-                            return _context3.stop();
+                            return _context4.stop();
                     }
                 }
-            }, _callee3, _this3, [[0, 9]]);
+            }, _callee4, _this4, [[0, 9]]);
         }))();
     },
-    DELETE_NEW: function DELETE_NEW(_ref4, data) {
-        var _this4 = this;
+    DELETE_NEW: function DELETE_NEW(_ref5, data) {
+        var _this5 = this;
 
-        var commit = _ref4.commit;
-        return _asyncToGenerator(regeneratorRuntime.mark(function _callee4() {
+        var commit = _ref5.commit;
+        return _asyncToGenerator(regeneratorRuntime.mark(function _callee5() {
             var result;
-            return regeneratorRuntime.wrap(function _callee4$(_context4) {
+            return regeneratorRuntime.wrap(function _callee5$(_context5) {
                 while (1) {
-                    switch (_context4.prev = _context4.next) {
+                    switch (_context5.prev = _context5.next) {
                         case 0:
-                            _context4.prev = 0;
-                            _context4.next = 3;
+                            _context5.prev = 0;
+                            _context5.next = 3;
                             return (0, _axios2.default)({
                                 method: 'post',
                                 url: '/Home/Delete',
@@ -26535,36 +26566,36 @@ exports.default = {
                             });
 
                         case 3:
-                            result = _context4.sent;
+                            result = _context5.sent;
 
                             commit('REMOVE_NEW_FOR_LIST', data.index);
-                            _context4.next = 9;
+                            _context5.next = 9;
                             break;
 
                         case 7:
-                            _context4.prev = 7;
-                            _context4.t0 = _context4['catch'](0);
+                            _context5.prev = 7;
+                            _context5.t0 = _context5['catch'](0);
 
                         case 9:
                         case 'end':
-                            return _context4.stop();
+                            return _context5.stop();
                     }
                 }
-            }, _callee4, _this4, [[0, 7]]);
+            }, _callee5, _this5, [[0, 7]]);
         }))();
     },
-    DOWNLOADFILE: function DOWNLOADFILE(_ref5, item) {
-        var _this5 = this;
+    DOWNLOADFILE: function DOWNLOADFILE(_ref6, item) {
+        var _this6 = this;
 
-        var commit = _ref5.commit;
-        return _asyncToGenerator(regeneratorRuntime.mark(function _callee5() {
+        var commit = _ref6.commit;
+        return _asyncToGenerator(regeneratorRuntime.mark(function _callee6() {
             var result, fileURL, fileLink;
-            return regeneratorRuntime.wrap(function _callee5$(_context5) {
+            return regeneratorRuntime.wrap(function _callee6$(_context6) {
                 while (1) {
-                    switch (_context5.prev = _context5.next) {
+                    switch (_context6.prev = _context6.next) {
                         case 0:
-                            _context5.prev = 0;
-                            _context5.next = 3;
+                            _context6.prev = 0;
+                            _context6.next = 3;
                             return (0, _axios2.default)({
                                 method: 'get',
                                 url: '/GetFile/',
@@ -26573,7 +26604,7 @@ exports.default = {
                             });
 
                         case 3:
-                            result = _context5.sent;
+                            result = _context6.sent;
                             fileURL = window.URL.createObjectURL(new File([result.data], item.Name, { type: result.data.type }));
                             fileLink = document.createElement('a');
 
@@ -26584,19 +26615,19 @@ exports.default = {
                             document.body.appendChild(fileLink);
 
                             fileLink.click();
-                            _context5.next = 14;
+                            _context6.next = 14;
                             break;
 
                         case 12:
-                            _context5.prev = 12;
-                            _context5.t0 = _context5['catch'](0);
+                            _context6.prev = 12;
+                            _context6.t0 = _context6['catch'](0);
 
                         case 14:
                         case 'end':
-                            return _context5.stop();
+                            return _context6.stop();
                     }
                 }
-            }, _callee5, _this5, [[0, 12]]);
+            }, _callee6, _this6, [[0, 12]]);
         }))();
     }
 };
@@ -26656,6 +26687,10 @@ var _msNews = __webpack_require__(146);
 
 var _msNews2 = _interopRequireDefault(_msNews);
 
+var _msSearchNews = __webpack_require__(465);
+
+var _msSearchNews2 = _interopRequireDefault(_msSearchNews);
+
 var _msCategory = __webpack_require__(441);
 
 var _msCategory2 = _interopRequireDefault(_msCategory);
@@ -26683,6 +26718,11 @@ var router = new _vueRouter2.default({
             component: _msNews2.default,
             props: true
         }]
+    }, {
+        path: '/search/searchText=:searchText',
+        name: 'search',
+        component: _msSearchNews2.default,
+        props: true
     }, {
         path: '/category',
         name: 'category',
@@ -29963,13 +30003,6 @@ exports.default = {
                 categoryId: this.$route.params.categoryId
             });
         },
-        changePage: function changePage(new_page) {
-
-            var news_page = this.$route.name == 'news' ? new_page : 1;
-            var routerParams = typeof this.$route.params.categoryId === 'undefined' ? { name: 'news', params: { page: news_page } } : { name: 'categoryDetails', params: { page: new_page, categoryId: this.$route.params.categoryId } };
-
-            this.$router.push(routerParams);
-        },
         getBreadCrumbs: function getBreadCrumbs() {
             if (!this.IsNews) {
                 this.GET_CATEGORIES_BY_BREADCRUMBS(this.$route.params.categoryId);
@@ -30133,7 +30166,7 @@ exports.default = {
     },
     computed: {
         Message: function Message() {
-            return this.news_item.isMessage ? "разместил" : "отредактировал";
+            return this.news_item.isMessage ? "отредактировал" : "разместил";
         },
         GetUnicIdBlock: function GetUnicIdBlock() {
             return "new_" + this.news_item.Id;
@@ -31999,73 +32032,64 @@ exports.push([module.i, "\n@charset \"UTF-8\";\na.disabled[data-v-24b1065c] {\n 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _vuex = __webpack_require__(35);
+
 exports.default = {
     name: 'ms-page',
-    props: {
-        parentPage: {
-            type: Number,
-            default: function _default() {
-                return undefined;
-            }
-        },
-        pageIndex: {
-            type: Number,
-            default: function _default() {
-                return 0;
-            }
-        },
-        totalPages: {
-            type: Number,
-            default: function _default() {
-                return 0;
-            }
-        },
-        individualPagesDisplayedCount: {
-            type: Number,
-            default: function _default() {
-                return 0;
-            }
-        },
-        list: {
-            type: Array,
-            default: function _default() {
-                return [];
-            }
-        }
-    },
+    props: {},
     data: function data() {
-        return {
-            currentPage: 0
-        };
+        return {};
     },
 
     watch: {
         $route: 'fetchData'
     },
-    computed: {
+    computed: _extends({}, (0, _vuex.mapState)('news', {
+        pagerIndex: function pagerIndex(state) {
+            return state.pager.PageIndex;
+        },
+        totalPages: function totalPages(state) {
+            return state.pager.TotalPages;
+        },
+        individualPagesDisplayedCount: function individualPagesDisplayedCount(state) {
+            return state.pager.IndividualPagesDisplayedCount;
+        },
+        currentPage: function currentPage(state) {
+            return state.pager.CurrentPage;
+        },
+        list: function list(state) {
+            return state.pager.ViewPageList;
+        }
+    }), {
         ShowFirst: function ShowFirst() {
-            return this.pageIndex >= 3 && this.totalPages > this.individualPagesDisplayedCount;
+            return this.pagerIndex >= 3 && this.totalPages > this.individualPagesDisplayedCount;
         },
         ShowPrevious: function ShowPrevious() {
-            return this.pageIndex > 0;
+            return this.pagerIndex > 0;
         },
         ShowNext: function ShowNext() {
-            return this.pageIndex + 1 < this.totalPages;
+            return this.pagerIndex + 1 < this.totalPages;
         },
         ShowLast: function ShowLast() {
             return this.pageIndex + 3 < this.totalPages && this.totalPages > this.individualPagesDisplayedCount;
         },
         GetCurrentPage: function GetCurrentPage() {
-            if (this.parentPage != undefined) this.currentPage = this.parentPage;
-            return this.currentPage;
+            if (this.currentPage != undefined) return this.currentPage;
+            return 0;
         }
-    },
+    }),
     methods: {
         fetchData: function fetchData() {
-            if (this.parentPage == undefined) this.currentPage = this.$route.params.page;
+            if (this.currentPage == undefined) this.currentPage = this.$route.params.page;
         },
         changePage: function changePage(page) {
-            this.$emit("changePage", page);
+            var news_page = this.$route.name == 'news' ? page : 1;
+            var routerParams = typeof this.$route.params.categoryId === 'undefined' ? { name: 'news', params: { page: news_page } } : { name: 'categoryDetails', params: { page: new_page, categoryId: this.$route.params.categoryId } };
+
+            this.$router.push(routerParams);
         },
         setTitle: function setTitle(number) {
             return "Страница " + number;
@@ -32093,7 +32117,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": function($event) {
         $event.preventDefault();
-        return (function () { return _vm.$emit('changePage', 1); })($event)
+        return _vm.changePage(1)
       }
     }
   }, [_vm._v("Первая")])]) : _vm._e(), _vm._v(" "), (_vm.ShowPrevious) ? _c('li', {
@@ -32106,7 +32130,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": function($event) {
         $event.preventDefault();
-        return (function () { return _vm.$emit('changePage', Number(_vm.GetCurrentPage) - 1); })($event)
+        _vm.changePage(Number(_vm.GetCurrentPage) - 1)
       }
     }
   }, [_vm._v("Предыдущая")])]) : _vm._e(), _vm._v(" "), _vm._l((_vm.list), function(item, index) {
@@ -32127,7 +32151,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       on: {
         "click": function($event) {
           $event.preventDefault();
-          return (function () { return _vm.$emit('changePage', item.Index); })($event)
+          return _vm.changePage(item.Index)
         }
       }
     }, [_vm._v("\n                " + _vm._s(item.Index) + "\n            ")])])
@@ -32141,7 +32165,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": function($event) {
         $event.preventDefault();
-        return (function () { return _vm.$emit('changePage', Number(_vm.GetCurrentPage) + 1); })($event)
+        _vm.changePage(Number(_vm.GetCurrentPage) + 1)
       }
     }
   }, [_vm._v("Далее")])]) : _vm._e(), _vm._v(" "), (_vm.ShowLast) ? _c('li', {
@@ -32154,7 +32178,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": function($event) {
         $event.preventDefault();
-        return (function () { return _vm.$emit('changePage', _vm.totalPages); })($event)
+        return _vm.changePage(_vm.totalPages)
       }
     }
   }, [_vm._v("Последняя")])]) : _vm._e()], 2)])
@@ -32471,18 +32495,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "news_item": item
       }
     })
-  }), _vm._v(" "), (_vm.pager.ViewPageList && _vm.pager.ViewPageList.length) ? _c('msPage', {
-    attrs: {
-      "pageIndex": _vm.pager.PageIndex,
-      "parentPage": _vm.pager.CurrentPage,
-      "totalPages": _vm.pager.TotalPages,
-      "individualPagesDisplayedCount": _vm.pager.IndividualPagesDisplayedCount,
-      "list": _vm.pager.ViewPageList
-    },
-    on: {
-      "changePage": _vm.changePage
-    }
-  }) : _vm._e()], 2)], 1)
+  }), _vm._v(" "), (_vm.pager.ViewPageList && _vm.pager.ViewPageList.length) ? _c('msPage') : _vm._e()], 2)], 1)
 },staticRenderFns: []}
 if (false) {
   module.hot.accept()
@@ -33373,6 +33386,418 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
      require("vue-hot-reload-api").rerender("data-v-6ba3230a", module.exports)
+  }
+}
+
+/***/ }),
+/* 465 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __vue_exports__, __vue_options__
+var __vue_styles__ = {}
+
+/* styles */
+__webpack_require__(466)
+
+/* script */
+__vue_exports__ = __webpack_require__(468)
+
+/* template */
+var __vue_template__ = __webpack_require__(469)
+__vue_options__ = __vue_exports__ = __vue_exports__ || {}
+if (
+  typeof __vue_exports__.default === "object" ||
+  typeof __vue_exports__.default === "function"
+) {
+if (Object.keys(__vue_exports__).some(function (key) { return key !== "default" && key !== "__esModule" })) {console.error("named exports are not supported in *.vue files.")}
+__vue_options__ = __vue_exports__ = __vue_exports__.default
+}
+if (typeof __vue_options__ === "function") {
+  __vue_options__ = __vue_options__.options
+}
+__vue_options__.__file = "C:\\Users\\roustr\\Desktop\\MainSiteRoustr\\MainSite\\Scripts\\Components\\Search\\ms-search-news.vue"
+__vue_options__.render = __vue_template__.render
+__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-99e5b4b8", __vue_options__)
+  } else {
+    hotAPI.reload("data-v-99e5b4b8", __vue_options__)
+  }
+})()}
+if (__vue_options__.functional) {console.error("[vue-loader] ms-search-news.vue: functional components are not supported and should be defined in plain js files using render functions.")}
+
+module.exports = __vue_exports__
+
+
+/***/ }),
+/* 466 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(467);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(100)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-99e5b4b8!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ms-search-news.vue", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-99e5b4b8!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ms-search-news.vue");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 467 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(10)();
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"ms-search-news.vue","sourceRoot":"webpack://"}]);
+
+// exports
+
+
+/***/ }),
+/* 468 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _msNewsItem = __webpack_require__(397);
+
+var _msNewsItem2 = _interopRequireDefault(_msNewsItem);
+
+var _vuex = __webpack_require__(35);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    name: 'ms-search-news',
+    components: {
+        msNewsItem: _msNewsItem2.default
+    },
+    data: function data() {
+        return {};
+    },
+
+    watch: {
+        $route: 'fetchData'
+    },
+    computed: _extends({}, (0, _vuex.mapState)('news', ['news'])),
+    methods: _extends({}, (0, _vuex.mapActions)('news', ['GET_NEWS_BY_SEARCH']), {
+        fetchData: function fetchData() {
+            this.GET_NEWS_BY_SEARCH(this.$route.params.searchText);
+        }
+    }),
+    created: function created() {
+        this.GET_NEWS_BY_SEARCH(this.$route.params.searchText);
+    }
+};
+
+/***/ }),
+/* 469 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "row"
+  }, [_c('h4', [_vm._v("Результат поиска:")]), _vm._v(" "), _vm._l((_vm.news), function(item, index) {
+    return _c('msNewsItem', {
+      key: item.Id,
+      attrs: {
+        "index": index,
+        "isNews": _vm.IsNews,
+        "news_item": item
+      }
+    })
+  })], 2)
+},staticRenderFns: []}
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-99e5b4b8", module.exports)
+  }
+}
+
+/***/ }),
+/* 470 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __vue_exports__, __vue_options__
+var __vue_styles__ = {}
+
+/* styles */
+__webpack_require__(471)
+
+/* script */
+__vue_exports__ = __webpack_require__(473)
+
+/* template */
+var __vue_template__ = __webpack_require__(474)
+__vue_options__ = __vue_exports__ = __vue_exports__ || {}
+if (
+  typeof __vue_exports__.default === "object" ||
+  typeof __vue_exports__.default === "function"
+) {
+if (Object.keys(__vue_exports__).some(function (key) { return key !== "default" && key !== "__esModule" })) {console.error("named exports are not supported in *.vue files.")}
+__vue_options__ = __vue_exports__ = __vue_exports__.default
+}
+if (typeof __vue_options__ === "function") {
+  __vue_options__ = __vue_options__.options
+}
+__vue_options__.__file = "C:\\Users\\roustr\\Desktop\\MainSiteRoustr\\MainSite\\Scripts\\Components\\Header\\ms-header.vue"
+__vue_options__.render = __vue_template__.render
+__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-375861d4", __vue_options__)
+  } else {
+    hotAPI.reload("data-v-375861d4", __vue_options__)
+  }
+})()}
+if (__vue_options__.functional) {console.error("[vue-loader] ms-header.vue: functional components are not supported and should be defined in plain js files using render functions.")}
+
+module.exports = __vue_exports__
+
+
+/***/ }),
+/* 471 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(472);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(100)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-375861d4!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ms-header.vue", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-375861d4!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ms-header.vue");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 472 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(10)();
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"ms-header.vue","sourceRoot":"webpack://"}]);
+
+// exports
+
+
+/***/ }),
+/* 473 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    name: 'ms-header',
+    data: function data() {
+        return {
+            userName: 'Незарегистрированный пользователь',
+            searchText: ''
+        };
+    },
+
+    methods: {
+        searchNews: function searchNews() {
+            var routerParams = { name: 'search', params: { searchText: this.searchText } };
+            this.$router.push(routerParams);
+        }
+    },
+    mounted: function mounted() {}
+};
+
+/***/ }),
+/* 474 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('header', {
+    staticClass: "navbar-fixed"
+  }, [_c('nav', {
+    staticClass: "nav-header"
+  }, [_c('div', {
+    staticClass: "container"
+  }, [_c('div', {
+    staticClass: "nav-wrapper"
+  }, [_c('div', {
+    staticClass: "valign-wrapper"
+  }, [_c('a', {
+    staticClass: "valign-wrapper",
+    staticStyle: {
+      "cursor": "pointer"
+    },
+    attrs: {
+      "asp-area": "",
+      "asp-controller": "Home",
+      "asp-action": "Index"
+    }
+  }), _vm._v(" "), _vm._m(0), _vm._v(" "), _c('ul', {
+    staticClass: "hide-on-med-and-down col m12 s12 l9 secondMenu"
+  }, [_c('li', [_c('div', {
+    staticClass: "secondMenu-search"
+  }, [_c('span', {
+    staticClass: "bold"
+  }, [_vm._v("Поиск на сайте:")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.searchText),
+      expression: "searchText"
+    }],
+    staticClass: "inputTextMainSite",
+    staticStyle: {
+      "flex-grow": "1"
+    },
+    attrs: {
+      "type": "text"
+    },
+    domProps: {
+      "value": (_vm.searchText)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.searchText = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-default",
+    staticStyle: {
+      "flex-grow": "0"
+    },
+    on: {
+      "click": _vm.searchNews
+    }
+  }, [_vm._v("Найти")])])]), _vm._v(" "), _c('li', [_c('div', {
+    staticClass: "secondMenu-user"
+  }, [_c('a', {
+    staticClass: "dropdown-trigger valign-wrapper",
+    staticStyle: {
+      "padding": "0px"
+    },
+    attrs: {
+      "data-target": "dropdown1"
+    }
+  }, [_c('span', {
+    staticClass: "secondMenu-infoUser"
+  }, [_vm._v(_vm._s(_vm.userName))]), _vm._v(" "), _c('i', {
+    staticClass: "material-icons"
+  }, [_vm._v("keyboard_arrow_down")]), _vm._v(" "), _c('img', {
+    staticClass: "rectangle",
+    attrs: {
+      "src": "/images/layout_icons/user.png",
+      "alt": ""
+    }
+  })]), _vm._v(" "), _vm._m(1)])])])])])]), _vm._v(" "), _vm._m(2)])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('a', {
+    staticClass: "sidenav-trigger",
+    staticStyle: {
+      "float": "right",
+      "cursor": "pointer"
+    },
+    attrs: {
+      "id": "openMenu",
+      "data-target": "mobile-demo"
+    }
+  }, [_c('i', {
+    staticClass: "material-icons"
+  }, [_vm._v("menu")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('ul', {
+    staticClass: "dropdown-content secondMenu-settingsUser",
+    attrs: {
+      "id": "dropdown1"
+    }
+  }, [_c('li', [_c('a', {
+    attrs: {
+      "href": "#!"
+    }
+  }, [_c('i', {
+    staticClass: "material-icons"
+  }, [_vm._v("home")]), _vm._v("Личный кабинет")])]), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "#!"
+    }
+  }, [_c('i', {
+    staticClass: "material-icons"
+  }, [_vm._v("cloud")]), _vm._v("Управление сервисами")])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "progress",
+    staticStyle: {
+      "background-color": "transparent",
+      "margin": "0px",
+      "display": "none"
+    },
+    attrs: {
+      "id": "progressLoad"
+    }
+  }, [_c('div', {
+    staticClass: "indeterminate",
+    staticStyle: {
+      "background-color": "#64b5f6"
+    }
+  })])
+}]}
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-375861d4", module.exports)
   }
 }
 

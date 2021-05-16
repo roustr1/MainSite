@@ -16,12 +16,6 @@
                 :news_item="item" />
             <msPage
                 v-if="pager.ViewPageList && pager.ViewPageList.length"
-                :pageIndex="pager.PageIndex"
-                :parentPage="pager.CurrentPage"
-                :totalPages="pager.TotalPages"
-                :individualPagesDisplayedCount="pager.IndividualPagesDisplayedCount"
-                :list="pager.ViewPageList"
-                @changePage="changePage"
             />
         </div>
     </div>
@@ -81,20 +75,9 @@
                     }
                 )
             },
-            changePage(new_page) {
-
-                let news_page = this.$route.name == 'news' ? new_page : 1;
-                let routerParams = typeof (this.$route.params.categoryId) === 'undefined' ?
-                { name: 'news', params: { page: news_page } }
-                :
-                { name: 'categoryDetails', params: { page: new_page, categoryId: this.$route.params.categoryId } }
-
-                this.$router.push(routerParams);
-            },
             getBreadCrumbs() {
                 if (!this.IsNews) {
                     this.GET_CATEGORIES_BY_BREADCRUMBS(this.$route.params.categoryId);
-
                 }
             }
         },
