@@ -41,6 +41,7 @@ namespace MainSite.Controllers
             var result = _mainMode.GetManySearchResultNewsItemViewModel(search);
 
             return JsonConvert.SerializeObject(result);
+
         }
     }
 }
