@@ -43,5 +43,16 @@ namespace MainSite.Controllers
 
             return "[]";
         }
+        [Route("InfoCurrentUser")]
+        public string GetInfoCurrentUser()
+        {
+            var model = new
+            {
+                Name = User.Identity.Name,
+                IsEditer = User.IsInRole("Модератор") || User.IsInRole("Администратор")
+            };
+
+            return JsonConvert.SerializeObject(model);
+        }
     }
 }

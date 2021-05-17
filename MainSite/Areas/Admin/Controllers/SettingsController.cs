@@ -2,6 +2,7 @@
 using Application.Services.Permissions;
 using Application.Services.Settings;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace MainSite.Areas.Admin.Controllers
 {
@@ -112,6 +113,14 @@ namespace MainSite.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        [Route("Admin/GetSettings")]
+        public string GetAllSettings()
+        {
+            var model = _settingsService.GetAllSettings();
+
+            return JsonConvert.SerializeObject(model);
+        }
 
     }
 }

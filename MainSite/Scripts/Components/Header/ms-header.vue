@@ -4,9 +4,9 @@
             <div class="container">
                 <div class="nav-wrapper">
                     <div class="valign-wrapper">
-                        <a style="cursor: pointer;" asp-area="" asp-controller="Home" asp-action="Index" class="valign-wrapper">
-                            <!--<img src="@service.SettingsDictionary.GetValueOrDefault(" Application.Icon","~ /images/layout_icons/header.png")" width="50" height="50" />-->
-                            <!--<span class="bold">@service.SettingsDictionary.GetValueOrDefault("Application.Name", "WebSite")</span>-->
+                        <a style="cursor: pointer;" @click="routerPushMainView" class="valign-wrapper">
+                            <img :src="GetApplicationIcon" width="50" height="50" /> 
+                            <span class="bold" style="padding-left:10px;">{{GetApplicationName}}</span>
                         </a>
                         <a id="openMenu" data-target="mobile-demo" class="sidenav-trigger" style="float: right;cursor:pointer;"><i class="material-icons">menu</i></a>
                         <ul class="hide-on-med-and-down col m12 s12 l9 secondMenu">
@@ -20,7 +20,7 @@
                             <li>
                                 <div class="secondMenu-user">
                                     <a data-target='dropdown1' class="dropdown-trigger valign-wrapper" style="padding: 0px;">
-                                        <span class="secondMenu-infoUser">{{userName}}</span>
+                                        <span class="secondMenu-infoUser">{{currentUser.Name}}</span>
                                         <i class="material-icons">keyboard_arrow_down</i>
                                         <img class="rectangle" src="/images/layout_icons/user.png" alt="" />
                                     </a>
@@ -42,6 +42,8 @@
 </template>
 
 <script>
+    import { mapState, mapActions, mapMutations } from 'vuex';
+
     export default {
         name: 'ms-header',
         data() {
@@ -50,13 +52,47 @@
                 searchText: ''
             }
         },
+        computed: {
+            ...mapState('settings', ['settings']),
+            ...mapState('user', ['currentUser']),
+            GetApplicationName() {
+                return this.searchSettingByName("Application.Name", "WebSite");
+            },
+            GetApplicationIcon() {
+                return this.searchSettingByName("Application.Icon", "/images/layout_icons/header.png");
+            }
+        },
         methods: {
+            ...mapActions('settings', ['GET_SETTINGS']),
+            ...mapActions('user', ['GET_INFO_BY_CURRENT_USER']),
+            ...mapMutations('menu', ['SET_OR_UPDATE_ACTIVE_CATEGORY']),
             searchNews() {
                 let routerParams = { name: 'search', params: { searchText: this.searchText } };
+
+                this.searchText = '';
                 this.$router.push(routerParams);
+            },
+            searchSettingByName(name, defaultName) {
+                let tempName = defaultName;
+
+                this.settings.forEach(function (index, item) {
+                    if (item.Name == name && item.Value != '') {
+                        tempName = item.Value;
+                    }
+                });
+
+                return tempName;
+            },
+            routerPushMainView() {
+                if (this.$route.name != 'news') {
+                    this.SET_OR_UPDATE_ACTIVE_CATEGORY(null);
+                    this.$router.push('/');
+                }
             }
         },
         mounted() {
+            this.GET_SETTINGS();
+            this.GET_INFO_BY_CURRENT_USER();
         }
     }
 </script>

@@ -336,7 +336,7 @@ namespace MainSite.Models
         {
             var result = new List<NewsItemViewModel>();
 
-            foreach (var newsItem in newsItems.ToList())
+            foreach (var newsItem in newsItems)
             {
                 if (newsItem == null) continue;
 
