@@ -344,3 +344,6 @@ healthchecksdb
 *.png
 *.jpeg
 
+# ignore data connection
+/MainSite/appsettings.json
+/MainSite/appsettings.Development.json
