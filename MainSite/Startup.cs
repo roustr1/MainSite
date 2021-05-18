@@ -19,6 +19,7 @@ using MainSite.Models;
 using Application.Services.Users;
 using MainSite.Areas.Admin.Factories;
 using Microsoft.AspNetCore.Server.HttpSys;
+using Application.Services.PlanCalendar;
 
 namespace MainSite
 {
@@ -66,6 +67,7 @@ namespace MainSite
             services.AddTransient<INewsService, NewsService>();
             services.AddTransient<IBirthdayService, BirthdayService>();
             services.AddTransient<IUsersService, UsersService>();
+            services.AddTransient<IPlanCalendarSevice, PlanCalendarSevice>();
             services.AddTransient<IPermissionService, PermissionService>();
             services.AddTransient<ISecurityModelFactory, SecurityModelFactory>();
             services.AddTransient<IUserRoleModelFactory, UserRoleModelFactory>();

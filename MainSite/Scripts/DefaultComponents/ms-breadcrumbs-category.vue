@@ -1,20 +1,14 @@
 ﻿<template>
     <div class="navHeader">
-        <a class="navHeader-item"
-           href="#"
-           @click.prevent.self="backMainView">
-            Новости
-        </a>
-        <a
-           href="#"
-           class="navHeader-item"
-           v-for="(item, index) in items"
-           :key="index"
-           v-on:click.prevent.self="clickEvent(item)"
-           v-bind:class="CheckLastItem(index)"
-        >
-           {{item.name}}
-        </a>
+        <span class="navHeader-item"
+                href="#"
+                @click.prevent.self="backMainView">Новости</span>
+        <span href="#"
+                class="navHeader-item"
+                v-for="(item, index) in items"
+                :key="index"
+                v-on:click.prevent.self="clickEvent(item)"
+                v-bind:class="CheckLastItem(index)">{{item.name}}</span>
     </div>
 </template>
 
@@ -57,6 +51,15 @@
     }
 </script>
 
-<style>
+<style lang="scss" scoped>
+    .navHeader {
+        white-space: pre-wrap;
+        display:block;
+    }
 
+    .navHeader-item {
+        display: inline;
+        height: 37px;
+        cursor: pointer;
+    }
 </style>
