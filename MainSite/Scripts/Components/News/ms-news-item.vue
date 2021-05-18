@@ -142,10 +142,13 @@
 </script>
 
 <style scoped lang="scss">
+    .card_news-main {
+        padding-right: 60px;
+    }
     .dropdownFiles a {
-      display: flex;
-      align-items: center;
-      &:hover {
+        display: flex;
+        align-items: center;
+        &:hover {
         i {
           color: #9e9e9e !important;
         }
