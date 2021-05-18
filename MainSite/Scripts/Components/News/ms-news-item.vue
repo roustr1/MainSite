@@ -142,9 +142,6 @@
 </script>
 
 <style scoped lang="scss">
-    .card_news-main {
-        padding-right: 60px;
-    }
     .dropdownFiles a {
         display: flex;
         align-items: center;

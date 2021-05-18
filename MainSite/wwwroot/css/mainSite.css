@@ -415,7 +415,8 @@ html {
         height: 72px; }
     #mainBlock .card_news-main {
       padding: 0px;
-      margin: 0px; }
+      margin: 0px;
+      padding-right: 60px; }
       #mainBlock .card_news-main > div {
         padding: 0px;
         margin: 0px; }
