@@ -27411,6 +27411,10 @@ var _msNews = __webpack_require__(146);
 
 var _msNews2 = _interopRequireDefault(_msNews);
 
+var _msNewsCategory = __webpack_require__(502);
+
+var _msNewsCategory2 = _interopRequireDefault(_msNewsCategory);
+
 var _msSearchNews = __webpack_require__(463);
 
 var _msSearchNews2 = _interopRequireDefault(_msSearchNews);
@@ -27454,7 +27458,7 @@ var router = new _vueRouter2.default({
         children: [{
             path: '/categoryDetails/categoryId=:categoryId/page=:page',
             name: 'categoryDetails',
-            component: _msNews2.default,
+            component: _msNewsCategory2.default,
             props: true
         }, {
             path: 'category/create/parentCategoryId=:parentCategoryId',
@@ -30673,29 +30677,17 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _msNewsList = __webpack_require__(497);
 
-var _msNewsItem = __webpack_require__(147);
-
-var _msNewsItem2 = _interopRequireDefault(_msNewsItem);
+var _msNewsList2 = _interopRequireDefault(_msNewsList);
 
 var _msCreater_newsItem = __webpack_require__(438);
 
 var _msCreater_newsItem2 = _interopRequireDefault(_msCreater_newsItem);
 
-var _msPage = __webpack_require__(443);
-
-var _msPage2 = _interopRequireDefault(_msPage);
-
-var _vuex = __webpack_require__(16);
-
 var _msBirthday = __webpack_require__(448);
 
 var _msBirthday2 = _interopRequireDefault(_msBirthday);
-
-var _msBreadcrumbsCategory = __webpack_require__(149);
-
-var _msBreadcrumbsCategory2 = _interopRequireDefault(_msBreadcrumbsCategory);
 
 var _msCalendar = __webpack_require__(457);
 
@@ -30706,44 +30698,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = {
     name: "ms-news",
     components: {
-        msNewsItem: _msNewsItem2.default,
+        msNewsList: _msNewsList2.default,
         msCreaterNewsItem: _msCreater_newsItem2.default,
-        msPage: _msPage2.default,
         msBirthday: _msBirthday2.default,
-        msBreadCrumbs: _msBreadcrumbsCategory2.default,
         msCalendar: _msCalendar2.default
-    },
-    computed: _extends({}, (0, _vuex.mapState)('news', ['news', 'pager']), (0, _vuex.mapState)('menu', ['breadcrumbs']), {
-        IsNews: function IsNews() {
-            return typeof this.$route.params.categoryId === 'undefined';
-        }
-    }),
-    watch: {
-        $route: 'fetchData'
-    },
-    methods: _extends({}, (0, _vuex.mapActions)('news', ['GET_NEWS']), (0, _vuex.mapActions)('menu', ['GET_CATEGORIES_BY_BREADCRUMBS']), (0, _vuex.mapMutations)('news', ['DELETE_CURRENT_NEWS']), {
-        fetchData: function fetchData() {
-            this.getNewsForCategory();
-            this.getBreadCrumbs();
-        },
-        getNewsForCategory: function getNewsForCategory() {
-            this.GET_NEWS({
-                page: this.$route.params.page,
-                categoryId: this.$route.params.categoryId
-            });
-        },
-        getBreadCrumbs: function getBreadCrumbs() {
-            if (!this.IsNews) {
-                this.GET_CATEGORIES_BY_BREADCRUMBS(this.$route.params.categoryId);
-            }
-        }
-    }),
-    created: function created() {
-        this.getNewsForCategory();
-        this.getBreadCrumbs();
-    },
-    beforeDestroy: function beforeDestroy() {
-        this.DELETE_CURRENT_NEWS();
     }
 };
 
@@ -32324,20 +32282,28 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "card_news-editor"
   }, [_c('a', {
     attrs: {
-      "href": "#"
+      "href": "#",
+      "title": "Редактировать"
     },
     on: {
-      "click": _vm.changeSectionEditer
+      "click": function($event) {
+        $event.preventDefault();
+        return _vm.changeSectionEditer($event)
+      }
     }
   }, [_c('i', {
     staticClass: "material-icons"
   }, [_vm._v("edit")])]), _vm._v(" "), _c('a', {
     staticClass: "error",
     attrs: {
-      "href": "#"
+      "href": "#",
+      "title": "Удалить"
     },
     on: {
-      "click": _vm.deleteNews
+      "click": function($event) {
+        $event.preventDefault();
+        return _vm.deleteNews($event)
+      }
     }
   }, [_c('i', {
     staticClass: "material-icons"
@@ -32370,10 +32336,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('a', {
     attrs: {
-      "href": "#"
+      "href": "#",
+      "title": "Назад"
     },
     on: {
-      "click": _vm.changeSectionEditer
+      "click": function($event) {
+        $event.preventDefault();
+        return _vm.changeSectionEditer($event)
+      }
     }
   }, [_c('i', {
     staticClass: "material-icons"
@@ -33103,7 +33073,14 @@ exports.default = {
         return {};
     },
 
-    methods: _extends({}, (0, _vuex.mapMutations)('menu', ['SET_OR_UPDATE_ACTIVE_CATEGORY']), {
+    computed: _extends({}, (0, _vuex.mapState)('menu', ['breadcrumbs'])),
+    watch: {
+        $route: 'fetchData'
+    },
+    methods: _extends({}, (0, _vuex.mapActions)('menu', ['GET_CATEGORIES_BY_BREADCRUMBS']), (0, _vuex.mapMutations)('menu', ['SET_OR_UPDATE_ACTIVE_CATEGORY']), {
+        fetchData: function fetchData() {
+            this.getBreadCrumbs();
+        },
         clickEvent: function clickEvent(item) {
             if (this.$route.params.categoryId !== item.id) this.$router.push({ name: 'categoryList', params: { categoryId: item.id } });
         },
@@ -33117,8 +33094,14 @@ exports.default = {
             }
 
             return '';
+        },
+        getBreadCrumbs: function getBreadCrumbs() {
+            this.GET_CATEGORIES_BY_BREADCRUMBS(this.$route.params.categoryId);
         }
-    })
+    }),
+    created: function created() {
+        this.getBreadCrumbs();
+    }
 };
 
 /***/ }),
@@ -33140,7 +33123,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         return _vm.backMainView($event)
       }
     }
-  }, [_vm._v("Новости")]), _vm._v(" "), _vm._l((_vm.items), function(item, index) {
+  }, [_vm._v("Новости")]), _vm._v(" "), _vm._l((_vm.breadcrumbs), function(item, index) {
     return _c('span', {
       key: index,
       staticClass: "navHeader-item",
@@ -33389,28 +33372,11 @@ if (false) {
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "row"
-  }, [_c('ms-calendar'), _vm._v(" "), (_vm.IsNews) ? _c('ms-birthday') : _vm._e(), _vm._v(" "), _c('div', {
-    attrs: {
-      "id": "newsComponent"
-    }
-  }, [(!_vm.IsNews) ? _c('msBreadCrumbs', {
-    attrs: {
-      "items": _vm.breadcrumbs
-    }
-  }) : _vm._e(), _vm._v(" "), _c('msCreaterNewsItem', {
+  }, [_c('ms-calendar'), _vm._v(" "), _c('ms-birthday'), _vm._v(" "), _c('msCreaterNewsItem', {
     attrs: {
       "categoryId": _vm.$route.params.categoryId
     }
-  }), _vm._v(" "), _vm._l((_vm.news), function(item, index) {
-    return _c('msNewsItem', {
-      key: item.Id,
-      attrs: {
-        "index": index,
-        "isNews": _vm.IsNews,
-        "news_item": item
-      }
-    })
-  }), _vm._v(" "), (_vm.pager.ViewPageList && _vm.pager.ViewPageList.length) ? _c('msPage') : _vm._e()], 2)], 1)
+  }), _vm._v(" "), _c('msNewsList')], 1)
 },staticRenderFns: []}
 if (false) {
   module.hot.accept()
@@ -34154,6 +34120,7 @@ exports.default = {
             this.$router.push({ name: "categoryList", params: { categoryId: this.parentCategoryId } });
         },
         submit: function submit(e) {
+            console.log(document.getElementById('IsActive'));
             e.preventDefault();
             var data = new FormData(this.$refs.formCreate);
             data.append("IsActive", document.getElementById('IsActive').checked);
@@ -34221,7 +34188,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _vm._v(" "), _c('button', {
     staticClass: "btn btn-defaultMainSite",
-    on: {
+    attrs: {
       "click": _vm.backToCategoryList
     }
   }, [_vm._v("Назад")])])])])
@@ -34620,6 +34587,328 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
      require("vue-hot-reload-api").rerender("data-v-5ffe7d76", module.exports)
+  }
+}
+
+/***/ }),
+/* 497 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __vue_exports__, __vue_options__
+var __vue_styles__ = {}
+
+/* styles */
+__webpack_require__(498)
+
+/* script */
+__vue_exports__ = __webpack_require__(500)
+
+/* template */
+var __vue_template__ = __webpack_require__(501)
+__vue_options__ = __vue_exports__ = __vue_exports__ || {}
+if (
+  typeof __vue_exports__.default === "object" ||
+  typeof __vue_exports__.default === "function"
+) {
+if (Object.keys(__vue_exports__).some(function (key) { return key !== "default" && key !== "__esModule" })) {console.error("named exports are not supported in *.vue files.")}
+__vue_options__ = __vue_exports__ = __vue_exports__.default
+}
+if (typeof __vue_options__ === "function") {
+  __vue_options__ = __vue_options__.options
+}
+__vue_options__.__file = "I:\\projects\\MainSiteRoustr\\MainSite\\Scripts\\Components\\News\\ms-news-list.vue"
+__vue_options__.render = __vue_template__.render
+__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
+__vue_options__._scopeId = "data-v-ecb45434"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-ecb45434", __vue_options__)
+  } else {
+    hotAPI.reload("data-v-ecb45434", __vue_options__)
+  }
+})()}
+if (__vue_options__.functional) {console.error("[vue-loader] ms-news-list.vue: functional components are not supported and should be defined in plain js files using render functions.")}
+
+module.exports = __vue_exports__
+
+
+/***/ }),
+/* 498 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(499);
+if(content.__esModule) content = content.default;
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var add = __webpack_require__(11).default
+var update = add("685469f5", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-ecb45434&scoped=true!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ms-news-list.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-ecb45434&scoped=true!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ms-news-list.vue");
+     if(newContent.__esModule) newContent = newContent.default;
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 499 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(10)();
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/***/ }),
+/* 500 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _msNewsItem = __webpack_require__(147);
+
+var _msNewsItem2 = _interopRequireDefault(_msNewsItem);
+
+var _msCreater_newsItem = __webpack_require__(438);
+
+var _msCreater_newsItem2 = _interopRequireDefault(_msCreater_newsItem);
+
+var _msPage = __webpack_require__(443);
+
+var _msPage2 = _interopRequireDefault(_msPage);
+
+var _vuex = __webpack_require__(16);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    name: "ms-news-list",
+    components: {
+        msNewsItem: _msNewsItem2.default,
+        msCreaterNewsItem: _msCreater_newsItem2.default,
+        msPage: _msPage2.default
+    },
+    computed: _extends({}, (0, _vuex.mapState)('news', ['news', 'pager'])),
+    watch: {
+        $route: 'fetchData'
+    },
+    methods: _extends({}, (0, _vuex.mapActions)('news', ['GET_NEWS']), (0, _vuex.mapMutations)('news', ['DELETE_CURRENT_NEWS']), {
+        fetchData: function fetchData() {
+            this.getNews();
+        },
+        getNews: function getNews() {
+            this.GET_NEWS({
+                page: this.$route.params.page,
+                categoryId: this.$route.params.categoryId
+            });
+        }
+    }),
+    created: function created() {
+        this.getNews();
+    },
+    beforeDestroy: function beforeDestroy() {
+        this.DELETE_CURRENT_NEWS();
+    }
+};
+
+/***/ }),
+/* 501 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('div', {
+    attrs: {
+      "id": "newsComponent"
+    }
+  }, [_vm._l((_vm.news), function(item, index) {
+    return _c('msNewsItem', {
+      key: item.Id,
+      attrs: {
+        "index": index,
+        "isNews": _vm.IsNews,
+        "news_item": item
+      }
+    })
+  }), _vm._v(" "), (_vm.pager.ViewPageList && _vm.pager.ViewPageList.length) ? _c('msPage') : _vm._e()], 2)])
+},staticRenderFns: []}
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-ecb45434", module.exports)
+  }
+}
+
+/***/ }),
+/* 502 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __vue_exports__, __vue_options__
+var __vue_styles__ = {}
+
+/* styles */
+__webpack_require__(503)
+
+/* script */
+__vue_exports__ = __webpack_require__(505)
+
+/* template */
+var __vue_template__ = __webpack_require__(506)
+__vue_options__ = __vue_exports__ = __vue_exports__ || {}
+if (
+  typeof __vue_exports__.default === "object" ||
+  typeof __vue_exports__.default === "function"
+) {
+if (Object.keys(__vue_exports__).some(function (key) { return key !== "default" && key !== "__esModule" })) {console.error("named exports are not supported in *.vue files.")}
+__vue_options__ = __vue_exports__ = __vue_exports__.default
+}
+if (typeof __vue_options__ === "function") {
+  __vue_options__ = __vue_options__.options
+}
+__vue_options__.__file = "I:\\projects\\MainSiteRoustr\\MainSite\\Scripts\\Components\\News\\ms-news-category.vue"
+__vue_options__.render = __vue_template__.render
+__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
+__vue_options__._scopeId = "data-v-0faf4b74"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0faf4b74", __vue_options__)
+  } else {
+    hotAPI.reload("data-v-0faf4b74", __vue_options__)
+  }
+})()}
+if (__vue_options__.functional) {console.error("[vue-loader] ms-news-category.vue: functional components are not supported and should be defined in plain js files using render functions.")}
+
+module.exports = __vue_exports__
+
+
+/***/ }),
+/* 503 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(504);
+if(content.__esModule) content = content.default;
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var add = __webpack_require__(11).default
+var update = add("57045282", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-0faf4b74&scoped=true!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ms-news-category.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-0faf4b74&scoped=true!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ms-news-category.vue");
+     if(newContent.__esModule) newContent = newContent.default;
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 504 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(10)();
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/***/ }),
+/* 505 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _msNewsList = __webpack_require__(497);
+
+var _msNewsList2 = _interopRequireDefault(_msNewsList);
+
+var _msBreadcrumbsCategory = __webpack_require__(149);
+
+var _msBreadcrumbsCategory2 = _interopRequireDefault(_msBreadcrumbsCategory);
+
+var _msCreater_newsItem = __webpack_require__(438);
+
+var _msCreater_newsItem2 = _interopRequireDefault(_msCreater_newsItem);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    name: "ms-news-category",
+    components: {
+        msNewsList: _msNewsList2.default,
+        msBreadCrumbs: _msBreadcrumbsCategory2.default,
+        msCreaterNewsItem: _msCreater_newsItem2.default
+    }
+};
+
+/***/ }),
+/* 506 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "row"
+  }, [_c('msBreadCrumbs'), _vm._v(" "), _c('msCreaterNewsItem', {
+    attrs: {
+      "categoryId": _vm.$route.params.categoryId
+    }
+  }), _vm._v(" "), _c('msNewsList')], 1)
+},staticRenderFns: []}
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-0faf4b74", module.exports)
   }
 }
 

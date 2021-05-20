@@ -33,7 +33,7 @@
             </div>
             <div class="input-field m12">
                 <input type="submit" value="Добавить" class="btn btn-defaultMainSite" />
-                <button class="btn btn-defaultMainSite" @click="backToCategoryList">Назад</button>
+                <button class="btn btn-defaultMainSite" v-bind:click.prevent="backToCategoryList">Назад</button>
             </div>
         </form>
     </div>
@@ -74,6 +74,7 @@ import { mapActions } from "vuex"
                 this.$router.push({ name: "categoryList", params: { categoryId: this.parentCategoryId} });
             },
             submit(e) {
+                console.log(document.getElementById('IsActive'));
                 e.preventDefault();
                 let data = new FormData(this.$refs.formCreate);
                 data.append("IsActive", document.getElementById('IsActive').checked);

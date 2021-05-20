@@ -17,8 +17,8 @@
                 </div>
 
                 <div class="card_news-editor">
-                    <a href="#" @click="changeSectionEditer"><i class="material-icons">edit</i></a>
-                    <a href="#" class="error" @click="deleteNews"><i class="material-icons">close</i></a>
+                    <a href="#"  v-on:click.prevent="changeSectionEditer" title="Редактировать"><i class="material-icons">edit</i></a>
+                    <a href="#" class="error" v-on:click.prevent="deleteNews" title="Удалить"><i class="material-icons">close</i></a>
                 </div>
             </div>
 
@@ -34,7 +34,7 @@
         <template v-else>
             <div>
                 <div class="card_news-editor" style="right:10px;">
-                    <a href="#" @click="changeSectionEditer"><i class="material-icons">reply</i></a>
+                    <a href="#" v-on:click.prevent="changeSectionEditer" title="Назад"><i class="material-icons">reply</i></a>
                 </div>
                 <msChangeNewsForm 
                    :isAdvancedEditor="news_item.IsAdvancedEditor"

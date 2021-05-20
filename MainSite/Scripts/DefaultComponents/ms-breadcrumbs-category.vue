@@ -5,7 +5,7 @@
                 @click.prevent.self="backMainView">Новости</span>
         <span href="#"
                 class="navHeader-item"
-                v-for="(item, index) in items"
+                v-for="(item, index) in breadcrumbs"
                 :key="index"
                 v-on:click.prevent.self="clickEvent(item)"
                 v-bind:class="CheckLastItem(index)">{{item.name}}</span>
@@ -13,7 +13,7 @@
 </template>
 
 <script>
-    import { mapMutations } from 'vuex';
+    import { mapMutations, mapActions, mapState } from 'vuex';
 
     export default {
         name: 'ms-breadcrumbs-category',
@@ -27,10 +27,24 @@
             return {
             }
         },
+        computed: {
+            ...mapState('menu', [
+                'breadcrumbs'
+            ])
+        },
+        watch: {
+            $route: 'fetchData'
+        },
         methods: {
+            ...mapActions('menu', [
+                'GET_CATEGORIES_BY_BREADCRUMBS',
+            ]),
             ...mapMutations('menu', [
                 'SET_OR_UPDATE_ACTIVE_CATEGORY'
             ]),
+            fetchData() {
+                this.getBreadCrumbs();
+            },
             clickEvent(item) {
                 if (this.$route.params.categoryId !== item.id)
                     this.$router.push({ name: 'categoryList', params: { categoryId: item.id } });
@@ -46,7 +60,13 @@
                 }
 
                 return '';
+            },
+            getBreadCrumbs() {
+                this.GET_CATEGORIES_BY_BREADCRUMBS(this.$route.params.categoryId);
             }
+        },
+        created() {
+            this.getBreadCrumbs();
         }
     }
 </script>

@@ -1,7 +1,6 @@
 ﻿<template>
     <div class="row">
-        <ms-calendar />
-        <ms-birthday/>
+        <msBreadCrumbs />
         <msCreaterNewsItem :categoryId="$route.params.categoryId" />
         <msNewsList />
     </div>
@@ -9,17 +8,15 @@
 
 <script>
     import msNewsList from './ms-news-list.vue';
+    import msBreadCrumbs from '../../DefaultComponents/ms-breadcrumbs-category.vue';
     import msCreaterNewsItem from './ms-creater_news-item.vue';
-    import msBirthday from '../Birthday/ms-birthday.vue';
-    import msCalendar from '../Calendar/ms-calendar.vue';
 
     export default {
-        name: "ms-news",
+        name: "ms-news-category",
         components: {
-            msNewsList,
-            msCreaterNewsItem,
-            msBirthday,
-            msCalendar
+            msNewsList,      
+            msBreadCrumbs,
+            msCreaterNewsItem
         }
     };
 </script>
