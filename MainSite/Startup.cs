@@ -69,6 +69,8 @@ namespace MainSite
             services.AddTransient<IUsersService, UsersService>();
             services.AddTransient<IPlanCalendarSevice, PlanCalendarSevice>();
             services.AddTransient<IPermissionService, PermissionService>();
+            services.AddTransient<IPlanCalendarFactory, PlanCalendarFactory>();
+            services.AddTransient<PlanCalendarRepository, PlanCalendarRepository>();
             services.AddTransient<ISecurityModelFactory, SecurityModelFactory>();
             services.AddTransient<IUserRoleModelFactory, UserRoleModelFactory>();
             services.AddTransient<IUserModelFactory, UserModelFactory>();

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Application.Services.PlanCalendar
+namespace MainSite.Models
 {
     public class ParserDateModel
     {
@@ -10,31 +10,31 @@ namespace Application.Services.PlanCalendar
         public bool IsExist { get; set; }
     }
 
-    public class ParserActivityModel
+    public class EventCalendarModel
     {
-        public string DayOfEvent { get; set; }
+        public string Day { get; set; }
         public string NameProgram { get; set; }
         public string Name { get; set; }
         public string NameAllStav { get; set; }
         public string Leader { get; set; }
-        public string LocationOfEvent { get; set; }
-        public string TimeOfEvent { get; set; }
-        public string ResultOfEvent { get; set; }
+        public string Location { get; set; }
+        public string Time { get; set; }
+        public string Result { get; set; }
 
-        public ParserActivityModel()
+        public EventCalendarModel()
         {
         }
     }
 
-    public class DataBaseParserModel
+    public class PlanCalendarModel
     {
-        public List<ParserActivityModel> ParserActivityModelCollection { get; set; }
+        public List<EventCalendarModel> Events { get; set; }
         public int Year { get; set; }
         public string Month { get; set; }
 
-        public DataBaseParserModel()
+        public PlanCalendarModel()
         {
-            ParserActivityModelCollection = new List<ParserActivityModel>();
+            Events = new List<EventCalendarModel>();
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿<template>
-    <div class="col s12 m12 card-panel ms-category-item_create">
+    <div class="col s12 m12 row card-panel ms-category-item_create">
         <h5 class="header">Добавить подраздел</h5>
         <br/>
         <form ref="formCreate" @submit="submit" action="/Admin/Menu/Create/" method="post">

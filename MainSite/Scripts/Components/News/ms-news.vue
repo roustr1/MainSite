@@ -1,5 +1,6 @@
 ﻿<template>
     <div class="row">
+        <ms-calendar />
         <ms-birthday v-if="IsNews" />
         <div id="newsComponent">
             <msBreadCrumbs
@@ -28,6 +29,7 @@
     import { mapActions, mapMutations, mapState } from 'vuex';
     import msBirthday from '../Birthday/ms-birthday.vue';
     import msBreadCrumbs from '../../DefaultComponents/ms-breadcrumbs-category.vue';
+    import msCalendar from '../Calendar/ms-calendar.vue';
 
     export default {
         name: "ms-news",
@@ -36,7 +38,8 @@
             msCreaterNewsItem,
             msPage,
             msBirthday,
-            msBreadCrumbs
+            msBreadCrumbs,
+            msCalendar
         },
         computed: {
             ...mapState('news', [

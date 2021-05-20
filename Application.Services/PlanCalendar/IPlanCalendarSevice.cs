@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Application.Services.PlanCalendar
 {
     public interface IPlanCalendarSevice
     {
-        List<DataBaseParserModel> Start(IFormFile file);
+        void CreatePlanCalendar(Dal.Domain.PlanCalendar.PlanCalendar item);
+        void UpdatePlanCalendar(Dal.Domain.PlanCalendar.PlanCalendar item);
+        void DeletePlanCalendar(Dal.Domain.PlanCalendar.PlanCalendar item);
+        Dal.Domain.PlanCalendar.PlanCalendar GetPlanCalendar(string itemId);
+        Dal.Domain.PlanCalendar.PlanCalendar GetLastPlanCalendar();
     }
 }

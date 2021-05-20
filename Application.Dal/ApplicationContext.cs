@@ -4,6 +4,7 @@ using Application.Dal.Domain.Files;
 using Application.Dal.Domain.Menu;
 using Application.Dal.Domain.News;
 using Application.Dal.Domain.Permissions;
+using Application.Dal.Domain.PlanCalendar;
 using Application.Dal.Domain.Settings;
 using Application.Dal.Domain.Users;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,9 @@ namespace Application.Dal
         public DbSet<PinNews> PinnedNews { get; set; }
 
         public DbSet<Setting> Settings { get; set; }
+
+        public DbSet<PlanCalendar> PlanCalendars { get; set; }
+        public DbSet<EventCalendar> EventCalendars { get; set; }
 
         public DbSet<UserRole> Roles { get; set; }
         public DbSet<PermissionRecord> Permissions { get; set; }
@@ -163,8 +167,6 @@ new Setting
                     },
                 }
             );
-
-            modelBuilder.Entity<PinNews>().HasKey(pc => new {pc.CategoryId, pc.NewsItemId});
         }
     }
 }
