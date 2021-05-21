@@ -1,8 +1,8 @@
 ﻿import axios from 'axios'
 
 export default {
-    async GET_NEWS({ commit }, data) {
-       // document.getElementById('progressLoad').style.display = 'block';
+    async GET_NEWS(store, data) {
+        store.rootState.preLoader.isActive = true;
         try {
             let result = await axios('/api/ApiNews/newsItems/',
                 {
@@ -13,16 +13,16 @@ export default {
                     }
                 }
             );
-            commit('SET_PAGE', result.data.PagerModel);
-            commit('SET_NEWS', result.data.News);
+            store.commit('SET_PAGE', result.data.PagerModel);
+            store.commit('SET_NEWS', result.data.News);
         }
         catch (ex) {
 
         }
-        //document.getElementById('progressLoad').style.display = 'none';
+        store.rootState.preLoader.isActive = false;
     },
-    async GET_NEWS_BY_SEARCH({ commit }, data) {
-       // document.getElementById('progressLoad').style.display = 'block';
+    async GET_NEWS_BY_SEARCH(store, data) {
+        store.rootState.preLoader.isActive = true;
         try {
             let result = await axios('/api/ApiNews/search/',
                 {
@@ -32,16 +32,16 @@ export default {
                     }
                 }
             );
-            commit('SET_PAGE', {});
-            commit('SET_NEWS', result.data);
+            store.commit('SET_PAGE', {});
+            store.commit('SET_NEWS', result.data);
         }
         catch (ex) {
 
         }
-       // document.getElementById('progressLoad').style.display = 'none';
+        store.rootState.preLoader.isActive = false;
     },
-    async CREATE_NEW({ commit }, data) {
-        //document.getElementById('progressLoad').style.display = 'block';
+    async CREATE_NEW(store, data) {
+        store.rootState.preLoader.isActive = true;
         try {
             let result = await axios(
                 {
@@ -56,11 +56,11 @@ export default {
 
             if (JSON.parse(result.data) != null) {
                 var res = JSON.parse(result.data);
-                commit('ADD_NEW', res);
+                store.commit('ADD_NEW', res);
             }
         }
         catch (ex) { }
-        //document.getElementById('progressLoad').style.display = 'none';
+        store.rootState.preLoader.isActive = false;
     },
     async UPDATE_NEW({ commit }, result) {
         try {

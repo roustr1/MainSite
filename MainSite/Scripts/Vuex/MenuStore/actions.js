@@ -1,17 +1,17 @@
 ﻿import axios from 'axios'
 
 export default {
-    async GET_CATEGORIES({ commit }) {
-        //document.getElementById('progressLoad').style.display = 'block';
+    async GET_CATEGORIES(store) {
+        store.rootState.preLoader.isActive = true;
         try {
             let result = await axios('/api/ApiMenu/categories', {
                 method: 'GET'
             });
-            commit('SET_CATEGORIES', result.data);
+            store.commit('SET_CATEGORIES', result.data);
         }
         catch (ex) {
         }
-        //document.getElementById('progressLoad').style.display = 'none';
+        store.rootState.preLoader.isActive = false;
     },
     CHANGE_IS_ACTIVE_COMPONENT() {
         return false;
@@ -29,8 +29,8 @@ export default {
     CHANGE_IS_ACTIVE_COMPONENT() {
         return false;
     },
-    async GET_CATEGORIES_BY_BREADCRUMBS({ commit }, categoryId) {
-        //document.getElementById('progressLoad').style.display = 'block';
+    async GET_CATEGORIES_BY_BREADCRUMBS(store, categoryId) {
+        store.rootState.preLoader.isActive = true;
         try {
             let result = await axios('/api/ApiMenu/breadcrumbs', {
                 method: 'GET',
@@ -38,9 +38,9 @@ export default {
                     categoryId: categoryId
                 }
             });
-            commit('SET_BREADCRUMBS', result.data);
+            store.commit('SET_BREADCRUMBS', result.data);
         }
         catch (ex) { }
-       // document.getElementById('progressLoad').style.display = 'none';
+        store.rootState.preLoader.isActive = false;
     }
 }

@@ -5,6 +5,7 @@ import newsStore from '../Vuex/NewsStore/store'
 import settingsStore from '../Vuex/SettingsStore/store'
 import userStore from '../Vuex/UserStore/store'
 import planCalendarStore from '../Vuex/PlanCalendarStore/store'
+import preLoaderStore from '../Vuex/PreLoaderStore/store'
 Vue.use(Vuex);
 
 let store = new Vuex.Store({
@@ -13,7 +14,8 @@ let store = new Vuex.Store({
         news: newsStore,
         settings: settingsStore,
         user: userStore,
-        planCalendar: planCalendarStore
+        planCalendar: planCalendarStore,
+        preLoader: preLoaderStore
     }
 });
 

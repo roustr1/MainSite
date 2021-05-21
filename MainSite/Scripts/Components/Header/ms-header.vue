@@ -34,7 +34,7 @@
                     </div>
                 </div>
             </div>
-            <div class="progress" id="progressLoad" style="background-color:transparent; margin:0px; display:none;">
+            <div class="progress" id="progressLoad" style="background-color:transparent; margin:0px;" v-bind:style="isShow[isActive]">
                 <div class="indeterminate" style="background-color:#64b5f6;"></div>
             </div>
         </nav>
@@ -49,12 +49,17 @@
         data() {
             return {
                 userName: 'Незарегистрированный пользователь',
-                searchText: ''
+                searchText: '',
+                isShow: {
+                    true: { display: 'block' },
+                    false: {display : 'none'}
+                }
             }
         },
         computed: {
             ...mapState('settings', ['settings']),
             ...mapState('user', ['currentUser']),
+            ...mapState('preLoader', ['isActive']),
             GetApplicationName() {
                 return this.searchSettingByName("Application.Name", "WebSite");
             },
@@ -97,5 +102,8 @@
     }
 </script>
 
-<style>
+<style lang="scss" scoped>
+    .isActive {
+        display:block;
+    }
 </style>
