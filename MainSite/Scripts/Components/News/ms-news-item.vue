@@ -17,8 +17,8 @@
                 </div>
 
                 <div class="card_news-editor">
-                    <a href="#" @click="changeSectionEditer"><i class="material-icons">edit</i></a>
-                    <a href="#" class="error" @click="deleteNews()"><i class="material-icons">close</i></a>
+                    <a href="#"  v-on:click.prevent="changeSectionEditer" title="Редактировать"><i class="material-icons">edit</i></a>
+                    <a href="#" class="error" v-on:click.prevent="deleteNews" title="Удалить"><i class="material-icons">close</i></a>
                 </div>
             </div>
 
@@ -34,10 +34,10 @@
         <template v-else>
             <div>
                 <div class="card_news-editor" style="right:10px;">
-                    <a href="#" @click="changeSectionEditer"><i class="material-icons">reply</i></a>
+                    <a href="#" v-on:click.prevent="changeSectionEditer" title="Назад"><i class="material-icons">reply</i></a>
                 </div>
                 <msChangeNewsForm 
-                   :isAdvancedEditor="news_item.IsAdvanced"
+                   :isAdvancedEditor="news_item.IsAdvancedEditor"
                    :categoryId="news_item.CategoryId"
                    @changeNew="changeNew" 
                    :editModel="news_item"
@@ -80,7 +80,7 @@
         },
         computed: {
             Message() {
-                return this.news_item.isMessage ? "разместил" : "отредактировал";
+                return this.news_item.isMessage ? "отредактировал" : "разместил";
             },
             GetUnicIdBlock() {
                 return "new_" + this.news_item.Id;
@@ -98,7 +98,8 @@
         methods: {
             ...mapActions('news', [
                 'DOWNLOADFILE',
-                'UPDATE_NEW'
+                'UPDATE_NEW',
+                'DELETE_NEW'
             ]),
             changeSectionEditer() {
                 this.isEditer = !this.isEditer;
@@ -107,7 +108,7 @@
                 this.DOWNLOADFILE(item);
             },
             deleteNews() {
-                this.$emit('deleteNews', this.index, this.news_item.Id);
+                this.DELETE_NEW({ index: this.index, id: this.news_item.Id });
             },
             async changeNew(result) {
                 let res = await this.UPDATE_NEW({ data: result, index: this.index });
@@ -144,15 +145,10 @@
     .dropdownFiles a {
         display: flex;
         align-items: center;
-        &:hover
-
-    {
-        i
-
-    {
-        color: #9e9e9e !important;
-    }
-
-    }
+        &:hover {
+        i {
+          color: #9e9e9e !important;
+        }
+      }
     }
 </style>

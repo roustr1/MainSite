@@ -10,7 +10,7 @@ namespace Application.Dal
     public class EfRepository<TEntity> : IRepository<TEntity>
         where TEntity : BaseEntity
     {
-        private readonly ApplicationContext _context;
+        protected readonly ApplicationContext _context;
         private readonly string _emptyGuid = Guid.Empty.ToString();
 
         public EfRepository(ApplicationContext context)
@@ -96,10 +96,7 @@ namespace Application.Dal
                 return _context.Set<TEntity>();
             }
         }
-      
-         
-        
-        
+
         private TEntity CheckAndCreateGuid(TEntity entity)
         {
             if (string.IsNullOrWhiteSpace(entity.Id) || entity.Id == _emptyGuid)

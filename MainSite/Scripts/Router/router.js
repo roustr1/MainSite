@@ -1,6 +1,8 @@
 ﻿import Vue from 'vue'
 import Router from 'vue-router'
 import msNews from '../Components/News/ms-news.vue';
+import msNewsByCategory from '../Components/News/ms-news-category';
+import msSearchNews from '../Components/Search/ms-search-news.vue';
 import msCategory from '../Components/Category/ms-category.vue';
 import msCategoryList from '../Components/Category/ms-category-list.vue';
 import msCategoryItemCreate from '../Components/Category/ms-category-item_create.vue';
@@ -23,14 +25,20 @@ let router = new Router({
             ]
         },
         {
+            path: '/search/searchText=:searchText',
+            name: 'search',
+            component: msSearchNews,
+            props: true
+        },
+        {
             path: '/category',
             name: 'category',
             component: msCategory,
             children: [
                 {
-                    path: '/categoryId=:categoryId/page=:page',
+                    path: '/categoryDetails/categoryId=:categoryId/page=:page',
                     name: 'categoryDetails',
-                    component: msNews,
+                    component: msNewsByCategory,
                     props: true
                 },
                 {

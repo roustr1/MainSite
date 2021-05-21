@@ -76,26 +76,21 @@ html {
   overflow-x: hidden;
   position: relative;
   min-height: 100%; }
-  html .navHeader {
-    display: flex;
-    align-items: center; }
-    html .navHeader-item {
-      display: flex;
-      align-items: center;
-      color: #9e9e9e; }
-      html .navHeader-item:before {
-        content: '\E5CC';
-        color: #9e9e9e;
-        vertical-align: top;
-        display: inline-block;
-        font-family: 'Material Icons';
-        font-weight: normal;
-        font-style: normal;
-        font-size: 25px;
-        margin: 0 10px 0 8px;
-        -webkit-font-smoothing: antialiased; }
-      html .navHeader-item:first-child:before {
-        display: none; }
+  html .navHeader-item {
+    color: #9e9e9e; }
+    html .navHeader-item:before {
+      content: '\E5CC';
+      color: #9e9e9e;
+      vertical-align: middle;
+      display: inline-block;
+      font-family: 'Material Icons';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 25px;
+      margin: 0 10px 0 8px;
+      -webkit-font-smoothing: antialiased; }
+    html .navHeader-item:first-child:before {
+      display: none; }
   @media (max-width: 1400px) {
     html .container {
       width: 95%; } }
@@ -420,7 +415,8 @@ html {
         height: 72px; }
     #mainBlock .card_news-main {
       padding: 0px;
-      margin: 0px; }
+      margin: 0px;
+      padding-right: 60px; }
       #mainBlock .card_news-main > div {
         padding: 0px;
         margin: 0px; }

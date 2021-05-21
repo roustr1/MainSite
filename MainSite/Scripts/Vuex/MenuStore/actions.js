@@ -2,7 +2,7 @@
 
 export default {
     async GET_CATEGORIES({ commit }) {
-        document.getElementById('progressLoad').style.display = 'block';
+        //document.getElementById('progressLoad').style.display = 'block';
         try {
             let result = await axios('/api/ApiMenu/categories', {
                 method: 'GET'
@@ -10,9 +10,8 @@ export default {
             commit('SET_CATEGORIES', result.data);
         }
         catch (ex) {
-            console.log(ex);
         }
-        document.getElementById('progressLoad').style.display = 'none';
+        //document.getElementById('progressLoad').style.display = 'none';
     },
     CHANGE_IS_ACTIVE_COMPONENT() {
         return false;
@@ -31,7 +30,7 @@ export default {
         return false;
     },
     async GET_CATEGORIES_BY_BREADCRUMBS({ commit }, categoryId) {
-        document.getElementById('progressLoad').style.display = 'block';
+        //document.getElementById('progressLoad').style.display = 'block';
         try {
             let result = await axios('/api/ApiMenu/breadcrumbs', {
                 method: 'GET',
@@ -42,6 +41,6 @@ export default {
             commit('SET_BREADCRUMBS', result.data);
         }
         catch (ex) { }
-        document.getElementById('progressLoad').style.display = 'none';
+       // document.getElementById('progressLoad').style.display = 'none';
     }
 }

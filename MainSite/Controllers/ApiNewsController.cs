@@ -33,7 +33,15 @@ namespace MainSite.Controllers
 
             return JsonConvert.SerializeObject(model);
         }
-     
 
+        [Route("search")]
+        [HttpPost]
+        public string SearchNews(string search)
+        {
+            var result = _mainMode.GetManySearchResultNewsItemViewModel(search);
+
+            return JsonConvert.SerializeObject(result);
+
+        }
     }
 }

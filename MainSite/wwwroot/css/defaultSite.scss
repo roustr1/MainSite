@@ -42,18 +42,13 @@ html {
     font-family: "HelveticaNeueCyr" !important;
 
     .navHeader {
-        display: flex;
-        align-items: center;
-
         &-item {
-            display: flex;
-            align-items: center;
             color: #9e9e9e;
 
             &:before {
                 content: '\E5CC';
                 color: #9e9e9e;
-                vertical-align: top;
+                vertical-align: middle;
                 display: inline-block;
                 font-family: 'Material Icons';
                 font-weight: normal;
