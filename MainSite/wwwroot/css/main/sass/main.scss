@@ -18,7 +18,6 @@ $paddingTopBlock: 5px !default;
         padding: $paddingTopBlock $paddingRightBlock $paddingBottomBlock $paddingLeftBlock;
     }
 
-    @import "../birthday/sass/birthday.scss";
     @import "../news/sass/news.scss";
 }
  

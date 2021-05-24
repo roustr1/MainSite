@@ -6,9 +6,11 @@
                 <div class="card_news-main">
                     <div v-if="isNews" class="card_news-main-header">
                         <span class="bold">{{this.news_item.Author}}</span>
-                        <span class="bold" v-if="IsMessageDetails">{{this.Message}} запись в разделе</span>
-                        <router-link :id="news_item.Id"
-                                     :to="{name: 'categoryDetails', params: {categoryId : news_item.CategoryId, page: 1}}">
+                        <span class="bold">{{this.Message}} запись в разделе</span>
+                        <router-link 
+                            :id="news_item.Id"
+                            :to="{name: 'categoryDetails', params: {categoryId : news_item.CategoryId, page: 1}}"
+                        >
                             {{this.news_item.Category}}
                         </router-link>
                     </div>
@@ -27,7 +29,7 @@
             <ul class="dropdownFiles">
                 <li v-for="item in news_item.Files"
                     :key="item.Id">
-                    <a href="#" @click="downloadFile(item)"><i class="material-icons">download</i> {{item.Name}}</a>
+                    <a href="#" @click="downloadFile(item)"><img src="/images/layout_icons/News/fileLoad.svg" style="padding-right:5px;" />  {{item.Name}}</a>
                 </li>
             </ul>
         </template>
@@ -71,7 +73,6 @@
         data: () => {
             return {
                 isEditer: false ,
-                IsMessageDetails: true,
                 model: {}
             }
         },
@@ -93,7 +94,7 @@
                 }
 
                 return new Date(this.news_item.CreatedDate).toLocaleDateString("ru", options);
-            }
+            },
         },
         methods: {
             ...mapActions('news', [
@@ -142,13 +143,19 @@
 </script>
 
 <style scoped lang="scss">
+    .card_news-description {
+        font-size: 14px;
+    }
     .dropdownFiles a {
-        display: flex;
+        display: inline-flex;
         align-items: center;
-        &:hover {
-        i {
-          color: #9e9e9e !important;
+        padding-bottom: 5px;
+        font-size: 14px;
+        & > img {
+          width: 23px;
         }
+        &:hover {
+          color: #64b5f6 !important;
       }
     }
 </style>

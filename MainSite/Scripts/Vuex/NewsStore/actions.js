@@ -22,8 +22,10 @@ export default {
         store.rootState.preLoader.isActive = false;
     },
     async GET_NEWS_BY_SEARCH(store, data) {
+        if (data === '') return;
         store.rootState.preLoader.isActive = true;
         try {
+
             let result = await axios('/api/ApiNews/search/',
                 {
                     method: 'post',
