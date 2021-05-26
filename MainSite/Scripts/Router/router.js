@@ -13,7 +13,7 @@ let router = new Router({
     routes: [
         {
             path: '/',
-            name:'news',
+            name:'main',
             component: msNews,
             children: [
                 {

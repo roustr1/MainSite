@@ -77,9 +77,9 @@
                     this.currentPage = this.$route.params.page;
             },
             changePage(page) {
-                let news_page = this.$route.name == 'news' ? page : 1;
+                let new_page = page;
                 let routerParams = typeof (this.$route.params.categoryId) === 'undefined' ?
-                    { name: 'news', params: { page: news_page } }
+                    { name: 'news', params: { page: new_page } }
                     :
                     { name: 'categoryDetails', params: { page: new_page, categoryId: this.$route.params.categoryId } }
 

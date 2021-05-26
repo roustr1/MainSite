@@ -79,7 +79,12 @@ namespace MainSite.Areas.Admin.Factories
             dataBaseParserModel.Year = GetYear(worksheet.Name);
             dataBaseParserModel.Month = GetMoth(worksheet.Name);
 
-            for (int i = 0; i < rows.Count(); i++)
+            if(dataBaseParserModel.Year == 2021 && (dataBaseParserModel.Month == "Май"))
+            {
+                var t = "asdas";
+            }
+
+                for (int i = 0; i < rows.Count(); i++)
             {
                 if (CheckStartingFiled(rows.ElementAt(i).Cell(1).Value))
                 {
@@ -113,7 +118,8 @@ namespace MainSite.Areas.Admin.Factories
                             programIndex = currentIndexActivity;
                         }
                     }
-                    break;
+
+                    return dataBaseParserModel;
                 }
                 //break;
             }
@@ -215,16 +221,8 @@ namespace MainSite.Areas.Admin.Factories
 
         public PlanCalendar GetEntity(PlanCalendarModel planCalendarModel)
         {
-            var moths = new string[] {"янва", "февр", "мар", "апре", "ма", "июн", "июл", "август", "сентяб", "октяб", "нояб", "декаб" };
-            int? resultMothNumber = null;
-            for (var i = 0; i < moths.Length; i++)
-            {
-                if(planCalendarModel.Month.ToLower().Contains(moths[i]))
-                {
-                    resultMothNumber = i + 1;
-                }
-            }
-
+           var monthNumber  = DateTime.Parse($"1,{planCalendarModel.Month}").Month;
+           
             var entity = new PlanCalendar()
             {
                 Events = planCalendarModel.Events.Select(a => new EventCalendar()
@@ -239,7 +237,7 @@ namespace MainSite.Areas.Admin.Factories
                     Time = a.Time,
                     Id = Guid.NewGuid().ToString()
                 }).ToList(),
-                Month = resultMothNumber,
+                Month = monthNumber,
                 Year = planCalendarModel.Year,
                 Id = Guid.NewGuid().ToString()
             };
