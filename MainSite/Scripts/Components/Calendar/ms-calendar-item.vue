@@ -46,5 +46,7 @@
 </script>
 
 <style lang="scss">
-
+    .ms-calendar_item {
+        color: black;
+    }
 </style>

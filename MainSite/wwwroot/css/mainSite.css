@@ -279,7 +279,6 @@ html {
     font-size: 18px; }
 
 #mainBlock {
-  /*Оформление блока день рождение(birthday)*/
   /*Оформление формы создание сообщения*/
   /*Оформление блока новостей*/
   /*Оформление блока Информация по новости*/
@@ -289,38 +288,6 @@ html {
   #mainBlock .card-panel {
     border-radius: 8px;
     padding: 5px 15px 5px 15px; }
-  #mainBlock .card_birthday-title {
-    width: 180px;
-    float: left; }
-    @media (max-width: 992px) {
-      #mainBlock .card_birthday-title {
-        float: none;
-        text-align: center;
-        padding-bottom: 15px;
-        width: 100%; } }
-  #mainBlock .card_birthday-content {
-    padding-right: 0px;
-    display: flex;
-    overflow-x: auto;
-    overflow-y: hidden; }
-    #mainBlock .card_birthday-content > div {
-      display: flex;
-      flex: none;
-      flex-direction: column;
-      align-items: center;
-      padding-top: 6px;
-      margin-bottom: 3px;
-      padding-right: 10px;
-      align-items: center;
-      height: 68px; }
-    #mainBlock .card_birthday-content > div:last-child {
-      padding-right: 0px; }
-    #mainBlock .card_birthday-content::-webkit-scrollbar-thumb {
-      border-radius: 8px;
-      width: 3px;
-      background-color: #eeeeee; }
-    #mainBlock .card_birthday-content::-webkit-scrollbar {
-      width: 0; }
   #mainBlock .creator {
     margin-bottom: 1rem;
     position: relative; }

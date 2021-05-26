@@ -4,12 +4,11 @@
             C днём рождения!
         </div>
         <div class="card_birthday-content">
-            <div
+            <div class="card_birthday-content_description"
                  v-for="item in users"
-                 :key="item.Id"
-                 >
-                <img class="rectangle" :src="item.Photo" alt="" />
-                <span>{{item.Fio}}</span>
+                 :key="item.Id">
+                <span class="fio">{{item.Fio}}</span>
+                <span class="subdivision">{{getSubDivision(item.SubDivision)}}</span>
             </div>
         </div>
     </div>
@@ -32,6 +31,10 @@
                 .then(responce => {
                         this.users =  responce.data;
                 });
+            },
+            getSubDivision(subDivision) {
+                if (typeof subDivision == 'undefined' || subDivision == null) return 'ООНРиПНПК';
+                return subDivision;
             }
         },
         mounted() {
@@ -41,7 +44,63 @@
 </script>
 
 <style lang="scss">
-    .card_birthday-content {
-        justify-content: space-between;
+     /*Оформление блока день рождение(birthday)*/
+    .card_birthday {
+        position: absolute;
+        right: 5px;
+        top: 64px;
+        width: 13%;
+
+        @media (max-width: 1400px) {
+            position:inherit;
+            right: none;
+            top: none;
+            padding-bottom: 15px;
+            width: 100%;
+        }
+
+        &-title {
+            text-align: center;
+            color:#B12344;
+            padding-bottom: 5px;
+            @media (max-width: 1400px) {
+                text-align: center;
+                padding-bottom: 15px;
+                width: 100%;
+            }
+        }
+
+        &-content {
+            font-size: 14px;
+            display:flex;
+            flex-direction:column;
+            @media (max-width: 1400px) {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: inherit !important;
+            }
+            &_description {
+                display:flex;
+                flex-wrap:wrap;               
+                @media (max-width: 1400px) {
+                    padding:5px;
+                }
+                .fio {
+                   padding-right: 10px;
+                   font-weight: 600;
+                   flex-basis:50%;
+                    @media (max-width: 1400px) {
+                        flex-basis:inherit;
+                    }
+                }
+                .subdivision {
+                   font-style: italic;
+                   flex-basis:50%;
+                   @media (max-width: 1400px) {
+                        flex-basis:inherit;
+                    }
+                }
+            }
+        }
     }
 </style>

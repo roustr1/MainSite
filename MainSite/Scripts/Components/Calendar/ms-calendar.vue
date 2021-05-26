@@ -2,17 +2,19 @@
     <div class="card-panel">
         <div class="ms-calendar">
             <a data-v-7fa05ddb="" href="#" class="error ms-calendar_back" @click.prevent="eventBackCalendar" v-if="IsDescriptionEvent"><i data-v-7fa05ddb="" class="material-icons">close</i></a>
-            <h6 style="text-align:center;">ПЛАН-КАЛЕНДАРЬ: {{dayString}} {{planCalendar.year}} г.</h6>
+            <h6 style="text-align:center;color: #1E57A5;">Основные мероприятия училища, предусмотренные планом-календарем на {{dayString}} {{planCalendar.year}} г.</h6>
             <!--<div class="ms-calendar_prev"><</div>-->
             <div class="ms-calendar_carusel">
                 <div v-if="IsDescriptionEvent" class="ms-calendar_description">
-                    <div class="text-center">{{messageEvent}}</div>
-                    <p 
-                        v-for="event in eventsCurrentDay"
-                        :key="event.id"
-                    >
-                        {{event.name}}
-                    </p>
+                    <div class="text-center" style="color: #1E57A5;">{{messageEvent}}</div>
+                    <!--<ms-calendar-description-event 
+                       v-if="this.eventsCurrentDay.length"
+                       :event="{time:'Время', name:'Мероприятия', location:'Место'}" />-->
+                    <ms-calendar-description-event
+                       v-for="event in eventsCurrentDay"
+                       :event="event"
+                       :key="event.id"
+                     />
                 </div>
                 <ms-calendar-item
                     v-for="n in daysInMonth"
@@ -22,8 +24,7 @@
                     :key="n"
                     @eventClickDay="eventClickDay"
                     v-else
-                >
-                </ms-calendar-item>
+                />
             </div>
             <!--<div class="ms-calendar_next">></div>-->
         </div>
@@ -33,6 +34,7 @@
 <script>
     import { mapState, mapActions } from 'vuex';
     import msCalendarItem from './ms-calendar-item.vue';
+    import msCalendarDescriptionEvent from './ms-calendar-description-event.vue';
     export default {
         name: 'ms-calendar',
         data() {
@@ -44,7 +46,8 @@
             }
         },
         components: {
-            msCalendarItem
+            msCalendarItem,
+            msCalendarDescriptionEvent
         },
         computed: {
             ...mapState('planCalendar', [

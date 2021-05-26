@@ -17,12 +17,12 @@
                                     <button style="flex-grow:0" class="btn btn-default" @click="searchNews">Найти</button>
                                 </div>
                             </li>
-                            <li>
+                            <li style="display:flex; align-items:center;">
                                 <div class="secondMenu-user">
                                     <a data-target='dropdown1' class="dropdown-trigger valign-wrapper" style="padding: 0px;">
-                                        <span class="secondMenu-infoUser">{{currentUser.Name}}</span>
-                                        <i class="material-icons">keyboard_arrow_down</i>
-                                        <img class="rectangle" src="/images/layout_icons/user.png" alt="" />
+                                        <span class="secondMenu-infoUser" style="padding-right:10px;">{{currentUser.Name}}</span>
+                                        <img src="/images/layout_icons/userLogout.svg" alt="" />
+                                        <!--<i class="material-icons">keyboard_arrow_down</i>-->
                                     </a>
                                     <ul id='dropdown1' class='dropdown-content secondMenu-settingsUser'>
                                         <li><a href="#!"><i class="material-icons">home</i>Личный кабинет</a></li>
@@ -34,7 +34,7 @@
                     </div>
                 </div>
             </div>
-            <div class="progress" id="progressLoad" style="background-color:transparent; margin:0px; display:none;">
+            <div class="progress" id="progressLoad" style="background-color:transparent; margin:0px;" v-bind:style="isShow[isActive]">
                 <div class="indeterminate" style="background-color:#64b5f6;"></div>
             </div>
         </nav>
@@ -49,12 +49,17 @@
         data() {
             return {
                 userName: 'Незарегистрированный пользователь',
-                searchText: ''
+                searchText: '',
+                isShow: {
+                    true: { display: 'block' },
+                    false: {display : 'none'}
+                }
             }
         },
         computed: {
             ...mapState('settings', ['settings']),
             ...mapState('user', ['currentUser']),
+            ...mapState('preLoader', ['isActive']),
             GetApplicationName() {
                 return this.searchSettingByName("Application.Name", "WebSite");
             },
@@ -67,10 +72,12 @@
             ...mapActions('user', ['GET_INFO_BY_CURRENT_USER']),
             ...mapMutations('menu', ['SET_OR_UPDATE_ACTIVE_CATEGORY']),
             searchNews() {
-                let routerParams = { name: 'search', params: { searchText: this.searchText } };
+                if (Object.keys(this.$route.params).length == 0 || this.searchText != '') {
+                    let routerParams = { name: 'search', params: { searchText: this.searchText } };
 
-                this.searchText = '';
-                this.$router.push(routerParams);
+                    this.searchText = '';
+                    this.$router.push(routerParams);
+                }
             },
             searchSettingByName(name, defaultName) {
                 let tempName = defaultName;
@@ -84,7 +91,7 @@
                 return tempName;
             },
             routerPushMainView() {
-                if (this.$route.name != 'news') {
+                if (this.$route.name != 'news' ) {
                     this.SET_OR_UPDATE_ACTIVE_CATEGORY(null);
                     this.$router.push('/');
                 }
@@ -97,5 +104,8 @@
     }
 </script>
 
-<style>
+<style lang="scss" scoped>
+    .isActive {
+        display:block;
+    }
 </style>

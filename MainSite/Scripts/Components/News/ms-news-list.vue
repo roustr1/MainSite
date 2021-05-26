@@ -29,7 +29,10 @@
             ...mapState('news', [
                 'news',
                 'pager'
-            ])
+            ]),
+            IsNews() {
+                return typeof this.$route.params.categoryId === 'undefined'
+            }
         },
         watch: {
             $route: 'fetchData'
