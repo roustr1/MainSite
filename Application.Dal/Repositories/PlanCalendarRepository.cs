@@ -11,7 +11,7 @@ namespace Application.Dal
 
         }
         
-        public PlanCalendar Get()
+        public  PlanCalendar GetLast()
         {
             return _context.PlanCalendars.Include(a => a.Events).ToList().LastOrDefault();
         }

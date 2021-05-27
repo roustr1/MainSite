@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Application.Dal;
-using Application.Dal.Domain;
 using Application.Dal.Domain.News;
 using Application.Services.Infrastructure;
 using Application.Services.Utils;
@@ -14,9 +13,9 @@ namespace Application.Services.News
 
     public class NewsService : INewsService
     {
-        private readonly IRepository<NewsItem> _newsRepository;
+        private readonly NewsItemRepository _newsRepository;
 
-        public NewsService(IRepository<NewsItem> newsRepository)
+        public NewsService(NewsItemRepository newsRepository)
         {
             _newsRepository = newsRepository;
         }
@@ -53,12 +52,6 @@ namespace Application.Services.News
         /// <summary>
         /// Поиск новостей 
         /// </summary>
-        /// <remarks> Поиск по дате осуществляется только в период с<paramref name= "startDate" />
-        /// по < paramref name= "endDate" /></remarks> 
-        /// <param name="authorId">Автор</param>
-        /// <param name="category">Категория</param>
-        /// <param name="startDate">С даты</param>
-        /// <param name="endDate">По дату</param>
         public IEnumerable<NewsItem> GetNewsItem(FilterNewsItemParameters filterNewsItemParameters)
         {
             var category = filterNewsItemParameters.CategoryIds.FirstOrDefault();
