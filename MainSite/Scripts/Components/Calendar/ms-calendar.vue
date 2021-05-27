@@ -6,11 +6,20 @@
             <div class="ms-calendar_carusel">
                 <div class="ms-calendar_description">
                     <!--<div class="text-center" style="color: #1E57A5;">{{messageEvent}}</div>-->
-                    <ms-calendar-description-event
-                       v-for="event in EventsFilterByDay"
-                       :event="event"
-                       :key="event.id"
-                     />
+                    <template v-if="EventsFilterByDay.length">
+                        <input type="checkbox" class="read-more-checker" id="read-more-checker" />
+                        <div ref="limiter" class="limiter">
+                            <ms-calendar-description-event
+                              v-for="event in EventsFilterByDay"
+                              :event="event"
+                              :key="event.id"
+                            />
+                        </div>
+                        <label v-if="IsOverflowed" for="read-more-checker" class="read-more-button"></label>
+                    </template>
+                    <template v-else>
+                        <div class="text-center" style="color: #B12344;">Мероприятий не запланировано</div>
+                    </template>                  
                 </div>
                 <!--<ms-calendar-item
                     v-for="n in daysInMonth"
@@ -35,6 +44,7 @@
         data() {
             return {
                 months: ["", "январь", "февраль", "март", "апрель", "май", "июнь", "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь"],
+                blockLimiter: {}
                 //eventsCurrentDay: [],
                 //IsDescriptionEvent: false,
                 //messageEvent: ''
@@ -56,8 +66,20 @@
                 return this.months[this.planCalendar.month];
             },*/
             EventsFilterByDay() {
-                if(this.planCalendar && this.planCalendar.events) return this.getEventsFilterByDay(new Date().getDate());
+                if (this.planCalendar && this.planCalendar.events) {
+                    return this.getEventsFilterByDay(new Date().getDate());
+                }
+
                 return []
+            },
+            IsOverflowed() {
+                this.$nextTick(() => {
+                    this.blockLimiter = this.$refs.limiter                  
+                });
+
+                if (this.blockLimiter == null || this.blockLimiter == 'undefined') return false;
+
+                return this.blockLimiter.scrollWidth > this.blockLimiter.offsetWidth || this.blockLimiter.scrollHeight > this.blockLimiter.offsetHeight;
             },
             RefactDate(){
                 let options = {
@@ -80,7 +102,7 @@
             },*/
             getEventsFilterByDay(day) {
                 return this.planCalendar.events.filter(function (item) {
-                    if (Number(item.day) == Number(day)) return item;
+                    if (Number(item.day) == Number(day) && item.time.trim() !=='' && item.location.trim() !== '') return item;
                 }).sort(function(a, b) {
                     let regExp = new RegExp(/\d{1,}.\d{1,}/g);
                     let resA = a.time.match(regExp)
@@ -110,7 +132,7 @@
             }*/
         },
         created() {
-            this.GET_PLAN_CALENDAR();
+            if (Object.keys(this.planCalendar).length == 0) this.GET_PLAN_CALENDAR();
             //this.eventsCurrentDay = this.getEventsFilterByDay(new Date().getDate());
             //this.setWidthByCarusel();
         }
@@ -126,6 +148,56 @@
           z-index:10;
           right:0;
           top:0;
+        }
+        &_description {
+            /* Стили для текстового поля с кнопкой "Далее" */
+            .limiter {
+                max-height: 100px;
+                overflow: hidden;
+                position: relative;
+                & .bottom {
+                    position: absolute;
+                    bottom: 0;
+                    /*background: linear-gradient(to bottom, #fff, #f7f7f7);*/
+                    width: 100%;
+                    height: 60px;
+                    opacity: 1;
+                    transition: 0.3s;
+               }
+            }
+            .read-more-checker {
+                opacity: 0;
+                position: absolute;
+
+                &:checked {
+                    & ~ .limiter {
+                        max-height: none;
+                        & .bottom {
+                            opacity: 0;
+                            transition: 0.3s;
+                        }
+                    }
+                    
+                    & ~ .read-more-button {
+                        &:before {
+                            content: "Свернуть \2B9D";
+                        }
+                    }
+                }
+
+                & ~ .read-more-button {
+                    &:before {
+                        content: "Развернуть \2B9F";
+                    }
+                }
+            }
+            .read-more-button {
+                cursor: pointer;
+                text-align:center;
+                display: block;
+                color: rgb(30, 87, 165);
+                font-size: 14px;
+            }
         }
         &_carusel {
           position:relative;

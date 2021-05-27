@@ -143,6 +143,9 @@
 </script>
 
 <style scoped lang="scss">
+    .detailsNew {
+        position:relative;
+    }
     .card_news-description {
         font-size: 14px;
     }

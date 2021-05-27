@@ -47,15 +47,16 @@
      /*Оформление блока день рождение(birthday)*/
     .card_birthday {
         position: absolute;
-        right: 5px;
-        top: 64px;
-        width: 13%;
+        right: 0;
+        top: 0;
+        margin: 0;
+        transform: translateX(110%);
+        width: 25%;
 
         @media (max-width: 1400px) {
-            position:inherit;
-            right: none;
-            top: none;
-            padding-bottom: 15px;
+            margin: 0.5rem 0 1rem 0;
+            transform: translateX(0px);
+            position: inherit;
             width: 100%;
         }
 

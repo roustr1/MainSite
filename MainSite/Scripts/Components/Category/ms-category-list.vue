@@ -3,7 +3,7 @@
         <msBreadCrumbs
             :items="breadcrumbs"
          />
-        <div class="row flexCategoryList">
+        <div class="flexCategoryList">
             <msCategoryItem
                 v-for="item in getCategoryChildren"
                 :key="item.Id"

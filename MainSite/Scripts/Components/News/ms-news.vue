@@ -1,5 +1,5 @@
 ﻿<template>
-    <div class="row">
+    <div class="row" style="position:relative;">
         <ms-calendar />
         <ms-birthday/>
         <msCreaterNewsItem :categoryId="$route.params.categoryId" />
