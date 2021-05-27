@@ -115,8 +115,9 @@
                 
 
                 this.fileList = [];
+                this.$refs.formCreateNews.reset();
+                this.model = {};
                 if (!this.isAdvancedEditor && this.editModel == null) {
-                    this.model = {};
                     this.$refs.fileInputNameList.value = '';
                 }
             }

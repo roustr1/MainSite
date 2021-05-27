@@ -56,7 +56,7 @@
 
                 if (this.$route.params.categoryId) {
                     this.SET_OR_UPDATE_ACTIVE_CATEGORY(null);
-                    this.$router.push({ name: "news", params: { page: 1 }});
+                    this.$router.push({ name: "main" });
                 }
                 
             }

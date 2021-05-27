@@ -31,7 +31,10 @@ namespace MainSite.Areas.Admin.Controllers
             if(ModelState.IsValid && fileCalendar != null)
             {
                 var collection = _planCalendarFactory.Start(fileCalendar);
-                _planCalendarSevice.CreatePlanCalendar(_planCalendarFactory.GetEntity(collection.LastOrDefault()));
+                foreach (var item in collection)
+                {
+                    _planCalendarSevice.CreatePlanCalendar(_planCalendarFactory.GetEntity(item));
+                }
 
                 return RedirectToAction("Index", "Home");
             }

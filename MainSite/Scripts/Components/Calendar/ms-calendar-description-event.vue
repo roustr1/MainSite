@@ -17,12 +17,6 @@
         },
         data() {
             return {}
-        },
-        methods: {
-
-        },
-        created() {
-
         }
     }
 </script>
@@ -34,18 +28,19 @@
         display: flex;
         padding-bottom:5px;
         .event-time {
-            padding-left:5px;
             padding-right:5px;
             font-style: italic;
             font-weight: 300;
-            flex-basis:12%;
+            flex-basis:20%;
         }
         .event-name {
             padding-right:5px;
-            flex-basis: 75%;
+            flex-basis: 60%;
+            display: flex;
+            align-self: center;
         }
         .event-location {
-            flex-basis:15%;
+            flex-basis:20%;
             font-style: italic;
             font-weight: 300;
         }

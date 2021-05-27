@@ -1,22 +1,27 @@
 ﻿<template>
     <div class="card-panel">
         <div class="ms-calendar">
-            <a data-v-7fa05ddb="" href="#" class="error ms-calendar_back" @click.prevent="eventBackCalendar" v-if="IsDescriptionEvent"><i data-v-7fa05ddb="" class="material-icons">close</i></a>
-            <h6 style="text-align:center;color: #1E57A5;">Основные мероприятия училища, предусмотренные планом-календарем на {{dayString}} {{planCalendar.year}} г.</h6>
-            <!--<div class="ms-calendar_prev"><</div>-->
+            <!--<a data-v-7fa05ddb="" href="#" class="error ms-calendar_back" @click.prevent="eventBackCalendar" v-if="IsDescriptionEvent"><i data-v-7fa05ddb="" class="material-icons">close</i></a>-->
+            <h6 style="text-align:center;color: #1E57A5;">Основные мероприятия училища, предусмотренные планом-календарем на {{RefactDate}}</h6>
             <div class="ms-calendar_carusel">
-                <div v-if="IsDescriptionEvent" class="ms-calendar_description">
-                    <div class="text-center" style="color: #1E57A5;">{{messageEvent}}</div>
-                    <!--<ms-calendar-description-event 
-                       v-if="this.eventsCurrentDay.length"
-                       :event="{time:'Время', name:'Мероприятия', location:'Место'}" />-->
-                    <ms-calendar-description-event
-                       v-for="event in eventsCurrentDay"
-                       :event="event"
-                       :key="event.id"
-                     />
+                <div class="ms-calendar_description">
+                    <!--<div class="text-center" style="color: #1E57A5;">{{messageEvent}}</div>-->
+                    <template v-if="EventsFilterByDay.length">
+                        <input type="checkbox" class="read-more-checker" id="read-more-checker" />
+                        <div ref="limiter" class="limiter">
+                            <ms-calendar-description-event
+                              v-for="event in EventsFilterByDay"
+                              :event="event"
+                              :key="event.id"
+                            />
+                        </div>
+                        <label v-if="IsOverflowed" for="read-more-checker" class="read-more-button"></label>
+                    </template>
+                    <template v-else>
+                        <div class="text-center" style="color: #B12344;">Мероприятий не запланировано</div>
+                    </template>                  
                 </div>
-                <ms-calendar-item
+                <!--<ms-calendar-item
                     v-for="n in daysInMonth"
                     :dayNumber="n"
                     :year="planCalendar.year"
@@ -24,9 +29,8 @@
                     :key="n"
                     @eventClickDay="eventClickDay"
                     v-else
-                />
+                />-->
             </div>
-            <!--<div class="ms-calendar_next">></div>-->
         </div>
     </div>
 </template>
@@ -40,9 +44,10 @@
         data() {
             return {
                 months: ["", "январь", "февраль", "март", "апрель", "май", "июнь", "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь"],
-                eventsCurrentDay: [],
-                IsDescriptionEvent: false,
-                messageEvent: ''
+                blockLimiter: {}
+                //eventsCurrentDay: [],
+                //IsDescriptionEvent: false,
+                //messageEvent: ''
             }
         },
         components: {
@@ -53,40 +58,82 @@
             ...mapState('planCalendar', [
                 'planCalendar'
             ]),
-            daysInMonth() {
+            /*daysInMonth() {
                 if (this.planCalendar.year) return 32 - new Date(this.planCalendar.year, 3, 32).getDate();
-
                 return 0;
-            },
-            dayString() {
+            },*/
+            /*dayString() {
                 return this.months[this.planCalendar.month];
+            },*/
+            EventsFilterByDay() {
+                if (this.planCalendar && this.planCalendar.events) {
+                    return this.getEventsFilterByDay(new Date().getDate());
+                }
+
+                return []
             },
+            IsOverflowed() {
+                this.$nextTick(() => {
+                    this.blockLimiter = this.$refs.limiter                  
+                });
+
+                if (this.blockLimiter == null || this.blockLimiter == 'undefined') return false;
+
+                return this.blockLimiter.scrollWidth > this.blockLimiter.offsetWidth || this.blockLimiter.scrollHeight > this.blockLimiter.offsetHeight;
+            },
+            RefactDate(){
+                let options = {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                }
+
+                return new Date().toLocaleDateString("ru", options);
+            }
         },
         methods: {
             ...mapActions('planCalendar', [
                 'GET_PLAN_CALENDAR'
             ]),
-            eventClickDay(dayNumber) {
+            /*eventClickDay(dayNumber) {
                 this.eventsCurrentDay = this.getEventsFilterByDay(dayNumber);
                 this.messageEvent = this.eventsCurrentDay.length ? `Мероприятия на ${dayNumber} число` : 'Информация по мероприятиям отсутствует';
                 this.IsDescriptionEvent = true;
-            },
+            },*/
             getEventsFilterByDay(day) {
                 return this.planCalendar.events.filter(function (item) {
-                    if (item.day == day) return item;
+                    if (Number(item.day) == Number(day) && item.time.trim() !=='' && item.location.trim() !== '') return item;
+                }).sort(function(a, b) {
+                    let regExp = new RegExp(/\d{1,}.\d{1,}/g);
+                    let resA = a.time.match(regExp)
+                    let resB = b.time.match(regExp)
+                    let result = 0;
+
+                    if(resA != null && resB != null) {
+                        for(let i = 0; i< resA.length; i++) {
+                            if(result == 0 && typeof resB[i] != 'undefined') {
+                                let timeFirstELement = Number(resA[i])
+                                let timeTwoElement = Number(resB[i])
+
+                                result = timeFirstELement - timeTwoElement
+                            }
+                        } 
+                        return result
+                    }
+                    else if(resA == null) result = 100
+                    else if(resB == null) result = -100
+
+                    return result
                 });
             },
-            eventBackCalendar() {
+            /*eventBackCalendar() {
                 this.eventsCurrentDay = [];
                 this.IsDescriptionEvent = false;
-            }
-           /* setWidthByCarusel() {
-                let parentBlockWidth = document.querySelector('.ms-calendar').offsetWidth;
-                document.querySelector('.ms-calendar_carusel').style.width = (parentBlockWidth /1.1) + 'px';
             }*/
         },
         created() {
-            this.GET_PLAN_CALENDAR();
+            if (Object.keys(this.planCalendar).length == 0) this.GET_PLAN_CALENDAR();
+            //this.eventsCurrentDay = this.getEventsFilterByDay(new Date().getDate());
             //this.setWidthByCarusel();
         }
     };
@@ -101,6 +148,56 @@
           z-index:10;
           right:0;
           top:0;
+        }
+        &_description {
+            /* Стили для текстового поля с кнопкой "Далее" */
+            .limiter {
+                max-height: 100px;
+                overflow: hidden;
+                position: relative;
+                & .bottom {
+                    position: absolute;
+                    bottom: 0;
+                    /*background: linear-gradient(to bottom, #fff, #f7f7f7);*/
+                    width: 100%;
+                    height: 60px;
+                    opacity: 1;
+                    transition: 0.3s;
+               }
+            }
+            .read-more-checker {
+                opacity: 0;
+                position: absolute;
+
+                &:checked {
+                    & ~ .limiter {
+                        max-height: none;
+                        & .bottom {
+                            opacity: 0;
+                            transition: 0.3s;
+                        }
+                    }
+                    
+                    & ~ .read-more-button {
+                        &:before {
+                            content: "Свернуть \2B9D";
+                        }
+                    }
+                }
+
+                & ~ .read-more-button {
+                    &:before {
+                        content: "Развернуть \2B9F";
+                    }
+                }
+            }
+            .read-more-button {
+                cursor: pointer;
+                text-align:center;
+                display: block;
+                color: rgb(30, 87, 165);
+                font-size: 14px;
+            }
         }
         &_carusel {
           position:relative;
