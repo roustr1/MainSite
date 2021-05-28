@@ -5,27 +5,47 @@ using System.Net;
 using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Dal;
+using Application.Dal.Domain.Birthday;
 using Newtonsoft.Json;
 
 namespace Application.Services.Birthday
 {
     public class BirthdayService : IBirthdayService
     {
-        public IEnumerable<UserModel> GetUsers(string urlPath)
+        private IRepository<Birtday> _birtdayRepository;
+
+        public BirthdayService(IRepository<Birtday> birtdayRepository)
         {
-#if RELEASE
-                var data = DownloadData(new Uri(urlPath)).Result;
-            if (data != null)
-                return GetUserModels(data);
-#endif
-            var listTest = new List<UserModel> {
-                new UserModel(){ FullFio= "Пирогов А.Р.", PhotoPath = "/images/layout_icons/user.png"},
-                new UserModel(){ FullFio="Пирогов А.Р.", PhotoPath ="/images/layout_icons/user.png"},
-                new UserModel(){ FullFio="Пирогов А.Р.", PhotoPath ="/images/layout_icons/user.png"},
-                new UserModel(){ FullFio="Пирогов А.Р.", PhotoPath ="/images/layout_icons/user.png"},
-                new UserModel(){ FullFio="Пирогов А.Р.", PhotoPath ="/images/layout_icons/user.png"}
-            };
-            return listTest;
+            _birtdayRepository = birtdayRepository;
+        }
+        public IEnumerable<Birtday> GetTodayBirth()
+        {
+            var today = DateTime.Today.Day;
+            var currentMonth = DateTime.Today.Month;
+            var collection = _birtdayRepository.GetAll.Where(c => c.Birth.Day == today && c.Birth.Month == currentMonth);
+
+            foreach (var birtday in collection)
+            {
+                birtday.FIO = formatFio(birtday.FIO);
+            }
+            return collection;
+        }
+
+        string ShortName(string fio)
+        {
+            string[] str = fio.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            if (str.Length != 3) throw new ArgumentException("ФИО задано в неверно формате");
+            return string.Format("{0} {1}. {2}.", str[0], str[1][0], str[2][0]);
+        }
+
+        private string formatFio(string fio)
+        {
+            var splitted = fio.ToUpper().Split(' ');
+            var firstname = splitted[0].Substring(0, 1).ToUpper() + splitted[0].Remove(0, 1).ToLower();
+            var name = splitted[1].Substring(0, 1).ToUpper() + ".";
+            var lastname = splitted[2]?.Substring(0, 1)?.ToUpper() + "." ?? "";
+            return string.Join(" ", firstname, name, lastname);
         }
 
         /// <summary>

@@ -36,7 +36,7 @@ namespace Application.Services.PlanCalendar
 
         public Dal.Domain.PlanCalendar.PlanCalendar GetLastPlanCalendar()
         {
-            return _planCalendarRepository.Get();
+            return _planCalendarRepository.GetLast();
         }
     }
 }

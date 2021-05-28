@@ -12,14 +12,7 @@ namespace Application.Services.Utils
             bool newest,
             Func<TSource, TKey> keySelector)
         {
-            if (newest)
-            {
-                return source.OrderByDescending(keySelector);
-            }
-            else
-            {
-                return source.OrderBy(keySelector);
-            }
+            return newest ? source.OrderByDescending(keySelector) : source.OrderBy(keySelector);
         }
     }
 }

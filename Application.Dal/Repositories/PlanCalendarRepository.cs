@@ -12,7 +12,7 @@ namespace Application.Dal
 
         }
         
-        public PlanCalendar Get()
+        public  PlanCalendar GetLast()
         {
             var currentDate = DateTime.Now;
             return _context.PlanCalendars.Where(s => s.Month == currentDate.Month && currentDate.Year == s.Year).Include(a => a.Events).ToList().LastOrDefault();

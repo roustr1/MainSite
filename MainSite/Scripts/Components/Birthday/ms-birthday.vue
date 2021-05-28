@@ -7,8 +7,8 @@
             <div class="card_birthday-content_description"
                  v-for="item in users"
                  :key="item.Id">
-                <span class="fio">{{item.Fio}}</span>
-                <span class="subdivision">{{getSubDivision(item.SubDivision)}}</span>
+                <span class="fio">{{item.FIO}}</span>
+                <span class="subdivision">{{getSubDivision(item.DepartmentShortName)}}</span>
             </div>
         </div>
     </div>
@@ -29,7 +29,8 @@
                     method: 'GET'
                 })
                 .then(responce => {
-                        this.users =  responce.data;
+                    this.users = responce.data;
+                    console.log(this.users);
                 });
             },
             getSubDivision(subDivision) {

@@ -51,14 +51,7 @@ namespace MainSite.Models
             {
                 return null;
             }
-
-            var filesResult = new List<FileViewModel>();
-            var files = _downloadService.GetFilesByNewsId(newsItem.Id).ToList();
-
-            foreach (var newsItemFile in files)
-            {
-                filesResult.Add(GetDownloadedFileViewModel(newsItemFile));
-            }
+ 
 
             string categoryName = "";
             if (newsItem.Category != null)
@@ -77,8 +70,13 @@ namespace MainSite.Models
                 Author = newsItem.AutorFio,
                 CreatedDate = newsItem.CreatedDate,
                 LastChangeDate = newsItem.LastChangeDate,
-                Files = filesResult,
-                IsMessage = !filesResult.Any(),
+                Files = newsItem.Files.Select(s=> new FileViewModel
+                {
+                    Name = s.OriginalName,
+                    MimeType = s.MimeType,
+                    Id =  s.Id
+                }).ToList(),
+                IsMessage = !newsItem.Files.Any(),
                 IsAdvancedEditor = newsItem.IsAdvancedEditor
             };
         }

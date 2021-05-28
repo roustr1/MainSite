@@ -74,22 +74,22 @@ namespace Application.Dal
             }
         }
 
-        public TEntity Get(string id)
+        public virtual TEntity Get(string id)
         {
             return _context.Set<TEntity>().FirstOrDefault(element=>element.Id==id);
         }
 
-        public TEntity Get(Expression<Func<TEntity, bool>> where)
+        public virtual TEntity Get(Expression<Func<TEntity, bool>> where)
         {
             return _context.Set<TEntity>().Find(where);
         }
 
-        public IEnumerable<TEntity> GetMany(Expression<Func<TEntity, bool>> @where)
+        public virtual IEnumerable<TEntity> GetMany(Expression<Func<TEntity, bool>> @where)
         {
             return _context.Set<TEntity>().Where(@where);
         }
 
-        public IEnumerable<TEntity> GetAll
+        public virtual IEnumerable<TEntity> GetAll
         {
             get
             {
@@ -97,7 +97,7 @@ namespace Application.Dal
             }
         }
 
-        private TEntity CheckAndCreateGuid(TEntity entity)
+        private  TEntity CheckAndCreateGuid(TEntity entity)
         {
             if (string.IsNullOrWhiteSpace(entity.Id) || entity.Id == _emptyGuid)
             {
