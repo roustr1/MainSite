@@ -19,6 +19,28 @@ namespace Application.Dal.Migrations
                 .HasAnnotation("ProductVersion", "5.0.3")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("Application.Dal.Domain.Birthday.Birtday", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("Birth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DepartmentFullName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DepartmentShortName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FIO")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("birthday_Table");
+                });
+
             modelBuilder.Entity("Application.Dal.Domain.Files.File", b =>
                 {
                     b.Property<string>("Id")
@@ -161,19 +183,19 @@ namespace Application.Dal.Migrations
 
             modelBuilder.Entity("Application.Dal.Domain.News.PinNews", b =>
                 {
-                    b.Property<string>("CategoryId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("NewsItemId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CategoryId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Index")
                         .HasColumnType("int");
 
-                    b.HasKey("CategoryId", "NewsItemId");
+                    b.Property<string>("NewsItemId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
 
                     b.ToTable("PinnedNews");
                 });
@@ -287,7 +309,7 @@ namespace Application.Dal.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Month")
+                    b.Property<int?>("Month")
                         .HasColumnType("int");
 
                     b.Property<int>("Year")
@@ -316,37 +338,37 @@ namespace Application.Dal.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "534f7a3a-52a5-4ec1-a501-d5f9c4a18a34",
+                            Id = "ea1d4ac5-1c38-4d72-89c2-0c21d59c9f40",
                             Name = "StoreFilesInDb",
                             Value = "false"
                         },
                         new
                         {
-                            Id = "feb8f9d2-47db-467b-b9d1-b08cd402d0ac",
+                            Id = "6500ebab-11f1-434a-a6e2-20e4c4e068f9",
                             Name = "Application.Icon",
                             Value = "/images/layout_icons/header.png"
                         },
                         new
                         {
-                            Id = "49f7f29d-12ff-4c94-beb8-e62fd8a6cce1",
+                            Id = "c5bccc32-130d-45e5-bb7d-9d9447e53d6f",
                             Name = "Application.Name",
                             Value = ""
                         },
                         new
                         {
-                            Id = "7720f9c9-5007-432c-ab33-398ac162822b",
+                            Id = "5de99529-65e7-4f15-9647-701c7d972f8a",
                             Name = "Application.Copy",
                             Value = ""
                         },
                         new
                         {
-                            Id = "98146902-9f2d-4339-be0e-6c9f29d7ff8b",
+                            Id = "e86ae526-f67c-44c4-ab12-b21038562aef",
                             Name = "BirthdayPath",
                             Value = "http://localhost:50510/api/People/Birthdate?skip=0&take=10"
                         },
                         new
                         {
-                            Id = "e1e44c75-d726-496e-82d1-bfaa93f3720f",
+                            Id = "a9d9e5ec-f191-4056-aa8c-be72e7e2be5c",
                             Name = "Page.PageSize",
                             Value = "3"
                         });
@@ -461,11 +483,9 @@ namespace Application.Dal.Migrations
 
             modelBuilder.Entity("Application.Dal.Domain.PlanCalendar.EventCalendar", b =>
                 {
-                    b.HasOne("Application.Dal.Domain.PlanCalendar.PlanCalendar", "PlanCalendar")
+                    b.HasOne("Application.Dal.Domain.PlanCalendar.PlanCalendar", null)
                         .WithMany("Events")
                         .HasForeignKey("PlanCalendarId");
-
-                    b.Navigation("PlanCalendar");
                 });
 
             modelBuilder.Entity("Application.Dal.Domain.Users.UserRole", b =>

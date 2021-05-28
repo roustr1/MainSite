@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Cryptography.X509Certificates;
+using Application.Dal.Domain.Birthday;
 using Application.Dal.Domain.Files;
 using Application.Dal.Domain.Menu;
 using Application.Dal.Domain.News;
@@ -29,6 +30,7 @@ namespace Application.Dal
         public DbSet<UserRole> Roles { get; set; }
         public DbSet<PermissionRecord> Permissions { get; set; }
         public DbSet<User> UserInfo { get; set; }
+        public DbSet<Birtday> Birtdays { get; set; }
 
         /// <summary>
         /// маппер USER-UserRole

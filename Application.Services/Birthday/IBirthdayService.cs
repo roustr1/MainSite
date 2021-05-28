@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+using Application.Dal.Domain.Birthday;
 
 namespace Application.Services.Birthday
 {
     public interface IBirthdayService
     {
-         IEnumerable<UserModel> GetUsers(string urlPath);
+         IEnumerable<Birtday> GetTodayBirth();
     }
 }

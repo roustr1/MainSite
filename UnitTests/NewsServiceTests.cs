@@ -18,7 +18,7 @@ namespace UnitTests
         [TestCase("00000000-0000-0000-0000-000000000000")]
         public void GetNewsItem_RequestWithInvalidId_ReturnNull(string id)
         {
-            Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
+            Mock<NewsItemRepository> mock = new Mock<NewsItemRepository>();
 
             NewsService newsService = new NewsService(mock.Object);
             NewsItem result = newsService.GetNewsItem(id);
@@ -31,7 +31,7 @@ namespace UnitTests
         {
             string guid = Guid.NewGuid().ToString();
 
-            Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
+            Mock<NewsItemRepository> mock = new Mock<NewsItemRepository>();
             mock.Setup(m => m.Get(guid)).Returns(new NewsItem()
             {
                 Id = guid,
@@ -53,7 +53,7 @@ namespace UnitTests
         {
             string guid = Guid.NewGuid().ToString();
 
-            Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
+            Mock<NewsItemRepository> mock = new Mock<NewsItemRepository>();
             mock.Setup(m => m.Get(guid)).Returns(new NewsItem()
             {
                 Id = Guid.NewGuid().ToString(),
@@ -99,7 +99,7 @@ namespace UnitTests
                     Header = "Header2",
                 }
             };
-            Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
+            var mock = new Mock<NewsItemRepository>();
             mock.Setup(m => m.GetAll).Returns(listItems);
 
             NewsService newsService = new NewsService(mock.Object);
@@ -147,7 +147,7 @@ namespace UnitTests
                 LastChangeDate = data2020
             };
 
-            Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
+            Mock<NewsItemRepository> mock = new Mock<NewsItemRepository>();
             mock.Setup(m => m.GetAll).Returns(new List<NewsItem>()
             {
                 newsItem1, newsItem2, newsItem3
@@ -200,7 +200,7 @@ namespace UnitTests
                 LastChangeDate = data2020
             };
 
-            Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
+            Mock<NewsItemRepository> mock = new Mock<NewsItemRepository>();
             mock.Setup(m => m.GetAll).Returns(new List<NewsItem>()
             {
                 newsItem1, newsItem2, newsItem3
@@ -257,7 +257,7 @@ namespace UnitTests
                 LastChangeDate = lastChangeData20211103,
             };
 
-            Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
+            Mock<NewsItemRepository> mock = new Mock<NewsItemRepository>();
             mock.Setup(m => m.GetAll).Returns(new List<NewsItem>()
             {
                 newsItem1, newsItem2, newsItem3
@@ -314,7 +314,7 @@ namespace UnitTests
                 LastChangeDate = lastChangeData20211103,
             };
 
-            Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
+            Mock<NewsItemRepository> mock = new Mock<NewsItemRepository>();
             mock.Setup(m => m.GetAll).Returns(new List<NewsItem>()
             {
                 newsItem1, newsItem2, newsItem3
@@ -370,7 +370,7 @@ namespace UnitTests
                 LastChangeDate = lastChangeData20211103,
             };
 
-            Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
+            Mock<NewsItemRepository> mock = new Mock<NewsItemRepository>();
             mock.Setup(m => m.GetAll).Returns(new List<NewsItem>()
             {
                 newsItem2, newsItem1, newsItem3
@@ -427,7 +427,7 @@ namespace UnitTests
             };
 
 
-            Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
+            Mock<NewsItemRepository> mock = new Mock<NewsItemRepository>();
             mock.Setup(m => m.GetAll).Returns(new List<NewsItem>()
             {
                 newsItem1, newsItem2, newsItem3
@@ -478,7 +478,7 @@ namespace UnitTests
                 LastChangeDate = data
             };
 
-            Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
+            Mock<NewsItemRepository> mock = new Mock<NewsItemRepository>();
             mock.Setup(m => m.GetAll).Returns(new List<NewsItem>()
             {
                 newsItem1, newsItem2, newsItem3
@@ -543,7 +543,7 @@ namespace UnitTests
                 LastChangeDate = data
             };
 
-            Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
+            Mock<NewsItemRepository> mock = new Mock<NewsItemRepository>();
             mock.Setup(m => m.GetAll).Returns(new List<NewsItem>()
             {
                 newsItem1, newsItem2, newsItem3, newsItem4
@@ -609,7 +609,7 @@ namespace UnitTests
                 LastChangeDate = data
             };
 
-            Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
+            Mock<NewsItemRepository> mock = new Mock<NewsItemRepository>();
             mock.Setup(m => m.GetAll).Returns(new List<NewsItem>()
             {
                 newsItem1, newsItem2, newsItem3, newsItem4
@@ -676,7 +676,7 @@ namespace UnitTests
                 LastChangeDate = data
             };
 
-            Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
+            Mock<NewsItemRepository> mock = new Mock<NewsItemRepository>();
             mock.Setup(m => m.GetAll).Returns(new List<NewsItem>()
             {
                 newsItem1, newsItem2, newsItem3, newsItem4
@@ -754,7 +754,7 @@ namespace UnitTests
                 LastChangeDate = data
             };
 
-            Mock<IRepository<NewsItem>> mock = new Mock<IRepository<NewsItem>>();
+            Mock<NewsItemRepository> mock = new Mock<NewsItemRepository>();
             mock.Setup(m => m.GetAll).Returns(new List<NewsItem>()
             {
                 newsItem1, newsItem2, newsItem3, newsItem4, newsItem5

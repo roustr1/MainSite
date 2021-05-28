@@ -28,16 +28,10 @@ namespace MainSite.Controllers
             _settingsService?.SettingsDictionary.TryGetValue("BirthdayPath", out path);
             if (path != null && !string.IsNullOrEmpty(path))
             {
-                var model = _birthdayService.GetUsers(path).ToList();
+                var model = _birthdayService.GetTodayBirth().ToList();
                 if (model.Any())
                 {
-                    var result = JsonConvert.SerializeObject(model);
-
-                    ///Исправление структуры данных модели представления
-                    result = result.Replace("FullFio", "Fio");                 
-                    result = result.Replace("PhotoPath", "Photo");
-
-                    return result;
+                    return JsonConvert.SerializeObject(model); 
                 }
             }
 
