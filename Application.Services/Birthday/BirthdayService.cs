@@ -27,26 +27,19 @@ namespace Application.Services.Birthday
 
             foreach (var birtday in collection)
             {
-                birtday.FIO = formatFio(birtday.FIO);
+                birtday.FIO = ShortName(birtday.FIO);
             }
             return collection;
         }
 
-        string ShortName(string fio)
+        private string ShortName(string fio)
         {
             string[] str = fio.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             if (str.Length != 3) throw new ArgumentException("ФИО задано в неверно формате");
-            return string.Format("{0} {1}. {2}.", str[0], str[1][0], str[2][0]);
+            return $"{str[0]} {str[1][0]}. {str[2][0]}.";
         }
 
-        private string formatFio(string fio)
-        {
-            var splitted = fio.ToUpper().Split(' ');
-            var firstname = splitted[0].Substring(0, 1).ToUpper() + splitted[0].Remove(0, 1).ToLower();
-            var name = splitted[1].Substring(0, 1).ToUpper() + ".";
-            var lastname = splitted[2]?.Substring(0, 1)?.ToUpper() + "." ?? "";
-            return string.Join(" ", firstname, name, lastname);
-        }
+
 
         /// <summary>
         /// Получение данных с API
