@@ -80,15 +80,15 @@
                 }
             },
             searchSettingByName(name, defaultName) {
-                let tempName = defaultName;
 
-                this.settings.forEach(function (index, item) {
+                let item = this.settings.find(function (item) {
                     if (item.Name == name && item.Value != '') {
-                        tempName = item.Value;
+                        return item;
                     }
                 });
 
-                return tempName;
+                return typeof item == 'undefined' || item == null ? defaultName : item.Value
+
             },
             routerPushMainView() {
                 if (this.$route.name != 'news' ) {
