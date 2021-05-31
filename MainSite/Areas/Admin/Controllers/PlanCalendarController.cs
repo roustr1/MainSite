@@ -30,7 +30,7 @@ namespace MainSite.Areas.Admin.Controllers
         {
             if(ModelState.IsValid && fileCalendar != null)
             {
-                var collection = _planCalendarFactory.Start(fileCalendar);
+                var collection = _planCalendarFactory.ParseFile(fileCalendar);
                 foreach (var item in collection)
                 {
                     _planCalendarSevice.CreatePlanCalendar(_planCalendarFactory.GetEntity(item));

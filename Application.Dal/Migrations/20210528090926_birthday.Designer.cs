@@ -4,14 +4,16 @@ using Application.Dal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Application.Dal.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20210528090926_birthday")]
+    partial class birthday
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -340,37 +342,37 @@ namespace Application.Dal.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "00f43a66-3192-4567-88cd-cb4795f88c6a",
+                            Id = "c2083da3-c827-486e-b26f-fddbef088e36",
                             Name = "StoreFilesInDb",
                             Value = "false"
                         },
                         new
                         {
-                            Id = "e8d7054d-0c1b-4180-9a61-eba0ca6d25af",
+                            Id = "06af3fe6-12de-447c-9d4d-587e2d591b5a",
                             Name = "Application.Icon",
                             Value = "/images/layout_icons/header.png"
                         },
                         new
                         {
-                            Id = "84333849-ef44-44fb-bc25-e761eb53d0d1",
+                            Id = "d3ddea25-7b4f-4ade-9e22-44f82136bddf",
                             Name = "Application.Name",
                             Value = ""
                         },
                         new
                         {
-                            Id = "55c44d32-ebaa-44aa-bb9c-4af9db4f47a6",
+                            Id = "1a515f4c-f9c7-401d-b488-b92c780ffc0e",
                             Name = "Application.Copy",
                             Value = ""
                         },
                         new
                         {
-                            Id = "b43c4a92-142f-42ac-9a7f-a4c6427cfb8b",
+                            Id = "541467c2-d274-449c-8932-a0a979d0752d",
                             Name = "BirthdayPath",
                             Value = "http://localhost:50510/api/People/Birthdate?skip=0&take=10"
                         },
                         new
                         {
-                            Id = "29ba13cc-8944-450e-930e-15f81db4ea4c",
+                            Id = "5f9f2f36-01f9-4fe1-b016-40e270e2b4af",
                             Name = "Page.PageSize",
                             Value = "3"
                         });

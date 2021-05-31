@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Application.Dal;
 using Application.Dal.Domain.Files;
-using Application.Dal.Domain.Menu;
 using Application.Dal.Domain.News;
 using Application.Dal.Infrastructure;
 using Application.Services.Files;
@@ -45,13 +44,13 @@ namespace MainSite.Models
             return GetNewsItemViewModel(_newsService.GetNewsItem(id));
         }
 
-        public NewsItemViewModel GetNewsItemViewModel(NewsItem newsItem)
+        private NewsItemViewModel GetNewsItemViewModel(NewsItem newsItem)
         {
             if (newsItem == null)
             {
                 return null;
             }
- 
+
 
             string categoryName = "";
             if (newsItem.Category != null)
@@ -70,11 +69,11 @@ namespace MainSite.Models
                 Author = newsItem.AutorFio,
                 CreatedDate = newsItem.CreatedDate,
                 LastChangeDate = newsItem.LastChangeDate,
-                Files = newsItem.Files.Select(s=> new FileViewModel
+                Files = newsItem.Files.Select(s => new FileViewModel
                 {
                     Name = s.OriginalName,
                     MimeType = s.MimeType,
-                    Id =  s.Id
+                    Id = s.Id
                 }).ToList(),
                 IsMessage = !newsItem.Files.Any(),
                 IsAdvancedEditor = newsItem.IsAdvancedEditor
@@ -93,7 +92,8 @@ namespace MainSite.Models
 
             var collection = new List<File>();
 
-            if (model.Files != null) {
+            if (model.Files != null)
+            {
                 foreach (var file in model.Files)
                 {
                     var entityFile = _downloadService.GetDownloadById(file.Id);
@@ -150,7 +150,7 @@ namespace MainSite.Models
             _newsService.UpdateNews(entity);
         }
 
-        public IList<NewsItemViewModel> GetManyNewsItemViewModel(string categoryId)
+        private IList<NewsItemViewModel> GetManyNewsItemViewModel(string categoryId)
         {
             var categoryIds = new List<string>();
             var pinnedNewsIds = new List<string>();
@@ -172,7 +172,7 @@ namespace MainSite.Models
             return GetNewsItemsViewModel(_newsService.GetNewsItem(filterNewsItemParameters));
         }
 
-        public IList<PinnedNewsViewModel> GetAllPinnedNewsByCategory(string categoryId)
+        private IList<PinnedNewsViewModel> GetAllPinnedNewsByCategory(string categoryId)
         {
             var result = new List<PinnedNewsViewModel>();
 
@@ -233,7 +233,7 @@ namespace MainSite.Models
             return GetDownloadedFileViewModel(_downloadService.GetDownloadById(id));
         }
 
-        public FileViewModel GetDownloadedFileViewModel(Application.Dal.Domain.Files.File file)
+        private FileViewModel GetDownloadedFileViewModel(Application.Dal.Domain.Files.File file)
         {
             if (file == null)
             {
@@ -282,10 +282,10 @@ namespace MainSite.Models
                     FileBinary = _downloadService?.GetDownloadBits(file) ?? null,
                     MimeType = file.ContentType,
                     //we store filename without extension for downloads
-                    OriginalName = _fileProvider.GetFileNameWithoutExtension(fileName),
+                    OriginalName = _fileProvider.GetFileNameWithoutExtension(fileName).Replace('.','_'),
                     LastPart = _fileProvider.GetFileExtension(fileName)
                 };
-#warning  Некорректно сохраняется ссылка на файл
+                #warning  Некорректно сохраняется ссылка на файл
                 //todo Исправить ссылку
                 if (newsItemViewModel.IsAdvancedEditor)
                 {

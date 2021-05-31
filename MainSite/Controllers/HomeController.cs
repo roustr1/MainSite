@@ -17,27 +17,19 @@ namespace MainSite.Controllers
     public class HomeController : BaseController
     {
         private readonly MainModel _mainMode;
-        private readonly IPermissionService _permissionService;
-        private readonly IUsersService _usersService;
+
 
         private readonly IMenuService _menuService;
         private readonly IPictureService _uploadService;
 
-        private static int _pagesize;
 
-        public HomeController(MainModel mainMode, IPermissionService permissionService, IUsersService usersService, IMenuService menuService, IPictureService fileUploadService)
+        public HomeController(MainModel mainMode, IMenuService menuService, IPictureService uploadService)
         {
             _mainMode = mainMode;
-            _permissionService = permissionService;
-            _usersService = usersService;
             _menuService = menuService;
-            _uploadService = fileUploadService;
-            SetPageSize();
+            _uploadService = uploadService;
         }
-        private void SetPageSize()
-        {
-            _pagesize = _mainMode.GetSettingNewsPerPage();
-        }
+
         public IActionResult Index(int page = 0, string category = null)
         {
             return View();
@@ -49,10 +41,8 @@ namespace MainSite.Controllers
             if (ModelState.IsValid)
             {
                 model.UploadedFiles = Request.Form.Files.ToList();
-
                 model.Author = User.Identity.Name;
                 _mainMode.CreateNewNewsItem(model);
-
             }
 
             return Json(JsonConvert.SerializeObject(_mainMode.GetNewsItemViewModel(model.Id)));
@@ -62,16 +52,14 @@ namespace MainSite.Controllers
         [HttpPost]
         public IActionResult Edit([FromForm] NewsItemViewModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 model.UploadedFiles = Request.Form.Files.ToList();
-
                 model.Author = User.Identity.Name;
                 _mainMode.EditNewNewsItem(model);
-
-               return Json(JsonConvert.SerializeObject(_mainMode.GetNewsItemViewModel(model.Id)));
+                return Json(JsonConvert.SerializeObject(_mainMode.GetNewsItemViewModel(model.Id)));
             }
-            
+
             return Json(null);
         }
 
@@ -92,7 +80,7 @@ namespace MainSite.Controllers
         {
             if (ModelState.IsValid)
             {
-                var fileForm = Request.Form.Files.Count() > 0 ? Request.Form.Files[0] : null;
+                var fileForm = Request.Form.Files.Any() ? Request.Form.Files[0] : null;
                 if (fileForm != null)
                 {
 
@@ -120,7 +108,11 @@ namespace MainSite.Controllers
             return Json(null);
         }
 
-
+        /// <summary>
+        /// Delete news item
+        /// </summary>
+        /// <param name="id">News item identifier</param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult Delete(string id)
         {
@@ -136,12 +128,14 @@ namespace MainSite.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
         [HttpPost]
         public IActionResult PinNews(string newsItemId, string currentCategoryId = null, int currentPage = 0)
         {
             _mainMode.PinNewsItem(newsItemId);
             return RedirectToAction("Index", new { page = currentPage, category = currentCategoryId });
         }
+
         [HttpPost]
         public IActionResult UnpinNews(string newsItemId, string currentCategoryId = null, int currentPage = 0)
         {
