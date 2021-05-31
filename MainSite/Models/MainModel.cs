@@ -37,7 +37,10 @@ namespace MainSite.Models
             _usersService = usersService;
             _pinNewsService = pinNewsService;
             _fileProvider = fileProvider;
+
         }
+
+        #region News
 
         public NewsItemViewModel GetNewsItemViewModel(string id)
         {
@@ -150,6 +153,72 @@ namespace MainSite.Models
             _newsService.UpdateNews(entity);
         }
 
+        public void CreateNewNewsItem(NewsItemViewModel newsItemViewModel)
+        {
+            var dataTimeNow = DateTime.Now;
+            var entity = new NewsItem
+            {
+                Header = newsItemViewModel.Header,
+                Description = newsItemViewModel.Description,
+                AutorFio = _usersService.GetUserBySystemName(newsItemViewModel.Author)?.FullName ?? "Автор не указан",
+                CreatedDate = dataTimeNow,
+                LastChangeDate = dataTimeNow,
+                Category = newsItemViewModel.CategoryId,
+                IsAdvancedEditor = newsItemViewModel.IsAdvancedEditor
+            };
+
+            //uploadFiles 
+            var collection = new List<File>();
+            foreach (var file in newsItemViewModel.UploadedFiles)
+            {
+
+                var fileName = file.FileName;
+                //remove path (passed in IE)
+                fileName = _fileProvider.GetFileName(fileName);
+
+                var download = new File
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    FileBinary = _downloadService?.GetDownloadBits(file) ?? null,
+                    MimeType = file.ContentType,
+                    //we store filename without extension for downloads
+                    OriginalName = _fileProvider.GetFileNameWithoutExtension(fileName).Replace('.', '_'),
+                    LastPart = _fileProvider.GetFileExtension(fileName)
+                };
+#warning  Некорректно сохраняется ссылка на файл
+                //todo Исправить ссылку
+                if (newsItemViewModel.IsAdvancedEditor)
+                {
+                    var newDescription = entity.Description.Replace(file.Name, download.Id);
+                    entity.Description = newDescription;
+                }
+                _downloadService?.InsertDownload(download);
+                collection.Add(download);
+            }
+
+            entity.Files = collection;
+            _newsService.CreateNews(entity);
+            newsItemViewModel.Id = entity.Id;
+        }
+
+        private IList<NewsItemViewModel> GetNewsItemsViewModel(IEnumerable<NewsItem> newsItems)
+        {
+            var result = new List<NewsItemViewModel>();
+
+            foreach (var newsItem in newsItems)
+            {
+                if (newsItem == null) continue;
+
+                var newsItemViewModel = GetNewsItemViewModel(newsItem);
+
+                if (newsItemViewModel == null) continue;
+
+                result.Add(newsItemViewModel);
+            }
+
+            return result;
+        }
+
         private IList<NewsItemViewModel> GetManyNewsItemViewModel(string categoryId)
         {
             var categoryIds = new List<string>();
@@ -228,6 +297,47 @@ namespace MainSite.Models
             return model;
         }
 
+        public void DeleteNewsItem(string id)
+        {
+            var item = _newsService.GetNewsItem(id);
+            _newsService.DeleteNews(item);
+            if (item.Files != null)
+            {
+                foreach (var file in item.Files)
+                {
+                    _downloadService.DeleteDownload(file);
+                }
+            }
+        }
+
+        #region Pined news
+
+        public void PinNewsItem(string newsItemId)
+        {
+            var newsItem = _newsService.GetNewsItem(newsItemId);
+            if (newsItem == null) return;
+
+            var categoryId = newsItem.Category;
+
+            _pinNewsService.PinNews(newsItemId, categoryId);
+        }
+
+        public void UnpinNewsItem(string newsItemId)
+        {
+            var newsItem = _newsService.GetNewsItem(newsItemId);
+            if (newsItem == null) return;
+
+            var categoryId = newsItem.Category;
+
+            _pinNewsService.UnpinNews(newsItemId);
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Files
+
         public FileViewModel GetDownloadedFileViewModel(string id)
         {
             return GetDownloadedFileViewModel(_downloadService.GetDownloadById(id));
@@ -253,121 +363,6 @@ namespace MainSite.Models
             return _downloadService.GetDownloadById(newsItemId);
         }
 
-        public void CreateNewNewsItem(NewsItemViewModel newsItemViewModel)
-        {
-            var dataTimeNow = DateTime.Now;
-            var entity = new NewsItem
-            {
-                Header = newsItemViewModel.Header,
-                Description = newsItemViewModel.Description,
-                AutorFio = _usersService.GetUserBySystemName(newsItemViewModel.Author)?.FullName ?? "Автор не указан",
-                CreatedDate = dataTimeNow,
-                LastChangeDate = dataTimeNow,
-                Category = newsItemViewModel.CategoryId,
-                IsAdvancedEditor = newsItemViewModel.IsAdvancedEditor
-            };
-
-            //uploadFiles 
-            var collection = new List<File>();
-            foreach (var file in newsItemViewModel.UploadedFiles)
-            {
-
-                var fileName = file.FileName;
-                //remove path (passed in IE)
-                fileName = _fileProvider.GetFileName(fileName);
-
-                var download = new File
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    FileBinary = _downloadService?.GetDownloadBits(file) ?? null,
-                    MimeType = file.ContentType,
-                    //we store filename without extension for downloads
-                    OriginalName = _fileProvider.GetFileNameWithoutExtension(fileName).Replace('.','_'),
-                    LastPart = _fileProvider.GetFileExtension(fileName)
-                };
-                #warning  Некорректно сохраняется ссылка на файл
-                //todo Исправить ссылку
-                if (newsItemViewModel.IsAdvancedEditor)
-                {
-                    var newDescription = entity.Description.Replace(file.Name, download.Id);
-                    entity.Description = newDescription;
-                }
-                _downloadService?.InsertDownload(download);
-                collection.Add(download);
-            }
-
-            entity.Files = collection;
-            _newsService.CreateNews(entity);
-            newsItemViewModel.Id = entity.Id;
-        }
-
-        public void DeleteNewsItem(string id)
-        {
-            var item = _newsService.GetNewsItem(id);
-            _newsService.DeleteNews(item);
-            if (item.Files != null)
-            {
-                foreach (var file in item.Files)
-                {
-                    _downloadService.DeleteDownload(file);
-                }
-            }
-        }
-
-        public int GetSettingNewsPerPage()
-        {
-            int pagesize = 3;
-            if (_settingsService.SettingsDictionary.TryGetValue("Page.PageSize", out var _value))
-            {
-                int.TryParse(_value, out pagesize);
-            }
-
-            return pagesize;
-        }
-
-        public IList<NewsItemViewModel> GetManySearchResultNewsItemViewModel(string query)
-        {
-            return GetNewsItemsViewModel(_newsService.FindFreeText(query));
-        }
-
-        private IList<NewsItemViewModel> GetNewsItemsViewModel(IEnumerable<NewsItem> newsItems)
-        {
-            var result = new List<NewsItemViewModel>();
-
-            foreach (var newsItem in newsItems)
-            {
-                if (newsItem == null) continue;
-
-                var newsItemViewModel = GetNewsItemViewModel(newsItem);
-
-                if (newsItemViewModel == null) continue;
-
-                result.Add(newsItemViewModel);
-            }
-
-            return result;
-        }
-
-        public void PinNewsItem(string newsItemId)
-        {
-            var newsItem = _newsService.GetNewsItem(newsItemId);
-            if (newsItem == null) return;
-
-            var categoryId = newsItem.Category;
-
-            _pinNewsService.PinNews(newsItemId, categoryId);
-        }
-
-        public void UnpinNewsItem(string newsItemId)
-        {
-            var newsItem = _newsService.GetNewsItem(newsItemId);
-            if (newsItem == null) return;
-
-            var categoryId = newsItem.Category;
-
-            _pinNewsService.UnpinNews(newsItemId);
-        }
-
         public File SaveFile(IFormFile file)
         {
 
@@ -390,5 +385,27 @@ namespace MainSite.Models
             return download;
         }
 
+        #endregion
+        
+        #region Search
+        public IList<NewsItemViewModel> GetManySearchResultNewsItemViewModel(string query)
+        {
+            return GetNewsItemsViewModel(_newsService.FindFreeText(query));
+        }
+
+
+        #endregion
+
+        public int GetSettingNewsPerPage()
+        {
+            int pagesize = 3;
+            if (_settingsService.SettingsDictionary.TryGetValue("Page.PageSize", out var _value))
+            {
+                int.TryParse(_value, out pagesize);
+            }
+
+            return pagesize;
+        }
+ 
     }
 }
