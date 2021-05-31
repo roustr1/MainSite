@@ -90,14 +90,14 @@
                 .fio {
                    padding-right: 10px;
                    font-weight: 600;
-                   flex-basis:50%;
+                   /*flex-basis:70%;*/
                     @media (max-width: 1400px) {
                         flex-basis:inherit;
                     }
                 }
                 .subdivision {
                    font-style: italic;
-                   flex-basis:50%;
+                   /*flex-basis:30%;*/
                    @media (max-width: 1400px) {
                         flex-basis:inherit;
                     }
