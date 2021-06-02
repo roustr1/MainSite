@@ -9,11 +9,12 @@
     <link href="~/images/fonts/MaterialIcons/Material-Icons.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/fonts/fonts.css" />
     <link rel="stylesheet" href="~/css/mainSite.css" />
+    <link rel="stylesheet" href="~/bundle/App.css" />
     @*<script src="~/lib/vue/vue.js"></script>*@
 </head>
-<body class="row" >
+<body class="row">
     <div id="vueRootComponent">
-        
+
         <ms-header></ms-header>
         <div class="container">
             <div class="col m12 s12 l3" id="menuBlock">
@@ -35,8 +36,9 @@
             </nav>
         </footer>
     </div>
-    <script src="~/css/materialize/js/materialize.js"></script>
+    <script src="~/bundle/972.js"></script>
     <script src="~/bundle/App.js"></script>
+    <script src="~/css/materialize/js/materialize.js"></script>
     <script src="~/scripts/onReadyState.js"></script>
     @RenderSection("Scripts", required: false)
 </body>

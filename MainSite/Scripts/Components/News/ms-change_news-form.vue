@@ -100,8 +100,7 @@
                 let formData = new FormData(this.$refs.formCreateNews);
 
                 if (this.isAdvancedEditor) {
-                    let i = 0;
-                    for (var i = 0; i < this.fileList.length; i++) {
+                    for (let i = 0; i < this.fileList.length; i++) {
                         formData.append(this.fileList[i].Id, this.fileList[i].FormFile, this.fileList[i].FormFile.name);
                     }
                 }
