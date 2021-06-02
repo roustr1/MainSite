@@ -2,7 +2,7 @@
 function UserSearch() {
     // Declare variables
     function search(name, filter) {
-        return name.toUpperCase().startsWith(filter);
+        return name.toUpperCase().trim().startsWith(filter);
     }
 
     var input, filter, tr, i;
