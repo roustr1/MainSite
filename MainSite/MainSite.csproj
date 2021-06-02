@@ -25,6 +25,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="wwwroot\js\CustomScripts\search.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Application.Dal\Application.Dal.csproj" />
     <ProjectReference Include="..\Application.Services\Application.Services.csproj" />
   </ItemGroup>
