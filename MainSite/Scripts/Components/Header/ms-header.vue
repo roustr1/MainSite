@@ -9,10 +9,10 @@
                             <span class="bold" style="padding-left:10px;">{{GetApplicationName}}</span>
                         </a>
                         <a id="openMenu" data-target="mobile-demo" class="sidenav-trigger" style="float: right;cursor:pointer;"><i class="material-icons">menu</i></a>
-                        <ul class="hide-on-med-and-down col m12 s12 l9 secondMenu">
+                        <ul class="hide-on-med-and-down col m12 s12 l12 secondMenu">
                             <li>
                                 <div class="secondMenu-search">
-                                    <span class="bold">Поиск на сайте:</span>
+                                    <span class="bold">Поиск:</span>
                                     <input v-model="searchText" style="flex-grow:1" class="inputTextMainSite" type="text" />
                                     <button style="flex-grow:0" class="btn btn-default" @click="searchNews">Найти</button>
                                 </div>
