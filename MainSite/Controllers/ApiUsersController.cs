@@ -1,5 +1,6 @@
 ﻿using Application.Services.Birthday;
 using Application.Services.Settings;
+using Application.Services.Users;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Linq;
@@ -12,12 +13,14 @@ namespace MainSite.Controllers
     {
         private readonly IBirthdayService _birthdayService;
         private readonly ISettingsService _settingsService;
+        private readonly IUsersService _userService;
 
 
-        public ApiUsersController(IBirthdayService birthdayService, ISettingsService settingsService)
+        public ApiUsersController(IBirthdayService birthdayService, ISettingsService settingsService, IUsersService userService)
         {
             _birthdayService = birthdayService;
             _settingsService = settingsService;
+            _userService = userService;
         }
 
         [Route("GetBirthdayUsers")]
@@ -42,7 +45,7 @@ namespace MainSite.Controllers
         {
             var model = new
             {
-                Name = User.Identity.Name,
+                Name = _userService.GetUserBySystemName(User)?.Name,
                 IsEditer = User.IsInRole("Модератор") || User.IsInRole("Администратор")
             };
 

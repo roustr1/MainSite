@@ -340,37 +340,37 @@ namespace Application.Dal.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "00f43a66-3192-4567-88cd-cb4795f88c6a",
+                            Id = "e3bb226a-dd8b-416e-9ce8-4882f82fa3a6",
                             Name = "StoreFilesInDb",
                             Value = "false"
                         },
                         new
                         {
-                            Id = "e8d7054d-0c1b-4180-9a61-eba0ca6d25af",
+                            Id = "56be5994-088a-40b1-9f29-bc15b79fdc2e",
                             Name = "Application.Icon",
                             Value = "/images/layout_icons/header.png"
                         },
                         new
                         {
-                            Id = "84333849-ef44-44fb-bc25-e761eb53d0d1",
+                            Id = "7d32f01d-d679-4229-807e-d281d7cecd9f",
                             Name = "Application.Name",
                             Value = ""
                         },
                         new
                         {
-                            Id = "55c44d32-ebaa-44aa-bb9c-4af9db4f47a6",
+                            Id = "d809a722-8144-421d-b6b2-89b28c761532",
                             Name = "Application.Copy",
                             Value = ""
                         },
                         new
                         {
-                            Id = "b43c4a92-142f-42ac-9a7f-a4c6427cfb8b",
+                            Id = "c20efe04-62e1-4344-a626-623bf68e8a62",
                             Name = "BirthdayPath",
                             Value = "http://localhost:50510/api/People/Birthdate?skip=0&take=10"
                         },
                         new
                         {
-                            Id = "29ba13cc-8944-450e-930e-15f81db4ea4c",
+                            Id = "d6acc530-acab-494a-a592-0a95d2aeefae",
                             Name = "Page.PageSize",
                             Value = "3"
                         });
@@ -397,6 +397,9 @@ namespace Application.Dal.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SubdivisionName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SystemName")

@@ -3,7 +3,7 @@ using System.Security;
 
 namespace Application.Dal.Domain.Users
 {
-    public class User:BaseEntity
+    public class User : BaseEntity
     {
         /// <summary>
         /// Get or set user name
@@ -14,6 +14,7 @@ namespace Application.Dal.Domain.Users
         /// Get or set user name in AD system
         /// </summary>
         public string SystemName { get; set; }
+        public string SubdivisionName { get; set; }
 
         public string FullName { get; set; }
 

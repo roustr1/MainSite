@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Application.Dal.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20210519124402_CreatePlanCalendar")]
-    partial class CreatePlanCalendar
+    [Migration("20210607072249_User_add_subdivisionName_field")]
+    partial class User_add_subdivisionName_field
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,30 @@ namespace Application.Dal.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.3")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("Application.Dal.Domain.Birthday.Birtday", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("Birth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DepartmentFullName")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Department");
+
+                    b.Property<string>("DepartmentShortName")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ShortDep");
+
+                    b.Property<string>("FIO")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("birthday_Table");
+                });
 
             modelBuilder.Entity("Application.Dal.Domain.Files.File", b =>
                 {
@@ -163,19 +187,19 @@ namespace Application.Dal.Migrations
 
             modelBuilder.Entity("Application.Dal.Domain.News.PinNews", b =>
                 {
-                    b.Property<string>("CategoryId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("NewsItemId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CategoryId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Index")
                         .HasColumnType("int");
 
-                    b.HasKey("CategoryId", "NewsItemId");
+                    b.Property<string>("NewsItemId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
 
                     b.ToTable("PinnedNews");
                 });
@@ -289,7 +313,7 @@ namespace Application.Dal.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Month")
+                    b.Property<int?>("Month")
                         .HasColumnType("int");
 
                     b.Property<int>("Year")
@@ -318,37 +342,37 @@ namespace Application.Dal.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "534f7a3a-52a5-4ec1-a501-d5f9c4a18a34",
+                            Id = "e3bb226a-dd8b-416e-9ce8-4882f82fa3a6",
                             Name = "StoreFilesInDb",
                             Value = "false"
                         },
                         new
                         {
-                            Id = "feb8f9d2-47db-467b-b9d1-b08cd402d0ac",
+                            Id = "56be5994-088a-40b1-9f29-bc15b79fdc2e",
                             Name = "Application.Icon",
                             Value = "/images/layout_icons/header.png"
                         },
                         new
                         {
-                            Id = "49f7f29d-12ff-4c94-beb8-e62fd8a6cce1",
+                            Id = "7d32f01d-d679-4229-807e-d281d7cecd9f",
                             Name = "Application.Name",
                             Value = ""
                         },
                         new
                         {
-                            Id = "7720f9c9-5007-432c-ab33-398ac162822b",
+                            Id = "d809a722-8144-421d-b6b2-89b28c761532",
                             Name = "Application.Copy",
                             Value = ""
                         },
                         new
                         {
-                            Id = "98146902-9f2d-4339-be0e-6c9f29d7ff8b",
+                            Id = "c20efe04-62e1-4344-a626-623bf68e8a62",
                             Name = "BirthdayPath",
                             Value = "http://localhost:50510/api/People/Birthdate?skip=0&take=10"
                         },
                         new
                         {
-                            Id = "e1e44c75-d726-496e-82d1-bfaa93f3720f",
+                            Id = "d6acc530-acab-494a-a592-0a95d2aeefae",
                             Name = "Page.PageSize",
                             Value = "3"
                         });
@@ -375,6 +399,9 @@ namespace Application.Dal.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SubdivisionName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SystemName")
@@ -463,11 +490,9 @@ namespace Application.Dal.Migrations
 
             modelBuilder.Entity("Application.Dal.Domain.PlanCalendar.EventCalendar", b =>
                 {
-                    b.HasOne("Application.Dal.Domain.PlanCalendar.PlanCalendar", "PlanCalendar")
+                    b.HasOne("Application.Dal.Domain.PlanCalendar.PlanCalendar", null)
                         .WithMany("Events")
                         .HasForeignKey("PlanCalendarId");
-
-                    b.Navigation("PlanCalendar");
                 });
 
             modelBuilder.Entity("Application.Dal.Domain.Users.UserRole", b =>

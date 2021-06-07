@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.DirectoryServices.AccountManagement;
-using System.Globalization;
 using System.Linq;
+using System.Security.Claims;
+using System.Security.Principal;
 using Application.Dal;
 using Application.Dal.Domain.Users;
 
@@ -321,7 +322,7 @@ namespace Application.Services.Users
 #endif
         }
 
-        private User CreateUser(string identityName)
+        private User CreateUser(string identityName,IEnumerable<string> roles)
         {
             var user = new User
             {
@@ -329,8 +330,10 @@ namespace Application.Services.Users
                 Active = true,
                 Name = GetUserNameFromAD(identityName),
                 LastActivityDate = DateTime.Now,
-                FullName = GetUserNameFromAD(identityName)
-            };
+                FullName = GetUserNameFromAD(identityName),
+                SubdivisionName = string.Join(", ", roles)
+        };
+
             _userRepository.Add(user);
             var role = GetUserRoleBySystemName(AppUserDefaults.RegisteredRoleName);
             try
@@ -353,6 +356,23 @@ namespace Application.Services.Users
             return user;
         }
 
+        private User CreateUser(ClaimsPrincipal user)
+        {
+          
+            var groups = new List<string>();
+            foreach (var s in WindowsIdentity.GetCurrent().Groups)
+            {
+                IdentityReference grp = s.Translate(typeof(NTAccount));
+                if (grp.Value.StartsWith("ROCKET\\"))
+                {
+                    groups.Add(grp.Value.Replace("ROCKET\\",""));
+                }
+                
+            }
+  
+            var userRecord = CreateUser(user.Identity.Name, groups);
+            return userRecord;
+        }
         public IPagedList<User> GetAllUsers(string[] customerRoleIds = null,
             string username = null, string ipAddress = null,
             int pageIndex = 0, int pageSize = int.MaxValue, bool getOnlyTotalCount = false)
@@ -414,24 +434,37 @@ namespace Application.Services.Users
             var customers = query.ToList();
             //sort by passed identifiers
 
-            return userIds.Select(id => customers.Find(x => x.Id == id)).Where(customer => customer != null).ToList();
+            return userIds.Select(id => customers.Find(x => x.Id == id))
+                          .Where(customer => customer != null)
+                          .ToList();
         }
 
 
-        public User GetUserBySystemName(string systemName)
+        public User GetUserBySystemName(ClaimsPrincipal principal)
         {
-            if (string.IsNullOrWhiteSpace(systemName))
+            if (principal == null)
                 return null;
-
+            var systemName = principal.Identity.Name;
             var query = from c in _userRepository.GetAll
                         orderby c.Id
                         where c.SystemName == systemName
                         select c;
             var customer = query.FirstOrDefault();
             if (customer != null) return customer;
-            return CreateUser(systemName);
+            return CreateUser(principal);
         }
+        public IList<User> GetUsersBySubDivision(string subidivision)
+        {
+            if (string.IsNullOrEmpty(subidivision))
+                return new List<User>();
 
+            var query = from c in _userRepository.GetAll
+                        where c.SubdivisionName.ToUpper() == subidivision.ToUpper() && !c.Deleted
+                        select c;
+            var customers = query.ToList();
+            //sort by passed identifiers
+            return customers;
+        }
         public void InsertUser(User customer)
         {
             if (customer == null)
@@ -453,6 +486,8 @@ namespace Application.Services.Users
             //event notification
             //_eventPublisher.EntityUpdated(customer);
         }
+
+
 
 
 

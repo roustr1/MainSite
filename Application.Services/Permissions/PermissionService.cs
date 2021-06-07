@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Transactions;
+using System.Security.Claims;
 using Application.Dal;
 using Application.Dal.Domain.Permissions;
 using Application.Dal.Domain.Users;
@@ -240,11 +240,11 @@ namespace Application.Services.Permissions
         /// Authorize permission
         /// </summary>
         /// <param name="permission">Permission record</param>
-        /// <param name="user">User</param>
+        /// <param name="principal">User</param>
         /// <returns>true - authorized; otherwise, false</returns>
-        public virtual bool Authorize(PermissionRecord permission, string userName)
+        public virtual bool Authorize(PermissionRecord permission, ClaimsPrincipal principal)
         {
-            return Authorize(permission, _userService.GetUserBySystemName(userName));
+            return Authorize(permission, _userService.GetUserBySystemName(principal));
         }
 
         /// <summary>

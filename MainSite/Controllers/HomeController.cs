@@ -42,7 +42,7 @@ namespace MainSite.Controllers
             {
                 model.UploadedFiles = Request.Form.Files.ToList();
                 model.Author = User.Identity.Name;
-                _mainMode.CreateNewNewsItem(model);
+                _mainMode.CreateNewNewsItem(model,User);
             }
 
             return Json(JsonConvert.SerializeObject(_mainMode.GetNewsItemViewModel(model.Id)));
@@ -56,7 +56,7 @@ namespace MainSite.Controllers
             {
                 model.UploadedFiles = Request.Form.Files.ToList();
                 model.Author = User.Identity.Name;
-                _mainMode.EditNewNewsItem(model);
+                _mainMode.EditNewNewsItem(model,User);
                 return Json(JsonConvert.SerializeObject(_mainMode.GetNewsItemViewModel(model.Id)));
             }
 

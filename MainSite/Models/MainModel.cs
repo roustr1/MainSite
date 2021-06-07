@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using Application.Dal;
 using Application.Dal.Domain.Files;
 using Application.Dal.Domain.News;
@@ -62,7 +63,7 @@ namespace MainSite.Models
                 categoryName = cat == null ? "" : cat.Name;
             }
 
-            return new NewsItemViewModel()
+            return new NewsItemViewModel
             {
                 Id = newsItem.Id,
                 Header = string.IsNullOrWhiteSpace(newsItem.Header) ? "" : newsItem.Header,
@@ -83,14 +84,14 @@ namespace MainSite.Models
             };
         }
 
-        public void EditNewNewsItem(NewsItemViewModel model)
+        public void EditNewNewsItem(NewsItemViewModel model, ClaimsPrincipal author)
         {
             var dataTimeNow = DateTime.Now;
             var entity = _newsService.GetNewsItem(model.Id);
 
             entity.Header = model.Header;
             entity.LastChangeDate = dataTimeNow;
-            entity.AutorFio = _usersService.GetUserBySystemName(model.Author)?.FullName ?? "Автор не указан";
+            entity.AutorFio = _usersService.GetUserBySystemName(author)?.FullName ?? "Автор не указан";
             entity.Description = model.Description;
 
             var collection = new List<File>();
@@ -153,14 +154,14 @@ namespace MainSite.Models
             _newsService.UpdateNews(entity);
         }
 
-        public void CreateNewNewsItem(NewsItemViewModel newsItemViewModel)
+        public void CreateNewNewsItem(NewsItemViewModel newsItemViewModel,ClaimsPrincipal author)
         {
             var dataTimeNow = DateTime.Now;
             var entity = new NewsItem
             {
                 Header = newsItemViewModel.Header,
                 Description = newsItemViewModel.Description,
-                AutorFio = _usersService.GetUserBySystemName(newsItemViewModel.Author)?.FullName ?? "Автор не указан",
+                AutorFio = _usersService.GetUserBySystemName(author)?.FullName ?? "Автор не указан",
                 CreatedDate = dataTimeNow,
                 LastChangeDate = dataTimeNow,
                 Category = newsItemViewModel.CategoryId,

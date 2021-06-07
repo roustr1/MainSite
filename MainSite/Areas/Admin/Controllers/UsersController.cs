@@ -42,7 +42,7 @@ namespace MainSite.Areas.Admin.Controllers
         public virtual IActionResult List()
         {
 #if RELEASE
-              var user = _userService.GetUserBySystemName(User.Identity.Name);
+              var user = _userService.GetUserBySystemName(User);
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageUsers, user))
                 return AccessDeniedView();   
 #endif
@@ -78,7 +78,7 @@ namespace MainSite.Areas.Admin.Controllers
         public IActionResult AddRolesToUser(string id)
         {
 #if RELEASE
-              var user = _userService.GetUserBySystemName(User.Identity.Name);
+              var user = _userService.GetUserBySystemName(User);
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageUsers, user))
                 return AccessDeniedView();   
 #endif
@@ -98,7 +98,7 @@ namespace MainSite.Areas.Admin.Controllers
         {
 
 #if RELEASE
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageUsers, _userService.GetUserBySystemName(User.Identity.Name)))
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageUsers, _userService.GetUserBySystemName(User)))
                 return AccessDeniedView();   
 #endif
 
