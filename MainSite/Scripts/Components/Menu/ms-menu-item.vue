@@ -4,8 +4,9 @@
            :title="menu_item.toolTip"
            v-bind:class="activeClass[IsActive]"
            @click="eventClickElementMenu(arguments[0])">
-            <span src="/content/layout_icons/free-icon-ads-2625106.svg"></span>
-            <div>{{menu_item.Name}}</div>
+           <img v-if="GetPathImg" v-bind:src="GetPathImg" />
+           <span v-else></span>
+           <div>{{menu_item.Name}}</div>
         </a>
 
         <!--<ul
@@ -45,6 +46,9 @@
                 'activeCategoryId',
                 'breadcrumbs'
             ]),
+            GetPathImg() {
+                return this.menu_item.UrlIcon;
+            },
             IsActive() {
                 if (this.$route.params.categoryId != undefined && this.$route.params.categoryId != this.menu_item.Id) {
                     if (this.breadcrumbs.length) {
