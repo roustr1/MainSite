@@ -14,17 +14,29 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Content\**" />
+    <Compile Remove="wwwroot\images\thumbs\**" />
+    <Content Remove="Content\**" />
+    <Content Remove="wwwroot\images\thumbs\**" />
+    <EmbeddedResource Remove="Content\**" />
+    <EmbeddedResource Remove="wwwroot\images\thumbs\**" />
+    <None Remove="Content\**" />
+    <None Remove="wwwroot\images\thumbs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="wwwroot\js\CustomScripts\search.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Application.Dal\Application.Dal.csproj" />
     <ProjectReference Include="..\Application.Services\Application.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Content\" />
     <Folder Include="Models\Api\" />
     <Folder Include="wwwroot\content\" />
-    <Folder Include="Content\" />
-    <Folder Include="wwwroot\files\" />
-    <Folder Include="wwwroot\images\thumbs\" />    
+    <Folder Include="wwwroot\files\" />    
   </ItemGroup>
 
   <ItemGroup>

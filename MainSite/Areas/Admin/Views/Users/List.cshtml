@@ -1,52 +1,59 @@
-﻿@using Microsoft.AspNetCore.SignalR
-@model IEnumerable<MainSite.Areas.Admin.Models.Users.UserModel>
+﻿@model IEnumerable<MainSite.Areas.Admin.Models.Users.UserModel>
 
 @{
     //page title
     ViewBag.PageTitle = "Список пользователей";
     Layout = "_Layout";
 }
+@section Scripts
+{
 
-<div class="col s12 m7">
-    <h2 class="header">Список пользователей</h2>
-    <div class="card horizontal">
-        <div class="card-stacked">
-            <div class="card-content">
-                <table class=" responsive-table striped highlight">
-                    <thead>
-                        <tr>
-                            <th>Имя пользователя</th>
-                            <th>System name</th>
-                            <th>IP address</th>
-                            <th>Роли</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>
-                                    @item.UserName
-                                </td>
-                                <td>
-                                    @item.SystemName
-                                </td>
-                                <td>
-                                    @item.IPAddress
-                                </td>
-                                <td>
-                                    @string.Join(", ", item.UserRoles)
-                                </td>
-                                <td>
-                                    <a class="waves-effect waves-light btn" href="@Url.Action("AddRolesToUser","Users",new {id=item.Id})">Управление ролями</a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+    <script src="~/js/CustomScripts/search.js"></script>
+}
 
-            </div>
+<div class="col m12">
+    <h2 class="center">Список пользователей</h2>
+
+
+    <div class="card-panel">
+        <div class="input-field">
+            <i class="material-icons prefix">search</i>
+            <input type="text" class="search" id="search" onkeyup="UserSearch()">
+            <label for="search">Поиск</label>
         </div>
+    </div>
+
+    <div class="card-panel">
+        <table class="striped centered highlight">
+            <thead>
+                <tr>
+                    <th>Имя пользователя</th>
+                    <th>System name</th>
+                    <th>Роли</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="usersList" class="black-text">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @item.UserName
+                        </td>
+                        <td>
+                            @item.SystemName
+                        </td>
+
+                        <td>
+                            @string.Join(", ", item.UserRoles)
+                        </td>
+                        <td>
+                            <a class="waves-effect waves-light btn" href="@Url.Action("AddRolesToUser", "Users", new {id = item.Id})">Права доступа</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
     </div>
 </div>

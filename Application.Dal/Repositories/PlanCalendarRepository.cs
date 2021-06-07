@@ -14,8 +14,12 @@ namespace Application.Dal
         
         public  PlanCalendar GetLast()
         {
-            var currentDate = DateTime.Now;
-            return _context.PlanCalendars.Where(s => s.Month == currentDate.Month && currentDate.Year == s.Year).Include(a => a.Events).ToList().LastOrDefault();
+            var currentDate = DateTime.Today;
+            return _context.PlanCalendars
+                .OrderBy(c=>c.Year)
+                .ThenBy(c => c.Month)
+                .Include(a => a.Events)
+                .LastOrDefault(s => s.Month == currentDate.Month && currentDate.Year == s.Year);
         }
     }
 }

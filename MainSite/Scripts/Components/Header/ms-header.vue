@@ -12,7 +12,7 @@
                         <ul class="hide-on-med-and-down col m12 s12 l9 secondMenu">
                             <li>
                                 <div class="secondMenu-search">
-                                    <span class="bold">Поиск на сайте:</span>
+                                    <span class="bold">Поиск:</span>
                                     <input v-model="searchText" style="flex-grow:1" class="inputTextMainSite" type="text" />
                                     <button style="flex-grow:0" class="btn btn-default" @click="searchNews">Найти</button>
                                 </div>
@@ -107,5 +107,17 @@
 <style lang="scss" scoped>
     .isActive {
         display:block;
+    }
+
+    .secondMenu {
+        display: flex;
+        padding-left: 0px;
+        padding-right: 0px;
+
+        &:last-child {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+        }
     }
 </style>

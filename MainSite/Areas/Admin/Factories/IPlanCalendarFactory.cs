@@ -6,7 +6,7 @@ namespace MainSite.Areas.Admin.Factories
 {
     public interface IPlanCalendarFactory
     {
-        List<PlanCalendarModel> Start(IFormFile file);
+        List<PlanCalendarModel> ParseFile(IFormFile file);
         Application.Dal.Domain.PlanCalendar.PlanCalendar GetEntity(PlanCalendarModel planCalendarModel);
     }
 }

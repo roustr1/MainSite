@@ -6,14 +6,13 @@ using MainSite.Models;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace MainSite.Areas.Admin.Factories
 {
-    public class PlanCalendarFactory: IPlanCalendarFactory
+    public class PlanCalendarFactory : IPlanCalendarFactory
     {
         private readonly IFileDownloadService _downloadService;
         private readonly IAppFileProvider _fileProvider;
@@ -24,7 +23,7 @@ namespace MainSite.Areas.Admin.Factories
             _fileProvider = appFileProvider;
         }
 
-        public List<PlanCalendarModel> Start(IFormFile file)
+        public List<PlanCalendarModel> ParseFile(IFormFile file)
         {
             return ParsingXmlFile(GetPathLoadFile(file));
         }
@@ -79,12 +78,7 @@ namespace MainSite.Areas.Admin.Factories
             dataBaseParserModel.Year = GetYear(worksheet.Name);
             dataBaseParserModel.Month = GetMoth(worksheet.Name);
 
-            if(dataBaseParserModel.Year == 2021 && (dataBaseParserModel.Month == "Май"))
-            {
-                var t = "asdas";
-            }
-
-                for (int i = 0; i < rows.Count(); i++)
+            for (int i = 0; i < rows.Count(); i++)
             {
                 if (CheckStartingFiled(rows.ElementAt(i).Cell(1).Value))
                 {
@@ -221,8 +215,8 @@ namespace MainSite.Areas.Admin.Factories
 
         public PlanCalendar GetEntity(PlanCalendarModel planCalendarModel)
         {
-           var monthNumber  = DateTime.Parse($"1,{planCalendarModel.Month}").Month;
-           
+            var monthNumber = DateTime.Parse($"1,{planCalendarModel.Month}").Month;
+
             var entity = new PlanCalendar()
             {
                 Events = planCalendarModel.Events.Select(a => new EventCalendar()
