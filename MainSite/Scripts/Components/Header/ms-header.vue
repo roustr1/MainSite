@@ -91,7 +91,7 @@
 
             },
             routerPushMainView() {
-                if (this.$route.name != 'news' ) {
+                if (this.$route.name != 'main' ) {
                     this.SET_OR_UPDATE_ACTIVE_CATEGORY(null);
                     this.$router.push('/');
                 }

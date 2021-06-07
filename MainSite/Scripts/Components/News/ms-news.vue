@@ -2,7 +2,7 @@
     <div class="row" style="position:relative;">
         <ms-calendar />
         <ms-birthday/>
-        <msCreaterNewsItem :categoryId="$route.params.categoryId" />
+        <!--<msCreaterNewsItem :categoryId="$route.params.categoryId" />-->
         <msNewsList />
     </div>
 </template>
