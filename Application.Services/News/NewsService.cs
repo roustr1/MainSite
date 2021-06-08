@@ -51,7 +51,7 @@ namespace Application.Services.News
         /// <summary>
         /// Поиск новостей 
         /// </summary>
-        public IEnumerable<NewsItem> GetNewsItem(FilterNewsItemParameters filterNewsItemParameters, out int totalCount)
+        public IEnumerable<NewsItem> GetNewsItem(FilterNewsItemParameters filterNewsItemParameters)
         {
             var category = filterNewsItemParameters.CategoryIds.FirstOrDefault();
             var categories = filterNewsItemParameters.CategoryIds.ToList();
@@ -63,7 +63,7 @@ namespace Application.Services.News
             var skip = filterNewsItemParameters.Skip;
             var take = filterNewsItemParameters.Take;
 
-            var collection = _newsRepository.GetCollection(skip, take, out totalCount)
+            var collection = _newsRepository.GetAll 
                 .Where(a => category == null || categories.Contains(a.Category))
                 .Where(a => !pinnedNews.Contains(a.Id))
                 .Where(a => authorId == null || a.AutorFio == authorId || a.LastChangeAuthor == authorId)

@@ -218,7 +218,7 @@ namespace MainSite.Models
             return result;
         }
 
-        private IList<NewsItemViewModel> GetManyNewsItemViewModel(string categoryId,int skip,int take,out int totalCount)
+        private IList<NewsItemViewModel> GetManyNewsItemViewModel(string categoryId,int skip,int take)
         {
             var categoryIds = new List<string>();
             var pinnedNewsIds = new List<string>();
@@ -238,7 +238,7 @@ namespace MainSite.Models
                 Skip = skip,
                 Take = take
             };
-            var newsCollection = _newsService.GetNewsItem(filterNewsItemParameters, out totalCount);
+            var newsCollection = _newsService.GetNewsItem(filterNewsItemParameters);
             return GetNewsItemsViewModel(newsCollection);
         }
 
@@ -278,9 +278,9 @@ namespace MainSite.Models
 
             var pinnedNews = GetAllPinnedNewsByCategory(category);
       
-            var records = GetManyNewsItemViewModel(category,page.GetValueOrDefault(0),pagesize.GetValueOrDefault(5),out int totalCount);
+            var records = GetManyNewsItemViewModel(category,page.GetValueOrDefault(0),pagesize.GetValueOrDefault(5));
 
-            var list = new PagedList<NewsItemViewModel>(records, pageIndex, pageSize, totalCount);
+            var list = new PagedList<NewsItemViewModel>(records, pageIndex, pageSize);
             var model = new NewsListViewModel
             {
                 CategoryId = category,
