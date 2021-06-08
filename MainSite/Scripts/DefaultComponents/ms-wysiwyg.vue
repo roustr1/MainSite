@@ -192,8 +192,8 @@
                             vm.fileList.push({ Id: unicId, FormFile: file });
 
                             elementImg.setAttribute('src', e.target.result);
-                            elementImg.style.width = '200px';
-                            elementImg.style.height = '200px';
+                            //elementImg.style.width = '200px';
+                            //elementImg.style.height = '200px';
                             elementImg.setAttribute('id', unicId);
 
                             vm.formatDoc("insertHTML", elementImg.outerHTML);

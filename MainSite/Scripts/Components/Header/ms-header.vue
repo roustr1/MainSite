@@ -9,7 +9,7 @@
                             <span class="bold" style="padding-left:10px;">{{GetApplicationName}}</span>
                         </a>
                         <a id="openMenu" data-target="mobile-demo" class="sidenav-trigger" style="float: right;cursor:pointer;"><i class="material-icons">menu</i></a>
-                        <ul class="hide-on-med-and-down col m12 s12 l12 secondMenu">
+                        <ul class="hide-on-med-and-down col m12 s12 l9 secondMenu">
                             <li>
                                 <div class="secondMenu-search">
                                     <span class="bold">Поиск:</span>
@@ -91,7 +91,7 @@
 
             },
             routerPushMainView() {
-                if (this.$route.name != 'news' ) {
+                if (this.$route.name != 'main' ) {
                     this.SET_OR_UPDATE_ACTIVE_CATEGORY(null);
                     this.$router.push('/');
                 }
@@ -107,5 +107,17 @@
 <style lang="scss" scoped>
     .isActive {
         display:block;
+    }
+
+    .secondMenu {
+        display: flex;
+        padding-left: 0px;
+        padding-right: 0px;
+
+        &:last-child {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+        }
     }
 </style>

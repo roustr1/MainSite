@@ -384,6 +384,9 @@ namespace Application.Services.Files
                 case "x-icon":
                     lastPart = "ico";
                     break;
+                case "svg+xml":
+                    lastPart = "svg";
+                    break;
             }
 
             return lastPart;
@@ -688,6 +691,7 @@ namespace Application.Services.Files
                 ".pjp",
                 ".png",
                 ".tiff",
+                ".svg",
                 ".tif"
             } as IReadOnlyCollection<string>;
 
@@ -732,6 +736,9 @@ namespace Application.Services.Files
                     case ".tiff":
                     case ".tif":
                         contentType = MimeTypes.ImageTiff;
+                        break;
+                    case ".svg":
+                        contentType = MimeTypes.ImageSvg;
                         break;
                     default:
                         break;
