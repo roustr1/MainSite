@@ -14,7 +14,6 @@ namespace Application.Services.News
     public class NewsService : INewsService
     {
         private readonly NewsItemRepository _newsRepository;
-
         public NewsService(NewsItemRepository newsRepository)
         {
             _newsRepository = newsRepository;
@@ -52,7 +51,7 @@ namespace Application.Services.News
         /// <summary>
         /// Поиск новостей 
         /// </summary>
-        public IEnumerable<NewsItem> GetNewsItem(FilterNewsItemParameters filterNewsItemParameters)
+        public IEnumerable<NewsItem> GetNewsItem(FilterNewsItemParameters filterNewsItemParameters, out int totalCount)
         {
             var category = filterNewsItemParameters.CategoryIds.FirstOrDefault();
             var categories = filterNewsItemParameters.CategoryIds.ToList();
@@ -61,16 +60,19 @@ namespace Application.Services.News
             var endDate = filterNewsItemParameters.EndDate;
             var isNewest = filterNewsItemParameters.IsNewest;
             var pinnedNews = filterNewsItemParameters.PinnedNewsIds;
+            var skip = filterNewsItemParameters.Skip;
+            var take = filterNewsItemParameters.Take;
 
-            var collection = _newsRepository.GetAll
+            var collection = _newsRepository.GetCollection(skip, take, out totalCount)
                 .Where(a => category == null || categories.Contains(a.Category))
                 .Where(a => !pinnedNews.Contains(a.Id))
                 .Where(a => authorId == null || a.AutorFio == authorId || a.LastChangeAuthor == authorId)
                 .Where(a => startDate == null || a.LastChangeDate >= startDate)
                 .Where(a => endDate == null || a.LastChangeDate <= endDate)
-                .SortByNewestOrOldest(isNewest, item => item.LastChangeDate);
-            
-            return collection.AsQueryable();
+                .SortByNewestOrOldest(isNewest, item => item.LastChangeDate)
+                ;
+      
+            return collection;
         }
 
         public IEnumerable<NewsItem> FindFreeText(string query)

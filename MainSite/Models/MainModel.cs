@@ -55,7 +55,6 @@ namespace MainSite.Models
                 return null;
             }
 
-
             string categoryName = "";
             if (newsItem.Category != null)
             {
@@ -73,13 +72,13 @@ namespace MainSite.Models
                 Author = newsItem.AutorFio,
                 CreatedDate = newsItem.CreatedDate,
                 LastChangeDate = newsItem.LastChangeDate,
+                IsMessage = !newsItem.Files.Any(),
                 Files = newsItem.Files.Select(s => new FileViewModel
                 {
                     Name = s.OriginalName,
                     MimeType = s.MimeType,
                     Id = s.Id
-                }).ToList(),
-                IsMessage = !newsItem.Files.Any(),
+                }).ToList(),             
                 IsAdvancedEditor = newsItem.IsAdvancedEditor
             };
         }
@@ -154,7 +153,7 @@ namespace MainSite.Models
             _newsService.UpdateNews(entity);
         }
 
-        public void CreateNewNewsItem(NewsItemViewModel newsItemViewModel,ClaimsPrincipal author)
+        public void CreateNewNewsItem(NewsItemViewModel newsItemViewModel, ClaimsPrincipal author)
         {
             var dataTimeNow = DateTime.Now;
             var entity = new NewsItem
@@ -202,13 +201,12 @@ namespace MainSite.Models
             newsItemViewModel.Id = entity.Id;
         }
 
-        private IList<NewsItemViewModel> GetNewsItemsViewModel(IEnumerable<NewsItem> newsItems)
+        private IList<NewsItemViewModel> GetNewsItemsViewModel(IEnumerable<NewsItem> newsItems,int skip=0,int take=10)
         {
             var result = new List<NewsItemViewModel>();
-
+        
             foreach (var newsItem in newsItems)
             {
-                if (newsItem == null) continue;
 
                 var newsItemViewModel = GetNewsItemViewModel(newsItem);
 
@@ -220,7 +218,7 @@ namespace MainSite.Models
             return result;
         }
 
-        private IList<NewsItemViewModel> GetManyNewsItemViewModel(string categoryId)
+        private IList<NewsItemViewModel> GetManyNewsItemViewModel(string categoryId,int skip,int take,out int totalCount)
         {
             var categoryIds = new List<string>();
             var pinnedNewsIds = new List<string>();
@@ -236,10 +234,12 @@ namespace MainSite.Models
             var filterNewsItemParameters = new FilterNewsItemParameters()
             {
                 CategoryIds = categoryIds,
-                PinnedNewsIds = pinnedNewsIds
+                PinnedNewsIds = pinnedNewsIds,
+                Skip = skip,
+                Take = take
             };
-
-            return GetNewsItemsViewModel(_newsService.GetNewsItem(filterNewsItemParameters));
+            var newsCollection = _newsService.GetNewsItem(filterNewsItemParameters, out totalCount);
+            return GetNewsItemsViewModel(newsCollection);
         }
 
         private IList<PinnedNewsViewModel> GetAllPinnedNewsByCategory(string categoryId)
@@ -277,9 +277,10 @@ namespace MainSite.Models
             var pageSize = pagesize.GetValueOrDefault(10);
 
             var pinnedNews = GetAllPinnedNewsByCategory(category);
-            var records = GetManyNewsItemViewModel(category).ToList();
+      
+            var records = GetManyNewsItemViewModel(category,page.GetValueOrDefault(0),pagesize.GetValueOrDefault(5),out int totalCount);
 
-            var list = new PagedList<NewsItemViewModel>(records, pageIndex, pageSize);
+            var list = new PagedList<NewsItemViewModel>(records, pageIndex, pageSize, totalCount);
             var model = new NewsListViewModel
             {
                 CategoryId = category,
@@ -387,7 +388,7 @@ namespace MainSite.Models
         }
 
         #endregion
-        
+
         #region Search
         public IList<NewsItemViewModel> GetManySearchResultNewsItemViewModel(string query)
         {
@@ -407,6 +408,6 @@ namespace MainSite.Models
 
             return pagesize;
         }
- 
+
     }
 }

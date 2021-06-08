@@ -20,5 +20,12 @@ namespace Application.Dal
         {
             get { return _context.NewsItems.Include(a => a.Files); }
         }
+
+        public IEnumerable<NewsItem> GetCollection( int skip, int take, out int totalCount)
+        {
+            var news = _context.NewsItems.Include(a => a.Files).Skip(skip).Take(take);
+            totalCount = _context.NewsItems.Count();
+            return news;
+        }
     }
 }

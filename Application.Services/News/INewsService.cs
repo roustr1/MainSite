@@ -13,7 +13,7 @@ namespace Application.Services.News
         void DeleteNews(NewsItem item);
 
         NewsItem GetNewsItem(string itemId);
-        IEnumerable<NewsItem> GetNewsItem(FilterNewsItemParameters filterNewsItemParameters);
+        IEnumerable<NewsItem> GetNewsItem(FilterNewsItemParameters filterNewsItemParameters, out int totalCount);
         IEnumerable<NewsItem> FindFreeText(string query);
     }
 }
