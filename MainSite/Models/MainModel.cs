@@ -16,6 +16,7 @@ using MainSite.Extensions;
 using MainSite.ViewModels.Common;
 using MainSite.ViewModels.News;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MainSite.Models
 {
@@ -28,7 +29,7 @@ namespace MainSite.Models
         private readonly IUsersService _usersService;
         private readonly PinNewsService _pinNewsService;
         private readonly IAppFileProvider _fileProvider;
-
+        private readonly bool StoreInDb = false;
         public MainModel(INewsService newsService, IFileDownloadService downloadService, ISettingsService settingsService, IMenuService menuService, IUsersService usersService, PinNewsService pinNewsService, IAppFileProvider fileProvider)
         {
             _newsService = newsService;
@@ -75,10 +76,10 @@ namespace MainSite.Models
                 IsMessage = !newsItem.Files.Any(),
                 Files = newsItem.Files.Select(s => new FileViewModel
                 {
-                    Name = s.OriginalName,
-                    MimeType = s.MimeType,
+                    Name = s.Filename,
+                    MimeType = s.ContentType,
                     Id = s.Id
-                }).ToList(),             
+                }).ToList(),
                 IsAdvancedEditor = newsItem.IsAdvancedEditor
             };
         }
@@ -132,11 +133,11 @@ namespace MainSite.Models
                 var download = new File
                 {
                     Id = Guid.NewGuid().ToString(),
-                    FileBinary = _downloadService?.GetDownloadBits(file) ?? null,
-                    MimeType = file.ContentType,
+                    DownloadBinary = _downloadService?.GetDownloadBits(file) ?? null,
+                    ContentType = file.ContentType,
                     //we store filename without extension for downloads
-                    OriginalName = _fileProvider.GetFileNameWithoutExtension(fileName),
-                    LastPart = _fileProvider.GetFileExtension(fileName)
+                    Filename = _fileProvider.GetFileNameWithoutExtension(fileName),
+                    Extension = _fileProvider.GetFileExtension(fileName)
                 };
 
 
@@ -158,6 +159,7 @@ namespace MainSite.Models
             var dataTimeNow = DateTime.Now;
             var entity = new NewsItem
             {
+                Id = Guid.NewGuid().ToString(),
                 Header = newsItemViewModel.Header,
                 Description = newsItemViewModel.Description,
                 AutorFio = _usersService.GetUserBySystemName(author)?.FullName ?? "Автор не указан",
@@ -166,45 +168,99 @@ namespace MainSite.Models
                 Category = newsItemViewModel.CategoryId,
                 IsAdvancedEditor = newsItemViewModel.IsAdvancedEditor
             };
-
+            _newsService.CreateNews(entity);
+            newsItemViewModel.Id = entity.Id;
             //uploadFiles 
-            var collection = new List<File>();
-            foreach (var file in newsItemViewModel.UploadedFiles)
-            {
 
+            UploadFiles(newsItemViewModel.UploadedFiles, entity.Id);
+            //var collection = new List<File>();
+            //            foreach (var file in newsItemViewModel.UploadedFiles)
+            //            {
+
+            //                var fileName = file.FileName;
+            //                //remove path (passed in IE)
+            //                fileName = _fileProvider.GetFileName(fileName);
+
+            //                var download = new File
+            //                {
+            //                    Id = Guid.NewGuid().ToString(),
+            //                    DownloadBinary = _downloadService?.GetDownloadBits(file) ?? null,
+            //                    ContentType = file.ContentType,
+            //                    //we store filename without extension for downloads
+            //                    Filename = _fileProvider.GetFileNameWithoutExtension(fileName).Replace('.', '_'),
+            //                    Extension = _fileProvider.GetFileExtension(fileName)
+            //                };
+            //#warning  Некорректно сохраняется ссылка на файл
+            //                //todo Исправить ссылку
+            //                if (newsItemViewModel.IsAdvancedEditor)
+            //                {
+            //                    var newDescription = entity.Description.Replace(file.Name, download.Id);
+            //                    entity.Description = newDescription;
+            //                }
+            //                _downloadService?.InsertDownload(download);
+            //                collection.Add(download);
+            //            }
+
+            //     entity.Files = collection;
+
+        }
+
+        private void UploadFiles(ICollection<IFormFile> httpPostedFile, string newsItemId)
+        {
+            foreach (var file in httpPostedFile)
+            {
+                var fileBinary = _downloadService.GetDownloadBits(file);
                 var fileName = file.FileName;
                 //remove path (passed in IE)
-                fileName = _fileProvider.GetFileName(fileName);
+                fileName = _fileProvider.GetFileNameWithoutExtension(fileName).Replace('.', '_');
+                var contentType = file.ContentType;
+                var fileExtension = _fileProvider.GetFileExtension(file.FileName);
+                if (!string.IsNullOrEmpty(fileExtension))
+                    fileExtension = fileExtension.ToLowerInvariant();
 
                 var download = new File
                 {
-                    Id = Guid.NewGuid().ToString(),
-                    FileBinary = _downloadService?.GetDownloadBits(file) ?? null,
-                    MimeType = file.ContentType,
-                    //we store filename without extension for downloads
-                    OriginalName = _fileProvider.GetFileNameWithoutExtension(fileName).Replace('.', '_'),
-                    LastPart = _fileProvider.GetFileExtension(fileName)
+                    ContentType = contentType,
+                    Filename = _fileProvider.GetFileNameWithoutExtension(fileName),
+                    Extension = fileExtension,
+                    NewsItemId = newsItemId
                 };
-#warning  Некорректно сохраняется ссылка на файл
-                //todo Исправить ссылку
-                if (newsItemViewModel.IsAdvancedEditor)
+                if (!StoreInDb) //if file saving into filesystem
                 {
-                    var newDescription = entity.Description.Replace(file.Name, download.Id);
-                    entity.Description = newDescription;
-                }
-                _downloadService?.InsertDownload(download);
-                collection.Add(download);
-            }
+                    var pathToFile = _downloadService.SaveFileInFileSystem(fileBinary, fileBinary.GetHashCode().ToString());
 
-            entity.Files = collection;
-            _newsService.CreateNews(entity);
-            newsItemViewModel.Id = entity.Id;
+                    download.DownloadUrl = _fileProvider.GetFileName(pathToFile);
+                }
+                else
+                {
+                    download.DownloadUrl = string.Empty;
+                    download.DownloadBinary = fileBinary;
+                }
+                _downloadService.InsertDownload(download);
+            }
         }
 
-        private IList<NewsItemViewModel> GetNewsItemsViewModel(IEnumerable<NewsItem> newsItems,int skip=0,int take=10)
+        public FileContentResult GetDownloadFile(string fileId)
+        {
+            var download = _downloadService.GetDownloadByGuid(fileId);
+            var fileName = !string.IsNullOrWhiteSpace(download.Filename) ? download.Filename : download.Id;
+            var contentType = !string.IsNullOrWhiteSpace(download.ContentType)
+                ? download.ContentType
+                : MimeTypes.ApplicationOctetStream;
+
+            var filePath = _downloadService.GetFileLocalPath(download.DownloadUrl, AppMediaDefaults.DefaultPathToFileCatalog);
+            var fileBytes = !StoreInDb ? _fileProvider.ReadAllBytes(filePath) : download.DownloadBinary;
+
+            return new FileContentResult(fileBytes, contentType)
+            {
+                FileDownloadName = fileName + download.Extension
+            };
+        }
+
+        private IList<NewsItemViewModel> GetNewsItemsViewModel(IEnumerable<NewsItem> newsItems, int skip = 0, int take = 10)
         {
             var result = new List<NewsItemViewModel>();
-        
+
             foreach (var newsItem in newsItems)
             {
 
@@ -218,7 +274,7 @@ namespace MainSite.Models
             return result;
         }
 
-        private IList<NewsItemViewModel> GetManyNewsItemViewModel(string categoryId,int skip,int take)
+        private IList<NewsItemViewModel> GetManyNewsItemViewModel(string categoryId, int skip, int take)
         {
             var categoryIds = new List<string>();
             var pinnedNewsIds = new List<string>();
@@ -277,8 +333,8 @@ namespace MainSite.Models
             var pageSize = pagesize.GetValueOrDefault(10);
 
             var pinnedNews = GetAllPinnedNewsByCategory(category);
-      
-            var records = GetManyNewsItemViewModel(category,page.GetValueOrDefault(0),pagesize.GetValueOrDefault(5));
+
+            var records = GetManyNewsItemViewModel(category, page.GetValueOrDefault(0), pagesize.GetValueOrDefault(5));
 
             var list = new PagedList<NewsItemViewModel>(records, pageIndex, pageSize);
             var model = new NewsListViewModel
@@ -335,57 +391,6 @@ namespace MainSite.Models
         }
 
         #endregion
-
-        #endregion
-
-        #region Files
-
-        public FileViewModel GetDownloadedFileViewModel(string id)
-        {
-            return GetDownloadedFileViewModel(_downloadService.GetDownloadById(id));
-        }
-
-        private FileViewModel GetDownloadedFileViewModel(Application.Dal.Domain.Files.File file)
-        {
-            if (file == null)
-            {
-                return null;
-            }
-
-            return new FileViewModel()
-            {
-                Id = file.Id,
-                Name = file.OriginalName + file.LastPart,
-                MimeType = file.MimeType
-            };
-        }
-
-        public File GeDownloadedFile(string newsItemId)
-        {
-            return _downloadService.GetDownloadById(newsItemId);
-        }
-
-        public File SaveFile(IFormFile file)
-        {
-
-            var fileBinary = _downloadService.GetDownloadBits(file);
-            var fileName = file.FileName;
-            //remove path (passed in IE)
-            fileName = _fileProvider.GetFileName(fileName);
-            var contentType = file.ContentType;
-
-            var download = new File
-            {
-                Id = Guid.NewGuid().ToString(),
-                FileBinary = fileBinary,
-                MimeType = contentType,
-                //we store filename without extension for downloads
-                OriginalName = _fileProvider.GetFileNameWithoutExtension(fileName),
-                LastPart = _fileProvider.GetFileExtension(fileName)
-            };
-            _downloadService.InsertDownload(download);
-            return download;
-        }
 
         #endregion
 

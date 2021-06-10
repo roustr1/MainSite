@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Application.Dal;
@@ -13,9 +12,10 @@ namespace Application.Services.Files
      /// </summary>
     public partial class FileDownloadService : IFileDownloadService
     {
+
         #region Fields
 
-        //   private readonly IEventPublisher _eventPubisher;
+        //private readonly IEventPublisher _eventPubisher;
         private readonly IRepository<File> _downloadRepository;
         private readonly IAppFileProvider _fileProvider;
         #endregion
@@ -27,6 +27,7 @@ namespace Application.Services.Files
             _downloadRepository = downloadRepository;
             _fileProvider = fileProvider;
         }
+
 
         #endregion
 
@@ -45,7 +46,18 @@ namespace Application.Services.Files
             return _downloadRepository.Get(downloadId);
         }
 
+        /// <summary>
+        /// Gets a download by GUID
+        /// </summary>
+        /// <param name="downloadGuid">Download GUID</param>
+        /// <returns>Download</returns>
+        public virtual File GetDownloadByGuid(string downloadGuid)
+        {
+            if (downloadGuid == null)
+                return null;
 
+            return _downloadRepository.Get(downloadGuid);
+        }
 
         /// <summary>
         /// Deletes a download
@@ -59,7 +71,7 @@ namespace Application.Services.Files
             _downloadRepository.Delete(download);
 
             //event notification
-            //   _eventPubisher.EntityDeleted(download);
+            //_eventPubisher.EntityDeleted(download);
         }
 
         /// <summary>
@@ -74,21 +86,7 @@ namespace Application.Services.Files
             _downloadRepository.Add(download);
 
             //event notification
-            //   _eventPubisher.EntityInserted(download);
-        }
-
-        /// <summary>
-        /// Save file on file system
-        /// </summary>
-        /// <param name="fileName">file name  </param>
-        /// <param name="fileBinary">file binary</param>
-        protected virtual void SaveFileInFileSystem(string fileName, byte[] fileBinary)
-        {
-            _fileProvider.WriteAllBytes(GetLocalPath(fileName), fileBinary);
-        }
-        protected virtual string GetLocalPath(string fileName)
-        {
-            return _fileProvider.GetAbsolutePath("files", fileName);
+            //_eventPubisher.EntityInserted(download);
         }
 
         /// <summary>
@@ -106,11 +104,6 @@ namespace Application.Services.Files
             //_eventPubisher.EntityUpdated(download);
         }
 
-        public virtual IEnumerable<File> GetFilesByNewsId(string newsId)
-        {
-            return _downloadRepository.GetAll.Where(c => c.NewsItemId == newsId);
-        }
-
         /// <summary>
         /// Gets the download binary array
         /// </summary>
@@ -125,6 +118,30 @@ namespace Application.Services.Files
             return fileBytes;
         }
 
+        public virtual string SaveFileInFileSystem(byte[] binaryData, string fileName)
+        {
+            var localPath = GetFileLocalPath(fileName);
+            _fileProvider.WriteAllBytes(localPath, binaryData);
+            return localPath;
+        }
+        #endregion
+
+        #region additional methods
+        /// <summary>
+        /// Get file local path. Used when files stored on file system (not in the database)
+        /// </summary>
+        /// <param name="fileName">Filename</param>
+        /// <param name="fileCatalog">catalog</param> 
+        /// <returns>Local file path</returns>
+        public string GetFileLocalPath(string fileName, string fileCatalog = "files")
+        {
+            var filesDir = _fileProvider.GetAbsolutePath(AppMediaDefaults.DefaultPathToFileCatalog);
+            return _fileProvider.Combine(filesDir, fileName);
+        }
+
+
         #endregion
     }
+
+
 }

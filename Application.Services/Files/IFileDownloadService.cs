@@ -5,19 +5,25 @@ using Microsoft.AspNetCore.Http;
 namespace Application.Services.Files
 {
     public interface IFileDownloadService
-    {
-        /// <summary>
-        /// Gets a download
-        /// </summary>
-        /// <param name="downloadId">Download identifier</param>
-        /// <returns>Download</returns>
+    { /// <summary>
+      /// Gets a download
+      /// </summary>
+      /// <param name="downloadId">Download identifier</param>
+      /// <returns>Download</returns>
         File GetDownloadById(string downloadId);
+
+        /// <summary>
+        /// Gets a download by GUID
+        /// </summary>
+        /// <param name="downloadGuid">Download GUID</param>
+        /// <returns>Download</returns>
+        File GetDownloadByGuid(string downloadGuid);
 
         /// <summary>
         /// Deletes a download
         /// </summary>
         /// <param name="download">Download</param>
-        void DeleteDownload(File file);
+        void DeleteDownload(File download);
 
         /// <summary>
         /// Inserts a download
@@ -38,6 +44,14 @@ namespace Application.Services.Files
         /// <returns>Download binary array</returns>
         byte[] GetDownloadBits(IFormFile file);
 
-        IEnumerable<File> GetFilesByNewsId(string newsId);
+        /// <summary>
+        /// Save file into selected directory on filesystem
+        /// </summary>
+        /// <param name="binaryData">file binary data</param>
+        /// <param name="fileName">file name</param>
+
+        string SaveFileInFileSystem(  byte[] binaryData,  string fileName);
+
+        string GetFileLocalPath(string fileName, string fileCatalog);
     }
 }

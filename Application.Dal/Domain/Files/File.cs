@@ -1,38 +1,45 @@
-﻿ 
+﻿
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Application.Dal.Domain.Files
 {
     /// <summary>
-    /// 
+    /// Represents a download
     /// </summary>
     public class File : BaseEntity
     {
+ 
+        
         /// <summary>
-        /// File name
+        /// Gets or sets a download URL
         /// </summary>
-        public string OriginalName { get; set; }
-
-        /// <summary>
-        /// Mime-type
-        /// </summary>
-        public string MimeType { get; set; }
-
-        /// <summary>
-        /// Gets or sets file hash
-        /// </summary>
-        public string Md5Hash { get; set; }
-
-        /// <summary>
-        /// Gets or sets file Extension
-        /// </summary>
-        public string LastPart { get; set; }
+        public string DownloadUrl { get; set; }
 
         /// <summary>
         /// Gets or sets the download binary
         /// </summary>
-        public byte[] FileBinary { get; set; }
+        public byte[] DownloadBinary { get; set; }
 
+        /// <summary>
+        /// The mime-type of the download
+        /// </summary>
+        public string ContentType { get; set; }
+
+        /// <summary>
+        /// The filename of the download
+        /// </summary>
+        public string Filename { get; set; }
+
+        /// <summary>
+        /// Gets or sets the extension
+        /// </summary>
+        public string Extension { get; set; }
+
+        /// <summary>
+        /// Refferer to news item 
+        /// </summary>
         public string NewsItemId { get; set; }
 
-
     }
+
 }
