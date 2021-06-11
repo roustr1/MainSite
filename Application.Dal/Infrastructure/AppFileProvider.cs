@@ -454,12 +454,12 @@ namespace Application.Dal.Infrastructure
             if (string.IsNullOrEmpty(path))
                 return path;
 
-            if (!IsDirectory(path) && FileExists(path))
-                path = new FileInfo(path).DirectoryName;
+            //if (!IsDirectory(path) && FileExists(path))
+            //    path = new FileInfo(path).DirectoryName;
 
             path = path?.Replace(WebRootPath, string.Empty).Replace('\\', '/').Trim('/').TrimStart('~', '/');
 
-            return $"~/{path ?? string.Empty}";
+            return $"/{path ?? string.Empty}";
         }
 
         /// <summary>

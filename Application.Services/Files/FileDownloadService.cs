@@ -118,24 +118,28 @@ namespace Application.Services.Files
             return fileBytes;
         }
 
-        public virtual string SaveFileInFileSystem(byte[] binaryData, string fileName)
+        public virtual string SaveFileInFileSystem(byte[] binaryData, string fileName,string catalog=null)
         {
-            var localPath = GetFileLocalPath(fileName);
+            var localPath = GetFileLocalPath(fileName,catalog);
             _fileProvider.WriteAllBytes(localPath, binaryData);
             return localPath;
         }
         #endregion
 
         #region additional methods
+
         /// <summary>
         /// Get file local path. Used when files stored on file system (not in the database)
         /// </summary>
         /// <param name="fileName">Filename</param>
         /// <param name="fileCatalog">catalog</param> 
         /// <returns>Local file path</returns>
-        public string GetFileLocalPath(string fileName, string fileCatalog = "files")
+        public string GetFileLocalPath(string fileName, string catalog = null)
         {
-            var filesDir = _fileProvider.GetAbsolutePath(AppMediaDefaults.DefaultPathToFileCatalog);
+            if (catalog == null) catalog = AppMediaDefaults.DefaultPathToFileCatalog;
+            
+            var filesDir = _fileProvider.GetAbsolutePath(catalog);
+            _fileProvider.CreateDirectory(filesDir);
             return _fileProvider.Combine(filesDir, fileName);
         }
 

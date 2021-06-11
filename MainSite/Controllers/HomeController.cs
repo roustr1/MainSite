@@ -43,7 +43,15 @@ namespace MainSite.Controllers
         {
             if (ModelState.IsValid)
             {
-                model.UploadedFiles = Request.Form.Files.ToList();
+                if (!model.IsAdvancedEditor)
+                {
+                    model.UploadedFiles = Request.Form.Files.ToList();
+                }
+                else
+                {
+                    _mainMode.InsertAdvancedNewsItem(model, User);
+                }
+               
                 //model.Author = User.Identity.Name;
                 _mainMode.CreateNewNewsItem(model, User);
             }

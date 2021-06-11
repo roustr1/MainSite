@@ -27,5 +27,6 @@
         /// </summary>
         public static string DefaultPathToFileCatalog => @"files\";
 
+        public static string PathToNewsMedia => "files/news";
     }
 }

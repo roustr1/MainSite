@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using Application.Dal;
-using Application.Dal.Domain.Files;
+﻿using Application.Dal;
+using Application.Dal.Domain.Menu;
 using Application.Dal.Domain.News;
 using Application.Dal.Infrastructure;
 using Application.Services.Files;
@@ -17,6 +13,14 @@ using MainSite.ViewModels.Common;
 using MainSite.ViewModels.News;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Win32;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Text.RegularExpressions;
+using System.Xml;
+using File = Application.Dal.Domain.Files.File;
 
 namespace MainSite.Models
 {
@@ -30,6 +34,7 @@ namespace MainSite.Models
         private readonly PinNewsService _pinNewsService;
         private readonly IAppFileProvider _fileProvider;
         private readonly bool StoreInDb = false;
+
         public MainModel(INewsService newsService, IFileDownloadService downloadService, ISettingsService settingsService, IMenuService menuService, IUsersService usersService, PinNewsService pinNewsService, IAppFileProvider fileProvider)
         {
             _newsService = newsService;
@@ -240,6 +245,64 @@ namespace MainSite.Models
             }
         }
 
+
+        public void InsertAdvancedNewsItem(NewsItemViewModel model, ClaimsPrincipal author)
+        {
+            ReplaceImg(model);
+        }
+
+        private void ReplaceImg(NewsItemViewModel item)
+        {
+            var imgRegex = new Regex("<img [^>]+>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+            var base64Regex = new Regex("data:[^/]+/(?<ext>[a-z]+);base64,(?<base64>.+)", RegexOptions.IgnoreCase);
+            var allowedExtensions = new[] {
+              ".jpg",
+              ".jpeg",
+              ".gif",
+              ".png",
+              ".webp"
+            };
+
+            foreach (Match? match in imgRegex.Matches(item.Description))
+            {
+
+                var doc = new XmlDocument();
+                doc.LoadXml($"<root>{match.Value.Replace(">", "/>")}</root>");
+
+                var img = doc.FirstChild.FirstChild;
+                var srcNode = img.Attributes["src"];
+                string mime = MimeTypes.ImageJpeg;
+                try
+                {
+                      mime = srcNode.Value.Split(";").First().Substring(5);
+                }
+                catch { }
+
+                var fileExt = GetDefaultExtension(mime);
+                var base64Match = base64Regex.Match(srcNode.Value);
+                if (base64Match.Success)
+                {
+                    var bytes = Convert.FromBase64String(base64Match.Groups["base64"].Value);
+                    var file = _downloadService.SaveFileInFileSystem(bytes, img.Attributes["id"].Value + fileExt, AppMediaDefaults.PathToNewsMedia);
+
+                    srcNode.Value = _fileProvider.GetVirtualPath(file);
+
+                    item.Description = item.Description.Replace(match.Value, img.OuterXml, StringComparison.OrdinalIgnoreCase);
+                }
+            }
+        }
+
+
+        private string GetDefaultExtension(string mimeType)
+        {
+            var key = Registry.ClassesRoot.OpenSubKey(@"MIME\Database\Content Type\" + mimeType, false);
+            var value = key?.GetValue("Extension", null);
+            var result = value != null ? value.ToString() : string.Empty;
+
+            if (result == ".jfif"||string.IsNullOrEmpty(result)) result = ".jpg";//костылёчек-костылек
+
+            return result;
+        }
         public FileContentResult GetDownloadFile(string fileId)
         {
             var download = _downloadService.GetDownloadByGuid(fileId);
@@ -248,7 +311,7 @@ namespace MainSite.Models
                 ? download.ContentType
                 : MimeTypes.ApplicationOctetStream;
 
-            var filePath = _downloadService.GetFileLocalPath(download.DownloadUrl, AppMediaDefaults.DefaultPathToFileCatalog);
+            var filePath = _downloadService.GetFileLocalPath(download.DownloadUrl);
             var fileBytes = !StoreInDb ? _fileProvider.ReadAllBytes(filePath) : download.DownloadBinary;
 
             return new FileContentResult(fileBytes, contentType)
@@ -402,6 +465,16 @@ namespace MainSite.Models
 
 
         #endregion
+
+        #region Menu
+
+        public void CreateCategory(MenuItem model)
+        {
+
+        }
+
+        #endregion
+
 
         public int GetSettingNewsPerPage()
         {

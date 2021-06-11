@@ -50,8 +50,8 @@ namespace Application.Services.Files
         /// <param name="binaryData">file binary data</param>
         /// <param name="fileName">file name</param>
 
-        string SaveFileInFileSystem(  byte[] binaryData,  string fileName);
+        string SaveFileInFileSystem(  byte[] binaryData, string fileName,string catalog=null);
 
-        string GetFileLocalPath(string fileName, string fileCatalog);
+        string GetFileLocalPath(string fileName, string catalog = null);
     }
 }
