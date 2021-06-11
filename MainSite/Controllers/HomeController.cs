@@ -1,13 +1,12 @@
 ﻿using MainSite.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using Application.Services.Permissions;
-using Application.Services.Users;
 using MainSite.Models;
 using MainSite.ViewModels.News;
 using Newtonsoft.Json;
 using System.Linq;
 using Application.Dal.Domain.Menu;
+using Application.Dal.Infrastructure;
 using Application.Services.Menu;
 using Application.Services.Files;
 using MainSite.ViewModels.UI.Menu;
@@ -21,14 +20,18 @@ namespace MainSite.Controllers
 
         private readonly IMenuService _menuService;
         private readonly IPictureService _uploadService;
+        private readonly IFileDownloadService _downloadService;
+        private readonly IAppFileProvider _fileProvider;
 
-
-        public HomeController(MainModel mainMode, IMenuService menuService, IPictureService uploadService)
+        public HomeController(MainModel mainMode, IMenuService menuService, IPictureService uploadService, IFileDownloadService downloadService, IAppFileProvider fileProvider)
         {
             _mainMode = mainMode;
             _menuService = menuService;
             _uploadService = uploadService;
+            _downloadService = downloadService;
+            _fileProvider = fileProvider;
         }
+
 
         public IActionResult Index(int page = 0, string category = null)
         {
@@ -40,9 +43,17 @@ namespace MainSite.Controllers
         {
             if (ModelState.IsValid)
             {
-                model.UploadedFiles = Request.Form.Files.ToList();
-                model.Author = User.Identity.Name;
-                _mainMode.CreateNewNewsItem(model,User);
+                if (!model.IsAdvancedEditor)
+                {
+                    model.UploadedFiles = Request.Form.Files.ToList();
+                }
+                else
+                {
+                    _mainMode.InsertAdvancedNewsItem(model, User);
+                }
+               
+                //model.Author = User.Identity.Name;
+                _mainMode.CreateNewNewsItem(model, User);
             }
 
             return Json(JsonConvert.SerializeObject(_mainMode.GetNewsItemViewModel(model.Id)));
@@ -56,7 +67,7 @@ namespace MainSite.Controllers
             {
                 model.UploadedFiles = Request.Form.Files.ToList();
                 model.Author = User.Identity.Name;
-                _mainMode.EditNewNewsItem(model,User);
+                _mainMode.EditNewNewsItem(model, User);
                 return Json(JsonConvert.SerializeObject(_mainMode.GetNewsItemViewModel(model.Id)));
             }
 
@@ -65,12 +76,9 @@ namespace MainSite.Controllers
 
         [HttpGet]
         [Route("GetFile")]
-        public IActionResult GetFile(string fileId)
+        public IActionResult DownloadFile(string fileId)
         {
-            var file = _mainMode.GetDownloadedFileViewModel(fileId);
-            if (file == null) return new EmptyResult();
-            var fileBinary = _mainMode.GeDownloadedFile(fileId);
-            return File(fileBinary.FileBinary, file.MimeType, file.Name);
+            return _mainMode.GetDownloadFile(fileId);
         }
 
 
