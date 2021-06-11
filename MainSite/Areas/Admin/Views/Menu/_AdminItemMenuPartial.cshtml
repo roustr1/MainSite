@@ -6,7 +6,15 @@
         <li>
             <div class="collapsible-header" style="justify-content:space-around;cursor: inherit;">
                 <div>
-                    @Html.DisplayFor(modelItem => item.Id)
+                    @if (!String.IsNullOrWhiteSpace(item.UrlIcon))
+                    {
+                        <img src="@item.UrlIcon" width="50" height="50" />
+                    }
+                    else
+                    {
+                        <span>Изображение отсутствует</span>
+                    }
+                    @*@Html.DisplayFor(modelItem => item.Id)*@
                 </div>
                 <div>
                     @Html.DisplayFor(modelItem => item.Name)
@@ -18,6 +26,7 @@
                     @Html.ActionLink("Вниз", "ItemDown", "Menu", new { id = item.Id })
                 </div>
                 @Html.ActionLink("Удалить", "Delete", "Menu", new { id = item.Id })
+                @Html.ActionLink("Редактировать", "Create", "Menu", new { id = item.Id })
             </div>
             @if (item.Children.Any())
             {

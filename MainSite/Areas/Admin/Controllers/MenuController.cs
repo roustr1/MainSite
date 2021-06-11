@@ -7,6 +7,9 @@ using Application.Services.Permissions;
 using Application.Services.Users;
 using MainSite.ViewModels.UI.Menu;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MainSite.Models;
+using Application.Services.Files;
+using System;
 
 namespace MainSite.Areas.Admin.Controllers
 {
@@ -16,13 +19,16 @@ namespace MainSite.Areas.Admin.Controllers
         private readonly IMenuService _menuService;
         private readonly IUsersService _userService;
         private readonly IPermissionService _permissionService;
+        private readonly IPictureService _uploadService;
+        private readonly MainModel _mainMode;
 
-
-        public MenuController(IMenuService menuService, IUsersService userService, IPermissionService permissionService)
+        public MenuController(MainModel mainMode, IPictureService uploadService, IMenuService menuService, IUsersService userService, IPermissionService permissionService)
         {
             _menuService = menuService;
             _userService = userService;
             _permissionService = permissionService;
+            _mainMode = mainMode;
+            _uploadService = uploadService;
         }
 
         // GET: MenuService
@@ -47,23 +53,28 @@ namespace MainSite.Areas.Admin.Controllers
 
         [Route("Admin/Menu/Create")]
         [HttpGet]
-        public IActionResult Create()
+        public IActionResult Create(string id)
         {
 #if RELEASE
      var user = _userService.GetUserBySystemName(User);
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageMenu, user))
                 return AccessDeniedView();
-#endif
- 
-            ViewBag.Roles = new List<SelectListItem> { new SelectListItem("Admin", "1"), new SelectListItem("moderator", "2") };
+#endif      
+            MenuItem model = null;
+            if(!string.IsNullOrWhiteSpace(id))
+            {
+                model = _menuService.Get(id);              
+            }
+
+            //ViewBag.Roles = new List<SelectListItem> { new SelectListItem("Admin", "1"), new SelectListItem("moderator", "2") };
             ViewBag.MenuId = _menuService.GetAll().Select(s => new SelectListItem { Text = s.Name, Value = s.Id }).ToList();
-            return View();
+            return View(model);
         }
 
         // POST: MenuService/Create
         [HttpPost]
         [Route("Admin/Menu/Create")]
-        public IActionResult Create(MenuItem model)
+        public IActionResult Create([FromForm] MenuItem model)
         {
 #if RELEASE
      var user = _userService.GetUserBySystemName(User);
@@ -72,7 +83,33 @@ namespace MainSite.Areas.Admin.Controllers
 #endif
             if (ModelState.IsValid)
             {
-                _menuService.InsertItem(model);
+                var fileForm = Request.Form.Files.Count() > 0 ? Request.Form.Files[0] : null;
+
+                if (fileForm != null)
+                {
+                    var file = _uploadService.InsertPicture(fileForm);
+                    _uploadService.GetPictureUrl(file.Id);
+
+                    model.UrlIcone = _uploadService.GetPictureUrl(file.Id);
+                }
+
+                var entity = model.Id != null ? _menuService.Get(model.Id) : null;
+
+                if (entity != null)
+                {
+                    entity.Name = model.Name;
+                    entity.IsActive = model.IsActive;
+                    entity.ParentId = model.ParentId;
+                    entity.ToolTip = model.ToolTip;
+                    if (!String.IsNullOrWhiteSpace(model.UrlIcone)) entity.UrlIcone = model.UrlIcone;
+
+                    _menuService.UpdateItem(entity);
+                }
+                else
+                {
+                    _menuService.InsertItem(model);
+                }
+
                 return RedirectToAction("Index", "Home");
             }
 

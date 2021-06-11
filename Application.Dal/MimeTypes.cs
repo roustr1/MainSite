@@ -87,6 +87,10 @@
         /// </summary>
         public const string ImageTiff = "image/tiff";
 
+        /// <summary>
+        /// Type
+        /// </summary>
+        public const string ImageSvg = "image/svg+xml";
         #endregion
 
         #region text/*
@@ -142,6 +146,7 @@
         /// Document Microsoft Office Excel Open XML
         /// </summary>
         public const string MsPptx = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+
         #endregion
     }
 }
