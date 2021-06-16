@@ -13,7 +13,7 @@ namespace Application.Dal
 
         public override NewsItem Get(string id)
         {
-            return _context.NewsItems.Include(a => a.Files).ToList().LastOrDefault();
+            return _context.NewsItems.Include(a => a.Files).FirstOrDefault(c=>c.Id==id);
         }
 
         public override IEnumerable<NewsItem> GetAll
