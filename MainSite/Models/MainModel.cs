@@ -164,7 +164,8 @@ namespace MainSite.Models
                 CreatedDate = dataTimeNow,
                 LastChangeDate = dataTimeNow,
                 Category = newsItemViewModel.CategoryId,
-                IsAdvancedEditor = newsItemViewModel.IsAdvancedEditor
+                IsAdvancedEditor = newsItemViewModel.IsAdvancedEditor,
+                Id = Guid.NewGuid().ToString()
             };
 
             //uploadFiles 

@@ -1,5 +1,5 @@
 ﻿<template>
-    <form ref="formCreateNews" @submit="submit" action="/Home/Create/" enctype="multipart/form-data" method="post">
+    <form ref="formCreateNews" v-on:submit.prevent="submit" action="/Home/Create/" enctype="multipart/form-data" method="post">
         <input name="Id" type="hidden" v-model="model.Id" />
         <input name="CategoryId" type="hidden" :value="categoryId" />
         <input name="IsAdvancedEditor" type="hidden" :value="isAdvancedEditor" />

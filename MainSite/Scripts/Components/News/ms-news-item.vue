@@ -2,20 +2,20 @@
     <div class="card-panel detailsNew" :id="GetUnicIdBlock">
         <template v-if="!isEditer">
             <div class="card_news card_news-details">
-                <div class="card_news-image"><img :src="this.news_item.UrlIcon" alt="" /></div>
+                <div class="card_news-image"><img :src="this.news_item.urlIcon" alt="" /></div>
                 <div class="card_news-main">
                     <div v-if="isNews" class="card_news-main-header">
-                        <span class="bold">{{this.news_item.Author}}</span>
+                        <span class="bold">{{this.news_item.author}}</span>
                         <span class="bold">{{this.Message}} запись в разделе</span>
                         <router-link 
-                            :id="news_item.Id"
-                            :to="{name: 'categoryDetails', params: {categoryId : news_item.CategoryId, page: 1}}"
+                            :id="news_item.id"
+                            :to="{name: 'categoryDetails', params: {categoryId : news_item.categoryId, page: 1}}"
                         >
-                            {{this.news_item.Category}}
+                            {{this.news_item.category}}
                         </router-link>
                     </div>
-                    <div class="card_news-main-title"><a>{{this.news_item.Header}}</a></div>
-                    <div class="card_news-main-footer"><b v-if="!isNews">{{this.news_item.Author}}</b> {{RefactDate}}</div>
+                    <div class="card_news-main-title"><a>{{this.news_item.header}}</a></div>
+                    <div class="card_news-main-footer"><b v-if="!isNews">{{this.news_item.author}}</b> {{RefactDate}}</div>
                 </div>
 
                 <div class="card_news-editor">
@@ -24,12 +24,12 @@
                 </div>
             </div>
 
-            <div class="card_news-description" v-html="this.news_item.Description"></div>
+            <div class="card_news-description" v-html="this.news_item.description"></div>
 
             <ul class="dropdownFiles">
-                <li v-for="item in news_item.Files"
-                    :key="item.Id">
-                    <a href="#" @click="downloadFile(item)"><img src="/images/layout_icons/News/fileLoad.svg" style="padding-right:5px;" />  {{item.Name}}</a>
+                <li v-for="item in news_item.files"
+                    :key="item.id">
+                    <a href="#" @click="downloadFile(item)"><img src="/images/layout_icons/News/fileLoad.svg" style="padding-right:5px;" />  {{item.name}}</a>
                 </li>
             </ul>
         </template>
@@ -39,11 +39,11 @@
                     <a href="#" v-on:click.prevent="changeSectionEditer" title="Назад"><i class="material-icons">reply</i></a>
                 </div>
                 <msChangeNewsForm 
-                   :isAdvancedEditor="news_item.IsAdvancedEditor"
-                   :categoryId="news_item.CategoryId"
+                   :isAdvancedEditor="news_item.isAdvancedEditor"
+                   :categoryId="news_item.categoryId"
                    @changeNew="changeNew" 
                    :editModel="news_item"
-                   :editFiles="news_item.Files"
+                   :editFiles="news_item.files"
                    textSubmit="Редактировать"
                 />
             </div>
@@ -84,7 +84,7 @@
                 return this.news_item.isMessage ? "отредактировал" : "разместил";
             },
             GetUnicIdBlock() {
-                return "new_" + this.news_item.Id;
+                return "new_" + this.news_item.id;
             },
             RefactDate() {
                 let options = {
@@ -93,7 +93,7 @@
                     year: 'numeric'
                 }
 
-                return new Date(this.news_item.CreatedDate).toLocaleDateString("ru", options);
+                return new Date(this.news_item.createdDate).toLocaleDateString("ru", options);
             },
         },
         methods: {
@@ -109,7 +109,7 @@
                 this.DOWNLOADFILE(item);
             },
             deleteNews() {
-                this.DELETE_NEW({ index: this.index, id: this.news_item.Id });
+                this.DELETE_NEW({ index: this.index, id: this.news_item.id });
             },
             async changeNew(result) {
                 let res = await this.UPDATE_NEW({ data: result, index: this.index });

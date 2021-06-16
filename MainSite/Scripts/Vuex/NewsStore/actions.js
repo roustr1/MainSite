@@ -13,8 +13,8 @@ export default {
                     }
                 }
             );
-            store.commit('SET_PAGE', result.data.PagerModel);
-            store.commit('SET_NEWS', result.data.News);
+            store.commit('SET_PAGE', result.data.pagerModel);
+            store.commit('SET_NEWS', result.data.news);
         }
         catch (ex) {
 
@@ -42,8 +42,8 @@ export default {
         }
         store.rootState.preLoader.isActive = false;
     },
-    async CREATE_NEW(store, data) {
-        store.rootState.preLoader.isActive = true;
+    async CREATE_NEW({rootState, commit}, data) {
+        rootState.preLoader.isActive = true;
         try {
             let result = await axios(
                 {
@@ -56,13 +56,12 @@ export default {
                 }
             );
 
-            if (JSON.parse(result.data) != null) {
-                var res = JSON.parse(result.data);
-                store.commit('ADD_NEW', res);
+            if (result.data) {
+                commit('ADD_NEW', result.data);
             }
         }
         catch (ex) { }
-        store.rootState.preLoader.isActive = false;
+        rootState.preLoader.isActive = false;
     },
     async UPDATE_NEW({ commit }, result) {
         try {
@@ -77,8 +76,8 @@ export default {
                 }
             );
 
-            if (JSON.parse(resultApiEditModel.data) != null) {
-                commit('UPDATE_NEW', JSON.parse(resultApiEditModel.data), result.index);
+            if (resultApiEditModel.data != null) {
+                commit('UPDATE_NEW', resultApiEditModel.data, result.index);
                 return true;
             }
         }
@@ -96,7 +95,7 @@ export default {
                     params: { id: data.id}
                 }
             );
-            commit('REMOVE_NEW_FOR_LIST', data.index);
+            if(result.data) commit('REMOVE_NEW_FOR_LIST', data.index);
         }
         catch (ex) { }
     },
@@ -107,16 +106,16 @@ export default {
                     {
                         method: 'get',
                         url: '/GetFile/',
-                        params: { fileId: item.Id },
+                        params: { fileId: item.id },
                         responseType: 'blob'
                     }
             );
 
-            let fileURL = window.URL.createObjectURL(new File([result.data], item.Name, { type: result.data.type }));
+            let fileURL = window.URL.createObjectURL(new File([result.data], item.name, { type: result.data.type }));
             let fileLink = document.createElement('a');
 
             fileLink.href = fileURL;
-            fileLink.setAttribute('download', item.Name);
+            fileLink.setAttribute('download', item.name);
 
             document.body.appendChild(fileLink);
 

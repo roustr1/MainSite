@@ -27,20 +27,20 @@ namespace MainSite.Controllers
 
         [Route("newsItems")]
         [HttpPost]
-        public string MenuTreeGenerate(string category, int page = 0)
+        public JsonResult MenuTreeGenerate(string category, int page = 0)
         {
             var model = _mainMode.GetNewsListViewModel(page, _pagesize, category);
 
-            return JsonConvert.SerializeObject(model);
+            return new JsonResult(model);
         }
 
         [Route("search")]
         [HttpPost]
-        public string SearchNews(string search)
+        public JsonResult SearchNews(string search)
         {
             var result = _mainMode.GetManySearchResultNewsItemViewModel(search);
 
-            return JsonConvert.SerializeObject(result);
+            return new JsonResult(result);
 
         }
     }

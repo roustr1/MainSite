@@ -169,6 +169,7 @@
             },
             addImage() {
                 this.addFileForBody(this.$refs.file.files[0]);
+                //Тестовый момент по удалению из request
                 this.closePopupInfo();
             },
             showPopupInfo(isImage) {
@@ -184,12 +185,11 @@
                     let reader = new FileReader(file);
                     reader.readAsDataURL(file);
                     if (file.type.match("image.*") && vm.isImage) {
-                        
                         let elementImg = document.createElement('img');
-
                         reader.onload = function (e) {
+                            e.preventDefault();
                             let unicId = 'image_' + Date.now().toString();
-                            vm.fileList.push({ Id: unicId, FormFile: file });
+                            //vm.fileList.push({ Id: unicId, FormFile: file });
 
                             elementImg.setAttribute('src', e.target.result);
                             //elementImg.style.width = '200px';
@@ -202,6 +202,7 @@
                     }
                     else if (!vm.isImage) {
                         reader.onload = function (e) {
+                            e.preventDefault();
                             let unicId = 'file_' + Date.now().toString();
                             vm.fileList.push({ Id: unicId, FormFile: file });
 

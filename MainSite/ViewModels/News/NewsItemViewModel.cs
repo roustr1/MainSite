@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using Application.Dal;
 using Microsoft.AspNetCore.Http;
 
@@ -48,6 +49,7 @@ namespace MainSite.ViewModels.News
 
         public ICollection<FileViewModel> Files { get; set; }
 
+        [JsonIgnore]
         public ICollection<IFormFile> UploadedFiles { get; set; }
 
         public bool IsAdvancedEditor { get; set; }

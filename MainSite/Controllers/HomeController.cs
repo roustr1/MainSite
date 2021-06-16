@@ -45,8 +45,8 @@ namespace MainSite.Controllers
                 _mainMode.CreateNewNewsItem(model);
             }
 
-            return Json(JsonConvert.SerializeObject(_mainMode.GetNewsItemViewModel(model.Id)));
-            // return RedirectToAction(nameof(Index));
+            var entity = _mainMode.GetNewsItemViewModel(model.Id);
+            return new JsonResult(entity);
         }
 
         [HttpPost]
@@ -57,10 +57,11 @@ namespace MainSite.Controllers
                 model.UploadedFiles = Request.Form.Files.ToList();
                 model.Author = User.Identity.Name;
                 _mainMode.EditNewNewsItem(model);
-                return Json(JsonConvert.SerializeObject(_mainMode.GetNewsItemViewModel(model.Id)));
+
+                return new JsonResult(_mainMode.GetNewsItemViewModel(model.Id));
             }
 
-            return Json(null);
+            return new JsonResult(null);
         }
 
         [HttpGet]
@@ -118,9 +119,10 @@ namespace MainSite.Controllers
         {
             if (string.IsNullOrEmpty(id)) return Error();
             var item = _mainMode.GetNewsItemViewModel(id);
-            if (item == null) return Error();
+            if (item == null) new JsonResult(null);
+
             _mainMode.DeleteNewsItem(id);
-            return RedirectToAction("Index");
+            return new JsonResult("Успешно");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
