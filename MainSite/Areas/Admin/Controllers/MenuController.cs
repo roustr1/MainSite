@@ -37,7 +37,7 @@ namespace MainSite.Areas.Admin.Controllers
         public IActionResult Index()
         {
 #if RELEASE
-     var user = _userService.GetUserBySystemName(User.Identity.Name);
+     var user = _userService.GetUserBySystemName(User);
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageMenu, user))
                 return AccessDeniedView();
 #endif
@@ -56,7 +56,7 @@ namespace MainSite.Areas.Admin.Controllers
         public IActionResult Create(string id)
         {
 #if RELEASE
-     var user = _userService.GetUserBySystemName(User.Identity.Name);
+     var user = _userService.GetUserBySystemName(User);
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageMenu, user))
                 return AccessDeniedView();
 #endif      
@@ -77,7 +77,7 @@ namespace MainSite.Areas.Admin.Controllers
         public IActionResult Create([FromForm] MenuItem model)
         {
 #if RELEASE
-     var user = _userService.GetUserBySystemName(User.Identity.Name);
+     var user = _userService.GetUserBySystemName(User);
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageMenu, user))
                 return AccessDeniedView();
 #endif
@@ -122,7 +122,7 @@ namespace MainSite.Areas.Admin.Controllers
         public ActionResult Delete(string id)
         {
             #if RELEASE
-                 var user = _userService.GetUserBySystemName(User.Identity.Name);
+                 var user = _userService.GetUserBySystemName(User);
                         if (!_permissionService.Authorize(StandardPermissionProvider.ManageMenu, user))
                             return AccessDeniedView();
             #endif
@@ -140,7 +140,7 @@ namespace MainSite.Areas.Admin.Controllers
         public IActionResult ItemUp(string id)
         {
 #if RELEASE
-     var user = _userService.GetUserBySystemName(User.Identity.Name);
+     var user = _userService.GetUserBySystemName(User);
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageMenu, user))
                 return AccessDeniedView();
 #endif
@@ -154,7 +154,7 @@ namespace MainSite.Areas.Admin.Controllers
         public IActionResult ItemDown(string id)
         {
 #if RELEASE
-     var user = _userService.GetUserBySystemName(User.Identity.Name);
+     var user = _userService.GetUserBySystemName(User);
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageMenu, user))
                 return AccessDeniedView();
 #endif

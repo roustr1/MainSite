@@ -22,5 +22,11 @@
         /// </summary>
         public static string DefaultImageFileName => "default-image.png";
 
+        /// <summary>
+        /// Gets a path to the files
+        /// </summary>
+        public static string DefaultPathToFileCatalog => @"files\";
+
+        public static string PathToNewsMedia => "files/news";
     }
 }

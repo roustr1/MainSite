@@ -39,7 +39,7 @@ namespace MainSite.Areas.Admin.Controllers
         public virtual IActionResult List()
         {
 #if RELEASE
-              var user = _userService.GetUserBySystemName(User.Identity.Name);
+              var user = _userService.GetUserBySystemName(User);
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageUsers, user))
                 return AccessDeniedView(); 
 #endif
@@ -57,7 +57,7 @@ namespace MainSite.Areas.Admin.Controllers
         public virtual IActionResult Create()
         {
 #if RELEASE
-             var user = _userService.GetUserBySystemName(User.Identity.Name);
+             var user = _userService.GetUserBySystemName(User);
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageUsers, user)
                 || !_permissionService.Authorize(StandardPermissionProvider.ManageAcl, user))
                 return AccessDeniedView();   
@@ -72,7 +72,7 @@ namespace MainSite.Areas.Admin.Controllers
         public virtual IActionResult Create(UserRoleModel model, bool continueEditing)
         {
 #if RELEASE
-             var user = _userService.GetUserBySystemName(User.Identity.Name);
+             var user = _userService.GetUserBySystemName(User);
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageUsers, user) 
                 || !_permissionService.Authorize(StandardPermissionProvider.ManageAcl, user))
                 return AccessDeniedView(); 
@@ -107,7 +107,7 @@ namespace MainSite.Areas.Admin.Controllers
         public virtual IActionResult Edit(string id)
         {
 #if RELEASE
-            var user = _userService.GetUserBySystemName(User.Identity.Name);
+            var user = _userService.GetUserBySystemName(User);
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageUsers, user)
                 || !_permissionService.Authorize(StandardPermissionProvider.ManageAcl, user))
                 return AccessDeniedView();
@@ -127,7 +127,7 @@ namespace MainSite.Areas.Admin.Controllers
         public virtual IActionResult Edit(UserRoleModel model, bool continueEditing)
         {
 #if RELEASE
-var user = _userService.GetUserBySystemName(User.Identity.Name);
+var user = _userService.GetUserBySystemName(User);
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageUsers, user)
                 || !_permissionService.Authorize(StandardPermissionProvider.ManageAcl, user))
                 return AccessDeniedView();
@@ -184,7 +184,7 @@ var user = _userService.GetUserBySystemName(User.Identity.Name);
         public virtual IActionResult Delete(string id)
         {
 #if RELEASE
-              var user = _userService.GetUserBySystemName(User.Identity.Name);
+              var user = _userService.GetUserBySystemName(User);
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageUsers, user)
                 || !_permissionService.Authorize(StandardPermissionProvider.ManageAcl, user))
                 return AccessDeniedView();  

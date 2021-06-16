@@ -5,6 +5,8 @@ namespace Application.Services.Infrastructure
 {
     public class FilterNewsItemParameters
     {
+        public int Skip { get; set; } = 0;
+        public int Take { get; set; } = 5;
         public string AuthorId { get; set; } = null;
         public DateTime? StartDate { get; set; } = null;
         public DateTime? EndDate { get; set; } = null;

@@ -25,7 +25,7 @@ namespace MainSite.Areas.Admin.Controllers
         public ActionResult Index()
         {
 #if RELEASE
-   if (!_permissionService.Authorize(StandardPermissionProvider.ManageSettings, User.Identity.Name))
+   if (!_permissionService.Authorize(StandardPermissionProvider.ManageSettings, User))
                 return AccessDeniedView(); 
 #endif
 
@@ -38,7 +38,7 @@ namespace MainSite.Areas.Admin.Controllers
         public ActionResult Create()
         {
 #if RELEASE
-   if (!_permissionService.Authorize(StandardPermissionProvider.ManageSettings, User.Identity.Name))
+   if (!_permissionService.Authorize(StandardPermissionProvider.ManageSettings, User))
                 return AccessDeniedView(); 
 #endif
 
@@ -51,7 +51,7 @@ namespace MainSite.Areas.Admin.Controllers
         public IActionResult Create([FromForm] Setting setting)
         {
 #if RELEASE
-   if (!_permissionService.Authorize(StandardPermissionProvider.ManageSettings, User.Identity.Name))
+   if (!_permissionService.Authorize(StandardPermissionProvider.ManageSettings, User))
                 return AccessDeniedView(); 
 #endif
             if (ModelState.IsValid)
@@ -67,7 +67,7 @@ namespace MainSite.Areas.Admin.Controllers
         public IActionResult Update(string id)
         {
 #if RELEASE
-   if (!_permissionService.Authorize(StandardPermissionProvider.ManageSettings, User.Identity.Name))
+   if (!_permissionService.Authorize(StandardPermissionProvider.ManageSettings, User))
                 return AccessDeniedView(); 
 #endif
             return View(_settingsService.GetSettingById(id));
@@ -77,7 +77,7 @@ namespace MainSite.Areas.Admin.Controllers
         public IActionResult Update(Setting setting)
         {
 #if RELEASE
-   if (!_permissionService.Authorize(StandardPermissionProvider.ManageSettings, User.Identity.Name))
+   if (!_permissionService.Authorize(StandardPermissionProvider.ManageSettings, User))
                 return AccessDeniedView(); 
 #endif
             var entity = _settingsService.GetSettingById(setting.Id);
@@ -106,7 +106,7 @@ namespace MainSite.Areas.Admin.Controllers
         public ActionResult Delete(string id)
         {
 #if RELEASE
-   if (!_permissionService.Authorize(StandardPermissionProvider.ManageSettings, User.Identity.Name))
+   if (!_permissionService.Authorize(StandardPermissionProvider.ManageSettings, User))
                 return AccessDeniedView(); 
 #endif
             _settingsService.DeleteSetting(id);

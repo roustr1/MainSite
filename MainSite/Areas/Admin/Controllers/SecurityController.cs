@@ -36,7 +36,7 @@ namespace MainSite.Areas.Admin.Controllers
         [Route("/Security/AccessDenied")]
         public virtual IActionResult AccessDenied(string pageUrl)
         {
-            var user = _userService.GetUserBySystemName(User.Identity.Name);
+            var user = _userService.GetUserBySystemName(User);
             if (user == null || !_userService.IsRegistered(user))
             {
                 _logger.LogInformation($"Access denied to anonymous request on {pageUrl}");
@@ -53,7 +53,7 @@ namespace MainSite.Areas.Admin.Controllers
         public virtual IActionResult Permissions()
         {
 #if RELEASE
-             var user = _userService.GetUserBySystemName(User.Identity.Name);
+             var user = _userService.GetUserBySystemName(User);
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageAcl, user))
                 return AccessDeniedView();   
 #endif
@@ -69,7 +69,7 @@ namespace MainSite.Areas.Admin.Controllers
         public virtual IActionResult PermissionsSave(PermissionMappingModel model, IFormCollection form)
         {
 #if RELEASE
-                 var user = _userService.GetUserBySystemName(User.Identity.Name);
+                 var user = _userService.GetUserBySystemName(User);
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageAcl, user))
                 return AccessDeniedView(); 
 #endif

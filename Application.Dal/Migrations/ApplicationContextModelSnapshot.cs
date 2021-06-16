@@ -48,23 +48,26 @@ namespace Application.Dal.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<byte[]>("FileBinary")
+                    b.Property<string>("ContentType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("DownloadBinary")
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<string>("LastPart")
+                    b.Property<string>("DownloadUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Md5Hash")
+                    b.Property<string>("Extension")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("MimeType")
+                    b.Property<string>("Filename")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NewsItemId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("OriginalName")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("UseDownloadUrl")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -340,37 +343,37 @@ namespace Application.Dal.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "00f43a66-3192-4567-88cd-cb4795f88c6a",
+                            Id = "944341b0-7ab5-41f9-a33f-fb329c676ab2",
                             Name = "StoreFilesInDb",
                             Value = "false"
                         },
                         new
                         {
-                            Id = "e8d7054d-0c1b-4180-9a61-eba0ca6d25af",
+                            Id = "9093226f-7ec5-4710-bfef-fe582c14e365",
                             Name = "Application.Icon",
                             Value = "/images/layout_icons/header.png"
                         },
                         new
                         {
-                            Id = "84333849-ef44-44fb-bc25-e761eb53d0d1",
+                            Id = "c0618b8b-478b-4521-b2a3-e466e0e89c8d",
                             Name = "Application.Name",
                             Value = ""
                         },
                         new
                         {
-                            Id = "55c44d32-ebaa-44aa-bb9c-4af9db4f47a6",
+                            Id = "2ce8ec97-5549-404f-9aa0-d9e3e3592693",
                             Name = "Application.Copy",
                             Value = ""
                         },
                         new
                         {
-                            Id = "b43c4a92-142f-42ac-9a7f-a4c6427cfb8b",
+                            Id = "dc66e975-2c7b-42ae-b845-402f1974038a",
                             Name = "BirthdayPath",
                             Value = "http://localhost:50510/api/People/Birthdate?skip=0&take=10"
                         },
                         new
                         {
-                            Id = "29ba13cc-8944-450e-930e-15f81db4ea4c",
+                            Id = "39bd19a8-99d3-45f2-8b6c-98de40e6e92e",
                             Name = "Page.PageSize",
                             Value = "3"
                         });
@@ -397,6 +400,9 @@ namespace Application.Dal.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SubdivisionName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SystemName")

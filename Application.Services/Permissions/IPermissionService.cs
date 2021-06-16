@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Security.Claims;
 using Application.Dal.Domain.Permissions;
 using Application.Dal.Domain.Users;
 
@@ -70,7 +71,7 @@ namespace Application.Services.Permissions
         /// <param name="permission">Permission record</param>
         /// <param name="user">User</param>
         /// <returns>true - authorized; otherwise, false</returns>
-        bool Authorize(PermissionRecord permission, string userName);
+        bool Authorize(PermissionRecord permission, ClaimsPrincipal principal);
 
         /// <summary>
         /// Authorize permission

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using Application.Dal;
 using Application.Dal.Domain.Users;
 
@@ -151,8 +152,13 @@ namespace Application.Services.Users
         /// <param name="customerIds">User identifiers</param>
         /// <returns>Users</returns>
         IList<User> GetUsersByIds(string[] customerIds);
- 
 
+        /// <summary>
+        /// Get all customers from one subdivision
+        /// </summary>
+        /// <param name="subidivision"></param>
+        /// <returns></returns>
+        IList<User> GetUsersBySubDivision(string subidivision);
  
 
         /// <summary>
@@ -160,7 +166,7 @@ namespace Application.Services.Users
         /// </summary>
         /// <param name="systemName">System name</param>
         /// <returns>User</returns>
-        User GetUserBySystemName(string systemName);
+        User GetUserBySystemName(ClaimsPrincipal principal);
 
         ///// <summary>
         ///// Get customer by username
