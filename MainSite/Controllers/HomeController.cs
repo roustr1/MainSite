@@ -46,7 +46,7 @@ namespace MainSite.Controllers
                 model.UploadedFiles = Request.Form.Files.ToList();
                 if (model.IsAdvancedEditor)
                 {
-                    _mainMode.InsertAdvancedNewsItem(model, User);
+                    _mainMode.InsertAdvancedNewsItem(model);
                 }
 
                 //model.Author = User.Identity.Name;
@@ -63,7 +63,11 @@ namespace MainSite.Controllers
             if (ModelState.IsValid)
             {
                 model.UploadedFiles = Request.Form.Files.ToList();
-                model.Author = User.Identity.Name;
+                if (model.IsAdvancedEditor)
+                {
+                    _mainMode.InsertAdvancedNewsItem(model);
+                }
+           
                 _mainMode.EditNewNewsItem(model, User);
                 return Json(JsonConvert.SerializeObject(_mainMode.GetNewsItemViewModel(model.Id)));
             }
