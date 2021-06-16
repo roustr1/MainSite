@@ -62,7 +62,11 @@ namespace MainSite.Controllers
             if (ModelState.IsValid)
             {
                 model.UploadedFiles = Request.Form.Files.ToList();
-                model.Author = User.Identity.Name;
+                if (model.IsAdvancedEditor)
+                {
+                    _mainMode.InsertAdvancedNewsItem(model, User);
+                }
+
                 _mainMode.EditNewNewsItem(model, User);
                
                 return new JsonResult(_mainMode.GetNewsItemViewModel(model.Id));

@@ -7,7 +7,7 @@
                 :index="index"
                 :isNews="IsNews"
                 :news_item="item" />
-            <msPage v-if="pager.ViewPageList && pager.ViewPageList.length" />
+            <msPage v-if="pager.viewPageList && pager.viewPageList.length" />
         </div>
     </div>
 </template>
