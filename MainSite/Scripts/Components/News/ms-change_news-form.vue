@@ -1,19 +1,19 @@
 ﻿<template>
-    <form ref="formCreateNews" @submit="submit" action="/Home/Create/" enctype="multipart/form-data" method="post">
-        <input name="Id" type="hidden" v-model="model.Id" />
+    <form ref="formCreateNews" v-on:submit.prevent="submit" action="/Home/Create/" enctype="multipart/form-data" method="post">
+        <input name="Id" type="hidden" v-model="model.id" />
         <input name="CategoryId" type="hidden" :value="categoryId" />
         <input name="IsAdvancedEditor" type="hidden" :value="isAdvancedEditor" />
 
         <div v-if="editFiles.length"
              v-for="(item, index) in editFiles"
-             :key="item.Id">
-            <input :name="GetEditFileNameInput(index, 'Id')" type="hidden" :value="item.Id" />
-            <input :name="GetEditFileNameInput(index, 'MimeType')" type="hidden" :value="item.MimeType" />
-            <input :name="GetEditFileNameInput(index, 'Name')" type="hidden" :value="item.Name" />
+             :key="item.id">
+            <input :name="GetEditFileNameInput(index, 'Id')" type="hidden" :value="item.id" />
+            <input :name="GetEditFileNameInput(index, 'MimeType')" type="hidden" :value="item.mimeType" />
+            <input :name="GetEditFileNameInput(index, 'Name')" type="hidden" :value="item.name" />
         </div>
         <div class="s12 m12">
             <div class="bold">Введите заголовок объявления:</div>
-            <input v-model="model.Header" name="Header" id="TextHeader" class="inputTextMainSite" type="text" />
+            <input v-model="model.header" name="Header" id="TextHeader" class="inputTextMainSite" type="text" />
         </div>
         <template v-if="isAdvancedEditor">
             <ms-wysiwyg v-model="textEditor"
@@ -26,7 +26,7 @@
         <template v-else>
             <p class="s12 m12">
                 <div class="bold">Введите текстовое объявление:</div>
-                <textarea v-model="model.Description" name="Description" id="TextDescription" class="inputTextMainSite" height="300"></textarea>
+                <textarea v-model="model.description" name="Description" id="TextDescription" class="inputTextMainSite" height="300"></textarea>
             </p>
             <div class="file-field input-field creator-main-panel s12 m12">
                 <div class="btn btn-defaultMainSite">
@@ -78,7 +78,7 @@
         },
         computed: {
             getDescription() {
-                if (this.editModel != null) return this.editModel.Description;
+                if (this.editModel != null) return this.editModel.description;
 
                 return "";
             }

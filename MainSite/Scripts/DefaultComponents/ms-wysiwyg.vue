@@ -101,7 +101,7 @@
             },
             GUUID() {
                 return "wysiwyg_" + new Date();
-            }
+            },
         },
         methods: {   
             changeTextEditor() {
@@ -182,26 +182,40 @@
                 if (file) {
                     let vm = this;
                     let reader = new FileReader(file);
+                    
                     reader.readAsDataURL(file);
                     if (file.type.match("image.*") && vm.isImage) {
-                        
-                        let elementImg = document.createElement('img');
+                        reader.onload = async function (e) {   
+                            e.preventDefault();                     
+                            let img = await new Promise((resolve, reject) => {
+                                let elementImg = document.createElement('img')
+                                let unicId = 'image_' + Date.now().toString();
 
-                        reader.onload = function (e) {
-                            let unicId = 'image_' + Date.now().toString();
-                            vm.fileList.push({ Id: unicId, FormFile: file });
+                                elementImg.onload = () => resolve(elementImg)
+                                elementImg.setAttribute('id', unicId);
+                                elementImg.src = e.target.result;
+                                //vm.fileList.push({ Id: unicId, FormFile: file });
+                            });
 
-                            elementImg.setAttribute('src', e.target.result);
-                            //elementImg.style.width = '200px';
-                            //elementImg.style.height = '200px';
-                            elementImg.setAttribute('id', unicId);
+                            let imgWidth = img.width;
+                            let imgHeight = img.height;
+                            let ratioWidth = vm.editor.offsetWidth/imgWidth;
+                            let ratioHeight = vm.editor.offsetHeight/imgHeight;
 
-                            vm.formatDoc("insertHTML", elementImg.outerHTML);
-                        }
+                            if (img.width > vm.editor.offsetWidth) {
+                                img.width = img.width * ratioWidth  - 100;
+                            }
 
+                            if (img.height > vm.editor.offsetHeight) {
+                                img.height = img.height * ratioHeight - 100;
+                            }
+                            
+                            vm.formatDoc("insertHTML", img.outerHTML);
+                        }                        
                     }
                     else if (!vm.isImage) {
                         reader.onload = function (e) {
+                            e.preventDefault();
                             let unicId = 'file_' + Date.now().toString();
                             vm.fileList.push({ Id: unicId, FormFile: file });
 

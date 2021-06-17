@@ -6,11 +6,11 @@ export default {
     SET_PAGE(state, page) {
         state.pager = page;
     },
-    ADD_NEW(state, news){
-        state.news.unshift(news);
+    ADD_NEW(state, newsItem){
+        state.news.unshift(newsItem);
     },
-    UPDATE_NEW(state, news, index) {
-        state.news.splice(index, 1, news);
+    UPDATE_NEW(state, newsItem, index) {
+        state.news.splice(index, 1, newsItem);
     },
     DELETE_CURRENT_NEWS(state) {
         state.news = [];

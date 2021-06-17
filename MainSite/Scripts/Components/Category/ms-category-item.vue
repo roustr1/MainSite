@@ -100,9 +100,9 @@
             height: 100%;            
             & > img
             {
-                width: 100%;
-                height: 100%;
-                display: inline-block;
+               width: 100%;
+               height: 100%;
+               display: inline-block;
             }
              &:after {
                content:"";
@@ -111,7 +111,7 @@
                left:0;
                height:100%;
                width:100%;
-                background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent);
+               background: radial-gradient(transparent, rgba(0, 0, 0, 0.85));
             }
         }
    }

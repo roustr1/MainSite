@@ -11,15 +11,15 @@
                 class="individual-page waves-effect"
                 v-for="(item, index) in list"
                 :key="index"
-                v-bind:class="{ active: item.IsActive }"
+                v-bind:class="{ active: item.isActive }"
                 >
                 <a 
                    href="#" 
-                   @click.prevent="changePage(item.Index)"
-                   :title="setTitle(item.Index)"
-                   v-bind:class="{ disabled:item.IsActive }"
+                   @click.prevent="changePage(item.index)"
+                   :title="setTitle(item.index)"
+                   v-bind:class="{ disabled:item.isActive }"
                 >
-                    {{item.Index}}
+                    {{item.index}}
                 </a>
             </li>
             <li v-if="ShowNext" class="next-page btn btn-defaultMainSite">
@@ -48,11 +48,11 @@
         },
         computed: { 
             ...mapState('news', {
-                pagerIndex: state => state.pager.PageIndex,
-                totalPages: state => state.pager.TotalPages,
-                individualPagesDisplayedCount: state => state.pager.IndividualPagesDisplayedCount,
-                currentPage: state => state.pager.CurrentPage,
-                list: state => state.pager.ViewPageList
+                pagerIndex: state => state.pager.pageIndex,
+                totalPages: state => state.pager.totalPages,
+                individualPagesDisplayedCount: state => state.pager.individualPagesDisplayedCount,
+                currentPage: state => state.pager.currentPage,
+                list: state => state.pager.viewPageList
             }),
             ShowFirst() {
                 return ((this.pagerIndex >= 3) && (this.totalPages > this.individualPagesDisplayedCount))

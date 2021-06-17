@@ -54,6 +54,7 @@
             ]),
             changeNew(result) {
                 this.CREATE_NEW(result);
+                this.showCreater(false, true);
             },
             changeEditor() {
                 this.isAdvancedEditor = !this.isAdvancedEditor;

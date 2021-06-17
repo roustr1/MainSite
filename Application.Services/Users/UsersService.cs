@@ -310,7 +310,7 @@ namespace Application.Services.Users
 
         public virtual string GetUserNameFromAD(string identityName)
         {
-            var userName = identityName.Split('\\')[1];
+            var userName = String.IsNullOrWhiteSpace(identityName) ? "":identityName.Split('\\')[1];
 #if RELEASE
 
             var context = new PrincipalContext(ContextType.Domain,"rocket");

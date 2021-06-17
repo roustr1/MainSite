@@ -6,7 +6,8 @@ export default {
             let result = await axios('/api/ApiPlanCalendar/getPlanCalendar', {
                 method: 'post',
             });
-            commit("SET_PLAN_CALENDAR", result.data);
+            
+            if(result.data) commit("SET_PLAN_CALENDAR", result.data);
         }
         catch (ex) {}
     }
