@@ -30,7 +30,6 @@
                 })
                 .then(responce => {
                     this.users = responce.data;
-                    console.log(this.users);
                 });
             },
             getSubDivision(subDivision) {

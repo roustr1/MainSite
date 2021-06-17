@@ -101,7 +101,7 @@
             },
             GUUID() {
                 return "wysiwyg_" + new Date();
-            }
+            },
         },
         methods: {   
             changeTextEditor() {
@@ -169,7 +169,6 @@
             },
             addImage() {
                 this.addFileForBody(this.$refs.file.files[0]);
-                //Тестовый момент по удалению из request
                 this.closePopupInfo();
             },
             showPopupInfo(isImage) {
@@ -183,22 +182,36 @@
                 if (file) {
                     let vm = this;
                     let reader = new FileReader(file);
+                    
                     reader.readAsDataURL(file);
                     if (file.type.match("image.*") && vm.isImage) {
-                        let elementImg = document.createElement('img');
-                        reader.onload = function (e) {
-                            e.preventDefault();
-                            let unicId = 'image_' + Date.now().toString();
-                            //vm.fileList.push({ Id: unicId, FormFile: file });
+                        reader.onload = async function (e) {   
+                            e.preventDefault();                     
+                            let img = await new Promise((resolve, reject) => {
+                                let elementImg = document.createElement('img')
+                                let unicId = 'image_' + Date.now().toString();
 
-                            elementImg.setAttribute('src', e.target.result);
-                            //elementImg.style.width = '200px';
-                            //elementImg.style.height = '200px';
-                            elementImg.setAttribute('id', unicId);
+                                elementImg.onload = () => resolve(elementImg)
+                                elementImg.setAttribute('id', unicId);
+                                elementImg.src = e.target.result;
+                                //vm.fileList.push({ Id: unicId, FormFile: file });
+                            });
 
-                            vm.formatDoc("insertHTML", elementImg.outerHTML);
-                        }
+                            let imgWidth = img.width;
+                            let imgHeight = img.height;
+                            let ratioWidth = vm.editor.offsetWidth/imgWidth;
+                            let ratioHeight = vm.editor.offsetHeight/imgHeight;
 
+                            if (img.width > vm.editor.offsetWidth) {
+                                img.width = img.width * ratioWidth  - 100;
+                            }
+
+                            if (img.height > vm.editor.offsetHeight) {
+                                img.height = img.height * ratioHeight - 100;
+                            }
+                            
+                            vm.formatDoc("insertHTML", img.outerHTML);
+                        }                        
                     }
                     else if (!vm.isImage) {
                         reader.onload = function (e) {
