@@ -177,13 +177,6 @@ namespace MainSite.Models
         {
             var imgRegex = new Regex("<img [^>]+>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
             var base64Regex = new Regex("data:[^/]+/(?<ext>[a-z]+);base64,(?<base64>.+)", RegexOptions.IgnoreCase);
-            var allowedExtensions = new[] {
-              ".jpg",
-              ".jpeg",
-              ".gif",
-              ".png",
-              ".webp"
-            };
 
             foreach (Match? match in imgRegex.Matches(item.Description))
             {
