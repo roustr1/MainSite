@@ -18,7 +18,7 @@ namespace Application.Dal
 
         public override IEnumerable<NewsItem> GetAll
         {
-            get { return _context.NewsItems.Include(a => a.Files); }
+            get { return _context.NewsItems.Include(a => a.Files).OrderByDescending(c=>c.CreatedDate); }
         }
 
  
