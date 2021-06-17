@@ -17,7 +17,7 @@
             <div class="container">
                 <div class="nav-wrapper">
                     <div class="valign-wrapper">
-                        <a style="cursor: pointer;" asp-area="" asp-controller="Home" asp-action="Index" class="valign-wrapper">
+                        <a style="cursor: pointer;" href="@Url.Action("Index","Home")" class="valign-wrapper">
                             <img src="@service.SettingsDictionary.GetValueOrDefault("Application.Icon","~/images/layout_icons/header.png")" width="50" height="50" />
                             <span class="bold">@service.SettingsDictionary.GetValueOrDefault("Application.Name", "WebSite")</span>
                         </a>

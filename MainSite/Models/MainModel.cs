@@ -91,7 +91,7 @@ namespace MainSite.Models
 
         public void EditNewNewsItem(NewsItemViewModel model, ClaimsPrincipal author)
         {
- 
+
             var entity = _newsService.GetNewsItem(model.Id);
 
             entity.Header = model.Header;
@@ -105,11 +105,11 @@ namespace MainSite.Models
                 _fileProvider.DeleteFile(file.DownloadUrl);
                 _downloadService.DeleteDownload(file);
             }
- 
+
             _newsService.UpdateNews(entity);
             //uploadFiles 
             UploadFiles(model.UploadedFiles, entity.Id);
-      
+
         }
 
         public void CreateNewNewsItem(NewsItemViewModel newsItemViewModel, ClaimsPrincipal author)
@@ -150,7 +150,7 @@ namespace MainSite.Models
                     Filename = _fileProvider.GetFileNameWithoutExtension(fileName),
                     Extension = fileExtension,
                     NewsItemId = newsItemId,
-                    Name =  file.Name
+                    Name = file.Name
                 };
                 if (!StoreInDb) //if file saving into filesystem
                 {
@@ -189,14 +189,17 @@ namespace MainSite.Models
             {
 
                 var doc = new XmlDocument();
-                doc.LoadXml($"<root>{match.Value.Replace(">", "/>")}</root>");
+
+                var matchValue = match.Value.EndsWith("/>") ? match.Value : match.Value.Replace(">", "/>");
+
+                doc.LoadXml($"<root>{matchValue}</root>");
 
                 var img = doc.FirstChild.FirstChild;
                 var srcNode = img.Attributes["src"];
                 string mime = MimeTypes.ImageJpeg;
                 try
                 {
-                      mime = srcNode.Value.Split(";").First().Substring(5);
+                    mime = srcNode.Value.Split(";").First().Substring(5);
                 }
                 catch { }
 
@@ -221,7 +224,7 @@ namespace MainSite.Models
             var value = key?.GetValue("Extension", null);
             var result = value != null ? value.ToString() : string.Empty;
 
-            if (result == ".jfif"||string.IsNullOrEmpty(result)) result = ".jpg";//костылёчек-костылек
+            if (result == ".jfif" || string.IsNullOrEmpty(result)) result = ".jpg";//костылёчек-костылек
 
             return result;
         }
@@ -388,7 +391,7 @@ namespace MainSite.Models
 
         #endregion
 
- 
+
 
 
         public int GetSettingNewsPerPage()
