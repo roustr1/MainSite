@@ -16,20 +16,16 @@ namespace MainSite.Controllers
     public class HomeController : BaseController
     {
         private readonly MainModel _mainMode;
-
-
         private readonly IMenuService _menuService;
         private readonly IPictureService _uploadService;
-        private readonly IFileDownloadService _downloadService;
-        private readonly IAppFileProvider _fileProvider;
+ 
 
-        public HomeController(MainModel mainMode, IMenuService menuService, IPictureService uploadService, IFileDownloadService downloadService, IAppFileProvider fileProvider)
+        public HomeController(MainModel mainMode, IMenuService menuService, IPictureService uploadService)
         {
             _mainMode = mainMode;
             _menuService = menuService;
             _uploadService = uploadService;
-            _downloadService = downloadService;
-            _fileProvider = fileProvider;
+ 
         }
 
 

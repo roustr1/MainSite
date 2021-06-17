@@ -33,17 +33,18 @@ namespace Application.Services.Files
 
         #region Methods
 
-        /// <summary>
-        /// Gets a download
-        /// </summary>
-        /// <param name="downloadId">Download identifier</param>
-        /// <returns>Download</returns>
-        public virtual File GetDownloadById(string downloadId)
+        public virtual File GetDownloadByIdOrName(string val)
         {
-            if (downloadId == null)
-                return null;
+            if (val == null) return null;
+            return _downloadRepository.GetAll.FirstOrDefault(c => c.Id == val || c.Name == val);
+        }
 
-            return _downloadRepository.Get(downloadId);
+
+        public virtual File GetDownloadByStoredName(string storedName)
+        {
+            if (string.IsNullOrEmpty(storedName)) return null;
+
+            return _downloadRepository.Get(c => c.Name == storedName);
         }
 
         /// <summary>
@@ -118,9 +119,9 @@ namespace Application.Services.Files
             return fileBytes;
         }
 
-        public virtual string SaveFileInFileSystem(byte[] binaryData, string fileName,string catalog=null)
+        public virtual string SaveFileInFileSystem(byte[] binaryData, string fileName, string catalog = null)
         {
-            var localPath = GetFileLocalPath(fileName,catalog);
+            var localPath = GetFileLocalPath(fileName, catalog);
             _fileProvider.WriteAllBytes(localPath, binaryData);
             return localPath;
         }
@@ -137,7 +138,7 @@ namespace Application.Services.Files
         public string GetFileLocalPath(string fileName, string catalog = null)
         {
             if (catalog == null) catalog = AppMediaDefaults.DefaultPathToFileCatalog;
-            
+
             var filesDir = _fileProvider.GetAbsolutePath(catalog);
             _fileProvider.CreateDirectory(filesDir);
             return _fileProvider.Combine(filesDir, fileName);

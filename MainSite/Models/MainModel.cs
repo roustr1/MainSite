@@ -13,13 +13,13 @@ using MainSite.ViewModels.Common;
 using MainSite.ViewModels.News;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
 using System.Xml;
+using Microsoft.Win32;
 using File = Application.Dal.Domain.Files.File;
 
 namespace MainSite.Models
@@ -149,7 +149,8 @@ namespace MainSite.Models
                     ContentType = contentType,
                     Filename = _fileProvider.GetFileNameWithoutExtension(fileName),
                     Extension = fileExtension,
-                    NewsItemId = newsItemId
+                    NewsItemId = newsItemId,
+                    Name =  file.Name
                 };
                 if (!StoreInDb) //if file saving into filesystem
                 {
@@ -226,7 +227,7 @@ namespace MainSite.Models
         }
         public FileContentResult GetDownloadFile(string fileId)
         {
-            var download = _downloadService.GetDownloadByGuid(fileId);
+            var download = _downloadService.GetDownloadByIdOrName(fileId);
             var fileName = !string.IsNullOrWhiteSpace(download.Filename) ? download.Filename : download.Id;
             var contentType = !string.IsNullOrWhiteSpace(download.ContentType)
                 ? download.ContentType
@@ -387,14 +388,7 @@ namespace MainSite.Models
 
         #endregion
 
-        #region Menu
-
-        public void CreateCategory(MenuItem model)
-        {
-
-        }
-
-        #endregion
+ 
 
 
         public int GetSettingNewsPerPage()
