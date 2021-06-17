@@ -120,22 +120,22 @@
             },
             listenByAdvancedDesription() {
                 let vm = this;
-                for (var selector of document.querySelectorAll("#" + vm.GetUnicIdBlock + " > .card_news-description a")) {
+                for (var selector of  Array.from(document.querySelectorAll("#" + vm.GetUnicIdBlock + " > .card_news-description a"))) {
                     selector.addEventListener('click', function (e) {
                         e.preventDefault();
 
                         let itemAdvancedEditor = {
-                            Name: e.target.innerHTML,
-                            Id: e.target.getAttribute('href')
+                            name: e.target.innerHTML,
+                            id: e.target.getAttribute('href')
                         }
 
-                        vm.downloadFile(itemAdvancedEditor);
+                        vm.downloadFile(itemAdvancedEditor)
                     });
                 }
             }
         },
         mounted() {            
-            if (this.news_item.IsAdvancedEditor) {
+            if (this.news_item.isAdvancedEditor) {
                 this.listenByAdvancedDesription();
             }
         }

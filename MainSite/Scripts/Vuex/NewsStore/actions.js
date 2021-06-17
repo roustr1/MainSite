@@ -55,9 +55,9 @@ export default {
                     }
                 }
             );
-
             if (result.data) {
                 commit('ADD_NEW', result.data);
+                M.toast({html: 'Пост добавлен!'})
             }
         }
         catch (ex) { }
@@ -78,12 +78,13 @@ export default {
 
             if (resultApiEditModel.data != null) {
                 commit('UPDATE_NEW', resultApiEditModel.data, result.index);
+                M.toast({html: 'Пост обновлен!'})
                 return true;
             }
         }
         catch (ex) {
         }
-
+        M.toast({html: 'Пост не обновлен. Произошла ошибка!'})
         return false;
     },
     async DELETE_NEW({ commit }, data) {
@@ -95,9 +96,13 @@ export default {
                     params: { id: data.id}
                 }
             );
-            if(result.data) commit('REMOVE_NEW_FOR_LIST', data.index);
+            if(result.data) {
+                commit('REMOVE_NEW_FOR_LIST', data.index)
+                M.toast({html: 'Пост удален!'})
+            }
         }
         catch (ex) { }
+
     },
     async DOWNLOADFILE({ commit }, item) {
         try {

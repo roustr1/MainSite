@@ -4,14 +4,16 @@ using Application.Dal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Application.Dal.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20210617061010_change_db1")]
+    partial class change_db1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,9 +63,6 @@ namespace Application.Dal.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Filename")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NewsItemId")
@@ -343,37 +342,37 @@ namespace Application.Dal.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "907eba28-b23d-4218-8612-080b0384f370",
+                            Id = "6e1ef971-b98c-4982-bb9c-b0e87cab55aa",
                             Name = "StoreFilesInDb",
                             Value = "false"
                         },
                         new
                         {
-                            Id = "44350afd-7fb5-421e-9c9e-8156836e09d6",
+                            Id = "376abf77-0069-4b59-a82a-d0ae6bc32d61",
                             Name = "Application.Icon",
                             Value = "/images/layout_icons/header.png"
                         },
                         new
                         {
-                            Id = "1149b2f7-0652-4a22-b90a-6859044b00a3",
+                            Id = "0e50433f-bda1-43ec-b0f9-b0764eb05967",
                             Name = "Application.Name",
                             Value = ""
                         },
                         new
                         {
-                            Id = "eebe98ef-abdd-4e6e-8660-01dd01717640",
+                            Id = "13212374-1abc-4336-8e81-998f701a595d",
                             Name = "Application.Copy",
                             Value = ""
                         },
                         new
                         {
-                            Id = "a2ec93b5-2a4c-479c-90e7-4c2d72d132a3",
+                            Id = "51cbf7a1-479f-4439-af32-11a9c500c8e8",
                             Name = "BirthdayPath",
                             Value = "http://localhost:50510/api/People/Birthdate?skip=0&take=10"
                         },
                         new
                         {
-                            Id = "3b3addcb-5faf-4992-9098-89deeead11ca",
+                            Id = "7ea74f12-5108-4c1e-b462-53318b3a44fe",
                             Name = "Page.PageSize",
                             Value = "3"
                         });

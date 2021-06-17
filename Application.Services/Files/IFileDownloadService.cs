@@ -5,12 +5,13 @@ using Microsoft.AspNetCore.Http;
 namespace Application.Services.Files
 {
     public interface IFileDownloadService
-    { /// <summary>
-      /// Gets a download
-      /// </summary>
-      /// <param name="downloadId">Download identifier</param>
-      /// <returns>Download</returns>
-        File GetDownloadById(string downloadId);
+    {
+        /// <summary>
+        /// Gets a download by GUID or name
+        /// </summary>
+        /// <param name="val">value for search</param>
+        /// <returns>Download</returns>
+        File GetDownloadByIdOrName(string val);
 
         /// <summary>
         /// Gets a download by GUID
@@ -53,5 +54,12 @@ namespace Application.Services.Files
         string SaveFileInFileSystem(  byte[] binaryData, string fileName,string catalog=null);
 
         string GetFileLocalPath(string fileName, string catalog = null);
+
+        /// <summary>
+        /// Get download by storedName
+        /// </summary>
+        /// <param name="storedName">file name</param>
+        /// <returns></returns>
+        File GetDownloadByStoredName(string storedName);
     }
 }

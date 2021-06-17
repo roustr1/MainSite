@@ -16,20 +16,16 @@ namespace MainSite.Controllers
     public class HomeController : BaseController
     {
         private readonly MainModel _mainMode;
-
-
         private readonly IMenuService _menuService;
         private readonly IPictureService _uploadService;
-        private readonly IFileDownloadService _downloadService;
-        private readonly IAppFileProvider _fileProvider;
+ 
 
-        public HomeController(MainModel mainMode, IMenuService menuService, IPictureService uploadService, IFileDownloadService downloadService, IAppFileProvider fileProvider)
+        public HomeController(MainModel mainMode, IMenuService menuService, IPictureService uploadService)
         {
             _mainMode = mainMode;
             _menuService = menuService;
             _uploadService = uploadService;
-            _downloadService = downloadService;
-            _fileProvider = fileProvider;
+ 
         }
 
 
@@ -46,7 +42,7 @@ namespace MainSite.Controllers
                 model.UploadedFiles = Request.Form.Files.ToList();
                 if (model.IsAdvancedEditor)
                 {
-                    _mainMode.InsertAdvancedNewsItem(model, User);
+                    _mainMode.InsertAdvancedNewsItem(model);
                 }
 
                 _mainMode.CreateNewNewsItem(model, User);
@@ -64,9 +60,9 @@ namespace MainSite.Controllers
                 model.UploadedFiles = Request.Form.Files.ToList();
                 if (model.IsAdvancedEditor)
                 {
-                    _mainMode.InsertAdvancedNewsItem(model, User);
+                    _mainMode.InsertAdvancedNewsItem(model);
                 }
-
+           
                 _mainMode.EditNewNewsItem(model, User);
                
                 return new JsonResult(_mainMode.GetNewsItemViewModel(model.Id));

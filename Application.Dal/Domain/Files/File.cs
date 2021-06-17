@@ -39,6 +39,10 @@ namespace Application.Dal.Domain.Files
         /// Refferer to news item 
         /// </summary>
         public string NewsItemId { get; set; }
+        /// <summary>
+        /// Gets or set storing name for file
+        /// </summary>
+        public string Name { get; set; }
 
     }
 
