@@ -58,7 +58,7 @@ namespace Application.Services.News
             var authorId = filterNewsItemParameters.AuthorId;
             var startDate = filterNewsItemParameters.StartDate;
             var endDate = filterNewsItemParameters.EndDate;
-            var isNewest = filterNewsItemParameters.IsNewest;
+            var isNewest = !filterNewsItemParameters.IsNewest;
             var pinnedNews = filterNewsItemParameters.PinnedNewsIds;
             var skip = filterNewsItemParameters.Skip;
             var take = filterNewsItemParameters.Take;
