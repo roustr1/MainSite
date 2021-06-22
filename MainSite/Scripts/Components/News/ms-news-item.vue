@@ -103,7 +103,6 @@
             ...mapActions('news', [
                 'DOWNLOADFILE',
                 'UPDATE_NEW',
-                'DELETE_NEW'
             ]),
             changeSectionEditer() {
                 this.isEditer = !this.isEditer;
@@ -112,7 +111,7 @@
                 this.DOWNLOADFILE(item);
             },
             deleteNews() {
-                this.DELETE_NEW({ index: this.index, id: this.news_item.id });
+                this.$emit('deleteNews',{ index: this.index, id: this.news_item.id });
             },
             async changeNew(result) {
                 let res = await this.UPDATE_NEW({ data: result, index: this.index });

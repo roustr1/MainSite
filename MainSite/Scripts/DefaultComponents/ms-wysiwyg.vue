@@ -8,9 +8,9 @@
             :popupTitle="popuTitle"
             :isMouseDown="true"
         >
-            <template v-slot:default>
-                <input ref="file" type="file" id="inputFileToLoad" />
-            </template>      
+        <template v-slot:default>
+            <input ref="file" type="file" id="inputFileToLoad" />
+        </template>      
         </ms-popup>
         <div class='banner'>
             <div id="toolBar1">
@@ -20,12 +20,6 @@
                     @select="changeSelectFormatBlock" 
                     :isCursorEdit="true"
                 />
-                <!--<ms-select 
-                    :selected="sizeSelected"
-                    :options="sizeList"
-                    @select="changeSelectSize" 
-                    :isCursorEdit="true"
-                />-->
             </div>
             <div id="toolBar2">
                 <i class="material-icons intLink" title="Очистить" @click="clear" onmousedown="return false" onselectstart="return false">cleaning_services</i>
@@ -79,10 +73,6 @@
                  { name: "Название раздела", value: "h2" }, { name: "Название подраздела", value: "h3" }
                 ],
                 formatBlockSelected: { name: "Обычный текст", value: "span" },
-                /*sizeList: [{ name: "-Размер шрифта-", value: "3" }, { name: "10px", value: "1" }, { name: "12px", value: "2" }, { name: "14px", value: "3" },
-                    { name: "16px", value: "4" }, { name: "18px", value: "5" }, { name: "21px", value: "6" }, { name: "26px", value: "7" },
-                ],
-                sizeSelected: "-Размер шрифта-",*/
                 currentImage: {}
             }
         },
@@ -172,10 +162,6 @@
                 div.innerHTML = "<" + selectDropDownElement.value + ">" + text + "</" + selectDropDownElement.value + ">";
                 this.formatDoc("insertHTML", div.innerHTML);
             },
-            /*changeSelectSize(selectElement) {
-                this.sizeSelected = selectElement.name;
-                this.formatDoc("fontsize", selectElement.value);
-            },*/
             addImage() {
                 this.addFileForBody(this.$refs.file.files[0]);
                 this.closePopupInfo();
@@ -256,7 +242,6 @@
         beforeDestroy() {
             this.editor = {};
             this.formatBlockSelected =  "Обычный текст";
-            //this.sizeSelected = "-Размер шрифта-";
             this.changeTextEditor();
             this.$emit('changeFileList', []);
         },
