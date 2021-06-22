@@ -15,17 +15,17 @@
         <div class='banner'>
             <div id="toolBar1">
                 <ms-select 
-                    :selected="formatBlockSelected"
+                    :selected="formatBlockSelected.name"
                     :options="formatBlockList"
                     @select="changeSelectFormatBlock" 
                     :isCursorEdit="true"
                 />
-                <ms-select 
+                <!--<ms-select 
                     :selected="sizeSelected"
                     :options="sizeList"
                     @select="changeSelectSize" 
                     :isCursorEdit="true"
-                />
+                />-->
             </div>
             <div id="toolBar2">
                 <i class="material-icons intLink" title="Очистить" @click="clear" onmousedown="return false" onselectstart="return false">cleaning_services</i>
@@ -75,14 +75,14 @@
                 isInfoPopupVisible: false,
                 actionLoad: '',
                 isImage: false,
-                formatBlockList: [{ name: "-Формат-", value: "p" }, { name: "H1", value: "h1" }, { name: "H2", value: "h2" }, { name: "H3", value: "h3" },
-                    { name: "H4", value: "h4" }, { name: "H5", value: "h5" }, { name: "SubTitle", value: "h6" }, { name: "Paragraph", value: "p" }
+                formatBlockList: [{ name: "Обычный текст", value: "span" }, { name: "Название темы", value: "h1" },
+                 { name: "Название раздела", value: "h2" }, { name: "Название подраздела", value: "h3" }
                 ],
-                formatBlockSelected: "-Формат-",
-                sizeList: [{ name: "-Размер шрифта-", value: "3" }, { name: "10px", value: "1" }, { name: "12px", value: "2" }, { name: "14px", value: "3" },
+                formatBlockSelected: { name: "Обычный текст", value: "span" },
+                /*sizeList: [{ name: "-Размер шрифта-", value: "3" }, { name: "10px", value: "1" }, { name: "12px", value: "2" }, { name: "14px", value: "3" },
                     { name: "16px", value: "4" }, { name: "18px", value: "5" }, { name: "21px", value: "6" }, { name: "26px", value: "7" },
                 ],
-                sizeSelected: "-Размер шрифта-",
+                sizeSelected: "-Размер шрифта-",*/
                 currentImage: {}
             }
         },
@@ -156,17 +156,26 @@
                 document.execCommand(sCmd, false, sValue);
                 this.editor.focus();
             },
-            changeSelectFormatBlock(selectElement) {
-                this.formatBlockSelected = selectElement.name;
-                if (document.getSelection().anchorNode.nodeValue) {
-                    let html = `<${selectElement.value}>${document.getSelection().anchorNode.nodeValue}</${selectElement.value}>`
-                    this.formatDoc("insertHTML", html);
+            changeSelectFormatBlock(selectDropDownElement) {                       
+                this.formatBlockSelected = selectDropDownElement;
+                var div = document.createElement('div');
+                let text = window.getSelection().toString()
+                if( selectDropDownElement.value === 'span') {
+                    let checkContainsHeader = 
+                        document.getSelection().anchorNode.parentElement.getAttribute('name') != 'wysiwyg' &&
+                        document.getSelection().anchorNode.parentElement.tagName != 'SPAN'
+                    if(checkContainsHeader) {
+                        window.getSelection().anchorNode.parentElement.remove()
+                    }
                 }
+                
+                div.innerHTML = "<" + selectDropDownElement.value + ">" + text + "</" + selectDropDownElement.value + ">";
+                this.formatDoc("insertHTML", div.innerHTML);
             },
-            changeSelectSize(selectElement) {
+            /*changeSelectSize(selectElement) {
                 this.sizeSelected = selectElement.name;
                 this.formatDoc("fontsize", selectElement.value);
-            },
+            },*/
             addImage() {
                 this.addFileForBody(this.$refs.file.files[0]);
                 this.closePopupInfo();
@@ -246,8 +255,8 @@
         },
         beforeDestroy() {
             this.editor = {};
-            this.formatBlockSelected =  "-Формат-";
-            this.sizeSelected = "-Размер шрифта-";
+            this.formatBlockSelected =  "Обычный текст";
+            //this.sizeSelected = "-Размер шрифта-";
             this.changeTextEditor();
             this.$emit('changeFileList', []);
         },
@@ -258,6 +267,43 @@
 </script>
 
 <style lang="scss">
+
+    .imitationH1 {
+        font-size: 4.2rem;
+        line-height: 110%;
+        margin: 2.8rem 0 1.68rem 0;
+        font-weight: 400;
+        display: block;
+        margin-block-start: 0.67em;
+        margin-block-end: 0.67em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+    }
+
+    .imitationH2 {
+        font-size: 3.56rem;
+        line-height: 110%;
+        margin: 2.37333rem 0 1.424rem 0;
+        font-weight: 400;
+        display: block;
+        margin-block-start: 0.83em;
+        margin-block-end: 0.83em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+    }
+
+    .imitationH3 {
+        font-size: 2.92rem;
+        line-height: 110%;
+        margin: 1.94667rem 0 1.168rem 0;
+        font-weight: 400;
+        display: block;
+        margin-block-start: 1em;
+        margin-block-end: 1em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+    }
+
     .resize {
         position: relative;
         resize: both;

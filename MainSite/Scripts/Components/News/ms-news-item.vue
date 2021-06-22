@@ -90,10 +90,13 @@
                 let options = {
                     day: 'numeric',
                     month: 'long',
-                    year: 'numeric'
+                    year: 'numeric',
                 }
 
-                return new Date(this.news_item.createdDate).toLocaleDateString("ru", options);
+                let date = new Date(this.news_item.createdDate);
+                let formatDate = date.toLocaleDateString("ru", options).replace('г.','');
+                let formatTime = `${date.getHours()}:${date.getMinutes()}`;
+                return `${formatDate} в ${formatTime}`;
             },
         },
         methods: {
