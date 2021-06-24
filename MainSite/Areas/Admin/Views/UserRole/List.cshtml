@@ -5,12 +5,35 @@
     ViewBag.Title = "Роли пользователей";
     Layout = "_Layout";
 }
-<a href="@Url.Action("Create")" class="waves-effect waves-light btn"><i class="material-icons">add</i>Add new role</a>
+<a href="@Url.Action("Create")" class="waves-effect waves-light btn"><i class="material-icons">add</i>Добавить роль</a>
 <hr />
-<div class="row">
+
+
+<div class="collection z-depth-1">
     @foreach (var role in Model)
     {
-        @await Component.InvokeAsync("UserRoleCard", role)
+        @*@await Component.InvokeAsync("UserRoleCard", role)*@
+
+        <a class="collection-item" href="">
+            <div class="row">
+                <div class="col m6">
+                    <h5> @role.Name</h5>
+                    <h6>@(role.Active ? "Активна" : "Приостановлена")</h6>
+                </div>
+                <div class="col m4">
+                    @await Component.InvokeAsync("RoleDetails", new { model = role.PermissionNames })
+                </div>
+                <div class="col m2">
+                    <p>
+                        <label>
+                            <input type="checkbox" />
+                            <span>Выбрать</span>
+                        </label>
+                    </p>
+                </div>
+            </div>
+        </a>
+
     }
 </div>
 
