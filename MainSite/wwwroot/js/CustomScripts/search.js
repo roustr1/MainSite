@@ -1,5 +1,5 @@
 
-function UserSearch() {
+function inputFilter() {
     // Declare variables
     function search(name, filter) {
         return name.toUpperCase().trim().startsWith(filter);
@@ -9,7 +9,7 @@ function UserSearch() {
     input = document.getElementById('search');
     filter = input.value.toUpperCase();
 
-    var tbody = document.getElementById("usersList");
+    var tbody = document.getElementById("record_list");
     tr = tbody.getElementsByTagName("tr");
 
     // Loop through all list items, and hide those who don't match the search query
@@ -22,11 +22,7 @@ function UserSearch() {
             tr[i].style.display = "none";
         }
     }
-    
- 
-
-   
- 
 }
+
 
  

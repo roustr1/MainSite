@@ -18,7 +18,7 @@
     <div class="card-panel">
         <div class="input-field">
             <i class="material-icons prefix">search</i>
-            <input type="text" class="search" id="search" onkeyup="UserSearch()">
+            <input type="text" class="search" id="search" onkeyup="inputFilter()">
             <label for="search">Поиск</label>
         </div>
     </div>
@@ -33,7 +33,7 @@
                     <th></th>
                 </tr>
             </thead>
-            <tbody id="usersList" class="black-text">
+            <tbody id="record_list" class="black-text">
                 @foreach (var item in Model)
                 {
                     <tr>
