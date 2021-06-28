@@ -4,13 +4,13 @@
         <input name="CategoryId" type="hidden" :value="categoryId" />
         <input name="IsAdvancedEditor" type="hidden" :value="isAdvancedEditor" />
 
-        <div v-if="editFiles.length"
+        <!--<div v-if="editFiles.length"
              v-for="(item, index) in editFiles"
              :key="item.id">
             <input :name="GetEditFileNameInput(index, 'Id')" type="hidden" :value="item.id" />
             <input :name="GetEditFileNameInput(index, 'MimeType')" type="hidden" :value="item.mimeType" />
             <input :name="GetEditFileNameInput(index, 'Name')" type="hidden" :value="item.name" />
-        </div>
+        </div>-->
         <div class="s12 m12">
             <div class="bold">Введите заголовок объявления:</div>
             <input v-model="model.header" name="Header" id="TextHeader" class="inputTextMainSite" type="text" />
@@ -44,7 +44,8 @@
 
 <script>
     import MsWysiwyg from '../../DefaultComponents/ms-wysiwyg.vue';
-
+    import { mapActions } from 'vuex';
+    
     export default {
         name: 'ms-change_news-form',
         props: {
@@ -87,11 +88,14 @@
             MsWysiwyg
         },
         methods: {
+            ...mapActions('news', [
+                'GET_FILE'
+            ]),
             GetEditFileNameInput(index, key) {
                 return "Files[" + index + "]." + key;
             },
             changeFileList(changeFileListData) {
-                this.fileList = changeFileListData;
+                this.fileList = changeFileListData;                         
             },
             submit(e) {
                 e.preventDefault();
@@ -102,7 +106,12 @@
                 if (this.isAdvancedEditor) {
                     let i = 0;
                     for (var i = 0; i < this.fileList.length; i++) {
-                        formData.append(this.fileList[i].Id, this.fileList[i].FormFile, this.fileList[i].FormFile.name);
+                        if(typeof this.fileList[i] == 'File') {
+                            formData.append(`uploadedFile[${i}]`, this.fileList[i]);  
+                        }
+                        else {
+                            formData.append(`Files[${i}]`, this.fileList[i]);  
+                        }                    
                     }
                 }
 
@@ -124,6 +133,13 @@
         },
         created() {
             if (this.editModel != null) this.model = this.editModel;
+            if(this.editFiles.length) {
+                this.fileList = this.editFiles.map((item, index) => {
+                    let element = this.GET_FILE(item.id)
+                    return new File([element], item.name, { type: element.type })
+                })
+                //this.fileList = [...this.editFiles];
+            }
         }
     }
 </script>

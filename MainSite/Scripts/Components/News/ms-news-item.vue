@@ -114,32 +114,13 @@
                 this.$emit('deleteNews',{ index: this.index, id: this.news_item.id });
             },
             async changeNew(result) {
-                let res = await this.UPDATE_NEW({ data: result, index: this.index });
+                let res = await this.UPDATE_NEW({ data: result});
                 if (res) {
                     await this.changeSectionEditer();
-                    this.listenByAdvancedDesription();
                 }
             },
-            listenByAdvancedDesription() {
-                let vm = this;
-                for (var selector of  Array.from(document.querySelectorAll("#" + vm.GetUnicIdBlock + " > .card_news-description a"))) {
-                    selector.addEventListener('click', function (e) {
-                        e.preventDefault();
-
-                        let itemAdvancedEditor = {
-                            name: e.target.innerHTML,
-                            id: e.target.getAttribute('href')
-                        }
-
-                        vm.downloadFile(itemAdvancedEditor)
-                    });
-                }
-            }
         },
         mounted() {            
-            if (this.news_item.isAdvancedEditor) {
-                this.listenByAdvancedDesription();
-            }
         }
     };
 </script>

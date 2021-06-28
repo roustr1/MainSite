@@ -14,12 +14,17 @@
         </ms-popup>
         <div class='banner'>
             <div id="toolBar1">
-                <ms-select 
-                    :selected="formatBlockSelected.name"
-                    :options="formatBlockList"
-                    @select="changeSelectFormatBlock" 
-                    :isCursorEdit="true"
+                <ms-loader-files
+                    @changeFileList="changeFileList"
+                    :fileList="fileList"
                 />
+                <!--<ms-select 
+                    :selected="fileListDropDownSelected.name"
+                    :options="formListDropDown"  
+                >
+                    <template v-slot:wysiwygDetailsUploadFiles>
+                    </template>
+                </ms-select>-->
             </div>
             <div id="toolBar2">
                 <i class="material-icons intLink" title="Очистить" @click="clear" onmousedown="return false" onselectstart="return false">cleaning_services</i>
@@ -38,7 +43,13 @@
                 <i title="Увеличить на единицу отступ блока форматирования" class="material-icons intLink" @click="formatDoc('indent');" onmousedown="return false" onselectstart="return false">format_indent_increase</i>
                 <i title="Ссылка" class="material-icons intLink" @click="setLink" onmousedown="return false" onselectstart="return false">link</i>
                 <i title="Добавить картинку" class="material-icons intLink" @click="showPopupInfo(true)" onmousedown="return false" onselectstart="return false">image</i>
-                <i title="Привязать файл" class="material-icons intLink" @click="showPopupInfo(false)" onmousedown="return false" onselectstart="return false">upload</i>
+                <!--<i title="Привязать файл" class="material-icons intLink" @click="showPopupInfo(false)" onmousedown="return false" onselectstart="return false">upload</i>-->
+                <ms-select 
+                    :selected="formatBlockSelected.name"
+                    :options="formatBlockList"
+                    @select="changeSelectFormatBlock" 
+                    :isCursorEdit="true"
+                />
             </div>
         </div>
         <div class='holder'>
@@ -48,18 +59,19 @@
 </template>
 
 <script>
-    import msPopup from "./ms-popup.vue";
+    import msPopup from "./ms-popup.vue"
     import msSelect from './ms-select.vue'
+    import msLoaderFiles from './ms-loader-files.vue'
     export default {
         name: "ms-wysiwyg",
         props: {
-            fileList: {
-                type: Array,
-                default: () => { return [] }
-            },
             parentTextEditor: {
                 type: String,
                 default: () => { return '' }
+            },
+            fileList: {
+                type: Array,
+                default: () => { return [] }
             }
         },
         data() {
@@ -73,12 +85,14 @@
                  { name: "Название раздела", value: "h2" }, { name: "Название подраздела", value: "h3" }
                 ],
                 formatBlockSelected: { name: "Обычный текст", value: "span" },
+                fileListDropDownSelected: { name: "Список файлов &#129131;", value: "" },
                 currentImage: {}
             }
         },
         components: {
             msPopup,
-            msSelect
+            msSelect,
+            msLoaderFiles
         },
         computed: {
             popuTitle() {
@@ -92,6 +106,11 @@
             GUUID() {
                 return "wysiwyg_" + new Date();
             },
+            formListDropDown() {
+                return this.fileList.map(function(item, index){
+                    return { name: item.FormFile.name, value:item.Id}
+                })
+            }
         },
         methods: {   
             changeTextEditor() {
@@ -194,37 +213,24 @@
 
                             let imgWidth = img.width;
                             let imgHeight = img.height;
-                            let ratioWidth = vm.editor.offsetWidth/imgWidth;
-                            let ratioHeight = vm.editor.offsetHeight/imgHeight;
 
-                            if (img.width > vm.editor.offsetWidth) {
-                                img.width = img.width * ratioWidth  - 100;
-                            }
+                            let scale = imgWidth / imgHeight;
+                            let tempHeight = vm.editor.offsetHeight * 3 / 5 - 30
+                            let tempWidth = tempHeight * scale
 
-                            if (img.height > vm.editor.offsetHeight) {
-                                img.height = img.height * ratioHeight - 100;
-                            }
+                            
+                            img.width = tempWidth;                        
+                            img.height = tempHeight;
                             
                             vm.formatDoc("insertHTML", img.outerHTML);
                         }                        
-                    }
-                    else if (!vm.isImage) {
-                        reader.onload = function (e) {
-                            e.preventDefault();
-                            let unicId = 'file_' + Date.now().toString();
-                            vm.fileList.push({ Id: unicId, FormFile: file });
-
-                            let a = document.createElement('a');
-                            a.setAttribute('href', unicId);
-                            a.innerHTML = file.name;
-
-                            vm.formatDoc("insertHTML", a.outerHTML);
-                        }
-                    }
-                    
+                    }   
                 }
                 else {
                 }
+            },
+            changeFileList(changeFileListData) {
+                this.$emit('changeFileList', changeFileListData);
             },
             clear() {
                 if (confirm('Очистить всю область?')) { this.editor.innerHTML = "" };
@@ -252,41 +258,23 @@
 </script>
 
 <style lang="scss">
-
-    .imitationH1 {
-        font-size: 4.2rem;
-        line-height: 110%;
-        margin: 2.8rem 0 1.68rem 0;
-        font-weight: 400;
-        display: block;
-        margin-block-start: 0.67em;
-        margin-block-end: 0.67em;
-        margin-inline-start: 0px;
-        margin-inline-end: 0px;
+    #toolBar1 {
+        margin-top: 10px;
     }
 
-    .imitationH2 {
-        font-size: 3.56rem;
-        line-height: 110%;
-        margin: 2.37333rem 0 1.424rem 0;
-        font-weight: 400;
-        display: block;
-        margin-block-start: 0.83em;
-        margin-block-end: 0.83em;
-        margin-inline-start: 0px;
-        margin-inline-end: 0px;
-    }
+    #toolBar2 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
 
-    .imitationH3 {
-        font-size: 2.92rem;
-        line-height: 110%;
-        margin: 1.94667rem 0 1.168rem 0;
-        font-weight: 400;
-        display: block;
-        margin-block-start: 1em;
-        margin-block-end: 1em;
-        margin-inline-start: 0px;
-        margin-inline-end: 0px;
+        & .ms-select {
+            width: 170px;
+            font-size: 14px;
+            & .title {
+                border-radius: 8px;
+                line-height: 1;
+            }
+        }
     }
 
     .resize {
@@ -343,14 +331,6 @@
         border: 0;
     }
 
-    #toolBar1 {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    #toolBar1 select {
-        font-size: 10px;
-    }
 
     #textBox {
         width: 540px;

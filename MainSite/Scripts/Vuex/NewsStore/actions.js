@@ -77,7 +77,7 @@ export default {
             );
 
             if (resultApiEditModel.data != null) {
-                commit('UPDATE_NEW', resultApiEditModel.data, result.index);
+                commit('UPDATE_NEW', resultApiEditModel.data);
                 M.toast({html: 'Запись обновлена!'})
                 return true;
             }
@@ -125,6 +125,22 @@ export default {
             document.body.appendChild(fileLink);
 
             fileLink.click();
+        }
+        catch (ex) {}
+    },
+    async GET_FILE({ commit }, newsId) {
+        try {
+            let result = await axios
+                (
+                    {
+                        method: 'get',
+                        url: '/GetFile/',
+                        params: { fileId: newsId },
+                        responseType: 'blob'
+                    }
+            );
+
+            return result.data
         }
         catch (ex) {}
     }
