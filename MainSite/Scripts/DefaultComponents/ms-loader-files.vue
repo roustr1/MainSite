@@ -39,7 +39,7 @@
                 </button>
             </div>
         </div>
-        <div style="font-size:14px" v-if="files.length">Количество файлов: {{files.length}}, <a href="" @click.prevent="deleteAllFiles">удалить файлы</a></div>
+        <div style="font-size:14px" v-if="files.length">Количество файлов: {{files.length}}, Общий размер: {{getAllSizeFiles}} <a href="" @click.prevent="deleteAllFiles">удалить файлы</a></div>
     </div>
 </template>
 
@@ -66,7 +66,26 @@ export default {
     components: {
         msLoaderItem
     },
+    computed: {
+        getAllSizeFiles() {
+            if(this.files.length == 0) return '0 b'
+
+            let allSumSize = this.files.reduce((sum, item) => {
+                return sum + item.size
+            }, 0)
+
+            return this.formatBytes(allSumSize)
+        }
+    },
     methods: {
+        formatBytes(bytes,decimals = 0) {
+            if(bytes == 0) return '0 B'
+            let k = 1024,
+                dm = decimals <= 0 ? 0 : decimals || 2,
+                sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+                i = Math.floor(Math.log(bytes) / Math.log(k))
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
+        },
         nextFiles() {
             if(this.translateValue < 0) this.visibleBtn(this.btnPrevious)
 
@@ -94,10 +113,8 @@ export default {
             let blockUploadedFilesList = document.getElementsByClassName('uploadedFiles_list')[0]
             blockUploadedFilesList.style.transform = `translateX(${this.translateValue + value}px)`
             this.translateValue += value
-            if(this.translateValue < 0) this.visibleBtn(this.btnPrevious)
-            console.log(this.translateValue)
-            console.log(blockUploadedFilesList.scrollWidth)
-            console.log(blockUploadedFilesList.offsetWidth)    
+
+            if(this.translateValue < 0) this.visibleBtn(this.btnPrevious)    
             if( (blockUploadedFilesList.scrollWidth - blockUploadedFilesList.offsetWidth) * -1 >= this.translateValue) {
                 this.hiddenBtn(this.btnNext)
             }

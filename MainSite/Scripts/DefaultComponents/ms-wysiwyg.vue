@@ -1,30 +1,11 @@
 ﻿<template>
     <div class='texteditor'>
-        <ms-popup 
-            v-if="isInfoPopupVisible"
-            @closePopup="closePopupInfo"
-            rightBtnTitle="Добавить"
-            @rightBtnAction="addImage"
-            :popupTitle="popuTitle"
-            :isMouseDown="true"
-        >
-        <template v-slot:default>
-            <input ref="file" type="file" id="inputFileToLoad" />
-        </template>      
-        </ms-popup>
         <div class='banner'>
             <div id="toolBar1">
                 <ms-loader-files
                     @changeFileList="changeFileList"
                     :fileList="fileList"
                 />
-                <!--<ms-select 
-                    :selected="fileListDropDownSelected.name"
-                    :options="formListDropDown"  
-                >
-                    <template v-slot:wysiwygDetailsUploadFiles>
-                    </template>
-                </ms-select>-->
             </div>
             <div id="toolBar2">
                 <i class="material-icons intLink" title="Очистить" @click="clear" onmousedown="return false" onselectstart="return false">cleaning_services</i>
@@ -42,8 +23,10 @@
                 <i title="Уменьшить на единицу отступ блока форматирования" class="material-icons intLink" @click="formatDoc('outdent');" onmousedown="return false" onselectstart="return false">format_indent_decrease</i>
                 <i title="Увеличить на единицу отступ блока форматирования" class="material-icons intLink" @click="formatDoc('indent');" onmousedown="return false" onselectstart="return false">format_indent_increase</i>
                 <i title="Ссылка" class="material-icons intLink" @click="setLink" onmousedown="return false" onselectstart="return false">link</i>
-                <i title="Добавить картинку" class="material-icons intLink" @click="showPopupInfo(true)" onmousedown="return false" onselectstart="return false">image</i>
-                <!--<i title="Привязать файл" class="material-icons intLink" @click="showPopupInfo(false)" onmousedown="return false" onselectstart="return false">upload</i>-->
+                <label class="file_loader_label">
+                    <input ref="file" type="file" id="inputFileToLoad" />
+                    <i title="Добавить картинку" class="material-icons intLink" onmousedown="return false" onselectstart="return false">image</i>
+                </label>
                 <ms-select 
                     :selected="formatBlockSelected.name"
                     :options="formatBlockList"
@@ -95,14 +78,6 @@
             msLoaderFiles
         },
         computed: {
-            popuTitle() {
-                if (this.isImage) {
-                    return 'Добавить картинку';
-                }
-                else {
-                    return 'Добавить файл';
-                }
-            },
             GUUID() {
                 return "wysiwyg_" + new Date();
             },
@@ -181,24 +156,13 @@
                 div.innerHTML = "<" + selectDropDownElement.value + ">" + text + "</" + selectDropDownElement.value + ">";
                 this.formatDoc("insertHTML", div.innerHTML);
             },
-            addImage() {
-                this.addFileForBody(this.$refs.file.files[0]);
-                this.closePopupInfo();
-            },
-            showPopupInfo(isImage) {
-                this.isImage = isImage;
-                this.isInfoPopupVisible = true;
-            },
-            closePopupInfo() {
-                this.isInfoPopupVisible = false;
-            },
             addFileForBody(file) {
                 if (file) {
                     let vm = this;
                     let reader = new FileReader(file);
                     
                     reader.readAsDataURL(file);
-                    if (file.type.match("image.*") && vm.isImage) {
+                    if (file.type.match("image.*")) {
                         reader.onload = async function (e) {   
                             e.preventDefault();                     
                             let img = await new Promise((resolve, reject) => {
@@ -243,6 +207,13 @@
                 if (sLnk && sLnk != '') {
                     this.formatDoc('createlink', sLnk);
                 }
+            },
+            listenerImageLoader() {
+                let imageLoader = document.querySelector('.file_loader_label > input[type="file"]')
+                let vm = this
+                imageLoader.addEventListener('change', function() {
+                    vm.addFileForBody(this.files[0])
+                })
             }
         },
         beforeDestroy() {
@@ -252,12 +223,19 @@
             this.$emit('changeFileList', []);
         },
         mounted() {
-            this.loadIframe();
+            this.loadIframe()
+            this.listenerImageLoader()
         }
     };
 </script>
 
 <style lang="scss">
+    .file_loader_label {
+        input[type="file"] {
+            display: none;
+        }
+    }
+
     #toolBar1 {
         margin-top: 10px;
     }

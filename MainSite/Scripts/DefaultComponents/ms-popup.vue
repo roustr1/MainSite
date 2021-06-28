@@ -12,11 +12,11 @@
                 </slot>
             </div>
             <div class="ms-popup_footer">
-                <button class="btn btn-default"
+                <button class="btn btn-defaultMainSite close_btn"
                         @click="closePopup">
                     {{leftBtnTitle}}
                 </button>
-                <button class="btn btn-default"
+                <button class="btn btn-defaultMainSite submit_btn"
                         @click="rightBtnAction">
                     {{rightBtnTitle}}
                 </button>
@@ -123,11 +123,7 @@ export default {
         }
 
         .submit_btn {
-            padding: 8px;
-            color: #2d2d2d;
-            background: green;
-            border: 1px solid #2d2d2d;
-            border-radius:8px;
+            min-width: 100px;
         }
 
         .close {
@@ -135,11 +131,7 @@ export default {
         }
 
         .close_btn {
-            background: red;
-            border: 1px solid #2d2d2d;
-            padding: 8px;
-            color: #2d2d2d;
-            border-radius:8px;
+            min-width: 100px;
         }
     }
 </style>
