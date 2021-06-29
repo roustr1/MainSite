@@ -41,15 +41,11 @@
                     <p>
                         <label>
                             @Html.CheckBoxFor(c => c.IsActive, new { @class = "validate", type = "checkbox" })
-                            <span>Отображать в списке меню</span>
+                            <span>добавить ограничение доступа</span>
                         </label>
                     </p>
                 </div>
-                @*<div class="input-field col s12 m12">
-                    @Html.ListBoxFor(model => model.UserRoles, (List<SelectListItem>)ViewBag.Roles, new { Multiple = "Multiple" })
-                    <label asp-for="UserRoles">Роли</label>
-                </div>
-                *@
+             
             </div>
             <div class="input-field m12">
                 <input type="submit" value="Сохранить" class="btn btn-defaultMainSite" />

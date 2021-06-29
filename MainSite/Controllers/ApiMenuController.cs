@@ -12,7 +12,7 @@ namespace MainSite.Controllers
     [ApiController]
     public class ApiMenuController : ControllerBase
     {
-        private IMenuService _service;
+        private readonly IMenuService _service;
 
         public ApiMenuController(IMenuService menuService)
         {

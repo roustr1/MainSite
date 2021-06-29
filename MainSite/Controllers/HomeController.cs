@@ -9,6 +9,7 @@ using Application.Dal.Domain.Menu;
 using Application.Dal.Infrastructure;
 using Application.Services.Menu;
 using Application.Services.Files;
+using Application.Services.Permissions;
 using MainSite.ViewModels.UI.Menu;
 
 namespace MainSite.Controllers
@@ -18,6 +19,7 @@ namespace MainSite.Controllers
         private readonly MainModel _mainMode;
         private readonly IMenuService _menuService;
         private readonly IPictureService _uploadService;
+        private readonly IPermissionService _permissionService;
  
 
         public HomeController(MainModel mainMode, IMenuService menuService, IPictureService uploadService)
@@ -83,6 +85,7 @@ namespace MainSite.Controllers
         [HttpPost]
         public IActionResult CreateCategory(MenuItem model)
         {
+            if(_permissionService.Authorize())
             if (ModelState.IsValid)
             {
                 var fileForm = Request.Form.Files.Any() ? Request.Form.Files[0] : null;
