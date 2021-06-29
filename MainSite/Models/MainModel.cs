@@ -19,6 +19,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
 using System.Xml;
+using Application.Services.Permissions;
+using Application.Services.Utils;
 using Microsoft.Win32;
 using File = Application.Dal.Domain.Files.File;
 
@@ -34,8 +36,17 @@ namespace MainSite.Models
         private readonly PinNewsService _pinNewsService;
         private readonly IAppFileProvider _fileProvider;
         private readonly bool StoreInDb = false;
+        private readonly IPermissionService _permissionService;
 
-        public MainModel(INewsService newsService, IFileDownloadService downloadService, ISettingsService settingsService, IMenuService menuService, IUsersService usersService, PinNewsService pinNewsService, IAppFileProvider fileProvider)
+        public MainModel(
+            INewsService newsService,
+            IFileDownloadService downloadService,
+            ISettingsService settingsService,
+            IMenuService menuService,
+            IUsersService usersService,
+            PinNewsService pinNewsService,
+            IAppFileProvider fileProvider,
+            IPermissionService permissionService)
         {
             _newsService = newsService;
             _downloadService = downloadService;
@@ -44,6 +55,7 @@ namespace MainSite.Models
             _usersService = usersService;
             _pinNewsService = pinNewsService;
             _fileProvider = fileProvider;
+            _permissionService = permissionService;
 
         }
 
@@ -384,7 +396,17 @@ namespace MainSite.Models
 
         #endregion
 
+        #region Permissions
 
+        public bool GetUserPermissionForCategory(string categoryId, ClaimsPrincipal User)
+        {
+            var category = _menuService.Get(categoryId);
+            var permission = _permissionService.GetPermissionRecordBySystemName(
+                new TranslitMethods.Translitter().Translit(category.Name, TranslitMethods.TranslitType.Gost));
+            return _permissionService.Authorize(permission, User);
+        }
+
+        #endregion
 
 
         public int GetSettingNewsPerPage()

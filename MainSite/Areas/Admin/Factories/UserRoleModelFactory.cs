@@ -37,27 +37,26 @@ namespace MainSite.Areas.Admin.Factories
         /// Prepare customer role model
         /// </summary>
         /// <param name="model">User role model</param>
-        /// <param name="UserRole">User role</param>
-        /// <param name="excludeProperties">Whether to exclude populating of some properties of model</param>
+        /// <param name="userRole">User role</param>
         /// <returns>User role model</returns>
-        public virtual UserRoleModel PrepareUserRoleModel(UserRoleModel model, UserRole UserRole)
+        public virtual UserRoleModel PrepareUserRoleModel(UserRoleModel model, UserRole userRole)
         {
-            if (UserRole != null)
+            if (userRole != null)
             {
                 //fill in model values from the entity
                 model = new UserRoleModel
                 {
-                    Name = UserRole.Name,
-                    SystemName = UserRole.SystemName,
-                    Id = UserRole.Id,
-                    IsSystemRole = UserRole.IsSystemRole,
-                    Active = UserRole.Active,
-                    PermissionNames = _permissionService.GetPermissionRecordsByUserRoleId(UserRole.Id).Select(s=>s.Name)
+                    Name = userRole.Name,
+                    SystemName = userRole.SystemName,
+                    Id = userRole.Id,
+                    IsSystemRole = userRole.IsSystemRole,
+                    Active = userRole.Active,
+                    PermissionNames = _permissionService.GetPermissionRecordsByUserRoleId(userRole.Id).Select(s=>s.Name)
                 };
             }
 
             //set default values for the new model
-            if (UserRole == null)
+            if (userRole == null)
                 model.Active = true;
             return model;
         }

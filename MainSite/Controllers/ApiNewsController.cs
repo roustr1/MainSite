@@ -1,4 +1,6 @@
-﻿using MainSite.Models;
+﻿using System.Net;
+using Application.Services.Permissions;
+using MainSite.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -16,7 +18,7 @@ namespace MainSite.Controllers
         public ApiNewsController(MainModel mainModel)
         {
             _mainMode = mainModel;
-
+           
             SetPageSize();
         }
 
@@ -30,7 +32,6 @@ namespace MainSite.Controllers
         public JsonResult MenuTreeGenerate(string category, int page = 0)
         {
             var model = _mainMode.GetNewsListViewModel(page, _pagesize, category);
-
             return new JsonResult(model);
         }
 

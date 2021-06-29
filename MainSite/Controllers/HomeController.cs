@@ -6,10 +6,10 @@ using MainSite.ViewModels.News;
 using Newtonsoft.Json;
 using System.Linq;
 using Application.Dal.Domain.Menu;
-using Application.Dal.Infrastructure;
 using Application.Services.Menu;
 using Application.Services.Files;
 using Application.Services.Permissions;
+using MainSite.Areas.Admin.Factories;
 using MainSite.ViewModels.UI.Menu;
 
 namespace MainSite.Controllers
@@ -20,14 +20,16 @@ namespace MainSite.Controllers
         private readonly IMenuService _menuService;
         private readonly IPictureService _uploadService;
         private readonly IPermissionService _permissionService;
- 
+        private readonly ISecurityModelFactory _securityModelFactory;
 
-        public HomeController(MainModel mainMode, IMenuService menuService, IPictureService uploadService)
+
+        public HomeController(MainModel mainMode, IMenuService menuService, IPictureService uploadService, IPermissionService permissionService, ISecurityModelFactory securityModelFactory)
         {
             _mainMode = mainMode;
             _menuService = menuService;
             _uploadService = uploadService;
- 
+            _permissionService = permissionService;
+            _securityModelFactory = securityModelFactory;
         }
 
 
@@ -64,9 +66,9 @@ namespace MainSite.Controllers
                 {
                     _mainMode.InsertAdvancedNewsItem(model);
                 }
-           
+
                 _mainMode.EditNewNewsItem(model, User);
-               
+
                 return new JsonResult(_mainMode.GetNewsItemViewModel(model.Id));
             }
 
@@ -85,7 +87,6 @@ namespace MainSite.Controllers
         [HttpPost]
         public IActionResult CreateCategory(MenuItem model)
         {
-            if(_permissionService.Authorize())
             if (ModelState.IsValid)
             {
                 var fileForm = Request.Form.Files.Any() ? Request.Form.Files[0] : null;
@@ -99,6 +100,7 @@ namespace MainSite.Controllers
                 }
 
                 _menuService.InsertItem(model);
+                _permissionService.InsertPermissionRecord(_securityModelFactory.CreatePermissionRecordForMenu(model));
 
                 var itemViewModel = new MenuItemViewModel()
                 {

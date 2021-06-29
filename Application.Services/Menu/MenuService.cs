@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Application.Dal;
 using Application.Dal.Domain.Menu;
+using Application.Services.Permissions;
 using Application.Services.Utils;
 
 namespace Application.Services.Menu
@@ -10,6 +11,7 @@ namespace Application.Services.Menu
     public class MenuService : IMenuService
     {
         private readonly IRepository<MenuItem> _repository;
+ 
 
         public MenuService(IRepository<MenuItem> repository)
         {
@@ -106,5 +108,7 @@ namespace Application.Services.Menu
 
             return result;
         }
+
+ 
     }
 }

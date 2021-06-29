@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using MainSite.Models;
 using Application.Services.Files;
 using System;
+using Application.Services.Utils;
+using MainSite.Areas.Admin.Factories;
 
 namespace MainSite.Areas.Admin.Controllers
 {
@@ -20,14 +22,13 @@ namespace MainSite.Areas.Admin.Controllers
         private readonly IUsersService _userService;
         private readonly IPermissionService _permissionService;
         private readonly IPictureService _uploadService;
-        private readonly MainModel _mainMode;
+        private readonly ISecurityModelFactory _securityModelFactory;
 
-        public MenuController(MainModel mainMode, IPictureService uploadService, IMenuService menuService, IUsersService userService, IPermissionService permissionService)
+        public MenuController(IPictureService uploadService, IMenuService menuService, IUsersService userService, IPermissionService permissionService)
         {
             _menuService = menuService;
             _userService = userService;
             _permissionService = permissionService;
-            _mainMode = mainMode;
             _uploadService = uploadService;
         }
 
@@ -37,7 +38,7 @@ namespace MainSite.Areas.Admin.Controllers
         public IActionResult Index()
         {
 #if RELEASE
-     var user = _userService.GetUserBySystemName(User);
+            var user = _userService.GetUserBySystemName(User);
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageMenu, user))
                 return AccessDeniedView();
 #endif
@@ -56,14 +57,14 @@ namespace MainSite.Areas.Admin.Controllers
         public IActionResult Create(string id)
         {
 #if RELEASE
-     var user = _userService.GetUserBySystemName(User);
+            var user = _userService.GetUserBySystemName(User);
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageMenu, user))
                 return AccessDeniedView();
 #endif      
             MenuItem model = null;
-            if(!string.IsNullOrWhiteSpace(id))
+            if (!string.IsNullOrWhiteSpace(id))
             {
-                model = _menuService.Get(id);              
+                model = _menuService.Get(id);
             }
 
             //ViewBag.Roles = new List<SelectListItem> { new SelectListItem("Admin", "1"), new SelectListItem("moderator", "2") };
@@ -77,13 +78,13 @@ namespace MainSite.Areas.Admin.Controllers
         public IActionResult Create([FromForm] MenuItem model)
         {
 #if RELEASE
-     var user = _userService.GetUserBySystemName(User);
+            var user = _userService.GetUserBySystemName(User);
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageMenu, user))
                 return AccessDeniedView();
 #endif
             if (ModelState.IsValid)
             {
-                var fileForm = Request.Form.Files.Count() > 0 ? Request.Form.Files[0] : null;
+                var fileForm = Request.Form.Files.Any() ? Request.Form.Files[0] : null;
 
                 if (fileForm != null)
                 {
@@ -108,6 +109,9 @@ namespace MainSite.Areas.Admin.Controllers
                 else
                 {
                     _menuService.InsertItem(model);
+                    var permission = _securityModelFactory.CreatePermissionRecordForMenu(model);
+                    _permissionService.InsertPermissionRecord(permission);
+
                 }
 
                 return RedirectToAction("Index", "Home");
@@ -121,15 +125,20 @@ namespace MainSite.Areas.Admin.Controllers
         [Route("Admin/Menu/Delete")]
         public ActionResult Delete(string id)
         {
-            #if RELEASE
-                 var user = _userService.GetUserBySystemName(User);
-                        if (!_permissionService.Authorize(StandardPermissionProvider.ManageMenu, user))
-                            return AccessDeniedView();
-            #endif
+#if RELEASE
+            var user = _userService.GetUserBySystemName(User);
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageMenu, user))
+                return AccessDeniedView();
+#endif
             var item = _menuService.Get(id);
             if (item != null)
             {
+                //удаляя пункт меню, удаляем и permission record 
                 _menuService.DeleteItem(item);
+                var permission = _permissionService.GetPermissionRecordBySystemName(
+                    new TranslitMethods.Translitter().Translit(item.Name, TranslitMethods.TranslitType.Gost));
+                if (permission != null)
+                    _permissionService.DeletePermissionRecord(permission);
             }
 
             return RedirectToAction("Index");
@@ -140,7 +149,7 @@ namespace MainSite.Areas.Admin.Controllers
         public IActionResult ItemUp(string id)
         {
 #if RELEASE
-     var user = _userService.GetUserBySystemName(User);
+            var user = _userService.GetUserBySystemName(User);
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageMenu, user))
                 return AccessDeniedView();
 #endif
@@ -154,7 +163,7 @@ namespace MainSite.Areas.Admin.Controllers
         public IActionResult ItemDown(string id)
         {
 #if RELEASE
-     var user = _userService.GetUserBySystemName(User);
+            var user = _userService.GetUserBySystemName(User);
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageMenu, user))
                 return AccessDeniedView();
 #endif
@@ -229,7 +238,7 @@ namespace MainSite.Areas.Admin.Controllers
             if (items.Any())
             {
                 var item = items.OrderBy(m => m.Index).LastOrDefault();
-                var maxIndex = item != null ? item.Index : 0;
+                var maxIndex = item?.Index ?? 0;
 
                 if (maxIndex > 0)
                 {

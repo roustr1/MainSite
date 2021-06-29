@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using Application.Dal;
+using Application.Dal.Domain.Menu;
 using Application.Dal.Domain.Permissions;
 using Application.Dal.Domain.Users;
 using Application.Services.Users;
+using Application.Services.Utils;
 
 namespace Application.Services.Permissions
 {
@@ -19,8 +21,8 @@ namespace Application.Services.Permissions
         #endregion
 
         #region ctor
-        
-        public PermissionService( IRepository<PermissionRecord> permissionRecordRepository, IRepository<PermissionRecordUserRoleMapping> permissionRecordUserRoleMappingRepository, IUsersService userService)
+
+        public PermissionService(IRepository<PermissionRecord> permissionRecordRepository, IRepository<PermissionRecordUserRoleMapping> permissionRecordUserRoleMappingRepository, IUsersService userService)
         {
             _permissionRecordRepository = permissionRecordRepository;
             _permissionRecordUserRoleMappingRepository = permissionRecordUserRoleMappingRepository;
@@ -41,7 +43,7 @@ namespace Application.Services.Permissions
             var pr1 = _permissionRecordRepository.GetAll.ToList();
             var prurmr = _permissionRecordUserRoleMappingRepository.GetAll.ToList();
 
-       
+
 
             var query = from pr in pr1
                         join prcrm in prurmr on pr.Id equals prcrm
@@ -96,7 +98,7 @@ namespace Application.Services.Permissions
             if (string.IsNullOrWhiteSpace(systemName))
                 return null;
 
-            var query = from pr in _permissionRecordRepository.GetAll 
+            var query = from pr in _permissionRecordRepository.GetAll
                         where pr.SystemName == systemName
                         orderby pr.Id
                         select pr;
@@ -111,7 +113,7 @@ namespace Application.Services.Permissions
         /// <returns>Permissions</returns>
         public virtual IList<PermissionRecord> GetAllPermissionRecords()
         {
-            var query = from pr in _permissionRecordRepository.GetAll 
+            var query = from pr in _permissionRecordRepository.GetAll
                         orderby pr.Name
                         select pr;
             var permissions = query.ToList();
@@ -152,7 +154,7 @@ namespace Application.Services.Permissions
         /// Install permissions
         /// </summary>
         /// <param name="permissionProvider">Permission provider</param>
-  
+
         public virtual void InstallPermissions(IPermissionProvider permissionProvider)
         {
             //install new permissions
@@ -267,6 +269,12 @@ namespace Application.Services.Permissions
             return false;
         }
 
+        public virtual bool Authorize(MenuItem mi, User user)
+        {
+            return Authorize(new TranslitMethods.Translitter().Translit(mi.Name, TranslitMethods.TranslitType.Gost),
+                user);
+        }
+
         /// <summary>
         /// Authorize permission
         /// </summary>
@@ -293,7 +301,7 @@ namespace Application.Services.Permissions
         /// <param name="permissionId">Permission identifier</param>
         public virtual IList<PermissionRecordUserRoleMapping> GetMappingByPermissionRecordId(string permissionId)
         {
-            var query = _permissionRecordUserRoleMappingRepository.GetAll ;
+            var query = _permissionRecordUserRoleMappingRepository.GetAll;
 
             query = query.Where(x => x.PermissionRecordId == permissionId);
 
