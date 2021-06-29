@@ -1,0 +1,26 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<div class="col s12 m12 card-panel">
+    <h5 class="header">Парсинг дни рождения</h5>
+    <div>
+        <form action="/Admin/Birthday/Create/" enctype="multipart/form-data" method="post">
+            <div>
+                <div class="file-field input-field creator-main-panel s12 m12">
+                    <div class="btn btn-defaultMainSite">
+                        <span>Прикрепить файл...</span>
+                        <input type="file" name="fileCalendar" id="fileCalendar" />
+                    </div>
+                    <div class="file-path-wrapper" style="flex-grow: 1;">
+                        <input ref="fileCalendar" disabled class="file-path" style="border: none;color: #65935C;" type="text" placeholder="Выбранный файл">
+                    </div>
+                </div>
+            </div>
+            <div class="input-field m12">
+                <input type="submit" value="Начать" class="btn btn-defaultMainSite" />
+                @Html.ActionLink("Назад", "Index", "Home", null, new { @class = "btn btn-defaultMainSite" })
+            </div>
+        </form>
+    </div>
+</div>

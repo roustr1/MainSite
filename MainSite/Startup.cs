@@ -66,6 +66,7 @@ namespace MainSite
 
             services.AddTransient<INewsService, NewsService>();
             services.AddTransient<IBirthdayService, BirthdayService>();
+            services.AddTransient<IBirthdayFactory, BirthdayFactory>();
             services.AddTransient<IUsersService, UsersService>();
             services.AddTransient<IPlanCalendarSevice, PlanCalendarSevice>();
             services.AddTransient<IPermissionService, PermissionService>();

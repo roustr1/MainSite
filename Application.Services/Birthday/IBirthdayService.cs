@@ -6,5 +6,7 @@ namespace Application.Services.Birthday
     public interface IBirthdayService
     {
          IEnumerable<Birtday> GetTodayBirth();
+
+        void AddItem(Birtday birtday);
     }
 }
