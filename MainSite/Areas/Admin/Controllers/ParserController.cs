@@ -63,11 +63,16 @@ namespace MainSite.Areas.Admin.Controllers
             {
                 var collection = _birthdayFactory.ParseFile(fileCalendar);
 
+                if(collection.Count() > 0)
+                {
+                    _birthdayService.DeleteAllItems();
+                }
+
                 foreach(var item in collection)
                 {
                     _birthdayService.AddItem(item);
                 }
-
+               
                 return RedirectToAction("Index", "Home");
             }
             return NotFound();

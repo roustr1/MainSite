@@ -77,5 +77,10 @@ namespace Application.Services.Birthday
         {
             _birtdayRepository.Add(birtday);
         }
+
+        public void DeleteAllItems()
+        {
+            _birtdayRepository.DeleteAll();
+        }
     }
 }
