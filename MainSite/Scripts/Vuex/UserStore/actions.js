@@ -13,5 +13,17 @@ export default {
             }
         }
         catch(ex) { }
+    },
+    async GET_PERMISSION_BY_CATEGORY({commit}, categoryId) {
+        try {
+            let result = await axios('/api/ApiUsers/IsPermission', {
+                method: 'GET',
+                params: {categoryId : categoryId}
+            })
+            
+            return result.data
+        } catch (ex) {
+            
+        }
     }
 }
