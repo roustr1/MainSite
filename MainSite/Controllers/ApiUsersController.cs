@@ -1,6 +1,7 @@
 ﻿using Application.Services.Birthday;
 using Application.Services.Settings;
 using Application.Services.Users;
+using MainSite.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Linq;
@@ -14,13 +15,14 @@ namespace MainSite.Controllers
         private readonly IBirthdayService _birthdayService;
         private readonly ISettingsService _settingsService;
         private readonly IUsersService _userService;
+        private readonly MainModel _mainMode;
 
-
-        public ApiUsersController(IBirthdayService birthdayService, ISettingsService settingsService, IUsersService userService)
+        public ApiUsersController(IBirthdayService birthdayService, ISettingsService settingsService, IUsersService userService, MainModel mainModel)
         {
             _birthdayService = birthdayService;
             _settingsService = settingsService;
             _userService = userService;
+            _mainMode = mainModel;
         }
 
         [Route("GetBirthdayUsers")]
@@ -50,6 +52,15 @@ namespace MainSite.Controllers
             };
 
             return JsonConvert.SerializeObject(model);
+        }
+
+        [Route("IsPermission")]
+        public bool IsPermissionForCategory(string categoryId)
+        {
+            bool result = true;
+            if(categoryId != null) result = _mainMode.GetUserPermissionForCategory(categoryId, HttpContext.User);
+
+            return result;
         }
     }
 }

@@ -10,6 +10,7 @@
             <div 
                 class="card-panel ms-category-add_item" 
                 @click="createCategory"
+                v-if="isEditer"
             >
                 <h6 class="text-center">
                     Создать новый подраздел...
@@ -38,6 +39,7 @@
         },
         data() {
             return {
+                isEditer : false
             }
         },
         components: {
@@ -71,6 +73,7 @@
             ...mapActions('menu', [
                 'GET_CATEGORIES_BY_BREADCRUMBS',
             ]),
+            ...mapActions('user', ['GET_PERMISSION_BY_CATEGORY']),
             fetchData() {
                 this.GET_CATEGORIES_BY_BREADCRUMBS(this.$route.params.categoryId);           
             },
@@ -101,10 +104,14 @@
                 ;
 
                 this.$router.push({ name: 'createCategory', params: { parentCategoryId: this.$route.params.categoryId, parentCategoryName: parentCategoryName } });
-            }
+            },
+            async getInfoByPermission() {
+                this.isEditer = await this.GET_PERMISSION_BY_CATEGORY(this.$route.params.categoryId);
+            },
         },
         mounted() {
             this.GET_CATEGORIES_BY_BREADCRUMBS(this.$route.params.categoryId); 
+            this.getInfoByPermission();
         }
     }
 </script>

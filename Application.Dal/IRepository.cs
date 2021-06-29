@@ -19,5 +19,7 @@ namespace Application.Dal
         T Get(Expression<Func<T, Boolean>> where);
         IEnumerable<T> GetMany(Expression<Func<T, Boolean>> where);
         IEnumerable<T> GetAll { get; }
+
+        void DeleteAll();
     }
 }

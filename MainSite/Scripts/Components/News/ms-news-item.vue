@@ -104,14 +104,27 @@
                 'DOWNLOADFILE',
                 'UPDATE_NEW',
             ]),
-            changeSectionEditer() {
-                this.isEditer = !this.isEditer;
+             ...mapActions('user', [
+                'GET_PERMISSION_BY_CATEGORY'
+            ]),
+            async changeSectionEditer() {
+                if(await this.getInfoByPermission()) {
+                    this.isEditer = !this.isEditer;
+                }
+                else {
+                     M.toast({html: 'У вас нету прав на редактирование данной записи!'})
+                }
             },
             downloadFile(item) {
                 this.DOWNLOADFILE(item);
             },
-            deleteNews() {
-                this.$emit('deleteNews',{ index: this.index, id: this.news_item.id });
+            async deleteNews() {
+                if(await this.getInfoByPermission()) {
+                    this.$emit('deleteNews',{ index: this.index, id: this.news_item.id });
+                }
+                else {
+                     M.toast({html: 'У вас нету прав на удаление данной записи!'})
+                }
             },
             async changeNew(result) {
                 let res = await this.UPDATE_NEW({ data: result});
@@ -119,6 +132,9 @@
                     await this.changeSectionEditer();
                 }
             },
+            async getInfoByPermission() {
+                return await this.GET_PERMISSION_BY_CATEGORY(this.news_item.categoryId);
+            }
         },
         mounted() {            
         }
