@@ -57,7 +57,7 @@ export default {
             );
             if (result.data) {
                 commit('ADD_NEW', result.data);
-                M.toast({html: 'Пост добавлен!'})
+                M.toast({html: 'Запись добавлена!'})
             }
         }
         catch (ex) { }
@@ -77,14 +77,14 @@ export default {
             );
 
             if (resultApiEditModel.data != null) {
-                commit('UPDATE_NEW', resultApiEditModel.data, result.index);
-                M.toast({html: 'Пост обновлен!'})
+                commit('UPDATE_NEW', resultApiEditModel.data);
+                M.toast({html: 'Запись обновлена!'})
                 return true;
             }
         }
         catch (ex) {
         }
-        M.toast({html: 'Пост не обновлен. Произошла ошибка!'})
+        M.toast({html: 'Запись не обновлена. Произошла ошибка!'})
         return false;
     },
     async DELETE_NEW({ commit }, data) {
@@ -98,7 +98,7 @@ export default {
             );
             if(result.data) {
                 commit('REMOVE_NEW_FOR_LIST', data.index)
-                M.toast({html: 'Пост удален!'})
+                M.toast({html: 'Запись удалена!'})
             }
         }
         catch (ex) { }
@@ -125,6 +125,22 @@ export default {
             document.body.appendChild(fileLink);
 
             fileLink.click();
+        }
+        catch (ex) {}
+    },
+    async GET_FILE({ commit }, newsId) {
+        try {
+            let result = await axios
+                (
+                    {
+                        method: 'get',
+                        url: '/GetFile/',
+                        params: { fileId: newsId },
+                        responseType: 'blob'
+                    }
+            );
+
+            return result.data
         }
         catch (ex) {}
     }

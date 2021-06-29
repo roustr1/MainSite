@@ -9,8 +9,13 @@ export default {
     ADD_NEW(state, newsItem){
         state.news.unshift(newsItem);
     },
-    UPDATE_NEW(state, newsItem, index) {
-        state.news.splice(index, 1, newsItem);
+    UPDATE_NEW(state, newsItem) {
+        state.news.forEach((item, index) => {
+            if(item.id == newsItem.id) {
+                state.news.splice(index, 1, newsItem);
+                return
+            }
+        })
     },
     DELETE_CURRENT_NEWS(state) {
         state.news = [];

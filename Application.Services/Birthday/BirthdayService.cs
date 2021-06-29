@@ -72,5 +72,10 @@ namespace Application.Services.Birthday
                 .GetString(retrievedData, 0, retrievedData.Length));
             return data.ToList();
         }
+
+        public void AddItem(Birtday birtday)
+        {
+            _birtdayRepository.Add(birtday);
+        }
     }
 }

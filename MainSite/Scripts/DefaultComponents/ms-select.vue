@@ -1,24 +1,25 @@
 ﻿<template>
     <div class="ms-select">
-        <p
-           @click='reverseAreOptionsVisible'
-           class="title"
-           @mousedown="cursorEdit($event)"
-           @selectstart="cursorEdit($event)"
-        >
-            {{selected}}
-        </p>
-        <div v-if="areOptionsVisible || isExpanded"
-             class="options"
-             >
-            <div v-for="option in options"
-                 :key="option.name"
-                 @mousedown="cursorEdit($event)"
-                 @selectstart="cursorEdit($event)"
-                 @click="selectOption(option)">
-                {{option.name}}
+        <slot>
+            <p
+                @click='reverseAreOptionsVisible'
+                class="title"
+                @mousedown="cursorEdit($event)"
+                @selectstart="cursorEdit($event)"
+                v-html="selected"
+            />
+            <div v-if="areOptionsVisible || isExpanded"
+                class="options"
+                >
+                <div v-for="option in options"
+                    :key="option.name"
+                    @mousedown="cursorEdit($event)"
+                    @selectstart="cursorEdit($event)"
+                    @click="selectOption(option)"
+                    v-html="option.name"
+                />
             </div>
-        </div>
+        </slot>
     </div>
 </template>
 
@@ -90,6 +91,7 @@ export default {
         & .title {
             border: solid 1px #aeaeae;
             padding: 8px 8px;
+            color: #000;
         }
 
         & p {

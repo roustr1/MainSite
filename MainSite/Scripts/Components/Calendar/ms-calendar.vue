@@ -1,11 +1,9 @@
 ﻿<template>
     <div class="card-panel">
         <div class="ms-calendar">
-            <!--<a data-v-7fa05ddb="" href="#" class="error ms-calendar_back" @click.prevent="eventBackCalendar" v-if="IsDescriptionEvent"><i data-v-7fa05ddb="" class="material-icons">close</i></a>-->
             <h6 style="text-align:center;color: #1E57A5;">Основные мероприятия училища, предусмотренные планом-календарем на {{RefactDate}}</h6>
             <div class="ms-calendar_carusel">
                 <div class="ms-calendar_description">
-                    <!--<div class="text-center" style="color: #1E57A5;">{{messageEvent}}</div>-->
                     <template v-if="EventsFilterByDay.length">
                         <input type="checkbox" class="read-more-checker" id="read-more-checker" />
                         <div ref="limiter" class="limiter">
@@ -21,15 +19,6 @@
                         <div class="text-center" style="color: #B12344;">Мероприятий не запланировано</div>
                     </template>                  
                 </div>
-                <!--<ms-calendar-item
-                    v-for="n in daysInMonth"
-                    :dayNumber="n"
-                    :year="planCalendar.year"
-                    :month="planCalendar.month"
-                    :key="n"
-                    @eventClickDay="eventClickDay"
-                    v-else
-                />-->
             </div>
         </div>
     </div>
@@ -45,9 +34,6 @@
             return {
                 months: ["", "январь", "февраль", "март", "апрель", "май", "июнь", "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь"],
                 blockLimiter: {}
-                //eventsCurrentDay: [],
-                //IsDescriptionEvent: false,
-                //messageEvent: ''
             }
         },
         components: {
@@ -58,13 +44,6 @@
             ...mapState('planCalendar', [
                 'planCalendar'
             ]),
-            /*daysInMonth() {
-                if (this.planCalendar.year) return 32 - new Date(this.planCalendar.year, 3, 32).getDate();
-                return 0;
-            },*/
-            /*dayString() {
-                return this.months[this.planCalendar.month];
-            },*/
             EventsFilterByDay() {
                 if (this.planCalendar && this.planCalendar.events) {
                     return this.getEventsFilterByDay(new Date().getDate());
@@ -95,11 +74,6 @@
             ...mapActions('planCalendar', [
                 'GET_PLAN_CALENDAR'
             ]),
-            /*eventClickDay(dayNumber) {
-                this.eventsCurrentDay = this.getEventsFilterByDay(dayNumber);
-                this.messageEvent = this.eventsCurrentDay.length ? `Мероприятия на ${dayNumber} число` : 'Информация по мероприятиям отсутствует';
-                this.IsDescriptionEvent = true;
-            },*/
             getEventsFilterByDay(day) {
                 return this.planCalendar.events.filter(function (item) {
                     if (Number(item.day) == Number(day) && item.time.trim() !=='' && item.location.trim() !== '') return item;
@@ -125,22 +99,17 @@
 
                     return result
                 });
-            },
-            /*eventBackCalendar() {
-                this.eventsCurrentDay = [];
-                this.IsDescriptionEvent = false;
-            }*/
+            }
         },
         created() {
             if (Object.keys(this.planCalendar).length == 0) this.GET_PLAN_CALENDAR();
-            //this.eventsCurrentDay = this.getEventsFilterByDay(new Date().getDate());
-            //this.setWidthByCarusel();
         }
     };
 </script>
 
 <style lang="scss">
     .ms-calendar {
+        font-size: 14px;
         position: relative;
         margin: 0 auto;
         &_back {
@@ -219,22 +188,6 @@
             &:hover {
                 border-left:3px solid #64b5f6;
             }
-        }
-        &_prev {
-            z-index: 3;
-            background-color: white;
-            border-radius:30px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-            padding: 1px 10px;
-            cursor:pointer;
-        }
-        &_next {
-            z-index: 3;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-            padding: 1px 10px;
-            background-color: white;
-            border-radius:30px;
-            cursor:pointer;
         }
     }
 </style>

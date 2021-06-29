@@ -24,9 +24,9 @@
 <style lang="scss">
     .ms-calendar-description-event {
         color:black;
-        font-size: 16px;
         display: flex;
         padding-bottom:5px;
+        line-height: 1.2;
         .event-time {
             padding-right:5px;
             font-style: italic;

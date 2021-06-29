@@ -1,15 +1,12 @@
 ﻿<template>
     <div class="row" style="margin-top:10px;">
-        <msBreadCrumbs
-            :items="breadcrumbs"
-         />
+        <msBreadCrumbs/>
         <div class="flexCategoryList">
             <msCategoryItem
                 v-for="item in getCategoryChildren"
                 :key="item.Id"
                 :category_item="item"
-            >
-            </msCategoryItem>
+            />
             <div 
                 class="card-panel ms-category-add_item" 
                 @click="createCategory"

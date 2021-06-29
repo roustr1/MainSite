@@ -1,30 +1,10 @@
 ﻿<template>
     <div class='texteditor'>
-        <ms-popup 
-            v-if="isInfoPopupVisible"
-            @closePopup="closePopupInfo"
-            rightBtnTitle="Добавить"
-            @rightBtnAction="addImage"
-            :popupTitle="popuTitle"
-            :isMouseDown="true"
-        >
-            <template v-slot:default>
-                <input ref="file" type="file" id="inputFileToLoad" />
-            </template>      
-        </ms-popup>
         <div class='banner'>
             <div id="toolBar1">
-                <ms-select 
-                    :selected="formatBlockSelected"
-                    :options="formatBlockList"
-                    @select="changeSelectFormatBlock" 
-                    :isCursorEdit="true"
-                />
-                <ms-select 
-                    :selected="sizeSelected"
-                    :options="sizeList"
-                    @select="changeSelectSize" 
-                    :isCursorEdit="true"
+                <ms-loader-files
+                    @changeFileList="changeFileList"
+                    :fileList="fileList"
                 />
             </div>
             <div id="toolBar2">
@@ -43,8 +23,16 @@
                 <i title="Уменьшить на единицу отступ блока форматирования" class="material-icons intLink" @click="formatDoc('outdent');" onmousedown="return false" onselectstart="return false">format_indent_decrease</i>
                 <i title="Увеличить на единицу отступ блока форматирования" class="material-icons intLink" @click="formatDoc('indent');" onmousedown="return false" onselectstart="return false">format_indent_increase</i>
                 <i title="Ссылка" class="material-icons intLink" @click="setLink" onmousedown="return false" onselectstart="return false">link</i>
-                <i title="Добавить картинку" class="material-icons intLink" @click="showPopupInfo(true)" onmousedown="return false" onselectstart="return false">image</i>
-                <i title="Привязать файл" class="material-icons intLink" @click="showPopupInfo(false)" onmousedown="return false" onselectstart="return false">upload</i>
+                <label class="file_loader_label">
+                    <input ref="file" type="file" id="inputFileToLoad" />
+                    <i title="Добавить картинку" class="material-icons intLink" onmousedown="return false" onselectstart="return false">image</i>
+                </label>
+                <ms-select 
+                    :selected="formatBlockSelected.name"
+                    :options="formatBlockList"
+                    @select="changeSelectFormatBlock" 
+                    :isCursorEdit="true"
+                />
             </div>
         </div>
         <div class='holder'>
@@ -54,18 +42,19 @@
 </template>
 
 <script>
-    import msPopup from "./ms-popup.vue";
+    import msPopup from "./ms-popup.vue"
     import msSelect from './ms-select.vue'
+    import msLoaderFiles from './ms-loader-files.vue'
     export default {
         name: "ms-wysiwyg",
         props: {
-            fileList: {
-                type: Array,
-                default: () => { return [] }
-            },
             parentTextEditor: {
                 type: String,
                 default: () => { return '' }
+            },
+            fileList: {
+                type: Array,
+                default: () => { return [] }
             }
         },
         data() {
@@ -75,33 +64,28 @@
                 isInfoPopupVisible: false,
                 actionLoad: '',
                 isImage: false,
-                formatBlockList: [{ name: "-Формат-", value: "p" }, { name: "H1", value: "h1" }, { name: "H2", value: "h2" }, { name: "H3", value: "h3" },
-                    { name: "H4", value: "h4" }, { name: "H5", value: "h5" }, { name: "SubTitle", value: "h6" }, { name: "Paragraph", value: "p" }
+                formatBlockList: [{ name: "Обычный текст", value: "span" }, { name: "Название темы", value: "h1" },
+                 { name: "Название раздела", value: "h2" }, { name: "Название подраздела", value: "h3" }
                 ],
-                formatBlockSelected: "-Формат-",
-                sizeList: [{ name: "-Размер шрифта-", value: "3" }, { name: "10px", value: "1" }, { name: "12px", value: "2" }, { name: "14px", value: "3" },
-                    { name: "16px", value: "4" }, { name: "18px", value: "5" }, { name: "21px", value: "6" }, { name: "26px", value: "7" },
-                ],
-                sizeSelected: "-Размер шрифта-",
+                formatBlockSelected: { name: "Обычный текст", value: "span" },
+                fileListDropDownSelected: { name: "Список файлов &#129131;", value: "" },
                 currentImage: {}
             }
         },
         components: {
             msPopup,
-            msSelect
+            msSelect,
+            msLoaderFiles
         },
         computed: {
-            popuTitle() {
-                if (this.isImage) {
-                    return 'Добавить картинку';
-                }
-                else {
-                    return 'Добавить файл';
-                }
-            },
             GUUID() {
                 return "wysiwyg_" + new Date();
             },
+            formListDropDown() {
+                return this.fileList.map(function(item, index){
+                    return { name: item.FormFile.name, value:item.Id}
+                })
+            }
         },
         methods: {   
             changeTextEditor() {
@@ -156,27 +140,21 @@
                 document.execCommand(sCmd, false, sValue);
                 this.editor.focus();
             },
-            changeSelectFormatBlock(selectElement) {
-                this.formatBlockSelected = selectElement.name;
-                if (document.getSelection().anchorNode.nodeValue) {
-                    let html = `<${selectElement.value}>${document.getSelection().anchorNode.nodeValue}</${selectElement.value}>`
-                    this.formatDoc("insertHTML", html);
+            changeSelectFormatBlock(selectDropDownElement) {                       
+                this.formatBlockSelected = selectDropDownElement;
+                var div = document.createElement('div');
+                let text = window.getSelection().toString()
+                if( selectDropDownElement.value === 'span') {
+                    let checkContainsHeader = 
+                        document.getSelection().anchorNode.parentElement.getAttribute('name') != 'wysiwyg' &&
+                        document.getSelection().anchorNode.parentElement.tagName != 'SPAN'
+                    if(checkContainsHeader) {
+                        window.getSelection().anchorNode.parentElement.remove()
+                    }
                 }
-            },
-            changeSelectSize(selectElement) {
-                this.sizeSelected = selectElement.name;
-                this.formatDoc("fontsize", selectElement.value);
-            },
-            addImage() {
-                this.addFileForBody(this.$refs.file.files[0]);
-                this.closePopupInfo();
-            },
-            showPopupInfo(isImage) {
-                this.isImage = isImage;
-                this.isInfoPopupVisible = true;
-            },
-            closePopupInfo() {
-                this.isInfoPopupVisible = false;
+                
+                div.innerHTML = "<" + selectDropDownElement.value + ">" + text + "</" + selectDropDownElement.value + ">";
+                this.formatDoc("insertHTML", div.innerHTML);
             },
             addFileForBody(file) {
                 if (file) {
@@ -184,7 +162,7 @@
                     let reader = new FileReader(file);
                     
                     reader.readAsDataURL(file);
-                    if (file.type.match("image.*") && vm.isImage) {
+                    if (file.type.match("image.*")) {
                         reader.onload = async function (e) {   
                             e.preventDefault();                     
                             let img = await new Promise((resolve, reject) => {
@@ -199,37 +177,24 @@
 
                             let imgWidth = img.width;
                             let imgHeight = img.height;
-                            let ratioWidth = vm.editor.offsetWidth/imgWidth;
-                            let ratioHeight = vm.editor.offsetHeight/imgHeight;
 
-                            if (img.width > vm.editor.offsetWidth) {
-                                img.width = img.width * ratioWidth  - 100;
-                            }
+                            let scale = imgWidth / imgHeight;
+                            let tempHeight = vm.editor.offsetHeight * 3 / 5 - 30
+                            let tempWidth = tempHeight * scale
 
-                            if (img.height > vm.editor.offsetHeight) {
-                                img.height = img.height * ratioHeight - 100;
-                            }
+                            
+                            img.width = tempWidth;                        
+                            img.height = tempHeight;
                             
                             vm.formatDoc("insertHTML", img.outerHTML);
                         }                        
-                    }
-                    else if (!vm.isImage) {
-                        reader.onload = function (e) {
-                            e.preventDefault();
-                            let unicId = 'file_' + Date.now().toString();
-                            vm.fileList.push({ Id: unicId, FormFile: file });
-
-                            let a = document.createElement('a');
-                            a.setAttribute('href', unicId);
-                            a.innerHTML = file.name;
-
-                            vm.formatDoc("insertHTML", a.outerHTML);
-                        }
-                    }
-                    
+                    }   
                 }
                 else {
                 }
+            },
+            changeFileList(changeFileListData) {
+                this.$emit('changeFileList', changeFileListData);
             },
             clear() {
                 if (confirm('Очистить всю область?')) { this.editor.innerHTML = "" };
@@ -242,22 +207,54 @@
                 if (sLnk && sLnk != '') {
                     this.formatDoc('createlink', sLnk);
                 }
+            },
+            listenerImageLoader() {
+                let imageLoader = document.querySelector('.file_loader_label > input[type="file"]')
+                let vm = this
+                imageLoader.addEventListener('change', function() {
+                    vm.addFileForBody(this.files[0])
+                })
             }
         },
         beforeDestroy() {
             this.editor = {};
-            this.formatBlockSelected =  "-Формат-";
-            this.sizeSelected = "-Размер шрифта-";
+            this.formatBlockSelected =  "Обычный текст";
             this.changeTextEditor();
             this.$emit('changeFileList', []);
         },
         mounted() {
-            this.loadIframe();
+            this.loadIframe()
+            this.listenerImageLoader()
         }
     };
 </script>
 
 <style lang="scss">
+    .file_loader_label {
+        input[type="file"] {
+            display: none;
+        }
+    }
+
+    #toolBar1 {
+        margin-top: 10px;
+    }
+
+    #toolBar2 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        & .ms-select {
+            width: 170px;
+            font-size: 14px;
+            & .title {
+                border-radius: 8px;
+                line-height: 1;
+            }
+        }
+    }
+
     .resize {
         position: relative;
         resize: both;
@@ -312,14 +309,6 @@
         border: 0;
     }
 
-    #toolBar1 {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    #toolBar1 select {
-        font-size: 10px;
-    }
 
     #textBox {
         width: 540px;

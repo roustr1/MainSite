@@ -17,12 +17,6 @@
 
     export default {
         name: 'ms-breadcrumbs-category',
-        props: {
-            items: {
-                type: Array,
-                default: () => { return [] }
-            }
-        },
         data(){
             return {
             }
@@ -54,8 +48,8 @@
                 this.$router.push('/');
             },
             CheckLastItem(indexItem) {
-                if (this.items.length > 0) {
-                    if (this.items.length - 1 == indexItem)
+                if (this.breadcrumbs.length > 0) {
+                    if (this.breadcrumbs.length - 1 == indexItem)
                         return 'bold';
                 }
 
@@ -75,11 +69,31 @@
     .navHeader {
         white-space: pre-wrap;
         display:block;
-    }
+        font-size: 14px;
+        line-height: 1;
+        &-item {
+            color: #9e9e9e;
+            display: inline;
+            height: 37px;
+            cursor: pointer;
+            font-size: 14px;
 
-    .navHeader-item {
-        display: inline;
-        height: 37px;
-        cursor: pointer;
+            &:before {
+                content: '\E5CC';
+                color: #9e9e9e;
+                vertical-align: middle;
+                display: inline-block;
+                font-family: 'Material Icons';
+                font-weight: normal;
+                font-style: normal;
+                font-size: 14px;
+                margin: 0 3px 0 3px;
+                -webkit-font-smoothing: antialiased;
+            }
+
+            &:first-child:before {
+                display: none;
+            }
+        }
     }
 </style>
