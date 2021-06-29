@@ -24,12 +24,13 @@ namespace MainSite.Areas.Admin.Controllers
         private readonly IPictureService _uploadService;
         private readonly ISecurityModelFactory _securityModelFactory;
 
-        public MenuController(IPictureService uploadService, IMenuService menuService, IUsersService userService, IPermissionService permissionService)
+        public MenuController(IMenuService menuService, IUsersService userService, IPermissionService permissionService, IPictureService uploadService, ISecurityModelFactory securityModelFactory)
         {
             _menuService = menuService;
             _userService = userService;
             _permissionService = permissionService;
             _uploadService = uploadService;
+            _securityModelFactory = securityModelFactory;
         }
 
         // GET: MenuService
