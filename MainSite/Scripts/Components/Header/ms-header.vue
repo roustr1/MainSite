@@ -13,7 +13,7 @@
                             <li>
                                 <div class="secondMenu-search">
                                     <span class="bold">Поиск:</span>
-                                    <input v-model="searchText" style="flex-grow:1" class="inputTextMainSite" type="text" />
+                                    <input v-model="searchText" style="flex-grow:1" class="inputTextMainSite inputSearch" type="text" />
                                     <button style="flex-grow:0" class="btn btn-default" @click="searchNews">Найти</button>
                                 </div>
                             </li>
@@ -74,9 +74,10 @@
             searchNews() {
                 if (Object.keys(this.$route.params).length == 0 || this.searchText != '') {
                     let routerParams = { name: 'search', params: { searchText: this.searchText } };
-
-                    this.searchText = '';
-                    this.$router.push(routerParams);
+                    
+                    if(this.$route.params.searchText != this.searchText) {
+                        this.$router.push(routerParams);
+                    }
                 }
             },
             searchSettingByName(name, defaultName) {
@@ -95,11 +96,28 @@
                     this.SET_OR_UPDATE_ACTIVE_CATEGORY(null);
                     this.$router.push('/');
                 }
+            },
+            actionFocusin(e) {
+                e.target.style.backgroundColor = 'white';
+            },
+            actionFocusout(e) {
+                if(e.target.value.trim() != '')
+                {
+                    e.target.style.backgroundColor = 'white';
+                }
+                else {
+                    e.target.style.backgroundColor = '#eeeeee';
+                }
             }
         },
         mounted() {
             this.GET_SETTINGS();
             this.GET_INFO_BY_CURRENT_USER();
+            
+            let elem = document.querySelector('.inputSearch')
+            let vm = this
+            elem.addEventListener('focusout', vm.actionFocusout.bind(this))
+            elem.addEventListener('focusin', vm.actionFocusin.bind(this))
         }
     }
 </script>
