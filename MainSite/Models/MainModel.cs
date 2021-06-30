@@ -254,7 +254,7 @@ namespace MainSite.Models
         {
             var result = new List<NewsItemViewModel>();
 
-            foreach (var newsItem in newsItems)
+            foreach (var newsItem in newsItems.ToList())
             {
 
                 var newsItemViewModel = GetNewsItemViewModel(newsItem);
@@ -390,7 +390,7 @@ namespace MainSite.Models
         #region Search
         public IList<NewsItemViewModel> GetManySearchResultNewsItemViewModel(string query)
         {
-            return GetNewsItemsViewModel(_newsService.FindFreeText(query).ToList());
+            return GetNewsItemsViewModel(_newsService.FindFreeText(query));
         }
 
 
