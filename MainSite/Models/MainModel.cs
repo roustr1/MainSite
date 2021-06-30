@@ -90,8 +90,8 @@ namespace MainSite.Models
                 Author = newsItem.AutorFio,
                 CreatedDate = newsItem.CreatedDate,
                 LastChangeDate = newsItem.LastChangeDate,
-                IsMessage = !newsItem.Files.Any(),
-                Files = newsItem.Files.Select(s => new FileViewModel
+                IsMessage = newsItem.Files != null ? newsItem.Files.Any() : false,
+                Files = newsItem.Files?.Select(s => new FileViewModel
                 {
                     Name = s.Filename,
                     MimeType = s.ContentType,
@@ -390,7 +390,7 @@ namespace MainSite.Models
         #region Search
         public IList<NewsItemViewModel> GetManySearchResultNewsItemViewModel(string query)
         {
-            return GetNewsItemsViewModel(_newsService.FindFreeText(query));
+            return GetNewsItemsViewModel(_newsService.FindFreeText(query).ToList());
         }
 
 

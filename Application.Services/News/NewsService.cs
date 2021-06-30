@@ -77,7 +77,7 @@ namespace Application.Services.News
 
         public IEnumerable<NewsItem> FindFreeText(string query)
         {
-            var collection = _newsRepository.GetMany(x => EF.Functions.FreeText(x.Description, query));
+            var collection = _newsRepository.GetMany(x => EF.Functions.FreeText(x.Description, query)|| EF.Functions.FreeText(x.Header, query));
 
             return collection;
         }
