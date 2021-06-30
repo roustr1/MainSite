@@ -8,5 +8,7 @@ namespace Application.Services.Birthday
          IEnumerable<Birtday> GetTodayBirth();
 
         void AddItem(Birtday birtday);
+
+        void DeleteAllItems();
     }
 }

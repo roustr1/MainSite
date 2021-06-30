@@ -66,6 +66,14 @@ namespace Application.Dal
             _context.SaveChanges();
         }
 
+        public void DeleteAll()
+        {
+            if (_context.Set<TEntity>().Count() == 0) return;
+            
+            _context.Set<TEntity>().RemoveRange(_context.Set<TEntity>());
+            _context.SaveChanges();
+        }
+
         public void Delete(IEnumerable<TEntity> entities)
         {
             foreach (var entity in entities)
