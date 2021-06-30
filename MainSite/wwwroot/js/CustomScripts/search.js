@@ -15,8 +15,8 @@ function inputFilter() {
     // Loop through all list items, and hide those who don't match the search query
     for (i = 0; i < tr.length; i++) {
         var nameTd = tr[i].getElementsByTagName("td");
-     
-        if (search(nameTd[0].innerText, filter) || search(nameTd[1].innerText,filter)) {
+
+        if (search(nameTd[0].innerHTML, filter) || search(nameTd[1].innerHTML,filter)) {
             tr[i].style.display = "";
         } else {
             tr[i].style.display = "none";
