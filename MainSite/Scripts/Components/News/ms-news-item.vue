@@ -95,7 +95,9 @@
 
                 let date = new Date(this.news_item.createdDate);
                 let formatDate = date.toLocaleDateString("ru", options).replace('г.','');
-                let formatTime = `${date.getHours()}:${date.getMinutes()}`;
+                let minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
+                let formatTime = `${date.getHours()}:${minutes}`;
+
                 return `${formatDate} в ${formatTime}`;
             },
         },
