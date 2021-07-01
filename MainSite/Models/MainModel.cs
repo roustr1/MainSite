@@ -90,7 +90,7 @@ namespace MainSite.Models
                 Author = newsItem.AutorFio,
                 CreatedDate = newsItem.CreatedDate,
                 LastChangeDate = newsItem.LastChangeDate,
-                IsMessage = newsItem.Files != null ? newsItem.Files.Any() : false,
+                IsMessage = newsItem.Files != null ? !newsItem.Files.Any() : true,
                 Files = newsItem.Files?.Select(s => new FileViewModel
                 {
                     Name = s.Filename,
