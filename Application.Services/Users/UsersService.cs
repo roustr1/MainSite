@@ -10,6 +10,8 @@ using Application.Dal.Domain.Users;
 
 namespace Application.Services.Users
 {
+
+    //https://www.reflections-ibs.com/blog/articles/how-to-extend-asp-net-core-3-0-and-3-1-identity-user
     public class UsersService : IUsersService
     {
         #region Fields
