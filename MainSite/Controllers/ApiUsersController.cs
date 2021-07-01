@@ -28,18 +28,11 @@ namespace MainSite.Controllers
         [Route("GetBirthdayUsers")]
         public string GetBirthdayUsers()
         {
-            string path = null;
-
-            _settingsService?.SettingsDictionary.TryGetValue("BirthdayPath", out path);
-            if (path != null && !string.IsNullOrEmpty(path))
+            var model = _birthdayService.GetTodayBirth().ToList();
+            if (model.Any())
             {
-                var model = _birthdayService.GetTodayBirth().ToList();
-                if (model.Any())
-                {
-                    return JsonConvert.SerializeObject(model); 
-                }
+                return JsonConvert.SerializeObject(model);
             }
-
             return "[]";
         }
         [Route("InfoCurrentUser")]
@@ -58,7 +51,7 @@ namespace MainSite.Controllers
         public bool IsPermissionForCategory(string categoryId)
         {
             bool result = true;
-            if(categoryId != null) result = _mainMode.GetUserPermissionForCategory(categoryId, HttpContext.User);
+            if (categoryId != null) result = _mainMode.GetUserPermissionForCategory(categoryId, HttpContext.User);
 
             return result;
         }
