@@ -116,8 +116,8 @@
             
             let elem = document.querySelector('.inputSearch')
             let vm = this
-            elem.addEventListener('focusout', vm.actionFocusout.bind(this))
-            elem.addEventListener('focusin', vm.actionFocusin.bind(this))
+            elem.addEventListener('focus', vm.actionFocusout.bind(this))
+            elem.addEventListener('blur', vm.actionFocusin.bind(this))
         }
     }
 </script>
