@@ -5,24 +5,25 @@
     ViewBag.Title = "Добавление ролей";
     Layout = "_Layout";
 }
+<div class="col s12 m12 card-panel">
+    <form asp-controller="UserRole" asp-action="Create" method="post">
+        <h5 class="pull-left">Добавление ролей</h5>
+        <p> <a href="@Url.Action("List")">Вернуться к списку ролей</a></p>
+          
+        <div class="row">
+            @await Html.PartialAsync("_CreateOrUpdate", Model)
 
-<form asp-controller="UserRole" asp-action="Create" method="post">
-    <div class="content-header clearfix">
-        <h1 class="pull-left">
-            Добавление ролей
-      
-        </h1>
-        <p>      <a href="@Url.Action("List")">Вернуться к списку ролей</a></p>
-        <div class="pull-right">
-            <button type="submit" name="save" class="btn bg-blue">
-                <i class="fa fa-floppy-o"></i>
-               Сохранить
-            </button>
-            <button type="submit" name="save-continue" class="btn bg-blue">
-                <i class="fa fa-floppy-o"></i>
-               Сохранить и продолжить
-            </button>
+            <div class="col input-field m12">
+                <button type="submit" name="save" class="btn btn-defaultMainSite">
+                    <i class="fa fa-floppy-o"></i>
+                    Сохранить
+                </button>
+                @*<button type="submit" name="save-continue" class="btn bg-blue">
+                    <i class="fa fa-floppy-o"></i>
+                    Сохранить и продолжить
+                </button>
+                *@
+            </div>
         </div>
-    </div>
-    @await Html.PartialAsync("_CreateOrUpdate", Model)
-</form>
+    </form>
+</div>

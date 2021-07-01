@@ -5,28 +5,27 @@
     Layout = "_Layout";
 
 }
-
-<form asp-controller="UserRole" asp-action="Edit" method="post">
-    <div class="content-header clearfix">
-        <h1 class="pull-left">
+<div class="col s12 m12 card-panel">
+    <form asp-controller="UserRole" asp-action="Edit" method="post">
+        <h5 class="pull-left">
             Изменение роли - @Model.Name
-        </h1>
+        </h5>
         <p><a href="@Url.Action("List")">Вернуться к списку ролей</a></p>
-        <div class="pull-right">
-            <button type="submit" name="save" class="btn bg-blue">
-                <i class="fa fa-floppy-o"></i>
-                Сохранить
-            </button>
-            <button type="submit" name="save-continue" class="btn bg-blue">
-                <i class="fa fa-floppy-o"></i>
-                Сохранить и продолжить
-            </button>
-            <span id="customerrole-delete" class="btn bg-red">
-                <i class="fa fa-trash-o"></i>
-                Удалить
-            </span>
+        <div class="row">
+            @await Html.PartialAsync("_CreateOrUpdate", Model)
+
+            <div class="col input-field m12">
+                <button type="submit" name="save" class="btn btn-defaultMainSite">
+                    <i class="fa fa-floppy-o"></i>
+                    Сохранить
+                </button>
+
+                <span id="customerrole-delete" class="btn btn-defaultMainSite">
+                    <i class="fa fa-trash-o"></i>
+                    Удалить
+                </span>
+            </div>
         </div>
-    </div>
-    @await Html.PartialAsync("_CreateOrUpdate", Model)
-</form>
- 
+    </form>
+</div>
+
