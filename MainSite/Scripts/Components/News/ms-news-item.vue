@@ -54,6 +54,8 @@
 <script>
     import msChangeNewsForm from './ms-change_news-form.vue';
     import { mapActions } from 'vuex';
+    import msSimpleModal from '../../DefaultComponents/Modal/templates/ms-simple-modal'
+
     export default {
         name: "ms-news-item",
         props: {
@@ -72,8 +74,10 @@
         },
         data: () => {
             return {
-                isEditer: false ,
-                model: {}
+                isEditer: false,
+                modalOptions: {
+                    body: `Это действие невозможно будет отменить, и все приложенные изображения и другие ресурсы так же будут удалены. Удалить запись?`
+                }
             }
         },
         components: {
@@ -105,6 +109,7 @@
             ...mapActions('news', [
                 'DOWNLOADFILE',
                 'UPDATE_NEW',
+                'DELETE_NEW'
             ]),
              ...mapActions('user', [
                 'GET_PERMISSION_BY_CATEGORY'
@@ -122,7 +127,17 @@
             },
             async deleteNews() {
                 if(await this.getInfoByPermission()) {
-                    this.$emit('deleteNews',{ index: this.index, id: this.news_item.id });
+                    let vm = this;
+
+                    this.$modals.open({
+                        title: 'Вы действительно хотите удалить запись?',
+                        bodyInfo: 'Это действие невозможно будет отменить, и все приложенные изображения и другие ресурсы так же будут удалены. Удалить запись?',
+                        component: msSimpleModal,
+                        onClose(data) {
+                            if(data.ended) return false
+                            vm.DELETE_NEW({ index: vm.index, id: vm.news_item.id })
+                        }
+                    })
                 }
                 else {
                      M.toast({html: 'У вас нету прав на удаление данной записи!'})
