@@ -6,7 +6,11 @@
                     <div class="valign-wrapper">
                         <a style="cursor: pointer;" @click="routerPushMainView" class="valign-wrapper">
                             <img :src="GetApplicationIcon" width="50" height="50" /> 
-                            <span class="bold" style="padding-left:10px;">{{GetApplicationName}}</span>
+                            <span 
+                              class="bold" 
+                              style="padding-left:10px;line-height: 15px;margin-right: 13px;font-size:12px;"
+                              v-html="GetApplicationName"
+                            ></span>
                         </a>
                         <a id="openMenu" data-target="mobile-demo" class="sidenav-trigger" style="float: right;cursor:pointer;"><i class="material-icons">menu</i></a>
                         <ul class="hide-on-med-and-down col m12 s12 l9 secondMenu">
