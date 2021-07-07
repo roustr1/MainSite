@@ -15,30 +15,27 @@
     <header class="navbar-fixed">
         <nav class="nav-header">
             <div class="container">
-                <div class="nav-wrapper">
-                    <div class="valign-wrapper">
-                        <a style="cursor: pointer;" href="@Url.Action("Index","Home")" class="valign-wrapper">
-                            <img src="@service.SettingsDictionary.GetValueOrDefault("Application.Icon","~/images/layout_icons/header.png")" width="50" height="50" />
-                            <span class="bold">@service.SettingsDictionary.GetValueOrDefault("Application.Name", "WebSite")</span>
-                        </a>
-                        <a id="openMenu" data-target="mobile-demo" class="sidenav-trigger" style="float: right;cursor:pointer;"><i class="material-icons">menu</i></a>
-                        <ul class="hide-on-med-and-down col m12 s12 l12 secondMenu">
-                            <li>
-                                <div class="secondMenu-user">
-                                    <a data-target='dropdown1' class="dropdown-trigger valign-wrapper" style="padding: 0px;">
-                                        <span class="secondMenu-infoUser">@User.Identity.Name</span>
-                                        <i class="material-icons">keyboard_arrow_down</i>
-                                        <img class="rectangle" src="~/images/layout_icons/user.png" alt="" />
-
-                                    </a>
-                                    <ul id='dropdown1' class='dropdown-content secondMenu-settingsUser'>
-                                        <li><a href="#!"><i class="material-icons">home</i>Личный кабинет</a></li>
-                                        <li><a href="#!"><i class="material-icons">cloud</i>Управление сервисами</a></li>
-                                    </ul>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+                <div style="display:flex; align-items: center;">
+                    <a style="cursor: pointer;display:flex; align-items:center;flex-basis:40%;" href="@Url.Action("Index","Home")">
+                        <img src="@service.SettingsDictionary.GetValueOrDefault("Application.Icon","~/images/layout_icons/header.png")" width="50" height="50" />
+                        <span class="bold" style="padding-left:10px;">Информационный портал ЯВВУ ПВО</span>
+                    </a>
+                    <a id="openMenu" data-target="mobile-demo" class="sidenav-trigger" style="float: right;cursor:pointer;flex-basis:20%;"><i class="material-icons">menu</i></a>
+                    <ul class="hide-on-med-and-down" style="margin-left: auto;">
+                        <li>
+                            <div class="secondMenu-user">
+                                <a data-target='dropdown1' class="dropdown-trigger valign-wrapper" style="padding: 0px;">
+                                    <span class="secondMenu-infoUser" style="padding-right:10px;">@User.Identity.Name</span>
+                                    <img src="/images/layout_icons/userLogout.svg" alt="" />
+                                    <!--<i class="material-icons">keyboard_arrow_down</i>-->
+                                </a>
+                                <ul id='dropdown1' class='dropdown-content secondMenu-settingsUser'>
+                                    <li><a href="#!"><i class="material-icons">home</i>Личный кабинет</a></li>
+                                    <li><a href="#!"><i class="material-icons">cloud</i>Управление сервисами</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>
@@ -46,10 +43,10 @@
 
     <div class="container">
         @*<div class="col m12 s12 l3" id="menuBlock">
-            <div class="secondMenuBlock"></div>
-            <ul class="menu">
-            </ul>
-        </div>
+                <div class="secondMenuBlock"></div>
+                <ul class="menu">
+                </ul>
+            </div>
         *@
         <main role="main" class="col m12 s12 l12" id="mainBlock">
             @RenderBody()
