@@ -2,7 +2,7 @@
     <div class="creator">
         <div v-if="showCreaterBlock" class="card-panel creator-main" v-bind:class="classObject">
             <a class="error close" @click="showCreater(false, true)"><i class="material-icons">close</i></a>
-            <a class="changeEditor" @click="changeEditor" style="cursor:pointer;"><i title="Поменять режим ввода" class="material-icons">swap_horiz</i></a>
+            <!--<a class="changeEditor" @click="changeEditor" style="cursor:pointer;"><i title="Поменять режим ввода" class="material-icons">swap_horiz</i></a>-->
 
             <msChangeNewsForm
                 :isAdvancedEditor="isAdvancedEditor"
@@ -33,7 +33,7 @@
                     'active': false,
                     'desActive': false
                 },
-                isAdvancedEditor: false
+                isAdvancedEditor: true
             }
         },
         computed: {
@@ -56,9 +56,9 @@
                 this.CREATE_NEW(result);
                 this.showCreater(false, true);
             },
-            changeEditor() {
+            /*changeEditor() {
                 this.isAdvancedEditor = !this.isAdvancedEditor;
-            },
+            },*/
             showCreater(active, desActive) {
                 this.classObject['active'] = active;
                 this.classObject['desActive'] = desActive;
