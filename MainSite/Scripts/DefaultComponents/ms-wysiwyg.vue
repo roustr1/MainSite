@@ -1,38 +1,45 @@
 ﻿<template>
     <div class='texteditor'>
         <div class='banner'>
-            <div id="toolBar1">
+            <div class="wysiwyg_loader">
                 <ms-loader-files
                     @changeFileList="changeFileList"
                     :fileList="fileList"
                 />
             </div>
-            <div id="toolBar2">
-                <i class="material-icons intLink" title="Очистить" @click="clear" onmousedown="return false" onselectstart="return false">cleaning_services</i>
-                <i class="material-icons intLink" title="Назад" @click="formatDoc('undo');" onmousedown="return false" onselectstart="return false">undo</i>
-                <i class="material-icons intLink" title="Вперед" @click="formatDoc('redo');" onmousedown="return false" onselectstart="return false">redo</i>
-                <i title="Жирный" class="material-icons intLink" @click="formatDoc('bold');" onmousedown="return false" onselectstart="return false">format_bold</i>
-                <i title="Курсивный" class="material-icons intLink" @click="formatDoc('italic');" onmousedown="return false" onselectstart="return false">format_italic</i>
-                <i title="Подчеркнутый" class="material-icons intLink" @click="formatDoc('underline');" onmousedown="return false" onselectstart="return false">format_underline</i>
-                <i title="Выравнивание с лева" class="material-icons intLink" @click="formatDoc('justifyleft');" onmousedown="return false" onselectstart="return false">format_align_left</i>
-                <i title="Выравнивание по центру" class="material-icons intLink" @click="formatDoc('justifycenter');" onmousedown="return false" onselectstart="return false">format_align_center</i>
-                <i title="Выравнивание с права" class="material-icons intLink" @click="formatDoc('justifyright');" onmousedown="return false" onselectstart="return false">format_align_right</i>
-                <i title="Нумерованный список" class="material-icons intLink" @click="formatDoc('insertorderedlist');" onmousedown="return false" onselectstart="return false">format_list_numbered</i>
-                <i title="Маркированный список" class="material-icons intLink" @click="formatDoc('insertunorderedlist');" onmousedown="return false" onselectstart="return false">format_list_bulleted</i>
-                <i title="Блок с цитатой" class="material-icons intLink" @click="formatDoc('formatblock','blockquote');" onmousedown="return false" onselectstart="return false">format_quote</i>
-                <i title="Уменьшить на единицу отступ блока форматирования" class="material-icons intLink" @click="formatDoc('outdent');" onmousedown="return false" onselectstart="return false">format_indent_decrease</i>
-                <i title="Увеличить на единицу отступ блока форматирования" class="material-icons intLink" @click="formatDoc('indent');" onmousedown="return false" onselectstart="return false">format_indent_increase</i>
-                <i title="Ссылка" class="material-icons intLink" @click="setLink" onmousedown="return false" onselectstart="return false">link</i>
-                <label class="file_loader_label">
+            <div class="wysiwyg_list">
+
+                <ms-select 
+                  :selected="formatBlockSelected.name"
+                  :options="formatBlockList"
+                  @select="changeSelectFormatBlock" 
+                  :isCursorEdit="true"
+                />
+
+                <div class="wysiwyg_list__btn">  
+                  <i title="Жирный" class="material-icons intLink" @click="formatDoc('bold');" onmousedown="return false" onselectstart="return false">format_bold</i>
+                  <i title="Курсивный" class="material-icons intLink" @click="formatDoc('italic');" onmousedown="return false" onselectstart="return false">format_italic</i>
+                  <i title="Подчеркнутый" class="material-icons intLink" @click="formatDoc('underline');" onmousedown="return false" onselectstart="return false">format_underline</i>
+                </div>
+                <div class="wysiwyg_list__btn">
+                  <i title="Выравнивание слева" class="material-icons intLink" @click="formatDoc('justifyleft');" onmousedown="return false" onselectstart="return false">format_align_left</i>
+                  <i title="Выравнивание по центру" class="material-icons intLink" @click="formatDoc('justifycenter');" onmousedown="return false" onselectstart="return false">format_align_center</i>
+                  <i title="Выравнивание справа" class="material-icons intLink" @click="formatDoc('justifyright');" onmousedown="return false" onselectstart="return false">format_align_right</i>
+                </div>
+                <div class="wysiwyg_list__btn">  
+                  <i title="Нумерованный список" class="material-icons intLink" @click="formatDoc('insertorderedlist');" onmousedown="return false" onselectstart="return false">format_list_numbered</i>
+                  <i title="Маркированный список" class="material-icons intLink" @click="formatDoc('insertunorderedlist');" onmousedown="return false" onselectstart="return false">format_list_bulleted</i>
+                  <i title="Блок с цитатой" class="material-icons intLink" @click="formatDoc('formatblock','blockquote');" onmousedown="return false" onselectstart="return false">format_quote</i>
+                  <i title="Уменьшить на единицу отступ блока форматирования" class="material-icons intLink" @click="formatDoc('outdent');" onmousedown="return false" onselectstart="return false">format_indent_decrease</i>
+                  <i title="Увеличить на единицу отступ блока форматирования" class="material-icons intLink" @click="formatDoc('indent');" onmousedown="return false" onselectstart="return false">format_indent_increase</i>
+                </div>
+                <div class="wysiwyg_list__btn">
+                  <i title="Ссылка" class="material-icons intLink" @click="setLink" onmousedown="return false" onselectstart="return false">link</i>
+                  <label class="file_loader_label">
                     <input ref="file" type="file" id="inputFileToLoad" />
                     <i title="Добавить картинку" class="material-icons intLink" onmousedown="return false" onselectstart="return false">image</i>
-                </label>
-                <ms-select 
-                    :selected="formatBlockSelected.name"
-                    :options="formatBlockList"
-                    @select="changeSelectFormatBlock" 
-                    :isCursorEdit="true"
-                />
+                  </label>
+                </div>
             </div>
         </div>
         <div class='holder'>
@@ -185,19 +192,32 @@
                             
                             img.width = tempWidth;                        
                             img.height = tempHeight;
-                            
-                            vm.formatDoc("insertHTML", img.outerHTML);
+
+                            let focus = vm.setFocus();
+                            if(focus != null && focus.getAttribute('name') == 'wysiwyg') {
+                              vm.formatDoc("insertHTML", img.outerHTML);
+                            }
+                            else {
+                              vm.editor.appendChild(img);
+                              vm.editor.focus();
+                            }
                         }                        
                     }   
                 }
                 else {
                 }
             },
+            setFocus() {
+                let focused = document.activeElement;
+                if (!focused || focused == document.body)
+                    focused = null;
+                else if (document.querySelector)
+                    focused = document.querySelector(":focus");
+                
+                return focused
+            },
             changeFileList(changeFileListData) {
                 this.$emit('changeFileList', changeFileListData);
-            },
-            clear() {
-                if (confirm('Очистить всю область?')) { this.editor.innerHTML = "" };
             },
             changeFormatBlockSelected() {
                 this.formatDoc('formatblock', this.formatBlockSelected);
@@ -236,21 +256,33 @@
         }
     }
 
-    #toolBar1 {
+    .wysiwyg_loader {
         margin-top: 10px;
     }
 
-    #toolBar2 {
+    .wysiwyg_list {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-
+        flex-wrap: wrap;
         & .ms-select {
             width: 170px;
             font-size: 14px;
             & .title {
                 border-radius: 8px;
                 line-height: 1;
+            }
+        }
+
+        &__btn {
+            display: flex;
+            border-right: 1px solid black;
+            & > i, label {
+                padding-right: 10px;
+                padding-left: 10px;  
+            }
+
+            &:last-child {
+                border-right:none;                   
             }
         }
     }
