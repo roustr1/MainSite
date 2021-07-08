@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Application.Dal;
 using Application.Dal.Domain.News;
-using Application.Services.Infrastructure;
+using Application.Dal.Repositories.Infrastructure;
 using Application.Services.News;
 using Moq;
 using NUnit.Framework;

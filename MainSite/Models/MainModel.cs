@@ -3,7 +3,6 @@ using Application.Dal.Domain.Menu;
 using Application.Dal.Domain.News;
 using Application.Dal.Infrastructure;
 using Application.Services.Files;
-using Application.Services.Infrastructure;
 using Application.Services.Menu;
 using Application.Services.News;
 using Application.Services.Settings;
@@ -19,6 +18,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
 using System.Xml;
+using Application.Dal.Repositories.Infrastructure;
 using Application.Services.Permissions;
 using Application.Services.Utils;
 using Microsoft.Win32;
@@ -250,7 +250,7 @@ namespace MainSite.Models
             };
         }
 
-        private IList<NewsItemViewModel> GetNewsItemsViewModel(IEnumerable<NewsItem> newsItems, int skip = 0, int take = 10)
+        private IList<NewsItemViewModel> GetNewsItemsViewModel(IEnumerable<NewsItem> newsItems)
         {
             var result = new List<NewsItemViewModel>();
 
@@ -326,10 +326,10 @@ namespace MainSite.Models
             var pageSize = pagesize.GetValueOrDefault(10);
 
             var pinnedNews = GetAllPinnedNewsByCategory(category);
+            var newsCount = _newsService.GetTotalNewsCount(category);
+            var records = GetManyNewsItemViewModel(category, pageIndex * pageSize, pagesize.GetValueOrDefault(5));
 
-            var records = GetManyNewsItemViewModel(category, page.GetValueOrDefault(0), pagesize.GetValueOrDefault(5));
-
-            var list = new PagedList<NewsItemViewModel>(records, pageIndex, pageSize);
+            var list = new PagedList<NewsItemViewModel>(records, pageIndex, pageSize, newsCount);
             var model = new NewsListViewModel
             {
                 CategoryId = category,
