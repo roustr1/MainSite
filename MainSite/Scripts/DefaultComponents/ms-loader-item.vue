@@ -1,60 +1,86 @@
 <template>
-   <div class="uploadedFiles_item" :title="fileItem.name">
-        <div class="uploadedFiles_item__content">
-            <div class="uploadedFiles_item__content-delete" @click="deleteFile">
-                <i class="material-icons">close</i>
-            </div>
-            <div class="uploadedFiles_item__content__body">
-                <div class="uploadedFiles_item__content__body-name">
-                    {{fileItem.name}}
-                </div>
-                <div class="uploadedFiles_item__content__body-icone">
-                    <img src="/images/layout_icons/header.png" width="50" height="50" />
-                </div>
-                <div class="uploadedFiles_item__content__body-size">
-                    {{formatBytes(fileItem.size, 1)}}
-                </div>
-            </div>
-        </div>                      
-    </div>
+  <div class="uploadedFiles_item" :title="fileItem.name">
+    <div class="uploadedFiles_item__content">
+      <div class="uploadedFiles_item__content-delete" @click="deleteFile">
+        <i class="material-icons">close</i>
+      </div>
+      <div class="uploadedFiles_item__content__body">
+        <div class="uploadedFiles_item__content__body-name">
+          {{fileItem.name}}
+        </div>
+        <div class="uploadedFiles_item__content__body-icone">
+          <img 
+            v-bind:src="getIcon" 
+            width="50" 
+            height="50" 
+          />
+        </div>
+        <div class="uploadedFiles_item__content__body-size">
+          {{formatBytes(fileItem.size, 1)}}
+        </div>
+      </div>
+    </div>                      
+  </div>
 </template>
 
 <script>
 export default {
     name:'ms-loader-item',
     props:{
-        fileItem: {
-            type: [Object, File],
-            default: () => { return {} }
-        },
+      fileItem: {
+        type: [Object, File],
+        default: () => { return {} }
+      },
     },
     data: () => {
-        return {}
+      return {
+        iconPathList: {
+          'image': '/images/layout_icons/type_files/file-image.png',
+          'pdf': '/images/layout_icons/type_files/file-pdf.png',
+          'word': '/images/layout_icons/type_files/file-word.png',
+          'excel': '/images/layout_icons/type_files/file-excel.png',
+          'spreadsheetml': '/images/layout_icons/type_files/file-excel.png'
+        },
+        currentIconType: ''
+      }
+    },
+    computed: {
+      getIcon() {
+        if(this.fileItem.type) {
+          for(let key in this.iconPathList) {
+            if(this.fileItem.type.includes(key)) {
+              return this.iconPathList[key]
+            }
+          }
+        }
+
+        return '/images/layout_icons/type_files/file-document.png'
+      }
     },
     methods: {
-        formatBytes(bytes,decimals = 0) {
-            if(bytes == 0) return '0 B'
-            let k = 1024,
-                dm = decimals <= 0 ? 0 : decimals || 2,
-                sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
-                i = Math.floor(Math.log(bytes) / Math.log(k))
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
-        },
-        showBtnNextOverflow() {
-            let blockUploadedFiles = document.getElementsByClassName('uploadedFiles')[0]
-            let blockUploadedFilesList = document.getElementsByClassName('uploadedFiles_list')[0]
-            let btn = document.getElementsByClassName('uploadedFiles_next')[0]
-            if(blockUploadedFiles.offsetWidth < blockUploadedFilesList.scrollWidth) {
-                btn.classList.remove('uploadedFiles_hidden')
-                btn.classList.add('uploadedFiles_vissible')
-            }
-        },
-        deleteFile() {
-            this.$emit('deleteFile', this.fileItem)
+      formatBytes(bytes,decimals = 0) {
+        if(bytes == 0) return '0 B'
+        let k = 1024,
+          dm = decimals <= 0 ? 0 : decimals || 2,
+          sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+          i = Math.floor(Math.log(bytes) / Math.log(k))
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
+      },
+      showBtnNextOverflow() {
+        let blockUploadedFiles = document.getElementsByClassName('uploadedFiles')[0]
+        let blockUploadedFilesList = document.getElementsByClassName('uploadedFiles_list')[0]
+        let btn = document.getElementsByClassName('uploadedFiles_next')[0]
+        if(blockUploadedFiles.offsetWidth < blockUploadedFilesList.scrollWidth) {
+          btn.classList.remove('uploadedFiles_hidden')
+          btn.classList.add('uploadedFiles_vissible')
         }
+      },
+      deleteFile() {
+        this.$emit('deleteFile', this.fileItem)
+      }
     },
     mounted() {
-        this.showBtnNextOverflow()
+      this.showBtnNextOverflow()
     }
 }
 </script>

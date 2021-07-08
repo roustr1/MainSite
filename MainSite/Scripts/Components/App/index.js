@@ -4,6 +4,7 @@ import msHeader from '../Header/ms-header.vue';
 import store from '../../Vuex/allStore';
 import router from '../../Router/router';
 import msMainWrapper from '../App/ms-main-wrapper.vue';
+import VuModal from '../../DefaultComponents/Modal/main';
 
 Vue.config.devtools = true;
 new Vue({
@@ -13,6 +14,7 @@ new Vue({
     components: {
         msHeader,
         msMenu,
-        msMainWrapper
+        msMainWrapper,
+        VuModal
     },
 });
