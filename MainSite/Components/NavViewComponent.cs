@@ -1,23 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using MainSite.ViewModels;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
-using Application.Dal;
 using Application.Dal.Domain.Menu;
-using Application.Dal.Domain.News;
-using Application.Services.Files;
 using Application.Services.Menu;
-using Application.Services.News;
-using Application.Services.Settings;
-using MainSite.ViewModels.Common;
-using MainSite.ViewModels.News;
 using MainSite.ViewModels.UI.Menu;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 
 namespace MainSite.Components
 {

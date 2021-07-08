@@ -4,16 +4,16 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData?["Title"]</title>
+    <title>@(service.SettingsDictionary.ContainsKey("Application.Header")? service.SettingsDictionary["Application.Header"]: service.SettingsDictionary["Application.Name"])</title>
     <link href="~/css/materialize/sass/materialize.css" rel="stylesheet" />
     <link href="~/images/fonts/MaterialIcons/Material-Icons.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/fonts/fonts.css" />
     <link rel="stylesheet" href="~/css/mainSite.css" />
     @*<script src="~/lib/vue/vue.js"></script>*@
 </head>
-<body class="row" >
+<body class="row">
     <div id="vueRootComponent">
-        
+
         <ms-header></ms-header>
         <div class="container">
             <div class="col m12 s12 l3" id="menuBlock">

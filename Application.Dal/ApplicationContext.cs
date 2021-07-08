@@ -83,7 +83,13 @@ namespace Application.Dal
                         Id= Guid.NewGuid().ToString(),
                         Name = "BirthdayPath"
                         ,Value = "http://localhost:50510/api/People/Birthdate?skip=0&take=10"
-                    }, 
+                    },
+                    new Setting
+                    {
+                        Id=Guid.NewGuid().ToString(),
+                        Name =  "Application.Header",
+                        Value = "Main_Application"
+                    },
 #if DEBUG
                     new Setting
                     {
