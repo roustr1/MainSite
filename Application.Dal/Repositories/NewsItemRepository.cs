@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using Application.Dal.Domain.News;
 using Application.Dal.Repositories.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Application.Dal
 {
@@ -16,7 +17,7 @@ namespace Application.Dal
 
         public override NewsItem Get(string id)
         {
-            return _context.NewsItems.Include(a => a.Files).FirstOrDefault(c => c.Id == id);
+            return _context.NewsItems.FirstOrDefault(c => c.Id == id);
         }
 
         public IQueryable<NewsItem> GetAllQueryable => _context.NewsItems;
@@ -24,7 +25,7 @@ namespace Application.Dal
 
         public override IEnumerable<NewsItem> GetMany(Expression<Func<NewsItem, bool>> @where)
         {
-            return _context.Set<NewsItem>().Include(a => a.Files).Where(@where);
+            return _context.Set<NewsItem>().Include(newsItem => newsItem.Files).Where(@where);
         }
 
         public int GetNewsCount(string categoryId = null)
@@ -53,11 +54,17 @@ namespace Application.Dal
             var data = GetAllQueryable;
             if (category != null)
             {
-                data = data.Where(c => c.Category == category);
-                if (categories.Any())
-                {
-                    data = data.Where(d => categories.Contains(d.Category));
-                }
+
+                data = data.Where(d => categories.Contains(d.Category));
+
+            }
+            if (isNewest == null)//по-умолчанию, сортировка от последнего к первому элементу
+            {
+                data = data.OrderByDescending(d => d.CreatedDate);
+            }
+            else//но её можно задать явно
+            {
+                data = isNewest.Value ? data.OrderByDescending(d => d.CreatedDate) : data.OrderBy(d => d.CreatedDate);
             }
 
             if (authorId != null)
@@ -79,6 +86,8 @@ namespace Application.Dal
                 data = data.Where(d => pinnedNews.Contains(d.Id));
             }
 
+           
+
             if (skip != 0)
             {
                 data = data.Skip(skip);
@@ -88,17 +97,8 @@ namespace Application.Dal
             {
                 data = data.Take(take);
             }
-
-            if (isNewest == null)//по-умолчанию, сортировка от последнего к первому элементу
-            {
-                data = data.OrderByDescending(d => d.CreatedDate);
-            }
-            else//но её можно задать явно
-            {
-                data = isNewest.Value ? data.OrderByDescending(d => d.CreatedDate) : data.OrderBy(d => d.CreatedDate);
-            }
-
-            return data;
+            Console.WriteLine(data.ToQueryString());
+            return data.Include(c => c.Files);
         }
     }
 }
