@@ -82,5 +82,15 @@ namespace Application.Services.Birthday
         {
             _birtdayRepository.DeleteAll();
         }
+
+        public Birtday SearchDuplicateBirthday(Birtday birtday)
+        {
+            var entityBirthday = _birtdayRepository.GetAll.FirstOrDefault(a =>
+                a.FIO.Trim().ToUpper().Contains(birtday.FIO.Trim().ToUpper()) &&
+                a.Birth == birtday.Birth
+        );
+
+            return entityBirthday;
+        }
     }
 }

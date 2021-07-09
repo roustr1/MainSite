@@ -10,5 +10,7 @@ namespace Application.Services.Birthday
         void AddItem(Birtday birtday);
 
         void DeleteAllItems();
+
+        Birtday SearchDuplicateBirthday(Birtday birtday);
     }
 }
