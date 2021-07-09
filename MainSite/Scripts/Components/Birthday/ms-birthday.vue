@@ -8,7 +8,7 @@
                  v-for="item in users"
                  :key="item.Id">
                 <span class="fio">{{item.FIO}}</span>
-                <span class="subdivision">{{getSubDivision(item.DepartmentShortName)}}</span>
+                <span class="subdivision">{{getSubDivision(item)}}</span>
             </div>
         </div>
     </div>
@@ -34,7 +34,8 @@
             },
             getSubDivision(subDivision) {
                 if (typeof subDivision == 'undefined' || subDivision == null) return 'ООНРиПНПК';
-                return subDivision;
+
+                return subDivision.DepartmentShortName !== '' ? subDivision.DepartmentShortName : subDivision.DepartmentFullName
             }
         },
         mounted() {

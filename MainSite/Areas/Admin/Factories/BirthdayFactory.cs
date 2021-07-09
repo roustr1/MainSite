@@ -72,7 +72,7 @@ namespace MainSite.Areas.Admin.Factories
                 if (!isStart && CheckStartingFiled(rows.ElementAt(i).Cell(1).Value))
                 {
                     var currentRow = rows.ElementAt(i);
-                    int j = 2;
+                    int j = 1;
                     columnIndexLast = getColumnIndexLast(rows.ElementAt(i));
 
                     isStart = true;
@@ -113,12 +113,13 @@ namespace MainSite.Areas.Admin.Factories
                         var valueSubdivisionUser = rows.ElementAt(i).Cell(columnIndexSubDivisionUser).Value.ToString().Trim();
                         if ((!String.IsNullOrWhiteSpace(valueUser) && !String.IsNullOrWhiteSpace(valueBirthdayUser))) { 
                             var prevIndexRow = i;
-                            while(String.IsNullOrWhiteSpace(rows.ElementAt(prevIndexRow).Cell(columnIndexLast).Value.ToString().Trim()))
+                            while(prevIndexRow != -1 && String.IsNullOrWhiteSpace(rows.ElementAt(prevIndexRow).Cell(columnIndexLast).Value.ToString().Trim()))
                             {
                                 prevIndexRow--;
                             }
 
-                            var departmentShortName = rows.ElementAt(prevIndexRow).Cell(columnIndexLast).Value.ToString().Trim();
+
+                            var departmentShortName = prevIndexRow == -1 ? "" : rows.ElementAt(prevIndexRow).Cell(columnIndexLast).Value.ToString().Trim();
 
                             list.Add(new Birtday { 
                                 Birth = DateTime.Parse(valueBirthdayUser),
@@ -172,7 +173,7 @@ namespace MainSite.Areas.Admin.Factories
             var result = value.ToString();
             Regex regex = new Regex(@"\s");
             var check = regex.Replace(result, "");
-            if (!String.IsNullOrWhiteSpace(result) && check.Equals("№п/п")) return true;
+            if (!String.IsNullOrWhiteSpace(result) && (check.Equals("№п/п")|| check.Equals("Сотрудник"))) return true;
 
             return false;
         }
