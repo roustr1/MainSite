@@ -351,14 +351,14 @@ namespace MainSite.Models
         public void DeleteNewsItem(string id)
         {
             var item = _newsService.GetNewsItem(id);
-            _newsService.DeleteNews(item);
             if (item.Files != null)
             {
-                foreach (var file in item.Files)
+                foreach (var file in item.Files.ToList())
                 {
                     _downloadService.DeleteDownload(file);
                 }
             }
+            _newsService.DeleteNews(item);
         }
 
         #region Pined news

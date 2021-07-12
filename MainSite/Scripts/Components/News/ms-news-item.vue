@@ -119,7 +119,7 @@
                     this.isEditer = !this.isEditer;
                 }
                 else {
-                     M.toast({html: 'У вас нету прав на редактирование данной записи!'})
+                     M.toast({html: 'Нет прав на редактирование данной записи!'})
                 }
             },
             async downloadFile(item) {
@@ -152,7 +152,7 @@
                     })
                 }
                 else {
-                     M.toast({html: 'У вас нету прав на удаление данной записи!'})
+                     M.toast({html: 'Нет прав на удаление данной записи!'})
                 }
             },
             async changeNew(result) {
