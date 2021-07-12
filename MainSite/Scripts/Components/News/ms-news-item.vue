@@ -119,11 +119,23 @@
                     this.isEditer = !this.isEditer;
                 }
                 else {
-                     M.toast({html: 'У вас нету прав на редактирование данной записи!'})
+                     M.toast({html: 'Нет прав на редактирование данной записи!'})
                 }
             },
-            downloadFile(item) {
-                this.DOWNLOADFILE(item);
+            async downloadFile(item) {
+                let file = await this.DOWNLOADFILE(item.id);
+
+                let fileURL = window.URL.createObjectURL(file);
+            
+                let fileLink = document.createElement('a');
+
+                fileLink.href = fileURL;
+
+                fileLink.setAttribute('download', file.name);
+
+                document.body.appendChild(fileLink);
+
+                fileLink.click();
             },
             async deleteNews() {
                 if(await this.getInfoByPermission()) {
@@ -140,7 +152,7 @@
                     })
                 }
                 else {
-                     M.toast({html: 'У вас нету прав на удаление данной записи!'})
+                     M.toast({html: 'Нет прав на удаление данной записи!'})
                 }
             },
             async changeNew(result) {
