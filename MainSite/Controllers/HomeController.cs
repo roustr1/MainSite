@@ -79,7 +79,7 @@ namespace MainSite.Controllers
         [Route("GetFile")]
         public IActionResult DownloadFile(string fileId)
         {
-            return _mainMode.GetDownloadFile(fileId);
+            return new JsonResult(_mainMode.GetDownloadFile(fileId));
         }
 
 
@@ -130,8 +130,17 @@ namespace MainSite.Controllers
             var item = _mainMode.GetNewsItemViewModel(id);
             if (item == null) new JsonResult(null);
 
-            _mainMode.DeleteNewsItem(id);
-            return new JsonResult("Успешно");
+            try
+            {
+                _mainMode.DeleteNewsItem(id);
+                return new JsonResult("Успешно");
+            }
+            catch(System.Exception ex)
+            {
+
+            }
+
+            return new JsonResult(null);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

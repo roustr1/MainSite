@@ -111,11 +111,11 @@ namespace MainSite.Models
             entity.AutorFio = _usersService.GetUserBySystemName(author)?.FullName ?? "Автор не указан";
             entity.Description = model.Description;
 
-
             foreach (var file in entity.Files.ToList())
             {
                 _fileProvider.DeleteFile(file.DownloadUrl);
                 _downloadService.DeleteDownload(file);
+
             }
 
             _newsService.UpdateNews(entity);
@@ -351,14 +351,14 @@ namespace MainSite.Models
         public void DeleteNewsItem(string id)
         {
             var item = _newsService.GetNewsItem(id);
-            _newsService.DeleteNews(item);
             if (item.Files != null)
             {
-                foreach (var file in item.Files)
+                foreach (var file in item.Files.ToList())
                 {
                     _downloadService.DeleteDownload(file);
                 }
             }
+            _newsService.DeleteNews(item);
         }
 
         #region Pined news

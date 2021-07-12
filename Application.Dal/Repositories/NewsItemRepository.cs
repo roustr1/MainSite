@@ -17,7 +17,7 @@ namespace Application.Dal
 
         public override NewsItem Get(string id)
         {
-            return _context.NewsItems.FirstOrDefault(c => c.Id == id);
+            return _context.NewsItems.Include(s => s.Files).FirstOrDefault(c => c.Id == id);
         }
 
         public IQueryable<NewsItem> GetAllQueryable => _context.NewsItems;
