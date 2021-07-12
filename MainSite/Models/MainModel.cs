@@ -111,11 +111,11 @@ namespace MainSite.Models
             entity.AutorFio = _usersService.GetUserBySystemName(author)?.FullName ?? "Автор не указан";
             entity.Description = model.Description;
 
-
             foreach (var file in entity.Files.ToList())
             {
                 _fileProvider.DeleteFile(file.DownloadUrl);
                 _downloadService.DeleteDownload(file);
+
             }
 
             _newsService.UpdateNews(entity);

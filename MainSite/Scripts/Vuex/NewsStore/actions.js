@@ -99,32 +99,27 @@ export default {
             if(result.data) {
                 commit('REMOVE_NEW_FOR_LIST', data.index)
                 M.toast({html: 'Запись удалена!'})
+                return true
             }
         }
         catch (ex) { }
 
+        M.toast({html: 'Запись не удалена. Произошла ошибка!'})
+        return false
     },
-    async DOWNLOADFILE({ commit }, item) {
+    async DOWNLOADFILE({ commit }, fileId) {
         try {
             let result = await axios
                 (
                     {
                         method: 'get',
                         url: '/GetFile/',
-                        params: { fileId: item.id },
-                        responseType: 'blob'
+                        params: { fileId: fileId },
+                        responseType: 'json'
                     }
             );
-
-            let fileURL = window.URL.createObjectURL(new File([result.data], item.name, { type: result.data.type }));
-            let fileLink = document.createElement('a');
-
-            fileLink.href = fileURL;
-            fileLink.setAttribute('download', item.name);
-
-            document.body.appendChild(fileLink);
-
-            fileLink.click();
+            
+            return new File([result.data.fileContents], result.data.fileDownloadName, { type: result.data.contentType })
         }
         catch (ex) {}
     },
