@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Application.Services.Users;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace MainSite.Middleware
 {
@@ -16,12 +18,23 @@ namespace MainSite.Middleware
 
         public async Task InvokeAsync(HttpContext context, IUsersService userService)
         {
-            
-                userService.GetUserBySystemName(context.User);       
-               
+            var user = userService.GetUserBySystemName(context.User);
+            user.LastIpAddress = GetIP(context);
+            user.LastActivityDate = DateTime.Now;
+            userService.UpdateUser(user);
 
 
             await _next.Invoke(context);
+        }
+
+
+        private String GetIP(HttpContext context)
+        {
+            var ip =
+                context.Features.Get<IHttpConnectionFeature>().RemoteIpAddress.MapToIPv4().ToString();
+
+
+            return ip;
         }
     }
 }
