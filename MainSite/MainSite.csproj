@@ -13,6 +13,10 @@
     <Version>1.0.2</Version>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE; RELEASE</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="Content\**" />
     <Compile Remove="wwwroot\images\thumbs\**" />

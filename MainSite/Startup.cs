@@ -20,6 +20,7 @@ using Application.Services.Users;
 using MainSite.Areas.Admin.Factories;
 using Microsoft.AspNetCore.Server.HttpSys;
 using Application.Services.PlanCalendar;
+using MainSite.Middleware;
 
 namespace MainSite
 {
@@ -100,7 +101,7 @@ namespace MainSite
             app.UseStaticFiles();
             app.UseAuthorization();
             app.UseAuthentication();
-
+            app.UseMiddleware<UserAreCreateMiddleware>();
 
             //app.UseStaticFiles(new StaticFileOptions
             //{
