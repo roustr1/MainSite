@@ -71,9 +71,10 @@ export default {
             if(this.files.length == 0) return '0 b'
 
             let allSumSize = this.files.reduce((sum, item) => {
+                if(typeof item.size == 'undefined') return 0
                 return sum + item.size
             }, 0)
-
+            
             return this.formatBytes(allSumSize)
         }
     },

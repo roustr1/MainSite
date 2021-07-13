@@ -29,7 +29,7 @@
             <ul class="dropdownFiles">
                 <li v-for="item in news_item.files"
                     :key="item.id">
-                    <a href="#" @click="downloadFile(item)"><img src="/images/layout_icons/News/fileLoad.svg" style="padding-right:5px;" />  {{item.name}}</a>
+                    <a :href="hrefFile(item.id)"><img src="/images/layout_icons/News/fileLoad.svg" style="padding-right:5px;" />  {{item.name}}</a>
                 </li>
             </ul>
         </template>
@@ -107,13 +107,15 @@
         },
         methods: {
             ...mapActions('news', [
-                'DOWNLOADFILE',
                 'UPDATE_NEW',
                 'DELETE_NEW'
             ]),
              ...mapActions('user', [
                 'GET_PERMISSION_BY_CATEGORY'
             ]),
+            hrefFile(id) {
+                return `/GetFile?fileId=${id}`
+            },
             async changeSectionEditer() {
                 if(await this.getInfoByPermission()) {
                     this.isEditer = !this.isEditer;
@@ -121,21 +123,6 @@
                 else {
                      M.toast({html: 'Нет прав на редактирование данной записи!'})
                 }
-            },
-            async downloadFile(item) {
-                let file = await this.DOWNLOADFILE(item.id);
-
-                let fileURL = window.URL.createObjectURL(file);
-            
-                let fileLink = document.createElement('a');
-
-                fileLink.href = fileURL;
-
-                fileLink.setAttribute('download', file.name);
-
-                document.body.appendChild(fileLink);
-
-                fileLink.click();
             },
             async deleteNews() {
                 if(await this.getInfoByPermission()) {

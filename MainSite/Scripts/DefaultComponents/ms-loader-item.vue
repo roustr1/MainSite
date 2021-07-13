@@ -59,6 +59,7 @@ export default {
     },
     methods: {
       formatBytes(bytes,decimals = 0) {
+        if(typeof bytes == 'undefined') return ''
         if(bytes == 0) return '0 B'
         let k = 1024,
           dm = decimals <= 0 ? 0 : decimals || 2,

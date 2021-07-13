@@ -6,5 +6,6 @@
         public string Name { get; set; }
         public string MimeType { get; set; }
         public string Extension { get; set; }
+        public string DataBaseName { get; set; }
     }
 }

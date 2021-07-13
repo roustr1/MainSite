@@ -72,6 +72,12 @@
       changeFileList(changeFileListData) {
         this.fileList = changeFileListData;                         
       },
+      GenerateUUID() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+          var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+          return v.toString(16);
+        }).toUpperCase();
+      },
       submit(e) {
         e.preventDefault();
         this.model.CategoryId = this.CategoryId;
@@ -81,12 +87,19 @@
         if (this.isAdvancedEditor) {
           let i = 0;
           for (var i = 0; i < this.fileList.length; i++) {
-            if(typeof this.fileList[i] == 'File') {
-              formData.append(`uploadedFile[${i}]`, this.fileList[i]);  
+            if(typeof this.fileList[i].dataBaseName == 'undefined') {
+              formData.append(`Files[${this.GenerateUUID()}]`, this.fileList[i]);  
             }
             else {
-              formData.append(`Files[${i}]`, this.fileList[i]);  
-            }                    
+              let dataBaseName = typeof this.fileList[i].dataBaseName != 'undefined' ? this.fileList[i].dataBaseName : this.GenerateUUID();
+              let file = new File([], this.fileList[i].name + this.fileList[i].extension, { type: this.fileList[i].mimeType, name: dataBaseName})
+              if(this.fileList[i].dataBaseName.includes('Files')) {
+                formData.append(dataBaseName, file);  
+              }
+              else {
+                formData.append(`Files[${this.GenerateUUID()}]`, file);  
+              }
+            }                
           }
         }
 
@@ -109,8 +122,11 @@
         if (this.editModel != null) this.model = this.editModel;
         if(this.editFiles.length) {
           this.fileList = this.editFiles.map((item, index) => {
-            let element = this.GET_FILE(item.id)
-            return new File([element], item.name + item.extension, { type: item.mimeType })
+            //let element = this.GET_FILE(item.id)
+            //console.log(item)
+            //let file = new File([element], item.name + item.extension, { type: item.mimeType, name: item.dataBaseName})
+
+            return item
           })
         }
     }

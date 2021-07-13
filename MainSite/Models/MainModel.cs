@@ -96,7 +96,8 @@ namespace MainSite.Models
                     Name = s.Filename,
                     MimeType = s.ContentType,
                     Id = s.Id,
-                    Extension = s.Extension
+                    Extension = s.Extension,
+                    DataBaseName = s.Name
                 }).ToList(),
                 IsAdvancedEditor = newsItem.IsAdvancedEditor
             };
@@ -111,17 +112,31 @@ namespace MainSite.Models
             entity.LastChangeDate = DateTime.Now;
             entity.AutorFio = _usersService.GetUserBySystemName(author)?.FullName ?? "Автор не указан";
             entity.Description = model.Description;
+            List<IFormFile> httpPostedFile = new List<IFormFile>();
+            List<IFormFile> httpCurrentFile = new List<IFormFile>();
 
             foreach (var file in entity.Files.ToList())
             {
+                var element = model.UploadedFiles.FirstOrDefault(s => s.Name.Contains(file.Name));
+
+                if (element != null) {
+                    httpCurrentFile.Add(element);
+                    continue; 
+                }
+
                 _fileProvider.DeleteFile(file.DownloadUrl);
                 _downloadService.DeleteDownload(file);
 
             }
 
             _newsService.UpdateNews(entity);
+
+            foreach (var file in model.UploadedFiles.ToList())
+            {
+                if (!httpCurrentFile.Any(a => a == file)) httpPostedFile.Add(file);
+            }
             //uploadFiles 
-            UploadFiles(model.UploadedFiles, entity.Id);
+            UploadFiles(httpPostedFile, entity.Id);
 
         }
 

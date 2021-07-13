@@ -107,22 +107,6 @@ export default {
         M.toast({html: 'Запись не удалена. Произошла ошибка!'})
         return false
     },
-    async DOWNLOADFILE({ commit }, fileId) {
-        try {
-            let result = await axios
-                (
-                    {
-                        method: 'get',
-                        url: '/GetFile/',
-                        params: { fileId: fileId },
-                        responseType: 'json'
-                    }
-            );
-            
-            return new File([result.data.fileContents], result.data.fileDownloadName, { type: result.data.contentType })
-        }
-        catch (ex) {}
-    },
     async GET_FILE({ commit }, newsId) {
         try {
             let result = await axios

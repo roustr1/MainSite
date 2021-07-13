@@ -83,7 +83,7 @@ namespace MainSite.Controllers
         [Route("GetFile")]
         public IActionResult DownloadFile(string fileId)
         {
-            return new JsonResult(_mainMode.GetDownloadFile(fileId));
+            return _mainMode.GetDownloadFile(fileId);
         }
 
 
