@@ -110,7 +110,7 @@
         if(this.editFiles.length) {
           this.fileList = this.editFiles.map((item, index) => {
             let element = this.GET_FILE(item.id)
-            return new File([element], item.name, { type: item.mimeType })
+            return new File([element], item.name + item.extension, { type: item.mimeType })
           })
         }
     }

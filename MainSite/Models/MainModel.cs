@@ -95,7 +95,8 @@ namespace MainSite.Models
                 {
                     Name = s.Filename,
                     MimeType = s.ContentType,
-                    Id = s.Id
+                    Id = s.Id,
+                    Extension = s.Extension
                 }).ToList(),
                 IsAdvancedEditor = newsItem.IsAdvancedEditor
             };
