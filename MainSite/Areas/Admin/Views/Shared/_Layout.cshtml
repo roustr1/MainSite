@@ -15,12 +15,11 @@
 
     <div class="row">
         <header class="navbar-fixed">
-            <nav class="nav-header">
-                <div class="container">
-                    <div style="display: flex; align-items: center;">
+            <nav class="nav-header" style="display:flex;">
+                <div class="container" style="display:flex;align-items:center;">
                         <a style="cursor: pointer; display: flex; align-items: center; flex-basis: 40%;" href="@Url.Action("Index", "Home")">
                             <img src="@service.SettingsDictionary.GetValueOrDefault("Application.Icon", "~/images/layout_icons/header.png")" width="50" height="50" />
-                            <span class="bold" style="padding-left: 10px;">@service.SettingsDictionary.GetValueOrDefault("Application.Name", "Информационный портал")</span>
+                            <span class="bold" style="padding-left:10px;line-height: 15px;margin-right: 13px;font-size:12px;">@Html.Raw(service.SettingsDictionary.GetValueOrDefault("Application.Name", "Информационный портал"))</span>
                         </a>
                         <a id="openMenu" data-target="mobile-demo" class="sidenav-trigger" style="float: right; cursor: pointer; flex-basis: 20%;"><i class="material-icons">menu</i></a>
                         <ul class="hide-on-med-and-down" style="margin-left: auto;">
@@ -38,7 +37,6 @@
                                 </div>
                             </li>
                         </ul>
-                    </div>
                 </div>
             </nav>
 
