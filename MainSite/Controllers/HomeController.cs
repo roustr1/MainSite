@@ -11,6 +11,7 @@ using Application.Services.Files;
 using Application.Services.Permissions;
 using MainSite.Areas.Admin.Factories;
 using MainSite.ViewModels.UI.Menu;
+using Application.Services.Users;
 
 namespace MainSite.Controllers
 {
@@ -21,20 +22,23 @@ namespace MainSite.Controllers
         private readonly IPictureService _uploadService;
         private readonly IPermissionService _permissionService;
         private readonly ISecurityModelFactory _securityModelFactory;
+        private readonly IUsersService _userService;
 
 
-        public HomeController(MainModel mainMode, IMenuService menuService, IPictureService uploadService, IPermissionService permissionService, ISecurityModelFactory securityModelFactory)
+        public HomeController(MainModel mainMode, IUsersService userService, IMenuService menuService, IPictureService uploadService, IPermissionService permissionService, ISecurityModelFactory securityModelFactory)
         {
             _mainMode = mainMode;
             _menuService = menuService;
             _uploadService = uploadService;
             _permissionService = permissionService;
             _securityModelFactory = securityModelFactory;
+            _userService = userService;
         }
 
 
         public IActionResult Index(int page = 0, string category = null)
         {
+            _userService.GetUserBySystemName(User);
             return View();
         }
 
