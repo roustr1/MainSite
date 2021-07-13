@@ -1,7 +1,7 @@
 ﻿@model MainSite.Areas.Admin.Models.Users.UserRoleModel
 
 <div asp-validation-summary="ModelOnly"></div>
-<input asp-for="Id" type="hidden" />
+<input asp-for="Id" type="hidden" value="@Model.Id"  class="userRoleId"/>
 
 <div class="col input-field  m12">
     @Html.EditorFor(model => model.Name, new { type = "text", @class = "validate" })

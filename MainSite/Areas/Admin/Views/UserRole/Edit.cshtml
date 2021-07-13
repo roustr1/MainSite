@@ -5,6 +5,28 @@
     Layout = "_Layout";
 
 }
+<script>
+    function deleteUserRole() {
+        var userRoleId = document.querySelector('.userRoleId');
+        var data = new FormData();
+        data.append('id', userRoleId.value);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/Admin/UserRoles/Delete/', false);
+
+        xhr.onreadystatechange = function () {//Call a function when the state changes.
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                window.location.reload('@Url.Action("List")');
+            }
+            else {
+                alert('Ошибка');
+            }
+        }
+
+        xhr.send(data);
+    }
+</script>
+
 <div class="col s12 m12 card-panel">
     <form asp-controller="UserRole" asp-action="Edit" method="post">
         <h5 class="pull-left">
@@ -20,7 +42,7 @@
                     Сохранить
                 </button>
 
-                <span id="customerrole-delete" class="btn btn-defaultMainSite">
+                <span id="customerrole-delete" class="btn btn-defaultMainSite" onclick="deleteUserRole()" >
                     <i class="fa fa-trash-o"></i>
                     Удалить
                 </span>
